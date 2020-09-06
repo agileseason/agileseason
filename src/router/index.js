@@ -1,12 +1,17 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/home.vue'
 import OAuth from '../views/oauth.vue'
+import Boards from '../views/boards.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
     component: Home
+  }, {
+    path: '/boards',
+    name: 'boards',
+    component: Boards
   }, {
     path: '/oauth/callback',
     name: 'oauth',
@@ -20,11 +25,11 @@ const routes = [
   //   // which is lazy-loaded when the route is visited.
   //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   // }
-]
+];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes
-})
+});
 
-export default router
+export default router;

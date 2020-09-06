@@ -8,6 +8,23 @@ const DOMAIN = {
 const ENDPOINT = DOMAIN + '/graphql';
 
 export default {
+  async fetchProfile(token) {
+    const query = `
+      query {
+        user {
+          id
+          username
+          avatarUrl
+          boardsCount
+        }
+      }
+    `;
+    const data = await this.client(token).request(query);
+    this.log('user', data);
+
+    return data?.user;
+  },
+
   // async login(email, password) {
   //   const query = `
   //     query($email:String!, $password:String!) {

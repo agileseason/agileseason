@@ -28,6 +28,9 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0"
   },
+  "resolutions": {
+    "**/vue-class-component": "^8.0.0-alpha.6"
+  },
   "eslintConfig": {
     "root": true,
     "env": {

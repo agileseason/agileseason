@@ -16,15 +16,18 @@ export default {
     isSignedIn: get('user/isSignedIn')
   },
   async created() {
+    // if (this.isSignedIn) {
+    //   ???
+    // }
     this.rememberToken = this.$route.query.remember_token;
     // console.log(this.$route.query.remember_token);
 
     if (this.rememberToken != null && this.rememberToken != '') {
       console.log(this.rememberToken);
-      // this.$router.push({ name: 'transactions' });
       const isSuccess = await this.login({ rememberToken: this.rememberToken });
       if (isSuccess) {
         console.log('success');
+        this.$router.push({ name: 'boards' });
       } else {
         console.log('fail');
       }

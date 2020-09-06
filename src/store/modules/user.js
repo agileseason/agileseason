@@ -12,12 +12,16 @@ export default {
   namespaced: true,
 
   state: {
-    username: CookieStore.get(NAMESPACE, 'username', null),
-    rememberToken: CookieStore.get(NAMESPACE, 'rememberToken', null)
+    rememberToken: CookieStore.get(NAMESPACE, 'rememberToken', null),
+    username: undefined,
+    avatarUrl: undefined,
+    boardsCount: undefined,
+    isLoading: true
   },
 
   getters: {
-    isSignedIn: state => (state.username != null && state.rememberToken != null)
+    isSignedIn: state => (state.rememberToken != null),
+    token: state => (state.rememberToken)
   },
 
   actions: {
@@ -28,8 +32,9 @@ export default {
       return true;
     },
     async fetchProfile({ commit, state }) {
-      const { token } = state;
-      const user = await api.fetchProfile(token);
+      commit('START_LOADING');
+      const user = await api.fetchProfile(state.rememberToken);
+      commit('FINISH_LOADING');
       if (user == null) { return; }
 
       commit('FETCH', user);
@@ -64,8 +69,9 @@ export default {
       saveCookies('rememberToken', null);
     },
     FETCH(state, user) {
-      state.email = user.email;
-      state.currency = user.defaultCurrency;
+      state.username = user.username;
+      state.avatarUrl = user.avatarUrl;
+      state.boardsCount = user.boardsCount;
     }
   }
 };
