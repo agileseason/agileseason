@@ -1,20 +1,20 @@
 <template>
-  <div class='home'>
+  <div class='container'>
     <h1>Agile Season</h1>
     <h2>Kanban board for GitHub issues</h2>
-    <router-link v-if='isSignedIn' to='/boards'>Go to App</router-link>
-    <a v-else :href='signInUrl'>Sign in with GitHub</a>
+    <Button v-if='isSignedIn' class='signin' to='/boards' text='Go to App' />
+    <Button v-else :href='signInUrl' class='signin' text='Sign in with GitHub' />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
+import Button from '@/components/buttons/button.vue'
 import { get } from 'vuex-pathify';
 
 export default {
   name: 'Home',
   components: {
+    Button
   },
   data() {
     return {};
@@ -31,3 +31,21 @@ export default {
   // }
 }
 </script>
+
+<style scoped lang='sass'>
+.container
+  max-width: 1000px
+  margin: 40px auto
+
+.signin
+  min-width: 90px
+  margin-top: 30px
+
+h1
+  font-size: 40px
+  margin: 0 0 10px
+
+h2
+  font-weight: 400
+  margin: 0 0 10px
+</style>
