@@ -1,5 +1,8 @@
 <template>
   <div class='boards'>
+    <TopMenu>
+      <div class='title'>Boards</div>
+    </TopMenu>
     <h1>Boards</h1>
 
     <div v-if='isLoading'>
@@ -12,14 +15,16 @@
 </template>
 
 <script>
+import TopMenu from '@/components/menu/top.vue'
 import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'Boards',
   components: {
+    TopMenu
   },
   data: () => ({
-    boards: undefined,
+    // boards: undefined,
   }),
   computed: {
     isSignedIn: get('user/isSignedIn'),
@@ -45,3 +50,13 @@ export default {
   }
 }
 </script>
+
+<style scoped lang='sass'>
+.title
+  vertical-align: middle
+  text-align: center
+  font-weight: 400
+  font-size: 16px
+  line-height: 34px
+  color: #FFFFFF
+</style>
