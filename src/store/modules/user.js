@@ -15,7 +15,7 @@ export default {
     rememberToken: CookieStore.get(NAMESPACE, 'rememberToken', null),
     username: undefined,
     avatarUrl: undefined,
-    boardsCount: undefined,
+    boards: [],
     isLoading: true
   },
 
@@ -71,7 +71,7 @@ export default {
     FETCH(state, user) {
       state.username = user.username;
       state.avatarUrl = user.avatarUrl;
-      state.boardsCount = user.boardsCount;
+      state.boards = user.boards;
     }
   }
 };

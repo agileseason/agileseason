@@ -12,9 +12,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-
 import { get, call } from 'vuex-pathify';
 
 export default {
@@ -30,15 +27,15 @@ export default {
     token: get('user/token')
   },
   async created() {
-    console.log('created');
-    console.log(this.isSignedIn);
+    // console.log('created');
+    // console.log(this.isSignedIn);
     if (this.isSignedIn) {
       const user = await this.fetchProfile(this.token);
       if (user == null) {
-        // this.$router.push({ name: 'home' });
+        this.$router.push({ name: 'home' });
       }
     } else {
-      // this.$router.push({ name: 'home' });
+      this.$router.push({ name: 'home' });
     }
   },
   methods: {

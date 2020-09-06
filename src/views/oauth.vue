@@ -23,10 +23,10 @@ export default {
     // console.log(this.$route.query.remember_token);
 
     if (this.rememberToken != null && this.rememberToken != '') {
-      console.log(this.rememberToken);
+      // console.log(this.rememberToken);
       const isSuccess = await this.login({ rememberToken: this.rememberToken });
       if (isSuccess) {
-        console.log('success');
+        // console.log('success');
         this.$router.push({ name: 'boards' });
       } else {
         console.log('fail');

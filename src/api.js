@@ -15,7 +15,7 @@ export default {
           id
           username
           avatarUrl
-          boardsCount
+          boards { id name }
         }
       }
     `;
