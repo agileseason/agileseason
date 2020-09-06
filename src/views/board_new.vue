@@ -20,7 +20,13 @@
           </p>
           <Button class='configure' text='Configure App' :href='appUrl' />
         </div>
-        <Button v-else class='install' text='Install App' :href='appUrl' />
+        <Button
+          v-else
+          class='install'
+          :isLoading='isLoading'
+          :href='appUrl'
+          text='Install App'
+        />
       </div>
 
       <div v-if='isInstalled' class='step'>
