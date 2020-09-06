@@ -38,7 +38,7 @@ export default {
       if (user == null) { return; }
 
       commit('FETCH', user);
-      return true;
+      return user;
     },
     // async updateProfile({ state }, { currency }) {
     //   const { token } = state;

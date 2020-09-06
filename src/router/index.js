@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/home.vue'
 import OAuth from '../views/oauth.vue'
 import Boards from '../views/boards.vue'
+import BoardNew from '../views/board_new.vue'
 
 const routes = [
   {
@@ -12,6 +13,10 @@ const routes = [
     path: '/boards',
     name: 'boards',
     component: Boards
+  }, {
+    path: '/boards/new',
+    name: 'board_new',
+    component: BoardNew
   }, {
     path: '/oauth/callback',
     name: 'oauth',

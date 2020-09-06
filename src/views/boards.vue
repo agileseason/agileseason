@@ -1,10 +1,8 @@
 <template>
   <div class='boards'>
-    <TopMenu>
-      <div class='title'>Boards</div>
-    </TopMenu>
-    <h1>Boards</h1>
+    <TopMenu title='Boards' />
 
+    <h1>TODO: Boards</h1>
     <div v-if='isLoading'>
       Loading...
     </div>
@@ -23,21 +21,19 @@ export default {
   components: {
     TopMenu
   },
-  data: () => ({
-    // boards: undefined,
-  }),
+  data: () => ({}),
   computed: {
     isSignedIn: get('user/isSignedIn'),
     isLoading: get('user/isLoading'),
     token: get('user/token')
   },
   async created() {
-    // console.log('created');
-    // console.log(this.isSignedIn);
     if (this.isSignedIn) {
       const user = await this.fetchProfile(this.token);
       if (user == null) {
         this.$router.push({ name: 'home' });
+      } else if (user.boards.length === 0) {
+        this.$router.push({ name: 'board_new' });
       }
     } else {
       this.$router.push({ name: 'home' });
@@ -52,11 +48,4 @@ export default {
 </script>
 
 <style scoped lang='sass'>
-.title
-  vertical-align: middle
-  text-align: center
-  font-weight: 400
-  font-size: 16px
-  line-height: 34px
-  color: #FFFFFF
 </style>

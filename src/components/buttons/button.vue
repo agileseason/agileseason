@@ -81,17 +81,18 @@ export default {
 .button
   -webkit-tap-highlight-color: transparent
   border-radius: 4px
+  box-sizing: border-box
   color: #fff
   display: inline-block
   font-size: 14px
   font-weight: bold
   height: 40px
-  padding: 0 24px
   line-height: 38px
+  padding: 0 24px
   position: relative
   text-align: center
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s
   text-decoration: none
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s
 
   &.disabled
     cursor: default
