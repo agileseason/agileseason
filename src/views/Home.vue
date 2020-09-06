@@ -2,13 +2,15 @@
   <div class='home'>
     <h1>Agile Season</h1>
     <h2>Kanban board for GitHub issues</h2>
-    <a :href='signInUrl'>Sign in with GitHub</a>
+    <router-link v-if='isSignedIn' to='/boards'>Go to App</router-link>
+    <a v-else :href='signInUrl'>Sign in with GitHub</a>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+import { get } from 'vuex-pathify';
 
 export default {
   name: 'Home',
@@ -18,6 +20,7 @@ export default {
     return {};
   },
   computed: {
+    isSignedIn: get('user/isSignedIn'),
     signInUrl() {
       return `${process.env.VUE_APP_API_URL}/oauth`;
     }
