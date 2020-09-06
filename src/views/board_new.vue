@@ -12,10 +12,21 @@
           </a>
         </div>
 
-        <Button class='install' text='Install App' to='/' />
+        <div v-if='isInstalled' class='configure-block'>
+          <p>
+            Couldn't find a repository?
+            <br>
+            Manage your installation settings
+          </p>
+          <Button class='configure' text='Configure App' :href='appUrl' />
+        </div>
+        <Button v-else class='install' text='Install App' :href='appUrl' />
       </div>
 
-      <div class='step disabled'>
+      <div v-if='isInstalled' class='step'>
+        <div class='title'>2. Select Repositories</div>
+      </div>
+      <div v-else class='step disabled'>
         <div class='title'>2. Select Repositories</div>
       </div>
 
@@ -31,27 +42,34 @@ import Button from '@/components/buttons/button.vue'
 import TopMenu from '@/components/menu/top.vue'
 import { get, call } from 'vuex-pathify';
 
+const APP_URL = {
+  development: 'https://github.com/apps/agileseason-dev/installations/new',
+  production: 'https://github.com/apps/agileseason/installations/new'
+}[process.env.NODE_ENV];
+
 export default {
-  name: 'Boards',
+  name: 'BoardNew',
   components: {
     Button,
     TopMenu
   },
-  data: () => ({}),
+  data: () => ({
+    isInstalled: false
+  }),
   computed: {
-    isSignedIn: get('user/isSignedIn'),
-    token: get('user/token')
+    isLoading: get('installations/isLoading'),
+    items: get('installations/items'),
+    appUrl() { return APP_URL; }
   },
   async created() {
-    // TODO: Fetch installations
-    const user = await this.fetchProfile(this.token);
-    if (user == null) {
-      this.$router.push({ name: 'home' });
+    const items = await this.fetch();
+    if (items?.length > 0) {
+      this.isInstalled = true;
     }
   },
   methods: {
     ...call([
-      'user/fetchProfile'
+      'installations/fetch'
     ])
   }
 }
@@ -101,4 +119,13 @@ export default {
   .button.install
     min-width: 150px
     margin-top: 98px
+
+  .configure-block
+    p
+      margin: 54px 0 16px
+      font-size: 12px
+      color: #616161
+
+    .button.configure
+      min-width: 150px
 </style>

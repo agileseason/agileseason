@@ -29,7 +29,7 @@ export default {
   },
   async created() {
     if (this.isSignedIn) {
-      const user = await this.fetchProfile(this.token);
+      const user = await this.fetchProfile();
       if (user == null) {
         this.$router.push({ name: 'home' });
       } else if (user.boards.length === 0) {

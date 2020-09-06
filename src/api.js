@@ -25,6 +25,31 @@ export default {
     return data?.user;
   },
 
+  async fetchInstallactions(token) {
+    const query = `
+      query($page:Int!) {
+        githubInstallations(page: $page) {
+          totalCount
+          items {
+            id
+            accessTokensUrl
+            account {
+              id
+              login
+              avatarUrl
+              type
+            }
+          }
+        }
+      }
+    `;
+    const vars = { page: 1 };
+    const data = await this.client(token).request(query, vars);
+    this.log('user', data);
+
+    return data?.githubInstallations;
+  },
+
   // async login(email, password) {
   //   const query = `
   //     query($email:String!, $password:String!) {
