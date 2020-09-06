@@ -3,7 +3,13 @@
     <h1>Agile Season</h1>
     <h2>Kanban board for GitHub issues</h2>
     <Button v-if='isSignedIn' class='signin' to='/boards' text='Go to App' />
-    <Button v-else :href='signInUrl' class='signin' text='Sign in with GitHub' />
+    <Button v-else
+      :isLoading='isLoading'
+      :href='signInUrl'
+      @click='startSignIn'
+      class='signin'
+      text='Sign in with GitHub'
+    />
   </div>
 </template>
 
@@ -16,13 +22,18 @@ export default {
   components: {
     Button
   },
-  data() {
-    return {};
-  },
+  data: () => ({
+    isLoading: false,
+  }),
   computed: {
     isSignedIn: get('user/isSignedIn'),
     signInUrl() {
       return `${process.env.VUE_APP_API_URL}/oauth`;
+    }
+  },
+  methods: {
+    startSignIn() {
+      this.isLoading = true;
     }
   }
   // mounted() {
@@ -38,7 +49,7 @@ export default {
   margin: 40px auto
 
 .signin
-  min-width: 90px
+  min-width: 130px
   margin-top: 30px
 
 h1

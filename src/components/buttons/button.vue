@@ -23,7 +23,7 @@
     class='button'
     :class='[type]'
     :href='href'
-    target='_blank'
+    @click='click'
   >
     <span v-if='isLoading' class='loader' />
     <span v-else>
@@ -86,7 +86,7 @@ export default {
   font-size: 14px
   font-weight: bold
   height: 40px
-  padding: 0 30px
+  padding: 0 24px
   line-height: 38px
   position: relative
   text-align: center
