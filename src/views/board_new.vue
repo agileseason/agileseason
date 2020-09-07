@@ -31,6 +31,12 @@
 
       <div v-if='isInstalled' class='step'>
         <div class='title'>2. Select Repositories</div>
+        <Repository
+          v-for='item in items'
+          :key='item.id'
+          :name='item.account.login'
+          :avatarUrl='item.account.avatarUrl'
+        />
       </div>
       <div v-else class='step disabled'>
         <div class='title'>2. Select Repositories</div>
@@ -46,6 +52,7 @@
 <script>
 import Button from '@/components/buttons/button.vue'
 import TopMenu from '@/components/menu/top.vue'
+import Repository from '@/components/repositories/item.vue'
 import { get, call } from 'vuex-pathify';
 
 const APP_URL = {
@@ -57,6 +64,7 @@ export default {
   name: 'BoardNew',
   components: {
     Button,
+    Repository,
     TopMenu
   },
   data: () => ({
