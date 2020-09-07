@@ -136,9 +136,10 @@ export default {
 
   .configure-block
     p
-      margin: 54px 0 16px
-      font-size: 12px
       color: #616161
+      font-size: 12px
+      letter-spacing: 0.2px
+      margin: 54px 0 16px
 
     .button.configure
       min-width: 150px

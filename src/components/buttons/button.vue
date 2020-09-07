@@ -57,6 +57,7 @@ export default {
       validator: (value) => (
         [
           'indigo',
+          'flat',
           'white'
         ].indexOf(value) !== -1
       )
@@ -93,6 +94,7 @@ export default {
   text-align: center
   text-decoration: none
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s
+  cursor: pointer
 
   &.disabled
     cursor: default
@@ -113,6 +115,27 @@ export default {
       background-color: #9FA8DA
       border-color: #9FA8DA
       color: #F5F5F5
+
+  &.white
+    padding: 0 12px
+    background-color: #FFF
+    border: 1px solid #FFF
+    color: #283593
+    height: 32px
+    line-height: 30px
+
+    &:hover
+      background: #E8EAF6
+      border-color: #E8EAF6
+
+  &.flat
+    background: transparent
+    border-color: transparent
+    height: 32px
+    line-height: 30px
+
+    &:hover
+      color: #E8EAF6
 
 .loader
   background-image: url('../../assets/button/loader.svg')
