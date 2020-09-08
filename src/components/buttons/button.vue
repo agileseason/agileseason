@@ -86,7 +86,7 @@ export default {
   color: #fff
   display: inline-block
   font-size: 14px
-  font-weight: bold
+  font-weight: 600
   height: 40px
   line-height: 38px
   padding: 0 24px
@@ -131,6 +131,7 @@ export default {
   &.flat
     background: transparent
     border-color: transparent
+    font-weight: 500
     height: 32px
     line-height: 30px
 

@@ -11,7 +11,10 @@
         <span class='login'>{{ name }}</span>
       </div>
       <div class='list'>
-        TODO
+        <input class='search' type='text' v-model='search' placeholder='Search...' />
+        <div>
+          TODO
+        </div>
         <div class='actions'>
           <Button @click='close' type='flat' text='Close' />
           <Button @click='done' type='white' text='Done' />
@@ -34,6 +37,7 @@ export default {
     avatarUrl: { type: String, required: true },
   },
   data: () => ({
+    search: '',
     isSelected: false
   }),
   computed: {
@@ -91,7 +95,7 @@ export default {
     text-align: left
 
     .list
-      padding: 8px
+      padding: 0 8px 8px
 
       .actions
         border-top: 1px solid #7986CB
@@ -106,6 +110,29 @@ export default {
     font-size: 14px
     line-height: 32px
     vertical-align: top
+
+input.search
+  background-color: #5C6BC0
+  border-radius: 3px
+  border: 1px solid #5C6BC0
+  box-sizing: border-box
+  color: #FFF
+  font-size: 16px
+  font-weight: 400
+  height: 28px
+  letter-spacing: 0.4px
+  line-height: 28px
+  margin-bottom: 8px
+  padding: 0 6px
+  width: 100%
+
+  &::placeholder
+    color: #7986CB
+    opacity: 1
+  &:-ms-input-placeholder
+    color: #7986CB
+  &::-ms-input-placeholder
+    color: #7986CB
 
 img
   border-radius: 12px
