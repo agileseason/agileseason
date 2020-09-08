@@ -81,14 +81,16 @@ export default {
   },
   methods: {
     ...call([
-      'repositories/fetch'
+      'repositories/fetch',
+      'boardNew/update',
     ]),
     open() {
       this.isSelected = true;
     },
     done() {
       this.isSelected = false;
-      console.log('TODO: Done - save selected repos to the store');
+      const repositories = this.items.filter(v => this.selectedRepositories.includes(v.id));
+      this.update({ installationId: this.installationId, repositories });
     },
     close() {
       this.isSelected = false;

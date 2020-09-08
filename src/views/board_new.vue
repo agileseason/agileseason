@@ -38,12 +38,24 @@
           :avatarUrl='item.account.avatarUrl'
           :installationId='item.id'
         />
+        <div class='selected-repositories'>
+          <span
+            v-for='repo in selectedRepositories'
+            :key='repo.id'
+            class='repository'
+          >
+            {{ repo.name }}
+          </span>
+        </div>
       </div>
       <div v-else class='step disabled'>
         <div class='title'>2. Select Repositories</div>
       </div>
 
-      <div class='step disabled'>
+      <div v-if='isImportReady' class='step'>
+        <div class='title'>3. Import Issues</div>
+      </div>
+      <div v-else class='step disabled'>
         <div class='title'>3. Import Issues</div>
       </div>
     </div>
@@ -74,6 +86,8 @@ export default {
   computed: {
     isLoading: get('installations/isLoading'),
     items: get('installations/items'),
+    isImportReady: get('boardNew/isImportReady'),
+    selectedRepositories: get('boardNew/selectedRepositories'),
     appUrl() { return APP_URL; }
   },
   async created() {
@@ -144,4 +158,16 @@ export default {
 
     .button.configure
       min-width: 150px
+
+.selected-repositories
+  margin-top: 12px
+  text-align: left
+
+  .repository
+    background-color: #3F51B5
+    border-radius: 14px
+    color: #FFF
+    font-size: 12px
+    margin-right: 6px
+    padding: 4px 6px
 </style>
