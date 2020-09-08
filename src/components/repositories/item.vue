@@ -11,13 +11,13 @@
         <span class='login'>{{ name }}</span>
       </div>
       <div class='list'>
-        <input class='search' type='text' v-model='search' placeholder='Search...' />
+        <input class='search' type='text' v-model.trim='search' placeholder='Search...' />
         <div v-if='isLoading'>
           Loading...
         </div>
         <div class='items-container' v-else>
           <div
-            v-for='repo in items'
+            v-for='repo in visibleItems'
             :key='repo.id'
             class='github-repository'
           >
@@ -30,6 +30,9 @@
             <label :for='repo.id' title='repo.fullName'>
               {{ repo.name }}
             </label>
+          </div>
+          <div v-if='isNotFound' class='not-found'>
+            No results matched your search
           </div>
         </div>
         <div class='actions'>
@@ -63,6 +66,15 @@ export default {
   computed: {
     isLoading: get('repositories/isLoading'),
     items: get('repositories/items'),
+    visibleItems() {
+      if (this.search === '') { return this.items; }
+      return this.items
+        .filter(v => v.name.toLowerCase().includes(this.search));
+    },
+    isNotFound() {
+      if (this.search === '') { return false; }
+      return this.items.length > 0 && this.visibleItems.length === 0;
+    }
   },
   async created() {
     await this.fetch(this.installationId);
@@ -73,15 +85,14 @@ export default {
     ]),
     open() {
       this.isSelected = true;
-      console.log('open');
     },
     done() {
       this.isSelected = false;
-      console.log('done');
+      console.log('TODO: Done - save selected repos to the store');
     },
     close() {
       this.isSelected = false;
-      console.log('close');
+      this.selectedRepositories = [];
     }
   }
 };
@@ -129,6 +140,13 @@ export default {
         max-height: 600px
         overflow: auto
 
+      .not-found
+        color: #C5CAE9
+        font-size: 14px
+        font-style: italic
+        font-weight: 300
+        margin: 2px 0 9px
+
       .actions
         border-top: 1px solid #7986CB
         text-align: right
@@ -174,9 +192,11 @@ input.search
     cursor: pointer
 
   label
-    font-weight: 300
     cursor: pointer
+    display: inline-block
+    font-weight: 300
     margin-left: 4px
+    width: 226px
 
 img
   border-radius: 12px
