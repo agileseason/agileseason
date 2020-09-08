@@ -44,7 +44,8 @@
             :key='repo.id'
             class='repository'
           >
-            {{ repo.name }}
+            <span>{{ repo.name }}</span>
+            <span class='icon' />
           </span>
         </div>
       </div>
@@ -168,6 +169,16 @@ export default {
     border-radius: 14px
     color: #FFF
     font-size: 12px
+    letter-spacing: 0.3px
     margin-right: 6px
-    padding: 4px 6px
+    padding: 4px 8px
+
+    .icon
+      background-image: url('../assets/icons/x.svg')
+      background-repeat: no-repeat
+      background-size: contain
+      margin-left: 6px
+      display: inline-block
+      height: 8px
+      width: 8px
 </style>
