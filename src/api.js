@@ -25,7 +25,7 @@ export default {
     return data?.user;
   },
 
-  async fetchInstallactions(token) {
+  async fetchInstallactions(token, page = 1) {
     const query = `
       query($page:Int!) {
         githubInstallations(page: $page) {
@@ -43,11 +43,32 @@ export default {
         }
       }
     `;
-    const vars = { page: 1 };
+    const vars = { page };
     const data = await this.client(token).request(query, vars);
     this.log('user', data);
 
     return data?.githubInstallations;
+  },
+
+  async fetchRepositories(token, installationId, page = 1) {
+    const query = `
+      query($installationId:Int!, $page:Int!) {
+        githubRepositories(installationId: $installationId, page: $page) {
+          totalCount
+          items {
+            id
+            name
+            fullName
+            isPrivate
+          }
+        }
+      }
+    `;
+    const vars = { installationId, page };
+    const data = await this.client(token).request(query, vars);
+    this.log('user', data);
+
+    return data?.githubRepositories;
   },
 
   // async login(email, password) {

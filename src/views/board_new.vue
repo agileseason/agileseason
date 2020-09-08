@@ -36,6 +36,7 @@
           :key='item.id'
           :name='item.account.login'
           :avatarUrl='item.account.avatarUrl'
+          :installationId='item.id'
         />
       </div>
       <div v-else class='step disabled'>

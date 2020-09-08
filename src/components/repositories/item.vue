@@ -12,8 +12,25 @@
       </div>
       <div class='list'>
         <input class='search' type='text' v-model='search' placeholder='Search...' />
-        <div>
-          TODO
+        <div v-if='isLoading'>
+          Loading...
+        </div>
+        <div v-else>
+          <div
+            v-for='repo in items'
+            :key='repo.id'
+            class='github-repository'
+          >
+            <input
+              v-model='selectedRepositories'
+              type='checkbox'
+              :value='repo.id'
+              :id='repo.id'
+            />
+            <label :for='repo.id' title='repo.fullName'>
+              {{ repo.name }}
+            </label>
+          </div>
         </div>
         <div class='actions'>
           <Button @click='close' type='flat' text='Close' />
@@ -26,6 +43,7 @@
 
 <script>
 import Button from '@/components/buttons/button.vue'
+import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'Repository',
@@ -35,14 +53,24 @@ export default {
   props: {
     name: { type: String, required: true },
     avatarUrl: { type: String, required: true },
+    installationId: { type: Number, required: true },
   },
   data: () => ({
     search: '',
+    selectedRepositories: [],
     isSelected: false
   }),
   computed: {
+    isLoading: get('repositories/isLoading'),
+    items: get('repositories/items'),
+  },
+  async created() {
+    await this.fetch(this.installationId);
   },
   methods: {
+    ...call([
+      'repositories/fetch'
+    ]),
     open() {
       this.isSelected = true;
       console.log('open');
@@ -133,6 +161,17 @@ input.search
     color: #7986CB
   &::-ms-input-placeholder
     color: #7986CB
+
+.github-repository
+  margin-bottom: 8px
+  cursor: pointer
+
+  input
+    cursor: pointer
+
+  label
+    font-weight: 300
+    cursor: pointer
 
 img
   border-radius: 12px
