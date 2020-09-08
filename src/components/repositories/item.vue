@@ -15,7 +15,7 @@
         <div v-if='isLoading'>
           Loading...
         </div>
-        <div v-else>
+        <div class='items-container' v-else>
           <div
             v-for='repo in items'
             :key='repo.id'
@@ -125,6 +125,10 @@ export default {
     .list
       padding: 0 8px 8px
 
+      .items-container
+        max-height: 600px
+        overflow: auto
+
       .actions
         border-top: 1px solid #7986CB
         text-align: right
@@ -172,6 +176,7 @@ input.search
   label
     font-weight: 300
     cursor: pointer
+    margin-left: 4px
 
 img
   border-radius: 12px
