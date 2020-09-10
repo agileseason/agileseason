@@ -37,12 +37,18 @@
           :name='item.account.login'
           :avatarUrl='item.account.avatarUrl'
           :installationId='item.id'
+          :selected-repository-ids='selectedRepositoryIds(item.id)'
+          @selected='setVisibleSelectedRepositories'
         />
-        <div class='selected-repositories'>
+        <div
+          v-if='isVisibleSelectedRepositories'
+          class='selected-repositories'
+        >
           <span
             v-for='repo in selectedRepositories'
             :key='repo.id'
-            class='repository'
+            class='repository tag'
+            @click='removeSelectedRepository(repo.id)'
           >
             <span>{{ repo.name }}</span>
             <span class='icon' />
@@ -82,7 +88,8 @@ export default {
     TopMenu
   },
   data: () => ({
-    isInstalled: false
+    isInstalled: false,
+    isVisibleSelectedRepositories: true
   }),
   computed: {
     isLoading: get('installations/isLoading'),
@@ -99,8 +106,20 @@ export default {
   },
   methods: {
     ...call([
-      'installations/fetch'
-    ])
+      'installations/fetch',
+      'boardNew/remove'
+    ]),
+    selectedRepositoryIds(installationId) {
+      return this.selectedRepositories
+        .filter(v => v.installationId === installationId)
+        .map(v => v.id);
+    },
+    setVisibleSelectedRepositories(value) {
+      this.isVisibleSelectedRepositories = !value;
+    },
+    removeSelectedRepository(repositoryId) {
+      this.remove(repositoryId);
+    }
   }
 }
 </script>
@@ -164,14 +183,23 @@ export default {
   margin-top: 12px
   text-align: left
 
-  .repository
+  .tag
     background-color: #3F51B5
     border-radius: 14px
     color: #FFF
+    cursor: pointer
+    display: inline-block
     font-size: 12px
     letter-spacing: 0.3px
+    margin-bottom: 6px
     margin-right: 6px
     padding: 4px 8px
+
+    &:hover
+      background-color: #303F9F
+
+    &:active
+      background-color: #5C6BC0
 
     .icon
       background-image: url('../assets/icons/x.svg')

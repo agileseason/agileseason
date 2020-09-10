@@ -22,7 +22,7 @@
             class='github-repository'
           >
             <input
-              v-model='selectedRepositories'
+              v-model='selectedItems'
               type='checkbox'
               :value='repo.id'
               :id='repo.id'
@@ -57,10 +57,11 @@ export default {
     name: { type: String, required: true },
     avatarUrl: { type: String, required: true },
     installationId: { type: Number, required: true },
+    selectedRepositoryIds: { type: Array, required: true }
   },
   data: () => ({
     search: '',
-    selectedRepositories: [],
+    selectedItems: [],
     isSelected: false
   }),
   computed: {
@@ -76,25 +77,32 @@ export default {
       return this.items.length > 0 && this.visibleItems.length === 0;
     }
   },
+  watch: {
+    isSelected: function() {
+      this.selectedItems = this.selectedRepositoryIds;
+    }
+  },
   async created() {
     await this.fetch(this.installationId);
   },
   methods: {
     ...call([
       'repositories/fetch',
-      'boardNew/update',
+      'boardNew/update'
     ]),
     open() {
       this.isSelected = true;
+      this.$emit('selected', true);
     },
     done() {
       this.isSelected = false;
-      const repositories = this.items.filter(v => this.selectedRepositories.includes(v.id));
+      this.$emit('selected', false);
+      const repositories = this.items.filter(v => this.selectedItems.includes(v.id));
       this.update({ installationId: this.installationId, repositories });
     },
     close() {
       this.isSelected = false;
-      this.selectedRepositories = [];
+      this.$emit('selected', false);
     }
   }
 };
@@ -160,7 +168,7 @@ export default {
   .login
     display: inline-block
     font-size: 14px
-    line-height: 32px
+    line-height: 34px
     vertical-align: top
 
 input.search

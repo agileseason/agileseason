@@ -23,6 +23,9 @@ export default {
     },
     update({ commit }, { installationId, repositories }) {
       commit('SYNC', { installationId, repositories });
+    },
+    remove({ commit }, repositoryId) {
+      commit('REMOVE', repositoryId);
     }
     // async fetch({ commit, getters }, installationId) {
     //   commit('START_LOADING');
@@ -43,6 +46,11 @@ export default {
       const otherInstallation = state.selectedRepositories.filter(v => v.installationId !== installationId);
       const newRepositories = repositories.map(v => ({ installationId, ...v }));
       state.selectedRepositories = [...otherInstallation, ...newRepositories];
+    },
+    REMOVE(state, repositoryId) {
+      state.selectedRepositories = state
+        .selectedRepositories
+        .filter(v => v.id !== repositoryId);
     },
     // START_LOADING(state) {
     //   state.isLoading = true;
