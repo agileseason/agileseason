@@ -76,6 +76,7 @@
         <Button
           class='finish'
           :isLoading='isSubmitting'
+          :isDisabled='isDisabledFinished'
           text='Finish'
           @click='finish'
         />
@@ -106,17 +107,18 @@ export default {
     TopMenu
   },
   data: () => ({
-    boardName: '',
+    boardName: 'New Board',
     importedRepositoryIds: [],
-    isInstalled: false,
-    isSubmitting: false
+    isInstalled: false
   }),
   computed: {
     isLoading: get('installations/isLoading'),
-    items: get('installations/items'),
+    isSubmitting: get('boardNew/isSubmitting'),
     isImportReady: get('boardNew/isImportReady'),
+    items: get('installations/items'),
     selectedRepositories: get('boardNew/selectedRepositories'),
-    appUrl() { return APP_URL; }
+    appUrl() { return APP_URL; },
+    isDisabledFinished() { return this.boardName === ''; }
   },
   async created() {
     const items = await this.fetch();
@@ -124,10 +126,20 @@ export default {
       this.isInstalled = true;
     }
   },
+  watch: {
+    selectedRepositories: function() {
+      this.importedRepositoryIds = this.selectedRepositories.map(v => v.id);
+    },
+    importedRepositoryIds: function() {
+      this.syncImportedRepositoryIds(this.importedRepositoryIds);
+    }
+  },
   methods: {
     ...call([
       'installations/fetch',
-      'boardNew/remove'
+      'boardNew/submit',
+      'boardNew/remove',
+      'boardNew/syncImportedRepositoryIds'
     ]),
     selectedRepositoryIds(installationId) {
       return this.selectedRepositories
@@ -137,9 +149,10 @@ export default {
     removeSelectedRepository(repositoryId) {
       this.remove(repositoryId);
     },
-    finish() {
-      this.isSubmitting = true;
-      console.log('finish');
+    async finish() {
+      const result = await this.submit({ boardName: this.boardName });
+      // TODO: Redirect to board/show if success.
+      console.log(result);
     }
   }
 }
@@ -249,7 +262,7 @@ export default {
     white-space: nowrap
 
   input
-    margin: 0px 6px 0px 0px
+    margin: 0px 6px 0px 2px
 
   label
     color: #212121

@@ -1,11 +1,13 @@
-// import api from '@/api';
+import api from '@/api';
 
 export default {
   namespaced: true,
 
   state: {
     // { id: 123, installationId: 321, name: 'name', fullName: 'name/name', isPrivate: true }
-    selectedRepositories: []
+    selectedRepositories: [],
+    importedRepositoryIds: [],
+    isSubmitting: false
   },
 
   getters: {
@@ -26,16 +28,18 @@ export default {
     },
     remove({ commit }, repositoryId) {
       commit('REMOVE', repositoryId);
-    }
-    // async fetch({ commit, getters }, installationId) {
-    //   commit('START_LOADING');
-    //   const data = await api.fetchRepositories(getters.token, installationId);
-    //   commit('FINISH_LOADING');
-    //   if (data == null) { return; }
+    },
+    syncImportedRepositoryIds({ commit }, ids) {
+      commit('SYNC_IMPORTED_REPOSITORY_IDS', ids);
+    },
+    async submit({ commit, getters }, { boardName }) {
+      commit('START_SUBMITTING');
+      const data = await api.createBoard(getters.token, { boardName, todo: 'todo'});
+      commit('FINISH_SUBMITTING');
+      if (data == null) { return; }
 
-    //   commit('FETCH', data);
-    //   return data?.items;
-    // },
+      return data?.items;
+    }
   },
 
   mutations: {
@@ -46,22 +50,24 @@ export default {
       const otherInstallation = state.selectedRepositories.filter(v => v.installationId !== installationId);
       const newRepositories = repositories.map(v => ({ installationId, ...v }));
       state.selectedRepositories = [...otherInstallation, ...newRepositories];
+      state.importedRepositoryIds = state.selectedRepositories.map(v => v.id);
     },
     REMOVE(state, repositoryId) {
       state.selectedRepositories = state
         .selectedRepositories
         .filter(v => v.id !== repositoryId);
+      state.importedRepositoryIds = state
+        .importedRepositoryIds
+        .filter(v => v !== repositoryId);
     },
-    // START_LOADING(state) {
-    //   state.isLoading = true;
-    // },
-    // FINISH_LOADING(state, items) {
-    //   state.items = items;
-    //   state.isLoading = false;
-    // },
-    // FETCH(state, { items, totalCount }) {
-    //   state.totalCount = totalCount;
-    //   state.items = items;
-    // }
+    SYNC_IMPORTED_REPOSITORY_IDS(state, ids) {
+      state.importedRepositoryIds = ids;
+    },
+    START_SUBMITTING(state) {
+      state.isSubmitting = true;
+    },
+    FINISH_SUBMITTING(state) {
+      state.isSubmitting = false;
+    }
   }
 };
