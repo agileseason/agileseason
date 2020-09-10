@@ -92,17 +92,14 @@ export default {
     ]),
     open() {
       this.isSelected = true;
-      this.$emit('selected', true);
     },
     done() {
       this.isSelected = false;
-      this.$emit('selected', false);
       const repositories = this.items.filter(v => this.selectedItems.includes(v.id));
       this.update({ installationId: this.installationId, repositories });
     },
     close() {
       this.isSelected = false;
-      this.$emit('selected', false);
     }
   }
 };
@@ -110,6 +107,8 @@ export default {
 
 <style scoped lang='sass'>
 .repository
+  position: relative
+
   .inner
     border-radius: 3px
     border: 1px solid #E0E0E0
@@ -137,6 +136,7 @@ export default {
       width: 10px
 
   .inner-active
+    position: absolute
     background-color: #3F51B5
     border-radius: 3px
     border: 1px solid #3F51B5

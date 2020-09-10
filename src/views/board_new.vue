@@ -3,7 +3,7 @@
     <TopMenu title='New Board' />
 
     <div class='steps'>
-      <div class='step'>
+      <div class='step step-1'>
         <div class='title'>1. Install Application</div>
         <div class='subtitle'>
           GitHub App
@@ -38,12 +38,8 @@
           :avatarUrl='item.account.avatarUrl'
           :installationId='item.id'
           :selected-repository-ids='selectedRepositoryIds(item.id)'
-          @selected='setVisibleSelectedRepositories'
         />
-        <div
-          v-if='isVisibleSelectedRepositories'
-          class='selected-repositories'
-        >
+        <div class='selected-repositories'>
           <span
             v-for='repo in selectedRepositories'
             :key='repo.id'
@@ -61,6 +57,28 @@
 
       <div v-if='isImportReady' class='step'>
         <div class='title'>3. Import Issues</div>
+        <input class='board-name' type='text' v-model.trim='boardName' placeholder='Board Name' />
+        <div class='imported-repositories'>
+          <div
+            v-for='repo in selectedRepositories'
+            :key='repo.id'
+            class='github-repository'
+          >
+            <input
+              v-model='importedRepositoryIds'
+              type='checkbox'
+              :value='repo.id'
+              :id='repo.id'
+            />
+            <label :for='repo.id'>{{ repo.fullName }}</label>
+          </div>
+        </div>
+        <Button
+          class='finish'
+          :isLoading='isSubmitting'
+          text='Finish'
+          @click='finish'
+        />
       </div>
       <div v-else class='step disabled'>
         <div class='title'>3. Import Issues</div>
@@ -88,8 +106,10 @@ export default {
     TopMenu
   },
   data: () => ({
+    boardName: '',
+    importedRepositoryIds: [],
     isInstalled: false,
-    isVisibleSelectedRepositories: true
+    isSubmitting: false
   }),
   computed: {
     isLoading: get('installations/isLoading'),
@@ -114,11 +134,12 @@ export default {
         .filter(v => v.installationId === installationId)
         .map(v => v.id);
     },
-    setVisibleSelectedRepositories(value) {
-      this.isVisibleSelectedRepositories = !value;
-    },
     removeSelectedRepository(repositoryId) {
       this.remove(repositoryId);
+    },
+    finish() {
+      this.isSubmitting = true;
+      console.log('finish');
     }
   }
 }
@@ -133,11 +154,14 @@ export default {
   border-radius: 6px
   box-sizing: border-box
   display: inline-block
-  height: 242px
   margin: 45px 16px 0
+  min-height: 280px
   padding: 32px 16px 26px
   vertical-align: top
-  width: 300px
+  width: 320px
+
+  &.step-1
+    height: 280px
 
   &.disabled
     background-color: #C5CAE9
@@ -167,14 +191,17 @@ export default {
 
   .button.install
     min-width: 150px
-    margin-top: 98px
+    margin-top: 136px
+
+  .button.finish
+    min-width: 150px
 
   .configure-block
     p
       color: #616161
       font-size: 12px
       letter-spacing: 0.2px
-      margin: 54px 0 16px
+      margin: 92px 0 16px
 
     .button.configure
       min-width: 150px
@@ -209,4 +236,44 @@ export default {
       display: inline-block
       height: 8px
       width: 8px
+
+.imported-repositories
+  height: 106px
+  overflow-x: hidden
+  overflow-y: scroll
+  text-align: left
+  margin-bottom: 6px
+
+  .github-repository
+    margin-bottom: 8px
+    white-space: nowrap
+
+  input
+    margin: 0px 6px 0px 0px
+
+  label
+    color: #212121
+
+input.board-name
+  background-color: #C5CAE9
+  border-radius: 3px
+  border: 1px solid #C5CAE9
+  box-sizing: border-box
+  color: #1A237E
+  font-size: 16px
+  font-weight: 300
+  height: 28px
+  letter-spacing: 0.4px
+  line-height: 28px
+  margin-bottom: 12px
+  padding: 0 6px
+  width: 100%
+
+  &::placeholder
+    color: #7986CB
+    opacity: 1
+  &:-ms-input-placeholder
+    color: #7986CB
+  &::-ms-input-placeholder
+    color: #7986CB
 </style>
