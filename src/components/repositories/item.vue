@@ -61,12 +61,12 @@ export default {
   },
   data: () => ({
     search: '',
+    items: [],
     selectedItems: [],
     isSelected: false
   }),
   computed: {
     isLoading: get('repositories/isLoading'),
-    items: get('repositories/items'),
     visibleItems() {
       if (this.search === '') { return this.items; }
       return this.items
@@ -83,7 +83,7 @@ export default {
     }
   },
   async created() {
-    await this.fetch(this.installationId);
+    this.items = await this.fetch(this.installationId);
   },
   methods: {
     ...call([
@@ -136,12 +136,14 @@ export default {
       width: 10px
 
   .inner-active
-    position: absolute
     background-color: #3F51B5
     border-radius: 3px
     border: 1px solid #3F51B5
     color: #FFF
+    position: absolute
     text-align: left
+    width: 100%
+    z-index: 2
 
     .list
       padding: 0 8px 8px
