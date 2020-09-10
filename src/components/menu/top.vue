@@ -1,5 +1,6 @@
 <template>
   <div class='menu'>
+    <div class='left-button' />
     <div v-if='title' class='title'>
       {{ title }}
     </div>
@@ -31,10 +32,29 @@ export default {
   background-color: #3F51B5
 
 .title
-  vertical-align: middle
-  text-align: center
-  font-weight: 500
-  font-size: 14px
-  line-height: 34px
   color: #FFFFFF
+  font-size: 14px
+  font-weight: 500
+  line-height: 34px
+  text-align: center
+  vertical-align: middle
+
+.left-button
+  background-image: url('../../assets/icons/three-bars.svg')
+  background-position: center
+  background-repeat: no-repeat
+  border-radius: 4px
+  cursor: pointer
+  display: inline-block
+  height: 28px
+  left: 8px
+  position: absolute
+  top: 4px
+  width: 28px
+
+  &:hover
+    background-color: #5C6BC0
+
+  &:active
+    background-color: #303F9F
 </style>
