@@ -130,20 +130,22 @@ export default {
 
   .item-group
     border-top: 1px solid #7986CB
-    padding: 10px 0 0 14px
+    padding: 10px 14px 0 14px
 
     a,
     button
       background-color: transparent
-      cursor: pointer
       border: none
       color: #9FA8DA
+      cursor: pointer
       display: block
       font-size: 16px
       font-weight: 300
       margin-bottom: 14px
-      text-decoration: none
       padding: 4px 0
+      text-align: left
+      text-decoration: none
+      width: 100%
 
       &:hover
         color: #C5CAE9
