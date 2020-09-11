@@ -43,6 +43,7 @@
           :name='item.account.login'
           :avatarUrl='item.account.avatarUrl'
           :installationId='item.id'
+          :installationAccessTokenUrl='item.accessTokensUrl'
           :selected-repository-ids='selectedRepositoryIds(item.id)'
         />
         <!--div class='selected-repositories'>
@@ -268,9 +269,12 @@ export default {
       height: 8px
       width: 8px
 
+.imported-repositories.selected-repositories
+  height: 98px
+  margin-top: 0
+
 .imported-repositories
-  // height: 106px
-  height: 94px
+  height: 106px
   overflow-x: hidden
   overflow-y: scroll
   text-align: left
@@ -297,7 +301,7 @@ input.board-name
   height: 28px
   letter-spacing: 0.4px
   line-height: 28px
-  margin-bottom: 12px
+  margin-bottom: 20px
   padding: 0 6px
   width: 100%
 

@@ -23,8 +23,8 @@ export default {
     reset({ commit }) {
       commit('RESET');
     },
-    update({ commit }, { installationId, repositories }) {
-      commit('SYNC', { installationId, repositories });
+    update({ commit }, { installationId, installationAccessTokenUrl, repositories }) {
+      commit('SYNC', { installationId, installationAccessTokenUrl, repositories });
     },
     remove({ commit }, repositoryId) {
       commit('REMOVE', repositoryId);
@@ -46,9 +46,10 @@ export default {
     RESET(state) {
       state.selectedRepositories = [];
     },
-    SYNC(state, { installationId, repositories }) {
+    SYNC(state, { installationId, installationAccessTokenUrl, repositories }) {
       const otherInstallation = state.selectedRepositories.filter(v => v.installationId !== installationId);
-      const newRepositories = repositories.map(v => ({ installationId, ...v }));
+      const newRepositories = repositories
+        .map(v => ({ installationId, installationAccessTokenUrl, ...v }));
       state.selectedRepositories = [...otherInstallation, ...newRepositories];
       state.importedRepositoryIds = state.selectedRepositories.map(v => v.id);
     },

@@ -57,6 +57,7 @@ export default {
     name: { type: String, required: true },
     avatarUrl: { type: String, required: true },
     installationId: { type: Number, required: true },
+    installationAccessTokenUrl: { type: String, required: true },
     selectedRepositoryIds: { type: Array, required: true }
   },
   data: () => ({
@@ -95,8 +96,10 @@ export default {
     },
     done() {
       this.isSelected = false;
-      const repositories = this.items.filter(v => this.selectedItems.includes(v.id));
-      this.update({ installationId: this.installationId, repositories });
+      const repositories = this.items
+        .filter(v => this.selectedItems.includes(v.id));
+      const { installationId, installationAccessTokenUrl } = this;
+      this.update({ installationId, installationAccessTokenUrl, repositories });
     },
     close() {
       this.isSelected = false;
