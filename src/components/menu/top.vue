@@ -35,7 +35,7 @@ export default {
     title: { type: String, required: false, default: null },
   },
   data: () => ({
-    isExpanded: true
+    isExpanded: false
   }),
   computed: {
     username: get('user/username'),

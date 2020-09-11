@@ -39,7 +39,7 @@
           :installationId='item.id'
           :selected-repository-ids='selectedRepositoryIds(item.id)'
         />
-        <div class='selected-repositories'>
+        <!--div class='selected-repositories'>
           <span
             v-for='repo in selectedRepositories'
             :key='repo.id'
@@ -49,7 +49,7 @@
             <span>{{ repo.name }}</span>
             <span class='icon' />
           </span>
-        </div>
+        </div-->
       </div>
       <div v-else class='step disabled'>
         <div class='title'>2. Select Repositories</div>
@@ -58,7 +58,7 @@
       <div v-if='isImportReady' class='step'>
         <div class='title'>3. Import Issues</div>
         <input class='board-name' type='text' v-model.trim='boardName' placeholder='Board Name' />
-        <div class='imported-repositories'>
+        <!--div class='imported-repositories'>
           <div
             v-for='repo in selectedRepositories'
             :key='repo.id'
@@ -72,6 +72,18 @@
             />
             <label :for='repo.id'>{{ repo.fullName }}</label>
           </div>
+        </div-->
+        <div class='selected-repositories imported-repositories'>
+          <span
+            v-for='repo in selectedRepositories'
+            :key='repo.id'
+            :title='repo.fullName'
+            class='repository tag'
+            @click='removeSelectedRepository(repo.id)'
+          >
+            <span>{{ repo.name }}</span>
+            <span class='icon' />
+          </span>
         </div>
         <Button
           class='finish'
@@ -107,7 +119,7 @@ export default {
     TopMenu
   },
   data: () => ({
-    boardName: 'New Board',
+    boardName: 'Board Name',
     importedRepositoryIds: [],
     isInstalled: false
   }),
@@ -251,7 +263,8 @@ export default {
       width: 8px
 
 .imported-repositories
-  height: 106px
+  // height: 106px
+  height: 94px
   overflow-x: hidden
   overflow-y: scroll
   text-align: left
