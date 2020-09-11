@@ -3,6 +3,12 @@ import CookieStore from '@/utils/cookie_store';
 import api from '@/api';
 
 const NAMESPACE = 'agileseason#store#user';
+const DEFAULT_STATE = {
+  username: undefined,
+  avatarUrl: undefined,
+  boards: [],
+  isLoading: true
+};
 
 function saveCookies(key, value) {
   CookieStore.set(NAMESPACE, key, value);
@@ -12,16 +18,14 @@ export default {
   namespaced: true,
 
   state: {
-    rememberToken: CookieStore.get(NAMESPACE, 'rememberToken', null),
-    username: undefined,
-    avatarUrl: undefined,
-    boards: [],
-    isLoading: true
+    ...DEFAULT_STATE,
+    rememberToken: CookieStore.get(NAMESPACE, 'rememberToken', null)
   },
 
   getters: {
     isSignedIn: state => (state.rememberToken != null),
-    token: state => (state.rememberToken)
+    token: state => (state.rememberToken),
+    isLoaded: state => (state.username !== undefined)
   },
 
   actions: {
@@ -30,6 +34,10 @@ export default {
 
       commit('LOGIN', rememberToken);
       return true;
+    },
+    async fetchProfileLazy({ getters, dispatch }) {
+      if (getters.isLoaded) { return; }
+      return await dispatch('fetchProfile');
     },
     async fetchProfile({ commit, state }) {
       commit('START_LOADING');
@@ -40,6 +48,9 @@ export default {
       commit('FETCH', user);
       return user;
     },
+    logout({ commit }) {
+      commit('LOGOUT');
+    }
     // async updateProfile({ state }, { currency }) {
     //   const { token } = state;
     //   console.warn('store');
@@ -60,12 +71,11 @@ export default {
     },
     LOGIN(state, rememberToken) {
       state.rememberToken = rememberToken;
-      // console.log(rememberToken);
-      // console.log(state.rememberToken);
       saveCookies('rememberToken', state.rememberToken);
     },
     LOGOUT(state) {
-      Object.assign(state);
+      state = { ...DEFAULT_STATE };
+      state.rememberToken = undefined;
       saveCookies('rememberToken', null);
     },
     FETCH(state, user) {

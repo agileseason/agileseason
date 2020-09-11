@@ -23,20 +23,15 @@ export default {
   },
   data: () => ({}),
   computed: {
-    isSignedIn: get('user/isSignedIn'),
     isLoading: get('user/isLoading'),
     token: get('user/token')
   },
   async created() {
-    if (this.isSignedIn) {
-      const user = await this.fetchProfile();
-      if (user == null) {
-        this.$router.push({ name: 'home' });
-      } else if (user.boards.length === 0) {
-        this.$router.push({ name: 'board_new' });
-      }
-    } else {
+    const user = await this.fetchProfile();
+    if (user == null) {
       this.$router.push({ name: 'home' });
+    } else if (user.boards.length === 0) {
+      this.$router.push({ name: 'board_new' });
     }
   },
   methods: {

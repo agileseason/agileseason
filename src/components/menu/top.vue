@@ -3,7 +3,22 @@
     <div class='left-button' @click='toggle' />
     <div class='left-menu-backdrop' @click='toggle' v-if='isExpanded' />
     <transition name='slide'>
-      <div v-if='isExpanded' class='left-menu' />
+      <div v-if='isExpanded' class='left-menu'>
+        <div class='avatar'>
+          <img v-if='isLoaded' :src='avatarUrl' />
+        </div>
+        <div v-if='isLoaded' class='username'>{{ username }}</div>
+        <div v-else class='username'>Loading...</div>
+        <div class='item-group'>
+          <router-link v-if='isFull' to='/boards'>Boards</router-link>
+          <router-link v-else to='/boards/new'>New Board</router-link>
+          <!-- TODO: Replace route to billing path -->
+          <router-link to='/boards'>Billing</router-link>
+        </div>
+        <div class='item-group'>
+          <button @click='signout'>Sign Out</button>
+        </div>
+      </div>
     </transition>
     <div v-if='title' class='title'>
       {{ title }}
@@ -12,7 +27,7 @@
 </template>
 
 <script>
-import { get } from 'vuex-pathify';
+import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'TopMenu',
@@ -20,17 +35,31 @@ export default {
     title: { type: String, required: false, default: null },
   },
   data: () => ({
-    isExpanded: false
+    isExpanded: true
   }),
   computed: {
+    username: get('user/username'),
+    avatarUrl: get('user/avatarUrl'),
     boards: get('user/boards'),
+    isLoaded: get('user/isLoaded'),
     isFull() {
-      return this.boards.length === 0;
+      return this.boards.length > 0;
     }
   },
+  async created() {
+    await this.fetchProfileLazy();
+  },
   methods: {
+    ...call([
+      'user/fetchProfileLazy',
+      'user/logout'
+    ]),
     toggle() {
       this.isExpanded = !this.isExpanded;
+    },
+    signout() {
+      this.logout();
+      window.location = '/';
     }
   }
 };
@@ -78,6 +107,49 @@ export default {
   width: 320px
   z-index: 3
   // transition: transform 30ms ease-in-out 0ms
+
+  .avatar
+    height: 60px
+    width: 60px
+    border-radius: 30px
+    margin: 40px auto 10px
+    background-color: #5C6BC0
+
+    img
+      height: 60px
+      width: 60px
+      border-radius: 30px
+
+  .username
+    color: #FFF
+    font-size: 16px
+    font-weight: 500
+    letter-spacing: 0.3px
+    margin: 0 auto 30px
+    text-align: center
+
+  .item-group
+    border-top: 1px solid #7986CB
+    padding: 10px 0 0 14px
+
+    a,
+    button
+      background-color: transparent
+      cursor: pointer
+      border: none
+      color: #9FA8DA
+      display: block
+      font-size: 16px
+      font-weight: 300
+      margin-bottom: 14px
+      text-decoration: none
+      padding: 4px 0
+
+      &:hover
+        color: #C5CAE9
+
+      &:active
+        color: #7986CB
 
 .left-menu-backdrop
   z-index: 2

@@ -1,8 +1,18 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import store from '@/store/index';
+
 import Home from '../views/home.vue'
 import OAuth from '../views/oauth.vue'
 import Boards from '../views/boards.vue'
 import BoardNew from '../views/board_new.vue'
+
+function requireAuth(to, from, next) {
+  if (!store.getters['user/isSignedIn']) {
+    next({ path: '/', query: { redirect: to.fullPath } });
+  } else {
+    next();
+  }
+}
 
 const routes = [
   {
@@ -12,11 +22,13 @@ const routes = [
   }, {
     path: '/boards',
     name: 'boards',
-    component: Boards
+    component: Boards,
+    beforeEnter: requireAuth
   }, {
     path: '/boards/new',
     name: 'board_new',
-    component: BoardNew
+    component: BoardNew,
+    beforeEnter: requireAuth
   }, {
     path: '/oauth/callback',
     name: 'oauth',
