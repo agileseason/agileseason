@@ -21,7 +21,7 @@
   <a
     v-else-if='href'
     class='button'
-    :class='[type]'
+    :class="[type, { 'disabled': isDisabled || isLoading }]"
     :href='href'
     @click='click'
   >

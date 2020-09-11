@@ -18,13 +18,19 @@
             <br>
             Manage your installation settings
           </p>
-          <Button class='configure' text='Configure App' :href='appUrl' />
+          <Button
+            class='configure'
+            text='Configure App'
+            :href='appUrl'
+            :isDisabled='isSubmitting'
+          />
         </div>
         <Button
           v-else
           class='install'
-          :isLoading='isLoading'
           :href='appUrl'
+          :isLoading='isLoading'
+          :isDisabled='isSubmitting'
           text='Install App'
         />
       </div>
