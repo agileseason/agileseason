@@ -127,7 +127,7 @@ export default {
   },
   data: () => ({
     boardName: 'Board Name',
-    importedRepositoryIds: [],
+    // importedRepositoryIds: [],
     isInstalled: false
   }),
   computed: {
@@ -145,20 +145,19 @@ export default {
       this.isInstalled = true;
     }
   },
-  watch: {
-    selectedRepositories: function() {
-      this.importedRepositoryIds = this.selectedRepositories.map(v => v.id);
-    },
-    importedRepositoryIds: function() {
-      this.syncImportedRepositoryIds(this.importedRepositoryIds);
-    }
-  },
+  // watch: {
+  //   selectedRepositories: function() {
+  //     this.importedRepositoryIds = this.selectedRepositories.map(v => v.id);
+  //   },
+  //   importedRepositoryIds: function() {
+  //     this.syncImportedRepositoryIds(this.importedRepositoryIds);
+  //   }
+  // },
   methods: {
     ...call([
       'installations/fetch',
       'boardNew/submit',
-      'boardNew/remove',
-      'boardNew/syncImportedRepositoryIds'
+      'boardNew/remove'
     ]),
     selectedRepositoryIds(installationId) {
       return this.selectedRepositories

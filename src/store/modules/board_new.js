@@ -6,7 +6,7 @@ export default {
   state: {
     // { id: 123, installationId: 321, name: 'name', fullName: 'name/name', isPrivate: true }
     selectedRepositories: [],
-    importedRepositoryIds: [],
+    // importedRepositoryIds: [],
     isSubmitting: false
   },
 
@@ -20,18 +20,15 @@ export default {
   },
 
   actions: {
-    reset({ commit }) {
-      commit('RESET');
-    },
     update({ commit }, { installationId, installationAccessTokenUrl, repositories }) {
       commit('SYNC', { installationId, installationAccessTokenUrl, repositories });
     },
     remove({ commit }, repositoryId) {
       commit('REMOVE', repositoryId);
     },
-    syncImportedRepositoryIds({ commit }, ids) {
-      commit('SYNC_IMPORTED_REPOSITORY_IDS', ids);
-    },
+    // syncImportedRepositoryIds({ commit }, ids) {
+    //   commit('SYNC_IMPORTED_REPOSITORY_IDS', ids);
+    // },
     async submit({ commit, getters }, { boardName }) {
       commit('START_SUBMITTING');
       const data = await api.createBoard(getters.token, { boardName, todo: 'todo'});
@@ -39,6 +36,9 @@ export default {
       if (data == null) { return; }
 
       return data?.items;
+    },
+    reset({ commit }) {
+      commit('RESET');
     }
   },
 
@@ -51,19 +51,19 @@ export default {
       const newRepositories = repositories
         .map(v => ({ installationId, installationAccessTokenUrl, ...v }));
       state.selectedRepositories = [...otherInstallation, ...newRepositories];
-      state.importedRepositoryIds = state.selectedRepositories.map(v => v.id);
+      // state.importedRepositoryIds = state.selectedRepositories.map(v => v.id);
     },
     REMOVE(state, repositoryId) {
       state.selectedRepositories = state
         .selectedRepositories
         .filter(v => v.id !== repositoryId);
-      state.importedRepositoryIds = state
-        .importedRepositoryIds
-        .filter(v => v !== repositoryId);
+      // state.importedRepositoryIds = state
+      //   .importedRepositoryIds
+      //   .filter(v => v !== repositoryId);
     },
-    SYNC_IMPORTED_REPOSITORY_IDS(state, ids) {
-      state.importedRepositoryIds = ids;
-    },
+    // SYNC_IMPORTED_REPOSITORY_IDS(state, ids) {
+    //   state.importedRepositoryIds = ids;
+    // },
     START_SUBMITTING(state) {
       state.isSubmitting = true;
     },
