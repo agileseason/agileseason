@@ -45,7 +45,7 @@ export default {
     `;
     const vars = { page };
     const data = await this.client(token).request(query, vars);
-    this.log('user', data);
+    this.log('githubInstallations', data);
 
     return data?.githubInstallations;
   },
@@ -66,27 +66,30 @@ export default {
     `;
     const vars = { installationId, page };
     const data = await this.client(token).request(query, vars);
-    this.log('user', data);
+    this.log('githubRepositories', data);
 
     return data?.githubRepositories;
   },
 
-  // async login(email, password) {
-  //   const query = `
-  //     query($email:String!, $password:String!) {
-  //       user:signIn(email: $email, password: $password) {
-  //         email
-  //         token
-  //         defaultCurrency { name }
-  //       }
-  //     }
-  //   `;
-  //   const vars = { email, password };
-  //   const data = await this.client().request(query, vars);
-  //   this.log('login', data);
+  // ---------------------------------
+  // Board
+  // ---------------------------------
 
-  //   return data;
-  // },
+  async createBoard(token, { name, repositories }) {
+    const query = `
+      mutation($name:String!, $repositories:[RepositoryInput!]!) {
+        createBoard(input: { name: $name, repositories: $repositories }) {
+          id
+          name
+        }
+      }
+    `;
+    const vars = { name, repositories };
+    const data = await this.client(token).request(query, vars);
+    this.log('createBoard', data);
+
+    return data?.createBoard;
+  },
 
   // ---------------------------------
   // Helpers

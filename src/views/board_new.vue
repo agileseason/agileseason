@@ -168,9 +168,12 @@ export default {
       this.remove(repositoryId);
     },
     async finish() {
-      const result = await this.submit({ boardName: this.boardName });
-      // TODO: Redirect to board/show if success.
-      console.log(result);
+      const board = await this.submit({ boardName: this.boardName });
+      if (board?.id != null) {
+        console.log('success');
+      } else {
+        console.error('error');
+      }
     }
   }
 }

@@ -4,7 +4,7 @@ export default {
   namespaced: true,
 
   state: {
-    // { id: 123, installationId: 321, name: 'name', fullName: 'name/name', isPrivate: true }
+    // { id: 123, installationId: 321, installationAccessTokenUrl: '...', name: 'name', fullName: 'name/name', isPrivate: true }
     selectedRepositories: [],
     // importedRepositoryIds: [],
     isSubmitting: false
@@ -29,13 +29,16 @@ export default {
     // syncImportedRepositoryIds({ commit }, ids) {
     //   commit('SYNC_IMPORTED_REPOSITORY_IDS', ids);
     // },
-    async submit({ commit, getters }, { boardName }) {
+    async submit({ commit, state, getters }, { boardName }) {
       commit('START_SUBMITTING');
-      const data = await api.createBoard(getters.token, { boardName, todo: 'todo'});
+      const board = await api.createBoard(
+        getters.token,
+        { name: boardName, repositories: state.selectedRepositories }
+      );
       commit('FINISH_SUBMITTING');
-      if (data == null) { return; }
+      if (board == null) { return; }
 
-      return data?.items;
+      return board;
     },
     reset({ commit }) {
       commit('RESET');
