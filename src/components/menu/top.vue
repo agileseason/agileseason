@@ -86,15 +86,12 @@ export default {
 
 .title
   color: #FFFFFF
-  font-size: 14px
   font-weight: 500
   line-height: 36px
   text-align: center
 
 .boards-selector
   text-align: center
-  font-size: 14px
-  font-weight: 500
   line-height: 36px
 
   a

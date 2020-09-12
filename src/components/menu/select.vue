@@ -40,7 +40,6 @@ export default {
 
 <style scoped lang='sass'>
 .select
-  font-size: 14px
   font-weight: 600
   line-height: 36px
   color: #FFF

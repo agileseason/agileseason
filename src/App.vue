@@ -18,12 +18,13 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
 body {
-  padding: 0;
-  margin: 0;
   background-color: #E8EAF6;
+  color: #212121;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
 }
 </style>
