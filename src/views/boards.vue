@@ -6,6 +6,7 @@
       v-for='board in boards'
       :key='board.id'
       class='board'
+      @click='goto(board)'
     >
       <div class='name'>
         {{ board.name }}
@@ -42,7 +43,10 @@ export default {
   methods: {
     ...call([
       'user/fetchProfile'
-    ])
+    ]),
+    goto({ id }) {
+      this.$router.push({ name: 'board', params: { id } });
+    }
   }
 }
 </script>
@@ -55,6 +59,7 @@ export default {
     background-color: #FFFFFF
     border-radius: 4px
     box-sizing: border-box
+    cursor: pointer
     display: inline-block
     font-size: 16px
     height: 100px
@@ -71,10 +76,18 @@ export default {
       &:hover
         color: #3F51B5
         border-color: #7986CB
+        background-color: transparent
 
       &:active
         color: #5C6BC0
         border-color: #9FA8DA
+        background-color: transparent
+
+    &:hover
+      background-color: rgba(255,255,255,0.6)
+
+    &:active
+      background-color: rgba(255,255,255,0.4)
 
     .name
       font-weight: 500

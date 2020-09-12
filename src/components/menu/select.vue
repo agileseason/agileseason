@@ -24,7 +24,7 @@ export default {
       return 'Unknown';
     },
     board() {
-      return this.boards.find(v => v.id == this.boardId);
+      return this.boards.find(v => v.id === this.boardId);
     }
   },
   async created() {

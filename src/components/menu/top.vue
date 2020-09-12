@@ -1,6 +1,10 @@
 <template>
   <div class='menu'>
-    <div class='left-button' @click='toggle' />
+    <div
+      class='left-button'
+      :class='{ "is-expanded": isExpanded }'
+      @click='toggle'
+    />
     <div class='left-menu-backdrop' @click='toggle' v-if='isExpanded' />
     <transition name='slide' :duration='200'>
       <div
@@ -57,7 +61,7 @@ export default {
     boards: get('user/boards'),
     isLoaded: get('user/isLoaded'),
     isFull() { return this.boards.length > 0; },
-    boardId() { return this.$route.params.id; }
+    boardId() { return parseInt(this.$route.params.id) || 0; }
   },
   async created() {
     await this.fetchProfileLazy();
@@ -120,6 +124,10 @@ export default {
   top: 4px
   width: 28px
   z-index: 4
+
+  &.is-expanded
+    &:hover
+      background-color: #283593
 
   &:hover
     background-color: #5C6BC0
