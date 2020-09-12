@@ -40,9 +40,8 @@
 </template>
 
 <script>
-import { get, call } from 'vuex-pathify';
-
 import BoardSelect from '@/components/menu/select';
+import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'TopMenu',
