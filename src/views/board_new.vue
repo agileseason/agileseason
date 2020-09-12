@@ -170,7 +170,11 @@ export default {
     async finish() {
       const board = await this.submit({ boardName: this.boardName });
       if (board?.id != null) {
-        console.log('success');
+        this.$router.push({
+          name: 'board',
+          params: { id: board.id },
+          query: { name: board.name }
+        });
       } else {
         console.error('error');
       }

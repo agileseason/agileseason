@@ -3,6 +3,7 @@ import store from '@/store/index';
 
 import Home from '../views/home.vue'
 import OAuth from '../views/oauth.vue'
+import Board from '../views/board.vue'
 import Boards from '../views/boards.vue'
 import BoardNew from '../views/board_new.vue'
 
@@ -23,6 +24,11 @@ const routes = [
     path: '/boards',
     name: 'boards',
     component: Boards,
+    beforeEnter: requireAuth
+  }, {
+    path: '/boards/:id',
+    name: 'board',
+    component: Board,
     beforeEnter: requireAuth
   }, {
     path: '/boards/new',
