@@ -30,7 +30,7 @@
     <div v-else class='boards-selector'>
       <router-link to='/boards'>Boards</router-link>
       <span class='delimiter'>/</span>
-      <BoardSelect />
+      <BoardSelect :boardId='boardId' />
     </div>
   </div>
 </template>
@@ -56,9 +56,8 @@ export default {
     avatarUrl: get('user/avatarUrl'),
     boards: get('user/boards'),
     isLoaded: get('user/isLoaded'),
-    isFull() {
-      return this.boards.length > 0;
-    }
+    isFull() { return this.boards.length > 0; },
+    boardId() { return this.$route.params.id; }
   },
   async created() {
     await this.fetchProfileLazy();

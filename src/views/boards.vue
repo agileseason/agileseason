@@ -1,14 +1,18 @@
 <template>
-  <div class='boards'>
-    <TopMenu title='Boards' />
+  <TopMenu title='Boards' />
 
-    <h1>TODO: Boards</h1>
-    <div v-if='isLoading'>
-      Loading...
+  <div v-if='isLoaded' class='boards'>
+    <div
+      v-for='board in boards'
+      :key='board.id'
+      class='board'
+    >
+      <div class='name'>
+        {{ board.name }}
+      </div>
     </div>
-    <div v-else>
-      {{ token }}
-    </div>
+
+    <router-link class='board new' to='/boards/new'>New Board...</router-link>
   </div>
 </template>
 
@@ -23,8 +27,9 @@ export default {
   },
   data: () => ({}),
   computed: {
-    isLoading: get('user/isLoading'),
-    token: get('user/token')
+    isLoaded: get('user/isLoaded'),
+    token: get('user/token'),
+    boards: get('user/boards')
   },
   async created() {
     const user = await this.fetchProfile();
@@ -43,4 +48,34 @@ export default {
 </script>
 
 <style scoped lang='sass'>
+.boards
+  padding: 14px
+
+  .board
+    background-color: #FFFFFF
+    border-radius: 4px
+    box-sizing: border-box
+    display: inline-block
+    font-size: 16px
+    height: 100px
+    margin-right: 14px
+    padding: 10px
+    width: 200px
+
+    &.new
+      background-color: transparent
+      border: 1px solid #C5CAE9
+      color: #7986CB
+      font-weight: 300
+
+      &:hover
+        color: #3F51B5
+        border-color: #7986CB
+
+      &:active
+        color: #5C6BC0
+        border-color: #9FA8DA
+
+    .name
+      font-weight: 500
 </style>

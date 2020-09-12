@@ -10,7 +10,7 @@ import { get, call } from 'vuex-pathify';
 export default {
   name: 'BoardSelect',
   props: {
-    id: { type: Number, required: false, default: 0 },
+    boardId: { type: Number, required: false, default: 0 },
   },
   data: () => ({
     isExpanded: false
@@ -24,7 +24,7 @@ export default {
       return 'Unknown';
     },
     board() {
-      return this.boards.find(v => v.id === 1);
+      return this.boards.find(v => v.id == this.boardId);
     }
   },
   async created() {

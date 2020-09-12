@@ -72,6 +72,7 @@ export default {
     },
     FINISH_SUBMITTING(state) {
       state.isSubmitting = false;
+      state.selectedRepositories = [];
     }
   }
 };

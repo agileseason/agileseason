@@ -168,6 +168,8 @@ export default {
       this.remove(repositoryId);
     },
     async finish() {
+      if (this.isSubmitting) { return; }
+
       const board = await this.submit({ boardName: this.boardName });
       if (board?.id != null) {
         this.$router.push({
