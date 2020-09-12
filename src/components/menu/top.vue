@@ -2,8 +2,12 @@
   <div class='menu'>
     <div class='left-button' @click='toggle' />
     <div class='left-menu-backdrop' @click='toggle' v-if='isExpanded' />
-    <transition name='slide'>
-      <div v-if='isExpanded' class='left-menu'>
+    <transition name='slide' :duration='200'>
+      <div
+        v-show='isExpanded'
+        class='left-menu'
+        :class='{ "is-expanded": isExpanded }'
+      >
         <div class='avatar'>
           <img v-if='isLoaded' :src='avatarUrl' />
         </div>
@@ -155,20 +159,22 @@ export default {
 
 .left-menu-backdrop
   z-index: 2
-  // background-color: rgba(0,0,0,.1)
   width: 100vw
   height: 100vh
   position: fixed
   top: 0
   left: 0
 
+.left-menu
+  transform: translateX(-100%)
+
+  &.slide-enter-to
+    transform: translateX(0%)
+
+  &.is-expanded:not(.slide-enter-active)
+    transform: none
+
 .slide-enter-active,
 .slide-leave-active
-  // transform: translateX(-100%)
-  // transition: transform 1.2s ease
-
-.slide-enter,
-.slide-leave-to
-  transform: translateX(-100%)
-  transition: all 200ms ease 0ms
+  transition: transform 200ms
 </style>
