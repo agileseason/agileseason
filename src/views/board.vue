@@ -1,6 +1,6 @@
 <template>
   <div class='board'>
-    <TopMenu title='Board' />
+    <TopMenu />
 
     <h1>TODO: Board</h1>
     <div v-if='isLoading'>

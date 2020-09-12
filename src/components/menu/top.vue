@@ -27,14 +27,24 @@
     <div v-if='title' class='title'>
       {{ title }}
     </div>
+    <div v-else class='boards-selector'>
+      <router-link to='/boards'>Boards</router-link>
+      <span class='delimiter'>/</span>
+      <BoardSelect />
+    </div>
   </div>
 </template>
 
 <script>
 import { get, call } from 'vuex-pathify';
 
+import BoardSelect from '@/components/menu/select';
+
 export default {
   name: 'TopMenu',
+  components: {
+    BoardSelect
+  },
   props: {
     title: { type: String, required: false, default: null },
   },
@@ -78,9 +88,28 @@ export default {
   color: #FFFFFF
   font-size: 14px
   font-weight: 500
-  line-height: 34px
+  line-height: 36px
   text-align: center
-  vertical-align: middle
+
+.boards-selector
+  text-align: center
+  font-size: 14px
+  font-weight: 500
+  line-height: 36px
+
+  a
+    color: #9FA8DA
+    text-decoration: none
+
+    &:hover
+      color: #E8EAF6
+
+    &:active
+      color: #C5CAE9
+
+  .delimiter
+    color: #9FA8DA
+    margin: 0 3px
 
 .left-button
   background-image: url('../../assets/icons/three-bars.svg')
@@ -110,7 +139,6 @@ export default {
   top: 0
   width: 320px
   z-index: 3
-  // transition: transform 30ms ease-in-out 0ms
 
   .avatar
     height: 60px
