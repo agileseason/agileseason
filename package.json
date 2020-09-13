@@ -14,7 +14,7 @@
     "graphql-request": "^3.0.0",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.2",
-    "vue": "^3.0.0-0",
+    "vue": "^3.0.0-rc.10",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0",
     "vuex-pathify": "^1.4.1",
@@ -32,7 +32,7 @@
     "eslint-plugin-vue": "^7.0.0-0"
   },
   "resolutions": {
-    "**/vue-class-component": "^8.0.0-alpha.6"
+    "**/vue-class-component": "^8.0.0-beta.1"
   },
   "eslintConfig": {
     "root": true,

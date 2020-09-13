@@ -20,7 +20,11 @@ export default {
     ColumnNew
   },
   data: () => ({
-    isSubmittingNewColumn: false
+    isSubmittingNewColumn: false,
+    columns: [
+      { id: 1, name: 'Todo' },
+      { id: 2, name: 'In progress' }
+    ]
   }),
   computed: {
     token: get('user/token')
