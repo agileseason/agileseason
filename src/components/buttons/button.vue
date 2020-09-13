@@ -124,9 +124,17 @@ export default {
     height: 32px
     line-height: 30px
 
+    &.disabled
+      background-color: #EEE
+      border: 1px solid #EEE
+
     &:hover
       background: #E8EAF6
       border-color: #E8EAF6
+
+    &:active
+      background: #C5CAE9
+      border-color: #C5CAE9
 
   &.flat
     background: transparent

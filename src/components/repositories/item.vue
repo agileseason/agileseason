@@ -5,12 +5,12 @@
       <span class='login'>{{ name }}</span>
       <span class='icon' />
     </div>
-    <div v-else class='inner-active'>
+    <div v-else class='dialog'>
       <div class='header'>
         <img :src='avatarUrl' />
         <span class='login'>{{ name }}</span>
       </div>
-      <div class='list'>
+      <div class='body'>
         <input class='search' type='text' v-model.trim='search' placeholder='Search...' />
         <div v-if='isLoading'>
           Loading...
@@ -138,7 +138,7 @@ export default {
       right: 8px
       width: 10px
 
-  .inner-active
+  .dialog
     background-color: #3F51B5
     border-radius: 3px
     border: 1px solid #3F51B5
@@ -148,7 +148,7 @@ export default {
     width: 100%
     z-index: 2
 
-    .list
+    .body
       padding: 0 8px 8px
 
       .items-container
@@ -177,9 +177,9 @@ export default {
     vertical-align: top
 
 input.search
-  background-color: #5C6BC0
+  background-color: #7986CB
   border-radius: 3px
-  border: 1px solid #5C6BC0
+  border: 1px solid #7986CB
   box-sizing: border-box
   color: #FFF
   font-size: 16px
@@ -192,12 +192,12 @@ input.search
   width: 100%
 
   &::placeholder
-    color: #7986CB
+    color: #9FA8DA
     opacity: 1
   &:-ms-input-placeholder
-    color: #7986CB
+    color: #9FA8DA
   &::-ms-input-placeholder
-    color: #7986CB
+    color: #9FA8DA
 
 .github-repository
   margin-bottom: 8px
