@@ -59,6 +59,7 @@ export default {
 
 <style scoped lang='sass'>
 .column-new
+  display: inline-block
   position: relative
   width: 270px
 
