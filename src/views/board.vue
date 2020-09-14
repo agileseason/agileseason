@@ -2,7 +2,9 @@
   <TopMenu />
 
   <div class='board'>
-    <div class='columns'>
+    <div v-if='isLoading'>Loading...</div>
+    <div v-if='isNotFound'>Not Found!</div>
+    <div v-if='isLoaded' class='columns'>
       <div
         v-for='column in sortedColumns'
         :key='column.id'
@@ -44,25 +46,26 @@ export default {
   },
   data: () => ({
     isSubmittingNewColumn: false,
-    columns: [
-      { id: 1, name: 'Column 1', position: 1, isDragEnter: false },
-      { id: 2, name: 'Column 2', position: 2, isDragEnter: false },
-      { id: 3, name: 'Column 3', position: 3, isDragEnter: false },
-      { id: 4, name: 'Column 4', position: 4, isDragEnter: false }
-    ]
   }),
   computed: {
     token: get('user/token'),
+    isLoading: get('board/isLoading'),
+    isLoaded: get('board/isLoaded'),
+    isNotFound: get('board/isNotFound'),
+    columns: get('board/columns'),
     sortedColumns() {
       return [...this.columns].sort((a, b) => (a.position - b.position));
-    }
+    },
+    boardId() { return parseInt(this.$route.params.id) || 0; }
   },
   async created() {
     await this.fetchProfileLazy();
+    await this.fetch({ id: this.boardId });
   },
   methods: {
     ...call([
-      'user/fetchProfileLazy'
+      'user/fetchProfileLazy',
+      'board/fetch'
     ]),
     async createNewColumn(name) {
       if (this.isSubmittingNewColumn) { return; }

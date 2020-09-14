@@ -61,6 +61,7 @@ export default {
 .column-new
   display: inline-block
   position: relative
+  vertical-align: top
   width: 270px
 
   .dialog
