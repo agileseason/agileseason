@@ -30,6 +30,17 @@ export default {
       } else {
         commit('FINISH_LOADING', board);
       }
+    },
+    async createColumn({ commit, state, getters }, { name }) {
+      const column = await api.createColumn(
+        getters.token,
+        { name, boardId: state.id }
+      )
+      if (column?.id == null) {
+        // todo: Show errors (column.errors).
+      } else {
+        commit('ADD_COLUMN', column);
+      }
     }
   },
 
@@ -49,6 +60,9 @@ export default {
     NOT_FOUND(state) {
       state.isLoading = false;
       state.isLoaded = false;
+    },
+    ADD_COLUMN(state, column) {
+      state.columns = [...state.columns, column];
     }
   }
 };

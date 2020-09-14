@@ -65,13 +65,17 @@ export default {
   methods: {
     ...call([
       'user/fetchProfileLazy',
-      'board/fetch'
+      'board/fetch',
+      'board/createColumn'
     ]),
     async createNewColumn(name) {
       if (this.isSubmittingNewColumn) { return; }
       this.isSubmittingNewColumn = true;
-      await this.$nextTick(() => this.isSubmittingNewColumn = false);
-      console.log('new column: ' + name);
+      await this.createColumn({ name });
+      this.isSubmittingNewColumn = false;
+
+      // await this.$nextTick(() => this.isSubmittingNewColumn = false);
+      // console.log('new column: ' + name);
     },
     dragStart(e, column) {
       console.log('dragStart: ' + column?.id);

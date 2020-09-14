@@ -117,6 +117,7 @@ export default {
         createColumn(input: { name: $name, boardId: $boardId }) {
           id
           name
+          position
         }
       }
     `;
