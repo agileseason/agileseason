@@ -91,6 +91,43 @@ export default {
     return data?.createBoard;
   },
 
+  async fetchBoard(token, { id }) {
+    const query = `
+      query($id:Int!) {
+        board(id: $id) {
+          id
+          name
+          columns { id name position }
+        }
+      }
+    `;
+    const data = await this.client(token).request(query, { id });
+    this.log('board', data);
+
+    return data?.board;
+  },
+
+  // ---------------------------------
+  // Column
+  // ---------------------------------
+
+  async createColumn(token, { name, boardId }) {
+    const query = `
+      mutation($name:String!, $boardId:Int!) {
+        createColumn(input: { name: $name, boardId: $boardId }) {
+          id
+          name
+          position
+        }
+      }
+    `;
+    const vars = { name, boardId };
+    const data = await this.client(token).request(query, vars);
+    this.log('createColumn', data);
+
+    return data?.createColumn;
+  },
+
   // ---------------------------------
   // Helpers
   // ---------------------------------

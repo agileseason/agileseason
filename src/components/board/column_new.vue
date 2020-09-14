@@ -59,7 +59,9 @@ export default {
 
 <style scoped lang='sass'>
 .column-new
+  display: inline-block
   position: relative
+  vertical-align: top
   width: 270px
 
   .dialog
