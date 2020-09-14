@@ -35,14 +35,6 @@ import { get, call } from 'vuex-pathify';
 // 6. drop
 // 7. dragend
 
-      // columns
-      // @drop='drop($event)'
-      // @dragover.prevent
-      // @dragenter.prevent
-
-      // @dragenter='dragEnter($event)'
-      // @dragover='dragOver($event)'
-
 export default {
   name: 'Board',
   components: {
@@ -77,60 +69,49 @@ export default {
       await this.$nextTick(() => this.isSubmittingNewColumn = false);
       console.log('new column: ' + name);
     },
-    dragStart(ev, column) {
-      // ev.dataTransfer.effectAllowed = 'move';
-      // ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-      // ev.dataTransfer.setDragImage(ev.target,0,0);
+    dragStart(e, column) {
       console.log('dragStart: ' + column?.id);
-      ev.dataTransfer.dropEffect = 'move'
-      ev.dataTransfer.effectAllowed = 'move'
-      ev.dataTransfer.setData('itemID', column.id)
+      e.dataTransfer.dropEffect = 'move'
+      e.dataTransfer.effectAllowed = 'move'
+      e.dataTransfer.setData('itemID', column.id)
     },
-    dragEnter(ev, column) {
+    dragEnter(e, column) {
       console.log('dragEnter');
-      // console.log(ev.dataTransfer.getData('itemID'));
       console.log('to: ' + column?.id);
 
-      ev.preventDefault();
+      e.preventDefault();
       return true;
     },
-    dragLeave(ev, column) {
+    dragLeave(e, column) {
       console.log('dragLeave');
-      // console.log(ev.dataTransfer.getData('itemID'));
       console.log('from :' + column?.id);
 
-      ev.preventDefault();
+      e.preventDefault();
       return true;
     },
-    // dragDrop(ev) {
-    //   var src = ev.dataTransfer.getData("Text");
-    //   ev.target.appendChild(document.getElementById(src));
-    //   ev.stopPropagation();
-    //   return false;
-    // },
-    drop (ev, column) {
-      console.log('drop :' + ev.dataTransfer.getData('itemID'));
+    drop (e, column) {
+      console.log('drop :' + e.dataTransfer.getData('itemID'));
       console.log('to: ' + column.id);
-      const columnMoved = this.columns.find(v => v.id == ev.dataTransfer.getData('itemID'));
+      const columnMoved = this.columns.find(v => v.id == e.dataTransfer.getData('itemID'));
       if (columnMoved != null) {
         const fromRightToLeft = columnMoved.position < column.position;
         const columnsWoMoved = this.columns.filter(v => v.id != columnMoved.id);
         const columnsBefore = fromRightToLeft ?
           columnsWoMoved.filter(v => v.position <= column.position) :
           columnsWoMoved.filter(v => v.position < column.position);
-        console.log(columnsBefore.map(v => v.name));
+        // console.log(columnsBefore.map(v => v.name));
 
         const columnsAfter = fromRightToLeft ?
           columnsWoMoved.filter(v => v.position > column.position) :
           columnsWoMoved.filter(v => v.position >= column.position);
-        console.log(columnsAfter.map(v => v.name));
+        // console.log(columnsAfter.map(v => v.name));
 
         const newColumns = [...columnsBefore, columnMoved, ...columnsAfter];
         newColumns.map((v, i) => v.position = i + 1);
-        console.log(newColumns.map(v => v.name));
+        // console.log(newColumns.map(v => v.name));
         this.columns = newColumns;
       }
-      ev.stopPropagation();
+      e.stopPropagation();
     }
   }
 }
