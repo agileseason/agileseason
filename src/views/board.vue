@@ -7,6 +7,7 @@
         v-for='column in sortedColumns'
         :key='column.id'
         class='column'
+        :class='{ "is-drag-enter": column.isDragEnter }'
         draggable='true'
         @dragstart='dragStart($event, column)'
         @dragenter='dragEnter($event, column)'
@@ -44,10 +45,10 @@ export default {
   data: () => ({
     isSubmittingNewColumn: false,
     columns: [
-      { id: 1, name: 'Column 1', position: 1 },
-      { id: 2, name: 'Column 2', position: 2 },
-      { id: 3, name: 'Column 3', position: 3 },
-      { id: 4, name: 'Column 4', position: 4 }
+      { id: 1, name: 'Column 1', position: 1, isDragEnter: false },
+      { id: 2, name: 'Column 2', position: 2, isDragEnter: false },
+      { id: 3, name: 'Column 3', position: 3, isDragEnter: false },
+      { id: 4, name: 'Column 4', position: 4, isDragEnter: false }
     ]
   }),
   computed: {
@@ -76,22 +77,25 @@ export default {
       e.dataTransfer.setData('itemID', column.id)
     },
     dragEnter(e, column) {
-      console.log('dragEnter');
-      console.log('to: ' + column?.id);
+      column.isDragEnter = true;
+      // console.log('dragEnter');
+      // console.log('to: ' + column?.id);
 
       e.preventDefault();
       return true;
     },
     dragLeave(e, column) {
-      console.log('dragLeave');
-      console.log('from :' + column?.id);
+      column.isDragEnter = false;
+      // console.log('dragLeave');
+      // console.log('from :' + column?.id);
 
       e.preventDefault();
       return true;
     },
     drop (e, column) {
-      console.log('drop :' + e.dataTransfer.getData('itemID'));
-      console.log('to: ' + column.id);
+      // console.log('drop :' + e.dataTransfer.getData('itemID'));
+      // console.log('to: ' + column.id);
+      column.isDragEnter = false;
       const columnMoved = this.columns.find(v => v.id == e.dataTransfer.getData('itemID'));
       if (columnMoved != null) {
         const fromRightToLeft = columnMoved.position < column.position;
@@ -129,4 +133,7 @@ export default {
       vertical-align: top
       background-color: #888
       margin-right: 8px
+
+      &.is-drag-enter
+        background-color: #aaa
 </style>
