@@ -95,6 +95,8 @@ export default {
     const query = `
       query($id:Int!) {
         board(id: $id) {
+          id
+          name
           columns { id name position }
         }
       }
