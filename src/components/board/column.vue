@@ -5,7 +5,11 @@
       <span class='name'>{{ name }}</span>
     </div>
     <div class='body'>
-      TODO: Issue List
+      <div class='issue' v-for='issue in issues' :key='issue.id'>
+        <div class='title'>
+          {{ issue.title }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -21,6 +25,11 @@ export default {
     issuesCount: { type: Number, required: false, default: 0 }
   },
   data: () => ({
+    issues: [
+      { id: 1, title: 'Create a draft of the new design. In the figma' },
+      { id: 2, title: 'Create a draft of the new design. In the figma' },
+      { id: 3, title: 'Create a draft of the new design. In the figma' }
+    ],
     loadedIssuesCount: undefined
   }),
   computed: {
@@ -69,6 +78,17 @@ export default {
       vertical-align: bottom
 
   .body
-    // background-color: #999
     min-height: 300px
+
+    .issue
+      background-color: #FFF
+      border-radius: 4px
+      margin-bottom: 8px
+      padding: 8px
+
+      .title
+        color: #212121
+        font-size: 15px
+        font-weight: 500
+        line-height: 18px
 </style>
