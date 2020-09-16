@@ -5,10 +5,10 @@
     <div v-if='isLoading'>Loading...</div>
     <div v-if='isNotFound'>Not Found!</div>
     <div v-if='isLoaded' class='columns'>
-      <div
+      <Column
         v-for='column in sortedColumns'
         :key='column.id'
-        class='column'
+        v-bind='column'
         :class='{ "is-drag-enter": column.isDragEnter }'
         draggable='true'
         @dragstart='dragStart($event, column)'
@@ -16,17 +16,16 @@
         @dragleave='dragLeave($event, column)'
         @dragover.prevent
         @drop='drop($event, column)'
-      >
-        {{ column.name }} / {{ column.position }}
-      </div>
+      />
       <ColumnNew @submit='createNewColumn' />
     </div>
   </div>
 </template>
 
 <script>
-import TopMenu from '@/components/menu/top.vue';
+import Column from '@/components/board/column.vue';
 import ColumnNew from '@/components/board/column_new.vue';
+import TopMenu from '@/components/menu/top.vue';
 import { get, call } from 'vuex-pathify';
 
 // https://www.tutorialspoint.com/html5/html5_drag_drop.htm
@@ -42,6 +41,7 @@ export default {
   name: 'Board',
   components: {
     TopMenu,
+    Column,
     ColumnNew
   },
   data: () => ({
@@ -131,16 +131,4 @@ export default {
 <style scoped lang='sass'>
 .board
   padding: 8px 8px 0px 8px
-
-  .columns
-    .column
-      display: inline-block
-      width: 270px
-      height: 200px
-      vertical-align: top
-      background-color: #888
-      margin-right: 8px
-
-      &.is-drag-enter
-        background-color: #aaa
 </style>
