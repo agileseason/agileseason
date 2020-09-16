@@ -3,6 +3,10 @@
     <div class='header'>
       <span class='issues'>{{ visibleIssuesCount }}</span>
       <span class='name'>{{ name }}</span>
+      <div class='actions'>
+        <div class='issue-new' @click='issueNew' />
+        <div class='column-settings' @click='columnSettings' />
+      </div>
     </div>
     <div class='body'>
       <div class='issue' v-for='issue in issues' :key='issue.id'>
@@ -37,7 +41,14 @@ export default {
       return this.loadedIssuesCount || this.issuesCount;
     }
   },
-  methods: {}
+  methods: {
+    issueNew() {
+      console.log('issue-new');
+    },
+    columnSettings() {
+      console.log('column-settings');
+    }
+  }
 }
 </script>
 
@@ -63,10 +74,10 @@ export default {
       color: #5C6BC0
       display: inline-block
       font-size: 13px
-      height: 22px
-      line-height: 22px
+      height: 24px
+      line-height: 24px
       margin-right: 8px
-      min-width: 22px
+      min-width: 24px
       padding: 0 2px
       text-align: center
 
@@ -74,8 +85,43 @@ export default {
       color: #283593
       display: inline-block
       font-weight: 500
-      line-height: 22px
+      line-height: 24px
       vertical-align: bottom
+
+    .actions
+      float: right
+
+      .issue-new,
+      .column-settings
+        border-radius: 4px
+        cursor: pointer
+        display: inline-block
+        height: 24px
+        margin-left: 6px
+        width: 24px
+        background-position: center
+        background-repeat: no-repeat
+
+        &:hover
+          background-color: #C5CAE9
+        &:active
+          background-color: #9FA8DA
+
+      .issue-new
+        background-image: url('../../assets/icons/plus.svg')
+
+        &:hover
+          background-image: url('../../assets/icons/plus-hover.svg')
+        &:active
+          background-image: url('../../assets/icons/plus-hover.svg')
+
+      .column-settings
+        background-image: url('../../assets/icons/dots.svg')
+
+        &:hover
+          background-image: url('../../assets/icons/dots-hover.svg')
+        &:active
+          background-image: url('../../assets/icons/dots-hover.svg')
 
   .body
     min-height: 300px
