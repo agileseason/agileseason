@@ -66,7 +66,8 @@ export default {
     ...call([
       'user/fetchProfileLazy',
       'board/fetch',
-      'board/createColumn'
+      'board/createColumn',
+      'board/updateColumnPositions'
     ]),
     async createNewColumn(name) {
       if (this.isSubmittingNewColumn) { return; }
@@ -121,6 +122,7 @@ export default {
         newColumns.map((v, i) => v.position = i + 1);
         // console.log(newColumns.map(v => v.name));
         this.columns = newColumns;
+        this.updateColumnPositions({ columns: this.columns });
       }
       e.stopPropagation();
     }

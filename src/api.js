@@ -128,6 +128,26 @@ export default {
     return data?.createColumn;
   },
 
+  async updateColumnPositions(token, { boardId, columns }) {
+    const query = `
+      mutation($boardId:Int!, $ids:[Int!]!, $positions:[Int!]!) {
+        action:updateColumnPositions(
+          input: { boardId: $boardId, ids: $ids, positions: $positions }
+        ) {
+          errors
+        }
+      }
+    `;
+    const ids = columns.map(v => v.id);
+    const positions = columns.map(v => v.position);
+    const vars = { boardId, ids, positions };
+    console.log(vars);
+    const data = await this.client(token).request(query, vars);
+    this.log('updateColumnPositions', data);
+
+    return data?.action;
+  },
+
   // ---------------------------------
   // Helpers
   // ---------------------------------

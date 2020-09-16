@@ -35,11 +35,22 @@ export default {
       const column = await api.createColumn(
         getters.token,
         { name, boardId: state.id }
-      )
+      );
       if (column?.id == null) {
         // todo: Show errors (column.errors).
       } else {
         commit('ADD_COLUMN', column);
+      }
+    },
+    async updateColumnPositions({ state, getters }, { columns }) {
+      const result = await api.updateColumnPositions(
+        getters.token,
+        { boardId: state.id, columns }
+      );
+      if (result?.errors?.length == 0) {
+        console.log('success');
+      } else {
+        console.log('errors in updateColumnPositions');
       }
     }
   },
