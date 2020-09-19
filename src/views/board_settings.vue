@@ -3,6 +3,22 @@
     title='Settings'
     :breadCrumbs='breadCrumbs'
   />
+  <Tabs
+    :items='tabs'
+    :active='active'
+    @select='selectTab'
+  />
+  <div class='body'>
+    <div v-if='active === "General"'>
+      TODO: {{ active }}
+    </div>
+    <div v-if='active === "Repositories"'>
+      TODO: {{ active }}
+    </div>
+    <div v-if='active === "Members"'>
+      TODO: {{ active }}
+    </div>
+  </div>
 
   <!--div v-if='isLoaded' class='boards'>
     <div
@@ -21,15 +37,25 @@
 </template>
 
 <script>
+import Tabs from '@/components/tabs/tabs.vue'
 import TopMenu from '@/components/menu/top.vue'
 import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'BoardSettings',
   components: {
+    Tabs,
     TopMenu
   },
-  data: () => ({}),
+  data: () => ({
+    tabs: [
+      'General',
+      'Repositories',
+      'Members'
+    ],
+    active: 'Repositories'
+    // active: 'General'
+  }),
   computed: {
     isLoaded: get('user/isLoaded'),
     token: get('user/token'),
@@ -49,24 +75,29 @@ export default {
       ];
     }
   },
-  async created() {
-    const user = await this.fetchProfile();
-    if (user == null) {
-      this.$router.push({ name: 'home' });
-    } else if (user.boards.length === 0) {
-      this.$router.push({ name: 'board_new' });
-    }
+  created() {
+    // const user = await this.fetchProfileLazy();
+    // if (user == null) {
+    //   this.$router.push({ name: 'home' });
+    // } else if (user.boards.length === 0) {
+    //   this.$router.push({ name: 'board_new' });
+    // }
   },
   methods: {
     ...call([
       'user/fetchProfileLazy'
     ]),
-    goto({ id }) {
-      this.$router.push({ name: 'board', params: { id } });
+    selectTab(item) {
+      this.active = item;
     }
   }
 }
 </script>
 
 <style scoped lang='sass'>
+.body
+  background-color: #FFF
+  height: calc(100vh - 101px)
+  padding: 30px 20px
+  box-sizing: border-box
 </style>
