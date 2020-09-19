@@ -97,7 +97,7 @@ export default {
 <style scoped lang='sass'>
 .body
   background-color: #FFF
+  box-sizing: border-box
   height: calc(100vh - 101px)
   padding: 30px 20px
-  box-sizing: border-box
 </style>
