@@ -28,13 +28,21 @@
         </div>
       </div>
     </transition>
-    <div v-if='title' class='title'>
-      {{ title }}
-    </div>
-    <div v-else class='boards-selector'>
-      <router-link to='/boards'>Boards</router-link>
-      <span class='delimiter'>/</span>
-      <BoardSelect :boardId='boardId' />
+    <div class='center'>
+      <div v-if='breadCrumbs' class='bread-crumbs'>
+        <div v-for='item in breadCrumbs' :key='item.name' class='item'>
+          <router-link v-if='item.path' :to='item.path'>{{ item.name }}</router-link>
+          <span class='delimiter'>/</span>
+        </div>
+      </div>
+      <span v-if='title' class='title'>
+        {{ title }}
+      </span>
+      <div v-else class='boards-selector'>
+        <router-link to='/boards'>Boards</router-link>
+        <span class='delimiter'>/</span>
+        <BoardSelect :boardId='boardId' />
+      </div>
     </div>
   </div>
 </template>
@@ -50,6 +58,7 @@ export default {
   },
   props: {
     title: { type: String, required: false, default: null },
+    breadCrumbs: { type: Array, required: false, default: null }
   },
   data: () => ({
     isExpanded: false
@@ -86,13 +95,22 @@ export default {
   height: 36px
   background-color: #3F51B5
 
+.center
+  text-align: center
+
 .title
   color: #FFFFFF
   font-weight: 500
   line-height: 36px
-  text-align: center
 
-.boards-selector
+.bread-crumbs
+  display: inline-block
+
+  .item
+    display: inline-block
+
+.boards-selector,
+.bread-crumbs
   text-align: center
   line-height: 36px
 
