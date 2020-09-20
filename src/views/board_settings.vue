@@ -61,7 +61,7 @@
           </table>
         </div>
         <Button
-          text='Sync Issues'
+          text='Save & Sync Issues'
           @click='syncIssues'
           :isDisabled='isSyncingIssues'
           :isLoading='isLoading'

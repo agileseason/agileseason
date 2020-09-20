@@ -85,17 +85,18 @@ export default {
   border-radius: 4px
   box-sizing: border-box
   color: #fff
+  cursor: pointer
   display: inline-block
   font-size: 14px
   font-weight: 600
   height: 40px
+  letter-spacing: 0.3px
   line-height: 38px
   padding: 0 24px
   position: relative
   text-align: center
   text-decoration: none
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s
-  cursor: pointer
 
   &.disabled
     cursor: default

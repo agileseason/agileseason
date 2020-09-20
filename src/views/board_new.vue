@@ -18,6 +18,7 @@
             Manage your installation settings
           </p>
           <Button
+            type='outline'
             class='configure'
             text='Configure App'
             :href='appUrl'
