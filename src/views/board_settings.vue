@@ -33,6 +33,7 @@
           Manage your installation settings
         </p>
         <Button
+          type='outline'
           text='Configure App'
           :href='appUrl'
           :isDisabled='isSyncingIssues'
@@ -60,7 +61,6 @@
           </table>
         </div>
         <Button
-          type='outline'
           text='Sync Issues'
           @click='syncIssues'
           :isDisabled='isSyncingIssues'
@@ -185,6 +185,7 @@ export default {
 
     table
       border-spacing: 0
+      width: 100%
 
       th
         color: #3F51B5
