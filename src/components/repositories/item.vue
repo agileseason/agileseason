@@ -3,6 +3,7 @@
     <div v-if='!isSelected' class='inner' @click='open'>
       <img :src='avatarUrl' />
       <span class='login'>{{ name }}</span>
+      <span v-if='selectedRepositoryIds.length > 0' class='count'>{{ selectedRepositoryIds.length }}</span>
       <span class='icon' />
     </div>
     <div v-else class='dialog'>
@@ -126,6 +127,18 @@ export default {
     &:hover
       background-color: #F5F5F5
       color: #303F9F
+
+    .count
+      background-color: #7986CB
+      border-radius: 10px
+      color: #FFFFFF
+      display: inline-block
+      font-size: 12px
+      font-weight: 500
+      padding: 3px 8px
+      position: absolute
+      right: 28px
+      top: 7px
 
     .icon
       background-image: url('../../assets/icons/right.svg')

@@ -119,6 +119,7 @@ export default {
             fullName
             isPrivate
             installationId
+            issuesCount
           }
         }
       }

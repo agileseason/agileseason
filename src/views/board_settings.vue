@@ -53,7 +53,7 @@
                   {{ item.fullName }}
                 </td>
                 <td class='issues'>
-                  TODO: issues
+                  {{ item.issuesCount }}
                 </td>
               </tr>
             </tbody>
@@ -201,7 +201,7 @@ export default {
         padding: 8px 0 9px 0
 
         &.issues
-          padding-left: 40px
+          padding-left: 50px
 
   p
     color: #616161
