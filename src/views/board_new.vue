@@ -14,8 +14,7 @@
 
         <div v-if='isInstalled' class='configure-block'>
           <p>
-            Couldn't find a repository?
-            <br>
+            Couldn't find a repository?<br>
             Manage your installation settings
           </p>
           <Button

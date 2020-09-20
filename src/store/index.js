@@ -3,6 +3,7 @@ import pathify from 'vuex-pathify';
 
 import board from './modules/board';
 import boardNew from './modules/board_new';
+import boardSettings from './modules/board_settings';
 import installations from './modules/installations';
 import repositories from './modules/repositories';
 import user from './modules/user';
@@ -18,6 +19,7 @@ export default createStore({
   modules: {
     board,
     boardNew,
+    boardSettings,
     installations,
     repositories,
     user

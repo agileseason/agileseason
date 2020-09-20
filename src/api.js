@@ -107,6 +107,21 @@ export default {
     return data?.board;
   },
 
+  async fetchBoardSettings(token, { id }) {
+    const query = `
+      query($id:Int!) {
+        boardSettings(id: $id) {
+          id
+          name
+        }
+      }
+    `;
+    const data = await this.client(token).request(query, { id });
+    this.log('boardSettings', data);
+
+    return data?.boardSettings;
+  },
+
   // ---------------------------------
   // Column
   // ---------------------------------

@@ -58,6 +58,7 @@ export default {
         [
           'indigo',
           'flat',
+          'outline',
           'white'
         ].indexOf(value) !== -1
       )
@@ -115,6 +116,19 @@ export default {
       background-color: #9FA8DA
       border-color: #9FA8DA
       color: #F5F5F5
+
+  &.outline
+    color: #3F51B5
+    border: 1px solid #3F51B5
+
+    &:hover
+      color: #303F9F
+      border-color: #303F9F
+      background-color: #E8EAF6
+
+    &:active
+      color: #283593
+      border-color: #283593
 
   &.white
     padding: 0 12px
