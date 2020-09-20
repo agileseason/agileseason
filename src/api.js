@@ -110,7 +110,7 @@ export default {
   async fetchBoardSettings(token, { id }) {
     const query = `
       query($id:Int!) {
-        boardSettings(id: $id) {
+        boardSettings:board(id: $id) {
           id
           name
         }

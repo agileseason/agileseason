@@ -112,6 +112,9 @@ export default {
     },
     syncIssues() {
       console.log('sync issues...');
+    },
+    beforeDestroy() {
+      console.log('destroy...');
     }
   }
 }

@@ -39,6 +39,7 @@ export default {
         getters.token,
         { id }
       );
+
       if (settings == null) {
         commit('NOT_FOUND');
       } else {
@@ -63,12 +64,12 @@ export default {
       state.isLoaded = true;
     },
     NOT_FOUND(state) {
-      state = { ...DEFAULT_STATE };
-      state.isLoading = true;
+      state = Object.assign(state, DEFAULT_STATE)
+      state.isLoading = false;
       state.isLoaded = false;
     },
     RESET(state) {
-      state = { ...DEFAULT_STATE };
+      state = Object.assign(state, DEFAULT_STATE)
       state.isLoading = false;
       state.isLoaded = false;
     }
