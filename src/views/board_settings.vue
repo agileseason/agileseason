@@ -18,7 +18,15 @@
       <div class='left'>
         <h2 class='subtitle'>All your Repositories</h2>
         <div class='all-repositories'>
-          TODO: {{ active }}
+          <Repository
+            v-for='item in installationItems'
+            :key='item.id'
+            :name='item.account.login'
+            :avatarUrl='item.account.avatarUrl'
+            :installationId='item.id'
+            :installationAccessTokenUrl='item.accessTokensUrl'
+            :selected-repository-ids='selectedRepositoryIds(item.id)'
+          />
         </div>
         <p>
           Couldn't find a repository?<br>
@@ -28,18 +36,35 @@
           text='Configure App'
           :href='appUrl'
           :isDisabled='isSyncingIssues'
+          :isLoading='isLoading'
         />
       </div>
       <div class='right'>
         <h2 class='subtitle'>Linked Repositories</h2>
         <div class='linked-repositories'>
-          TODO: {{ active }}
+          <table>
+            <thead>
+              <th>Name</th>
+              <th class='issues'>Issues</th>
+            </thead>
+            <tbody>
+              <tr v-for='item in linkedRepositories' :key='item.id'>
+                <td class='name'>
+                  {{ item.fullName }}
+                </td>
+                <td class='issues'>
+                  TODO: issues
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <Button
           type='outline'
           text='Sync Issues'
           @click='syncIssues'
           :isDisabled='isSyncingIssues'
+          :isLoading='isLoading'
         />
       </div>
     </div>
@@ -51,6 +76,7 @@
 
 <script>
 import Button from '@/components/buttons/button.vue'
+import Repository from '@/components/repositories/item.vue'
 import Tabs from '@/components/tabs/tabs.vue'
 import TopMenu from '@/components/menu/top.vue'
 import { get, call } from 'vuex-pathify';
@@ -64,6 +90,7 @@ export default {
   name: 'BoardSettings',
   components: {
     Button,
+    Repository,
     Tabs,
     TopMenu
   },
@@ -83,6 +110,8 @@ export default {
     isSyncingIssues: get('boardSettings/isSyncingIssues'),
     token: get('user/token'),
     boards: get('user/boards'),
+    linkedRepositories: get('boardSettings/linkedRepositories'),
+    installationItems: get('installations/items'),
     boardId() { return parseInt(this.$route.params.id) || 0; },
     breadCrumbs() {
       const board = this.boards.find(v => v.id === this.boardId);
@@ -109,6 +138,11 @@ export default {
     ]),
     selectTab(item) {
       this.active = item;
+    },
+    selectedRepositoryIds(installationId) {
+      return this.linkedRepositories
+        .filter(v => v.installationId === installationId)
+        .map(v => v.id);
     },
     syncIssues() {
       console.log('sync issues...');
@@ -138,6 +172,7 @@ export default {
   h2.subtitle
     font-size: 18px
     font-weight: 600
+    margin-top: 0
     margin-bottom: 18px
 
   .all-repositories
@@ -146,11 +181,31 @@ export default {
 
   .linked-repositories
     margin-bottom: 18px
-    width: 300px
+    min-width: 300px
+
+    table
+      border-spacing: 0
+
+      th
+        color: #3F51B5
+        text-align: left
+        padding-bottom: 6px
+        border-bottom: 1px solid #E0E0E0
+
+        &.issues
+          text-align: right
+
+      td
+        border-bottom: 1px solid #E0E0E0
+        color: #424242
+        padding: 8px 0 9px 0
+
+        &.issues
+          padding-left: 40px
 
   p
     color: #616161
     font-size: 12px
     letter-spacing: 0.2px
-    margin-bottom: 12px
+    margin-bottom: 16px
 </style>

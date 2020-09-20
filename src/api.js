@@ -113,6 +113,13 @@ export default {
         boardSettings:board(id: $id) {
           id
           name
+          repositories {
+            id
+            name
+            fullName
+            isPrivate
+            installationId
+          }
         }
       }
     `;

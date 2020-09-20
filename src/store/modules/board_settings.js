@@ -33,13 +33,14 @@ export default {
   },
 
   actions: {
-    async fetch({ commit, getters }, { id }) {
+    async fetch({ commit, getters, dispatch }, { id }) {
       commit('START_LOADING');
       const settings = await api.fetchBoardSettings(
         getters.token,
         { id }
       );
 
+      await dispatch('installations/fetch', null, { root: true });
       if (settings == null) {
         commit('NOT_FOUND');
       } else {
@@ -60,6 +61,7 @@ export default {
       const { id, name } = settings;
       state.id = id;
       state.name = name;
+      state.linkedRepositories = settings.repositories;
       state.isLoading = false;
       state.isLoaded = true;
     },
