@@ -203,6 +203,7 @@ export default {
 
         &.issues
           padding-left: 50px
+          text-align: right
 
   p
     color: #616161
