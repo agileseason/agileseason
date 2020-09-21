@@ -44,6 +44,9 @@
         <BoardSelect :boardId='boardId' />
       </div>
     </div>
+    <div class='right'>
+      <router-link class='settings' :to='boardSettingsUrl' />
+    </div>
   </div>
 </template>
 
@@ -69,7 +72,8 @@ export default {
     boards: get('user/boards'),
     isLoaded: get('user/isLoaded'),
     isFull() { return this.boards.length > 0; },
-    boardId() { return parseInt(this.$route.params.id) || 0; }
+    boardId() { return parseInt(this.$route.params.id) || 0; },
+    boardSettingsUrl() { return `/boards/${this.boardId}/settings`; }
   },
   async created() {
     await this.fetchProfileLazy();
@@ -94,6 +98,7 @@ export default {
 .menu
   height: 36px
   background-color: #3F51B5
+  position: relative
 
 .center
   text-align: center
@@ -226,4 +231,25 @@ export default {
 .slide-enter-active,
 .slide-leave-active
   transition: transform 200ms
+
+.right
+  position: absolute
+  right: 8px
+  top: 4px
+
+  .settings
+    background-image: url('../../assets/icons/gear.svg')
+    background-position: center
+    background-repeat: no-repeat
+    border-radius: 4px
+    cursor: pointer
+    display: inline-block
+    height: 28px
+    width: 28px
+
+    &:hover
+      background-color: #5C6BC0
+
+    &:active
+      background-color: #303F9F
 </style>
