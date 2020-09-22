@@ -45,6 +45,7 @@
           :installationId='item.id'
           :installationAccessTokenUrl='item.accessTokensUrl'
           :selected-repository-ids='selectedRepositoryIds(item.id)'
+          @done='done'
         />
         <!--div class='selected-repositories'>
           <span
@@ -156,8 +157,9 @@ export default {
   methods: {
     ...call([
       'installations/fetch',
+      'boardNew/remove',
       'boardNew/submit',
-      'boardNew/remove'
+      'boardNew/update'
     ]),
     selectedRepositoryIds(installationId) {
       return this.selectedRepositories
@@ -166,6 +168,10 @@ export default {
     },
     removeSelectedRepository(repositoryId) {
       this.remove(repositoryId);
+    },
+    done(data) {
+      // { installationId, installationAccessTokenUrl, repositories }
+      this.update(data);
     },
     async finish() {
       if (this.isSubmitting) { return; }

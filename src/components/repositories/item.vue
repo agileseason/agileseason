@@ -100,7 +100,7 @@ export default {
       const repositories = this.items
         .filter(v => this.selectedItems.includes(v.id));
       const { installationId, installationAccessTokenUrl } = this;
-      this.update({ installationId, installationAccessTokenUrl, repositories });
+      this.$emit('done', { installationId, installationAccessTokenUrl, repositories });
     },
     close() {
       this.isSelected = false;

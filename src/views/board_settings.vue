@@ -26,6 +26,7 @@
             :installationId='item.id'
             :installationAccessTokenUrl='item.accessTokensUrl'
             :selected-repository-ids='selectedRepositoryIds(item.id)'
+            @done='done'
           />
         </div>
         <p>
@@ -49,7 +50,7 @@
               <th class='issues'>Issues</th>
             </thead>
             <tbody>
-              <tr v-for='item in linkedRepositories' :key='item.id'>
+              <tr v-for='item in repositories' :key='item.id'>
                 <td class='name'>
                   {{ item.fullName }}
                 </td>
@@ -110,7 +111,8 @@ export default {
     isSyncingIssues: get('boardSettings/isSyncingIssues'),
     token: get('user/token'),
     boards: get('user/boards'),
-    linkedRepositories: get('boardSettings/linkedRepositories'),
+    repositories: get('boardSettings/repositories'),
+    pendingRepositories: get('boardSettings/pendingRepositories'),
     installationItems: get('installations/items'),
     boardId() { return parseInt(this.$route.params.id) || 0; },
     breadCrumbs() {
@@ -134,15 +136,19 @@ export default {
   methods: {
     ...call([
       'user/fetchProfileLazy',
-      'boardSettings/fetch'
+      'boardSettings/fetch',
+      'boardSettings/update'
     ]),
     selectTab(item) {
       this.active = item;
     },
     selectedRepositoryIds(installationId) {
-      return this.linkedRepositories
+      return this.pendingRepositories
         .filter(v => v.installationId === installationId)
         .map(v => v.id);
+    },
+    done(data) {
+      this.update(data);
     },
     syncIssues() {
       console.log('sync issues...');
@@ -202,7 +208,7 @@ export default {
         padding: 8px 0 9px 0
 
         &.issues
-          padding-left: 50px
+          min-width: 120px
           text-align: right
 
   p

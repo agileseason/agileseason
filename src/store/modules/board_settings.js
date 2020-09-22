@@ -14,7 +14,9 @@ export default {
     ...DEFAULT_STATE,
     // { id: 123, installationId: 321, installationAccessTokenUrl: '...', name: 'name', fullName: 'name/name', isPrivate: true }
     allRepositories: [],
+    // { id name fullName isPrivate installationId issuesCount }
     linkedRepositories: [],
+    pendingRepositories: [],
     isLoading: true,
     isLoaded: false,
     isSyncingIssues: false
@@ -29,7 +31,26 @@ export default {
     ),
     isNotFound: (state) => (
       !state.isLoading && !state.isLoaded
-    )
+    ),
+    repositories: (state) => {
+      const linkedRepositories = state
+        .linkedRepositories
+        .map(repo => (
+          {
+            ...repo,
+            issuesCount: state.pendingRepositories.find(v => v.id === repo.id) ?
+              repo.issuesCount :
+              'Remove'
+          }
+        ));
+      const addedRepositories = state
+        .pendingRepositories
+        .filter(repo => !state.linkedRepositories.map(v => v.id).includes(repo.id))
+        .map(repo => (
+          { ...repo, issuesCount: 'Add' }
+        ));
+      return [...linkedRepositories, ...addedRepositories];
+    }
   },
 
   actions: {
@@ -47,6 +68,9 @@ export default {
         commit('FINISH_LOADING', settings);
       }
     },
+    update({ commit }, { installationId, installationAccessTokenUrl, repositories }) {
+      commit('SYNC_PENDING_REPOSITORIES', { installationId, installationAccessTokenUrl, repositories });
+    },
     reset({ commit }) {
       commit('RESET');
     }
@@ -62,8 +86,18 @@ export default {
       state.id = id;
       state.name = name;
       state.linkedRepositories = settings.repositories;
+      state.pendingRepositories = settings.repositories;
       state.isLoading = false;
       state.isLoaded = true;
+    },
+    SYNC_PENDING_REPOSITORIES(state, { installationId, installationAccessTokenUrl, repositories }) {
+      const otherInstallation = state
+        .pendingRepositories
+        .filter(v => v.installationId !== installationId);
+
+      const newRepositories = repositories
+        .map(v => ({ installationId, installationAccessTokenUrl, ...v }));
+      state.pendingRepositories = [...otherInstallation, ...newRepositories];
     },
     NOT_FOUND(state) {
       state = Object.assign(state, DEFAULT_STATE)
