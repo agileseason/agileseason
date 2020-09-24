@@ -156,10 +156,10 @@ export default {
       const id = this.boardId;
       const { isValid, errors } = await this.save({ id });
       if (isValid) {
-        console.log('SUCCESS sync issues...');
-        console.log(id);
+        // console.log('SUCCESS sync issues...');
+        // console.log(id);
         this.reset();
-        this.$router.push({ name: 'board', params: { id } });
+        this.$router.push({ name: 'board_sync', params: { id } });
       } else {
         console.error('ERROR sync issues...');
         console.error(errors);

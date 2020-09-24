@@ -45,11 +45,26 @@ export default {
     },
     async sync({ commit, getters, state }) {
       commit('START_SYNCING_ISSUES');
-      const board = await api.fetchBoardSettings(
-        getters.token,
-        { id: state.id }
-      );
-      commit('FINISH_SYNCING_ISSUES', board);
+      for (const v of state.repositories) {
+        const { issuesCount, errors } = await api.syncBoardIssues(
+          getters.token,
+          {
+            id: state.id,
+            repository: {
+              id: v.id,
+              name: v.name,
+              fullName: v.fullName,
+              isPrivate: v.isPrivate,
+              installationId: v.installationId,
+              installationAccessTokenUrl: v.installationAccessTokenUrl
+            }
+          }
+        );
+        if (errors.length == 0) {
+          state.syncedRepositories.push({ id: v.id, issuesCount });
+        }
+      }
+      commit('FINISH_SYNCING_ISSUES');
     },
     reset({ commit }) {
       commit('RESET');

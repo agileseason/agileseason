@@ -146,6 +146,21 @@ export default {
     return data?.saveBoardSettings;
   },
 
+  async syncBoardIssues(token, { id, repository }) {
+    const query = `
+      mutation($id:Int!, $repository:RepositoryInput!) {
+        syncBoardIssues(input: { id: $id, repository: $repository }) {
+          issuesCount
+          errors
+        }
+      }
+    `;
+    const data = await this.client(token).request(query, { id, repository });
+    this.log('saveBoardSettings', data);
+
+    return data?.syncBoardIssues;
+  },
+
   // ---------------------------------
   // Column
   // ---------------------------------

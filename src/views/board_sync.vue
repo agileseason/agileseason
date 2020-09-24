@@ -22,7 +22,7 @@
             </td>
             <td class='issues'>
               <div v-if='isSynced(item.id)'>
-                {{ syncIssues(item.id) }}
+                {{ syncedIssues(item.id) }}
               </div>
               <div v-else class='syncing'>
                 syncing
@@ -52,6 +52,7 @@ export default {
     isSyncing: get('boardSync/isSyncing'),
     isNotFound: get('boardSync/isNotFound'),
     repositories: get('boardSync/repositories'),
+    syncedRepositories: get('boardSync/syncedRepositories'),
     boardId() { return parseInt(this.$route.params.id) || 0; },
     boardName() {
       const board = this.boards.find(v => v.id === this.boardId);
@@ -61,22 +62,25 @@ export default {
   async created() {
     await this.fetchProfileLazy();
     await this.fetch({ id: this.boardId });
-    // await this.sync({ id: this.boardId });
-    // this.reset();
-    // TODO: push to board view
+    await this.sync({ id: this.boardId });
+    this.reset();
+    this.$router.push({ name: 'board', params: { id: this.boardId } });
   },
   methods: {
     ...call([
       'user/fetchProfileLazy',
       'boardSync/fetch',
+      'boardSync/reset',
       'boardSync/sync'
     ]),
-    // issuesStatus(repositoryId) {
-    isSynced() {
-      return false;
+    isSynced(repositoryId) {
+      return this.syncedRepositories
+        .find(v => v.id == repositoryId) != null;
     },
-    syncedIssues() {
-      return 0;
+    syncedIssues(repositoryId) {
+      const repo = this.syncedRepositories.find(v => v.id == repositoryId);
+      if (repo == null) { return 0; }
+      return repo.issuesCount;
     }
   }
 }
@@ -84,7 +88,7 @@ export default {
 
 <style scoped lang='sass'>
 .loading
-  padding-top: 100px
+  padding-top: 80px
   text-align: center
 
   .board-name
