@@ -71,6 +71,31 @@ export default {
     update({ commit }, { installationId, installationAccessTokenUrl, repositories }) {
       commit('SYNC_PENDING_REPOSITORIES', { installationId, installationAccessTokenUrl, repositories });
     },
+    async save({ commit, getters, state }, { id }) {
+      commit('START_SYNCING_ISSUES');
+      const { errors } = await api.saveBoardSettings(
+        getters.token,
+        {
+          id,
+          repositories: state.pendingRepositories.map(v => (
+            {
+              id: v.id,
+              name: v.name,
+              fullName: v.fullName,
+              isPrivate: v.isPrivate,
+              installationId: v.installationId,
+              installationAccessTokenUrl: v.installationAccessTokenUrl
+            }
+          ))
+        }
+      );
+      if (errors.length > 0) {
+        commit('FINISH_SYNCING_ISSUES');
+        return { isValid: false, errors };
+      }
+
+      return { isValid: true, errors };
+    },
     reset({ commit }) {
       commit('RESET');
     }
@@ -90,6 +115,12 @@ export default {
       state.isLoading = false;
       state.isLoaded = true;
     },
+    START_SYNCING_ISSUES(state) {
+      state.isSyncingIssues = true;
+    },
+    FINISH_SYNCING_ISSUES(state) {
+      state.isSyncingIssues = false;
+    },
     SYNC_PENDING_REPOSITORIES(state, { installationId, installationAccessTokenUrl, repositories }) {
       const otherInstallation = state
         .pendingRepositories
@@ -103,11 +134,13 @@ export default {
       state = Object.assign(state, DEFAULT_STATE)
       state.isLoading = false;
       state.isLoaded = false;
+      state.isSyncingIssues = false;
     },
     RESET(state) {
       state = Object.assign(state, DEFAULT_STATE)
       state.isLoading = false;
       state.isLoaded = false;
+      state.isSyncingIssues = false;
     }
   }
 };

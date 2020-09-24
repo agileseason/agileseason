@@ -137,7 +137,9 @@ export default {
     ...call([
       'user/fetchProfileLazy',
       'boardSettings/fetch',
-      'boardSettings/update'
+      'boardSettings/update',
+      'boardSettings/save',
+      'boardSettings/reset'
     ]),
     selectTab(item) {
       this.active = item;
@@ -150,8 +152,18 @@ export default {
     done(data) {
       this.update(data);
     },
-    syncIssues() {
-      console.log('sync issues...');
+    async syncIssues() {
+      const id = this.boardId;
+      const { isValid, errors } = await this.save({ id });
+      if (isValid) {
+        console.log('SUCCESS sync issues...');
+        console.log(id);
+        this.reset();
+        this.$router.push({ name: 'board', params: { id } });
+      } else {
+        console.error('ERROR sync issues...');
+        console.error(errors);
+      }
     },
     beforeDestroy() {
       console.log('destroy...');

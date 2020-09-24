@@ -119,6 +119,7 @@ export default {
             fullName
             isPrivate
             installationId
+            installationAccessTokenUrl
             issuesCount
           }
         }
@@ -128,6 +129,21 @@ export default {
     this.log('boardSettings', data);
 
     return data?.boardSettings;
+  },
+
+  async saveBoardSettings(token, { id, repositories }) {
+    const query = `
+      mutation($id:Int!, $repositories:[RepositoryInput!]!) {
+        saveBoardSettings(input: { id: $id, repositories: $repositories }) {
+          id
+          errors
+        }
+      }
+    `;
+    const data = await this.client(token).request(query, { id, repositories });
+    this.log('saveBoardSettings', data);
+
+    return data?.saveBoardSettings;
   },
 
   // ---------------------------------
