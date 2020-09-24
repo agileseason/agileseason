@@ -1,7 +1,7 @@
 <template>
   <div class='column'>
     <div class='header'>
-      <span class='issues'>{{ visibleIssuesCount }}</span>
+      <span class='issues-count'>{{ issuesCount }}</span>
       <span class='name'>{{ name }}</span>
       <div class='actions'>
         <div class='issue-new' @click='issueNew' />
@@ -26,20 +26,18 @@ export default {
   props: {
     id: { type: Number, required: true },
     name: { type: String, required: false, default: 'Unknown' },
-    issuesCount: { type: Number, required: false, default: 0 }
+    issues: { type: Array, required: true }
   },
   data: () => ({
-    issues: [
-      { id: 1, title: 'Create a draft of the new design. In the figma' },
-      { id: 2, title: 'Create a draft of the new design. In the figma' },
-      { id: 3, title: 'Create a draft of the new design. In the figma' }
-    ],
-    loadedIssuesCount: undefined
+    // issues: [
+    //   { id: 1, title: 'Create a draft of the new design. In the figma' },
+    //   { id: 2, title: 'Create a draft of the new design. In the figma' },
+    //   { id: 3, title: 'Create a draft of the new design. In the figma' }
+    // ],
+    // loadedIssuesCount: undefined
   }),
   computed: {
-    visibleIssuesCount() {
-      return this.loadedIssuesCount || this.issuesCount;
-    }
+    issuesCount() { return this.issues.length; }
   },
   methods: {
     issueNew() {
@@ -67,7 +65,7 @@ export default {
     cursor: pointer
     margin-bottom: 8px
 
-    .issues
+    .issues-count
       background-color: #C5CAE9
       border-radius: 4px
       box-sizing: border-box
@@ -78,7 +76,7 @@ export default {
       line-height: 24px
       margin-right: 8px
       min-width: 24px
-      padding: 0 2px
+      padding: 0 8px
       text-align: center
 
     .name

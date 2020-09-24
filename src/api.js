@@ -97,7 +97,10 @@ export default {
         board(id: $id) {
           id
           name
-          columns { id name position }
+          columns {
+            id name position
+            issues { id title position }
+          }
         }
       }
     `;
