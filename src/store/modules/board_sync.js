@@ -65,6 +65,7 @@ export default {
         }
       }
       commit('FINISH_SYNCING_ISSUES');
+      commit('RESET');
     },
     reset({ commit }) {
       commit('RESET');
@@ -80,7 +81,14 @@ export default {
     FINISH_LOADING(state, board) {
       const { id, repositories } = board;
       state.id = id;
-      state.repositories = repositories;
+      state.repositories = repositories.map(v => ({
+        id: v.id,
+        name: v.name,
+        fullName: v.fullName,
+        isPrivate: v.isPrivate,
+        installationId: v.installationId,
+        installationAccessTokenUrl: v.installationAccessTokenUrl
+      }));
       state.isLoading = false;
       state.isLoaded = true;
     },
