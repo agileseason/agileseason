@@ -49,7 +49,6 @@ export default {
 <style scoped lang='sass'>
 .column
   display: inline-block
-  min-height: 100vh
   margin-right: 8px
   vertical-align: top
   width: 270px
@@ -123,5 +122,6 @@ export default {
           background-image: url('../../assets/icons/dots-hover.svg')
 
   .body
-    min-height: 300px
+    height: calc(100vh - 80px)
+    overflow-y: scroll
 </style>
