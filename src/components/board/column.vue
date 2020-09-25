@@ -75,7 +75,9 @@ export default {
     border-radius: 6px
 
   .header
-    cursor: grab
+    // cursor: grab
+    // cursor: grabbing
+    cursor: pointer
     margin-bottom: 8px
 
     .issues-count
