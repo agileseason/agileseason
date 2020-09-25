@@ -9,11 +9,15 @@
         v-for='column in sortedColumns'
         :key='column.id'
         v-bind='column'
-        :class='{ "is-drag-enter": column.isDragEnter }'
+        :class='{
+          "is-drag-enter": column.isDragEnter,
+          "is-drag-start": column.isDragStart
+        }'
         draggable='true'
         @dragstart='dragStart($event, column)'
         @dragenter='dragEnter($event, column)'
         @dragleave='dragLeave($event, column)'
+        @dragend='dragEnd($event, column)'
         @dragover.prevent
         @drop='drop($event, column)'
       />
@@ -80,6 +84,7 @@ export default {
     },
     dragStart(e, column) {
       console.log('dragStart: ' + column?.id);
+      column.isDragStart = true;
       e.dataTransfer.dropEffect = 'move'
       e.dataTransfer.effectAllowed = 'move'
       e.dataTransfer.setData('itemID', column.id)
@@ -125,7 +130,12 @@ export default {
         this.updateColumnPositions({ columns: this.columns });
       }
       e.stopPropagation();
-    }
+    },
+    dragEnd(e, column) {
+      column.isDragStart = false;
+      e.preventDefault();
+      return true;
+    },
   }
 }
 </script>

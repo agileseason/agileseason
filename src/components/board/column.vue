@@ -31,14 +31,7 @@ export default {
     name: { type: String, required: false, default: 'Unknown' },
     issues: { type: Array, required: true }
   },
-  data: () => ({
-    // issues: [
-    //   { id: 1, title: 'Create a draft of the new design. In the figma' },
-    //   { id: 2, title: 'Create a draft of the new design. In the figma' },
-    //   { id: 3, title: 'Create a draft of the new design. In the figma' }
-    // ],
-    // loadedIssuesCount: undefined
-  }),
+  data: () => ({}),
   computed: {
     issuesCount() { return this.issues.length; }
   },
@@ -56,13 +49,18 @@ export default {
 <style scoped lang='sass'>
 .column
   display: inline-block
-  height: 200px
+  min-height: 100vh
   margin-right: 8px
   vertical-align: top
   width: 270px
 
   &.is-drag-enter
-    background-color: rgba(0,0,0,0.1)
+    background-color: rgba(197,202,233,0.4)
+    border-radius: 6px
+
+  &.is-drag-start
+    background-color: #E8EAF6
+    border-radius: 6px
 
   .header
     cursor: pointer
