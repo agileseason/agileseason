@@ -99,7 +99,15 @@ export default {
           name
           columns {
             id name position
-            issues { id title position }
+            issues {
+              id
+              number
+              title
+              position
+              url
+              repositoryName
+              labels { name color }
+            }
           }
         }
       }

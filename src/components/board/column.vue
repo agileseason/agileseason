@@ -9,19 +9,22 @@
       </div>
     </div>
     <div class='body'>
-      <div class='issue' v-for='issue in issues' :key='issue.id'>
-        <div class='title'>
-          {{ issue.title }}
-        </div>
-      </div>
+      <Issue
+        v-for='issue in issues'
+        :key='issue.id'
+        v-bind='issue'
+      />
     </div>
   </div>
 </template>
 
 <script>
+import Issue from '@/components/board/issue.vue';
+
 export default {
   name: 'Column',
   components: {
+    Issue
   },
   props: {
     id: { type: Number, required: true },
@@ -123,16 +126,4 @@ export default {
 
   .body
     min-height: 300px
-
-    .issue
-      background-color: #FFF
-      border-radius: 4px
-      margin-bottom: 8px
-      padding: 8px
-
-      .title
-        color: #212121
-        font-size: 15px
-        font-weight: 500
-        line-height: 18px
 </style>
