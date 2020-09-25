@@ -106,6 +106,7 @@ export default {
               position
               url
               repositoryName
+              isClosed
               labels { name color }
             }
           }
