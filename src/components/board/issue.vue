@@ -56,6 +56,7 @@ export default {
   border-radius: 4px
   margin-bottom: 8px
   padding: 8px
+  cursor: pointer
 
   .title
     color: #212121

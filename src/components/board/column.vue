@@ -13,6 +13,8 @@
         v-for='issue in issues'
         :key='issue.id'
         v-bind='issue'
+        draggable='true'
+        @dragstart='dragStart($event, issue)'
       />
     </div>
   </div>
@@ -41,7 +43,18 @@ export default {
     },
     columnSettings() {
       console.log('column-settings');
-    }
+    },
+    dragStart(e, issue) {
+      console.log('[dragStart] Issue: ' + issue?.id);
+      // console.log(e.target.className);
+      if (e.target.className === 'issue') {
+        // issue.isDragStart = true;
+        e.dataTransfer.dropEffect = 'move';
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('itemKind', 'issue');
+        e.dataTransfer.setData('itemID', issue.id);
+      }
+    },
   }
 }
 </script>
@@ -62,7 +75,7 @@ export default {
     border-radius: 6px
 
   .header
-    cursor: pointer
+    cursor: grab
     margin-bottom: 8px
 
     .issues-count

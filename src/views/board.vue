@@ -78,20 +78,23 @@ export default {
       this.isSubmittingNewColumn = true;
       await this.createColumn({ name });
       this.isSubmittingNewColumn = false;
-
-      // await this.$nextTick(() => this.isSubmittingNewColumn = false);
-      // console.log('new column: ' + name);
     },
     dragStart(e, column) {
-      console.log('dragStart: ' + column?.id);
-      column.isDragStart = true;
-      e.dataTransfer.dropEffect = 'move'
-      e.dataTransfer.effectAllowed = 'move'
-      e.dataTransfer.setData('itemID', column.id)
+      console.log('[dragStart] Column: ' + column?.id);
+      // console.log(e.target.className);
+      if (e.target.className === 'column') {
+        column.isDragStart = true;
+        e.dataTransfer.dropEffect = 'move';
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('itemKind', 'column');
+        e.dataTransfer.setData('itemID', column.id);
+      } else {
+        console.log('[dragStart] Column: prevent');
+      }
     },
     dragEnter(e, column) {
       column.isDragEnter = true;
-      // console.log('dragEnter');
+      // console.log('[dragEnter] Column: ' + e.target.className);
       // console.log('to: ' + column?.id);
 
       e.preventDefault();
@@ -99,35 +102,41 @@ export default {
     },
     dragLeave(e, column) {
       column.isDragEnter = false;
-      // console.log('dragLeave');
+      // console.log('[dragLeave]');
       // console.log('from :' + column?.id);
 
       e.preventDefault();
       return true;
     },
     drop (e, column) {
-      // console.log('drop :' + e.dataTransfer.getData('itemID'));
-      // console.log('to: ' + column.id);
       column.isDragEnter = false;
+      console.log('[drop] ID:' + e.dataTransfer.getData('itemID'));
+      console.log('[drop] Kind: ' + e.dataTransfer.getData('itemKind'));
+
       const columnMoved = this.columns.find(v => v.id == e.dataTransfer.getData('itemID'));
       if (columnMoved != null) {
-        const fromRightToLeft = columnMoved.position < column.position;
-        const columnsWoMoved = this.columns.filter(v => v.id != columnMoved.id);
-        const columnsBefore = fromRightToLeft ?
-          columnsWoMoved.filter(v => v.position <= column.position) :
-          columnsWoMoved.filter(v => v.position < column.position);
-        // console.log(columnsBefore.map(v => v.name));
+        if (e.dataTransfer.getData('itemKind') === 'column') {
+          const fromRightToLeft = columnMoved.position < column.position;
+          const columnsWoMoved = this.columns.filter(v => v.id != columnMoved.id);
+          const columnsBefore = fromRightToLeft ?
+            columnsWoMoved.filter(v => v.position <= column.position) :
+            columnsWoMoved.filter(v => v.position < column.position);
+          // console.log(columnsBefore.map(v => v.name));
 
-        const columnsAfter = fromRightToLeft ?
-          columnsWoMoved.filter(v => v.position > column.position) :
-          columnsWoMoved.filter(v => v.position >= column.position);
-        // console.log(columnsAfter.map(v => v.name));
+          const columnsAfter = fromRightToLeft ?
+            columnsWoMoved.filter(v => v.position > column.position) :
+            columnsWoMoved.filter(v => v.position >= column.position);
+          // console.log(columnsAfter.map(v => v.name));
 
-        const newColumns = [...columnsBefore, columnMoved, ...columnsAfter];
-        newColumns.map((v, i) => v.position = i + 1);
-        // console.log(newColumns.map(v => v.name));
-        this.columns = newColumns;
-        this.updateColumnPositions({ columns: this.columns });
+          const newColumns = [...columnsBefore, columnMoved, ...columnsAfter];
+          newColumns.map((v, i) => v.position = i + 1);
+          // console.log(newColumns.map(v => v.name));
+          // Note: Can't write a computed prop (readonly).
+          // this.columns = newColumns;
+          this.updateColumnPositions({ columns: this.columns });
+        } else {
+          console.log('todo: issue');
+        }
       }
       e.stopPropagation();
     },
