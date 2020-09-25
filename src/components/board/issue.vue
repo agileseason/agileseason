@@ -73,17 +73,16 @@ export default {
       font-weight: 600
 
   .labels
-    margin-top: 6px
-
     .label
-      // color: #FFFFFF
+      border-radius: 10px
       color: #212121
       display: inline-block
       font-size: 11px
       font-weight: 600
       height: 19px
+      letter-spacing: 0.2px
       line-height: 19px
-      padding: 0 8px
-      border-radius: 10px
+      margin-top: 6px
       margin-right: 6px
+      padding: 0 9px
 </style>
