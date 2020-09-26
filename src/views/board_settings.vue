@@ -4,12 +4,13 @@
     :breadCrumbs='breadCrumbs'
   />
   <Tabs
+    v-if='!isLoading'
     :items='tabs'
     :active='active'
     @select='selectTab'
   />
   <div class='body'>
-    <div v-if='isLoading' class='loading'>Loading...</div>
+    <Loader v-if='isLoading' title='Settings' />
     <div v-if='isNotFound' class='not-found'>Not Found</div>
     <div v-if='active === "General" && isLoaded'>
       TODO: {{ active }}
@@ -76,10 +77,11 @@
 </template>
 
 <script>
-import Button from '@/components/buttons/button.vue'
-import Repository from '@/components/repositories/item.vue'
-import Tabs from '@/components/tabs/tabs.vue'
-import TopMenu from '@/components/menu/top.vue'
+import Button from '@/components/buttons/button.vue';
+import Repository from '@/components/repositories/item.vue';
+import Tabs from '@/components/tabs/tabs.vue';
+import TopMenu from '@/components/menu/top.vue';
+import Loader from '@/components/loader';
 import { get, call } from 'vuex-pathify';
 
 const APP_URL = {
@@ -92,6 +94,7 @@ export default {
   components: {
     Button,
     Repository,
+    Loader,
     Tabs,
     TopMenu
   },

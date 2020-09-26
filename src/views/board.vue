@@ -2,7 +2,7 @@
   <TopMenu />
 
   <div class='board'>
-    <div v-if='isLoading'>Loading...</div>
+    <Loader v-if='isLoading' :title='boardName' />
     <div v-if='isNotFound'>Not Found!</div>
     <div v-if='isLoaded' class='columns'>
       <Column
@@ -29,6 +29,7 @@
 <script>
 import Column from '@/components/board/column.vue';
 import ColumnNew from '@/components/board/column_new.vue';
+import Loader from '@/components/loader';
 import TopMenu from '@/components/menu/top.vue';
 import { get, call } from 'vuex-pathify';
 
@@ -44,23 +45,28 @@ import { get, call } from 'vuex-pathify';
 export default {
   name: 'Board',
   components: {
-    TopMenu,
     Column,
-    ColumnNew
+    ColumnNew,
+    Loader,
+    TopMenu
   },
   data: () => ({
     isSubmittingNewColumn: false,
   }),
   computed: {
     token: get('user/token'),
-    isLoading: get('board/isLoading'),
-    isLoaded: get('board/isLoaded'),
-    isNotFound: get('board/isNotFound'),
+    boards: get('user/boards'),
     columns: get('board/columns'),
+    isLoaded: get('board/isLoaded'),
+    isLoading: get('board/isLoading'),
+    isNotFound: get('board/isNotFound'),
     sortedColumns() {
       return [...this.columns].sort((a, b) => (a.position - b.position));
     },
-    boardId() { return parseInt(this.$route.params.id) || 0; }
+    boardId() { return parseInt(this.$route.params.id) || 0; },
+    boardName() {
+      return this.boards.find(v => v.id === this.boardId)?.name || 'Board';
+    }
   },
   async created() {
     await this.fetchProfileLazy();
@@ -112,6 +118,7 @@ export default {
       column.isDragEnter = false;
       console.log('[drop] ID:' + e.dataTransfer.getData('itemID'));
       console.log('[drop] Kind: ' + e.dataTransfer.getData('itemKind'));
+      console.log('[drop] Column ID: ' + column?.id);
 
       const columnMoved = this.columns.find(v => v.id == e.dataTransfer.getData('itemID'));
       if (columnMoved != null) {
