@@ -75,8 +75,9 @@ export default {
   methods: {
     ...call([
       'user/fetchProfileLazy',
-      'board/fetch',
       'board/createColumn',
+      'board/fetch',
+      'board/removeIssue',
       'board/updateColumnPositions'
     ]),
     async createNewColumn(name) {
@@ -120,9 +121,11 @@ export default {
       console.log('[drop] Kind: ' + e.dataTransfer.getData('itemKind'));
       console.log('[drop] Column ID: ' + column?.id);
 
-      const columnMoved = this.columns.find(v => v.id == e.dataTransfer.getData('itemID'));
-      if (columnMoved != null) {
-        if (e.dataTransfer.getData('itemKind') === 'column') {
+      if (e.dataTransfer.getData('itemKind') === 'column') {
+        const columnMoved = this.columns
+          .find(v => v.id == e.dataTransfer.getData('itemID'));
+
+        if (columnMoved != null) {
           const fromRightToLeft = columnMoved.position < column.position;
           const columnsWoMoved = this.columns.filter(v => v.id != columnMoved.id);
           const columnsBefore = fromRightToLeft ?
@@ -141,9 +144,12 @@ export default {
           // Note: Can't write a computed prop (readonly).
           // this.columns = newColumns;
           this.updateColumnPositions({ columns: this.columns });
-        } else {
-          console.log('todo: issue');
         }
+      } else {
+        this.removeIssue({
+          issueId: e.dataTransfer.getData('itemID'),
+          columnToId: column.id
+        });
       }
       e.stopPropagation();
     },

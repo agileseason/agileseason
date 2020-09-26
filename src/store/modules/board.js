@@ -52,6 +52,34 @@ export default {
       } else {
         console.log('errors in updateColumnPositions');
       }
+    },
+    removeIssue({ state }, { issueId, columnToId }) {
+      console.log('removeIssue');
+      console.log('issueId: ' + issueId);
+      console.log('columnToId: ' + columnToId);
+
+      const columnTo = state.columns.find(v => v.id === columnToId);
+      if (columnTo == null) {
+        console.log('unknown columnTo!');
+        return;
+      }
+
+      let issue = null;
+      state.columns.forEach(column => {
+        const tmpIssue = column.issues.find(v => v.id == issueId);
+        if (tmpIssue) {
+          issue = tmpIssue;
+          column.issues = column.issues.filter(v => v.id != issueId);
+        }
+      });
+      // console.log('.....');
+      if (issue == null) {
+        console.log('unknown issue!');
+      } else {
+        // console.log('????');
+        console.log('add issue to column: ' + columnTo.id);
+        columnTo.issues = [...columnTo.issues, issue];
+      }
     }
   },
 
