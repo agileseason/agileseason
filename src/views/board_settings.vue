@@ -48,7 +48,7 @@
           <table>
             <thead>
               <th>Name</th>
-              <th class='issues'>Issues</th>
+              <th class='issues'>Synced Issues</th>
             </thead>
             <tbody>
               <tr v-for='item in repositories' :key='item.id'>
