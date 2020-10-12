@@ -1,8 +1,6 @@
 <template>
-  <div class='issue'>
-    <div class='title'>
-      {{ title }}
-    </div>
+  <div class='issue' @click='open'>
+    <div class='title'>{{ title }}</div>
     <a :href='url' class='url'>
       <span class='number'>#{{ number }}</span>
       {{ repositoryName }}
@@ -43,8 +41,10 @@ export default {
     isActionVisible() { return this.isClosed; }
   },
   methods: {
-    labelStyle({ color }) {
-      return `background-color: #${color}`;
+    labelStyle({ color }) { return `background-color: #${color}`; },
+    open() {
+      console.log('issue-open' + this.id);
+      this.$emit('open', this.id);
     }
   }
 }

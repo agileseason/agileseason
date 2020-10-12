@@ -15,6 +15,7 @@
         v-bind='issue'
         draggable='true'
         @dragstart='dragStart($event, issue)'
+        @open='openIssue'
       />
     </div>
   </div>
@@ -55,6 +56,10 @@ export default {
         e.dataTransfer.setData('itemID', issue.id);
       }
     },
+    openIssue(id) {
+      console.log('open-issue-column' + id);
+      this.$emit('open', id);
+    }
   }
 }
 </script>

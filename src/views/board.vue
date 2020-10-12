@@ -20,10 +20,22 @@
         @dragend='dragEnd($event, column)'
         @dragover.prevent
         @drop='drop($event, column)'
+        @open='open'
       />
       <ColumnNew @submit='createNewColumn' />
     </div>
   </div>
+
+  <div class='modal-backdrop' @click='close' v-if='isExpanded' />
+  <transition name='slide' :duration='150'>
+    <div
+      v-show='isExpanded'
+      class='modal'
+      :class='{ "is-expanded": isExpanded }'
+    >
+      TODO: Expanded {{ isExpanded }}
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -52,6 +64,7 @@ export default {
   },
   data: () => ({
     isSubmittingNewColumn: false,
+    isExpanded: false
   }),
   computed: {
     token: get('user/token'),
@@ -158,6 +171,14 @@ export default {
       e.preventDefault();
       return true;
     },
+    open(id) {
+      this.isExpanded = true;
+      console.log('true ' + id);
+    },
+    close() {
+      this.isExpanded = false;
+      console.log('false');
+    }
   }
 }
 </script>
@@ -165,4 +186,34 @@ export default {
 <style scoped lang='sass'>
 .board
   padding: 8px 8px 0px 8px
+
+.modal
+  background-color: #fff
+  height: 500px
+  position: absolute
+  top: 36px
+  left: 10% // 100% - 80%(width)/2
+  width: 80%
+  z-index: 5
+  box-shadow: 0px 6px 10px 0px #BDBDBD
+
+  transform: translateY(2000px)
+
+  &.slide-enter-to
+    transform: translateY(0%)
+
+  &.is-expanded:not(.slide-enter-active)
+    transform: none
+
+.slide-enter-active,
+.slide-leave-active
+  transition: transform 200ms
+
+.modal-backdrop
+  z-index: 4
+  width: 100vw
+  height: 100vh
+  position: fixed
+  top: 0
+  left: 0
 </style>
