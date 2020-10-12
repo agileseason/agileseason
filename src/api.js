@@ -207,9 +207,27 @@ export default {
     const ids = columns.map(v => v.id);
     const positions = columns.map(v => v.position);
     const vars = { boardId, ids, positions };
-    console.log(vars);
+    // console.log(vars);
     const data = await this.client(token).request(query, vars);
     this.log('updateColumnPositions', data);
+
+    return data?.action;
+  },
+
+  async moveIssues(token, { boardId, columnId, issueIds }) {
+    const query = `
+      mutation($boardId:Int!, $columnId:Int!, $issueIds:[Int!]!) {
+        action:moveIssues(
+          input: { boardId: $boardId, columnId: $columnId, issueIds: $issueIds }
+        ) {
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, columnId, issueIds };
+    console.log(vars);
+    const data = await this.client(token).request(query, vars);
+    this.log('moveIssue', data);
 
     return data?.action;
   },

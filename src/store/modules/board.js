@@ -50,10 +50,10 @@ export default {
       if (result?.errors?.length == 0) {
         console.log('success');
       } else {
-        console.log('errors in updateColumnPositions');
+        console.error(result.errors[0]);
       }
     },
-    removeIssue({ state }, { issueId, columnToId }) {
+    removeIssue({ state, getters }, { issueId, columnToId }) {
       console.log('removeIssue');
       console.log('issueId: ' + issueId);
       console.log('columnToId: ' + columnToId);
@@ -72,13 +72,22 @@ export default {
           column.issues = column.issues.filter(v => v.id != issueId);
         }
       });
-      // console.log('.....');
       if (issue == null) {
         console.log('unknown issue!');
       } else {
-        // console.log('????');
         console.log('add issue to column: ' + columnTo.id);
-        columnTo.issues = [...columnTo.issues, issue];
+        columnTo.issues = [issue, ...columnTo.issues];
+        const result = api.moveIssues(
+          getters.token,
+          {
+            boardId: state.id,
+            columnId: columnToId,
+            issueIds: columnTo.issues.map(v => v.id)
+          }
+        );
+        if (result?.errors?.length > 0) {
+          console.error(result.errors[0]);
+        }
       }
     }
   },
