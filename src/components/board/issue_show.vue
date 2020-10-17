@@ -52,10 +52,10 @@ export default {
 
 .title
   font-size: 20px
-  font-weight: 600
+  font-weight: 500
 
   a
     color: #2196F3
-    font-weight: 500
+    font-weight: 400
     margin-left: 4px
 </style>
