@@ -27,20 +27,20 @@
   </div>
 
   <div class='modal-backdrop' @click='close' v-if='isExpanded' />
-  <transition name='slide' :duration='150'>
-    <div
+  <transition name='slide' :duration='200'>
+    <IssueShow
       v-show='isExpanded'
       class='modal'
       :class='{ "is-expanded": isExpanded }'
-    >
-      TODO: Expanded {{ isExpanded }}
-    </div>
+      :issue='currentIssue'
+    />
   </transition>
 </template>
 
 <script>
 import Column from '@/components/board/column.vue';
 import ColumnNew from '@/components/board/column_new.vue';
+import IssueShow from '@/components/board/issue_show.vue';
 import Loader from '@/components/loader';
 import TopMenu from '@/components/menu/top.vue';
 import { get, call } from 'vuex-pathify';
@@ -59,12 +59,14 @@ export default {
   components: {
     Column,
     ColumnNew,
+    IssueShow,
     Loader,
     TopMenu
   },
   data: () => ({
     isSubmittingNewColumn: false,
-    isExpanded: false
+    isExpanded: false,
+    currentIssue: null
   }),
   computed: {
     token: get('user/token'),
@@ -171,8 +173,9 @@ export default {
       e.preventDefault();
       return true;
     },
-    open(id) {
+    open({ id, number, title, url }) {
       this.isExpanded = true;
+      this.currentIssue = { id, number, title, url };
       console.log('true ' + id);
     },
     close() {
@@ -210,10 +213,11 @@ export default {
   transition: transform 200ms
 
 .modal-backdrop
-  z-index: 4
-  width: 100vw
+  background: rgba(0, 0, 0, 0.3)
   height: 100vh
+  left: 0
   position: fixed
   top: 0
-  left: 0
+  width: 100vw
+  z-index: 4
 </style>

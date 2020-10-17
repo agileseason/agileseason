@@ -44,7 +44,7 @@ export default {
     labelStyle({ color }) { return `background-color: #${color}`; },
     open() {
       console.log('issue-open' + this.id);
-      this.$emit('open', this.id);
+      this.$emit('open', this);
     }
   }
 }
