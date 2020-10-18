@@ -33,6 +33,7 @@
       class='modal'
       :class='{ "is-expanded": isExpanded }'
       :issue='currentIssue'
+      @close='close'
     />
   </transition>
 </template>

@@ -2,6 +2,7 @@
   <div>
     <div class='header'>
       header
+      <div class='close' @click='close' />
     </div>
     <div class='body'>
       <div class='title'>
@@ -36,6 +37,7 @@ export default {
     repositoryName() { return this.issue?.repositoryName; },
   },
   methods: {
+    close() { this.$emit('close'); }
   }
 }
 </script>
@@ -46,6 +48,23 @@ export default {
   box-sizing: border-box
   height: 44px
   padding: 10px 14px
+  position: relative
+
+  .close
+    background-image: url('../../assets/icons/issue/x_close.svg')
+    background-position: center
+    background-repeat: no-repeat
+    cursor: pointer
+    float: right
+    height: 10px
+    padding: 6px
+    width: 10px
+
+    &:hover
+      opacity: 0.7
+
+    &:active
+      opacity: 0.9
 
 .body
   padding: 12px 14px
