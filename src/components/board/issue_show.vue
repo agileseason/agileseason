@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class='header'>
-      header
+      <span class='repo'>{{ repositoryName }}</span>
       <div class='close' @click='close' />
     </div>
     <div class='body'>
@@ -49,6 +49,10 @@ export default {
   height: 44px
   padding: 10px 14px
   position: relative
+
+  .repo
+    font-weight: 500
+    line-height: 22px
 
   .close
     background-image: url('../../assets/icons/issue/x_close.svg')
