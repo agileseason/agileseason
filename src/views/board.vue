@@ -174,9 +174,9 @@ export default {
       e.preventDefault();
       return true;
     },
-    open({ id, number, title, url, repositoryName }) {
+    open({ id, number, title, url, repositoryName, isClosed }) {
       this.isExpanded = true;
-      this.currentIssue = { id, number, title, url, repositoryName };
+      this.currentIssue = { id, number, title, url, repositoryName, isClosed };
       console.log('true ' + id);
     },
     close() {

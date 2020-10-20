@@ -56,9 +56,9 @@ export default {
         e.dataTransfer.setData('itemID', issue.id);
       }
     },
-    openIssue({ id, number, title, url, repositoryName }) {
+    openIssue({ id, number, title, url, repositoryName, isClosed }) {
       console.log('open-issue-column' + id);
-      this.$emit('open', { id, number, title, url, repositoryName });
+      this.$emit('open', { id, number, title, url, repositoryName, isClosed });
     }
   }
 }

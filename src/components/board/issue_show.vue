@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class='header'>
+      <span class='state' :class='{"closed": isClosed}'>{{ state }}</span>
       <span class='repo'>{{ repositoryName }}</span>
       <div class='close' @click='close' />
     </div>
@@ -29,12 +30,13 @@ export default {
   data: () => ({}),
   computed: {
     // isLabels() { return this.labels.length > 0; },
-    // isActionVisible() { return this.isClosed; }
     id() { return this.issue?.id; },
     title() { return this.issue?.title; },
     number() { return this.issue?.number; },
     url() { return this.issue?.url; },
     repositoryName() { return this.issue?.repositoryName; },
+    isClosed() { return this.issue?.isClosed; },
+    state() { return this.issue?.isClosed ? 'closed' : 'open'; },
   },
   methods: {
     close() { this.$emit('close'); }
@@ -49,6 +51,27 @@ export default {
   height: 44px
   padding: 10px 14px
   position: relative
+
+  .state
+    background-color: #22863A
+    background-image: url('../../assets/icons/issue/white_open.svg')
+    background-position-y: center
+    background-position-x: 4px
+    background-repeat: no-repeat
+    border-radius: 12px
+    box-sizing: border-box
+    color: #FFF
+    display: inline-block
+    font-size: 12px
+    height: 24px
+    line-height: 20px
+    margin-right: 8px
+    padding: 2px 8px 2px 24px
+    vertical-align: top
+
+    &.closed
+      background-color: #D73A49
+      background-image: url('../../assets/icons/issue/white_closed.svg')
 
   .repo
     font-weight: 500
