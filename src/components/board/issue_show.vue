@@ -7,7 +7,7 @@
     </div>
     <div class='body'>
       <div class='title'>
-        {{ title }}<a :href='url'>#{{ number }}</a>
+        {{ title }}&nbsp;<a :href='url'>#{{ number }}</a>
       </div>
       <div class='main-comment'>body</div>
       <div class='comments'>comments...</div>
@@ -103,5 +103,4 @@ export default {
   a
     color: #2196F3
     font-weight: 400
-    margin-left: 4px
 </style>
