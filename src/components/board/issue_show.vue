@@ -10,7 +10,7 @@
         {{ title }}&nbsp;<a :href='url'>#{{ number }}</a>
       </div>
       <Loader v-if='isLoading' />
-      <div v-if='!isLoading' class='main-comment'>body</div>
+      <div v-if='!isLoading' class='main-comment'>{{ origBody }}</div>
       <div v-if='!isLoading' class='comments'>comments...</div>
     </div>
   </div>
@@ -35,20 +35,25 @@ export default {
   data: () => ({}),
   computed: {
     isLoading: get('issue/isLoading'),
+    isLoaded: get('issue/isLoaded'),
     // TODO: Add not found vue.
     isNotFound: get('issue/isNotFound'),
+    origTitle: get('issue/title'),
+    origBody: get('issue/body'),
     id() { return this.issue?.id; },
-    title() { return this.issue?.title; },
     number() { return this.issue?.number; },
     url() { return this.issue?.url; },
     repositoryName() { return this.issue?.repositoryName; },
+    title() {
+      return this.isLoaded ?
+        this.origTitle :
+        this.issue?.title;
+    },
     isClosed() { return this.issue?.isClosed; },
     state() { return this.issue?.isClosed ? 'closed' : 'open'; },
   },
   async created() {
-    console.log('issue_show: created');
     if (this.id) {
-      console.log('fetch');
       await this.fetch({ id: this.id });
     }
   },

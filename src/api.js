@@ -244,6 +244,7 @@ export default {
             id
             number
             title
+            body
             position
             url
             repositoryName
