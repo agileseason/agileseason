@@ -9,16 +9,20 @@
       <div class='title'>
         {{ title }}&nbsp;<a :href='url'>#{{ number }}</a>
       </div>
-      <div class='main-comment'>body</div>
-      <div class='comments'>comments...</div>
+      <Loader v-if='isLoading' />
+      <div v-if='!isLoading' class='main-comment'>body</div>
+      <div v-if='!isLoading' class='comments'>comments...</div>
     </div>
   </div>
 </template>
 
 <script>
+import Loader from '@/components/loader';
+
 export default {
   name: 'IssueShow',
   components: {
+    Loader
   },
   props: {
     issue: { type: Object, required: false },
@@ -27,7 +31,9 @@ export default {
     // title: { type: String, required: false },
     // url: { type: String, required: false }
   },
-  data: () => ({}),
+  data: () => ({
+    isLoading: true
+  }),
   computed: {
     // isLabels() { return this.labels.length > 0; },
     id() { return this.issue?.id; },
