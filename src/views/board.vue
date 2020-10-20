@@ -28,13 +28,17 @@
 
   <div class='modal-backdrop' @click='close' v-if='isExpanded' />
   <transition name='slide' :duration='200'>
-    <IssueShow
-      v-show='isExpanded'
+    <div
       class='modal'
       :class='{ "is-expanded": isExpanded }'
-      :issue='currentIssue'
-      @close='close'
-    />
+      v-show='isExpanded'
+    >
+      <IssueShow
+        v-if='isExpanded'
+        :issue='currentIssue'
+        @close='close'
+      />
+    </div>
   </transition>
 </template>
 

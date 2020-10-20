@@ -18,6 +18,7 @@
 
 <script>
 import Loader from '@/components/loader';
+import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'IssueShow',
@@ -31,11 +32,11 @@ export default {
     // title: { type: String, required: false },
     // url: { type: String, required: false }
   },
-  data: () => ({
-    isLoading: true
-  }),
+  data: () => ({}),
   computed: {
-    // isLabels() { return this.labels.length > 0; },
+    isLoading: get('issue/isLoading'),
+    // TODO: Add not found vue.
+    isNotFound: get('issue/isNotFound'),
     id() { return this.issue?.id; },
     title() { return this.issue?.title; },
     number() { return this.issue?.number; },
@@ -44,7 +45,17 @@ export default {
     isClosed() { return this.issue?.isClosed; },
     state() { return this.issue?.isClosed ? 'closed' : 'open'; },
   },
+  async created() {
+    console.log('issue_show: created');
+    if (this.id) {
+      console.log('fetch');
+      await this.fetch({ id: this.id });
+    }
+  },
   methods: {
+    ...call([
+      'issue/fetch',
+    ]),
     close() { this.$emit('close'); }
   }
 }

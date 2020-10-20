@@ -233,6 +233,36 @@ export default {
   },
 
   // ---------------------------------
+  // Issue
+  // ---------------------------------
+
+  async fetchIssue(token, { boardId, id }) {
+    const query = `
+      mutation($boardId:Int!, $id:Int!) {
+        action:syncIssue(input: { boardId: $boardId, id: $id }) {
+          issue {
+            id
+            number
+            title
+            position
+            url
+            repositoryName
+            isClosed
+            labels { name color }
+          }
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, id };
+    console.log(vars);
+    const data = await this.client(token).request(query, vars);
+    this.log('fetchIssue', data);
+
+    return data?.action;
+  },
+
+  // ---------------------------------
   // Helpers
   // ---------------------------------
 
