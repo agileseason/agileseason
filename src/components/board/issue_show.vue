@@ -1,16 +1,21 @@
 <template>
-  <div>
-    <div class='header'>
+  <div class='issue'>
+    <div class='issue-header'>
       <span class='state' :class='{"closed": isClosed}'>{{ state }}</span>
       <span class='repo'>{{ repositoryName }}</span>
       <div class='close' @click='close' />
     </div>
-    <div class='body'>
+    <div class='issue-body'>
       <div class='title'>
         {{ title }}&nbsp;<a :href='url'>#{{ number }}</a>
       </div>
       <Loader v-if='isLoading' />
-      <div v-if='!isLoading' class='main-comment'>{{ origBody }}</div>
+      <div v-if='!isLoading' class='main-comment comment'>
+        <div class='avatar' />
+        <div class='text'>
+          {{ origBody }}
+        </div>
+      </div>
       <div v-if='!isLoading' class='comments'>comments...</div>
     </div>
   </div>
@@ -67,7 +72,7 @@ export default {
 </script>
 
 <style scoped lang='sass'>
-.header
+.issue-header
   border-bottom: 1px solid #C5CAE9
   box-sizing: border-box
   height: 44px
@@ -115,14 +120,42 @@ export default {
     &:active
       opacity: 0.9
 
-.body
+.issue-body
   padding: 12px 14px
 
-.title
-  font-size: 20px
-  font-weight: 500
+  .title
+    font-size: 20px
+    font-weight: 500
+    margin-bottom: 12px
 
-  a
-    color: #2196F3
-    font-weight: 400
+    a
+      color: #2196F3
+      font-weight: 400
+
+
+  .comment
+    position: relative
+    margin-bottom: 20px
+
+    .avatar
+      width: 40px
+      height: 40px
+      border-radius: 20px
+      background: #EEE
+      position: absolute
+      left: 0
+      top: 0
+
+    .text
+      border-radius: 2px
+      border: 1px solid #E8EAF6
+      margin-left: 48px
+      padding: 10px
+
+      font-family: Roboto
+      font-size: 14px
+      font-style: normal
+      font-weight: 400
+      line-height: 18px
+      letter-spacing: 0.012em
 </style>
