@@ -249,6 +249,8 @@ export default {
             url
             repositoryName
             isClosed
+            createdAt
+            createdAgo
             labels { name color }
             author { login url avatarUrl }
           }
@@ -262,6 +264,27 @@ export default {
     this.log('fetchIssue', data);
 
     return data?.action;
+  },
+
+  async fetchIssueComments(token, { boardId, id }) {
+    const query = `
+      query($boardId:Int!, $id:Int!) {
+        comments(boardId: $boardId, id: $id) {
+          id
+          nodeId
+          body
+          createdAt
+          createdAgo
+          author { url login avatarUrl }
+        }
+      }
+    `;
+    const vars = { boardId, id };
+    console.log(vars);
+    const data = await this.client(token).request(query, vars);
+    this.log('fetchIssueComments', data);
+
+    return data?.comments;
   },
 
   // ---------------------------------

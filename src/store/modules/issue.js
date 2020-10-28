@@ -8,8 +8,13 @@ export default {
     title: undefined,
     body: undefined,
     author: undefined,
+    createdAt: undefined,
+    createdAgo: undefined,
     isLoading: true,
-    isLoaded: false
+    isLoaded: false,
+    isCommentLoading: false,
+    isCommentLoaded: false,
+    comments: []
   },
 
   getters: {
@@ -25,7 +30,6 @@ export default {
   actions: {
     async fetch({ commit, getters }, { id }) {
       commit('START_LOADING');
-      console.log(getters.boardId);
       const { issue } = await api.fetchIssue(
         getters.token,
         { boardId: getters.boardId, id }
@@ -36,6 +40,15 @@ export default {
         commit('FINISH_LOADING', issue);
       }
     },
+    async fetchComments({ commit, getters }, { id }) {
+      commit('START_COMMENTS_LOADING');
+      const comments = await api.fetchIssueComments(
+        getters.token,
+        { boardId: getters.boardId, id }
+      );
+      commit('FINISH_COMMENTS_LOADING', comments);
+      return comments;
+    },
   },
 
   mutations: {
@@ -44,11 +57,13 @@ export default {
       state.isLoaded = false;
     },
     FINISH_LOADING(state, issue) {
-      const { id, title, body, author } = issue;
+      const { id, title, body, author, createdAt, createdAgo } = issue;
       state.id = id;
       state.title = title;
       state.body = body;
       state.author = author;
+      state.createdAt = createdAt;
+      state.createdAgo = createdAgo;
 
       state.isLoading = false;
       state.isLoaded = true;
@@ -56,6 +71,16 @@ export default {
     NOT_FOUND(state) {
       state.isLoading = false;
       state.isLoaded = false;
-    }
+    },
+    START_COMMENTS_LOADING(state) {
+      state.isCommentLoading = true;
+      state.isCommentLoaded = false;
+    },
+    FINISH_COMMENTS_LOADING(state, comments) {
+      state.comments = comments;
+
+      state.isCommentLoading = false;
+      state.isCommentLoaded = true;
+    },
   }
 };

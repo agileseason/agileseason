@@ -15,13 +15,34 @@
 
         <div class='content'>
           <a class='author' :href='origAuthor.url'>{{ origAuthor.login }}</a>
+          <span class='ago' :title='origCreatedAt'>
+            commented {{ origCreatedAgo }}
+          </span>
+
           <div v-if='isBodyEmpty' class='text empty'>No description provided</div>
           <div v-else class='text'>
             {{ origBody }}
           </div>
         </div>
       </div>
-      <div v-if='!isLoading' class='comments'>comments...</div>
+
+      <Loader v-if='isCommentLoading' />
+      <div v-if='isCommentLoaded' class='comments'>
+        <div v-for='item in origComments' :key='item.id' class='comment'>
+          <img class='avatar' :src='item.author.avatarUrl' />
+
+          <div class='content'>
+            <a class='author' :href='item.author.url'>{{ item.author.login }}</a>
+            <span class='ago' :title='item.createdAt'>
+              commented {{ item.createdAgo }}
+            </span>
+
+            <div class='text'>
+              {{ item.body }}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -46,11 +67,16 @@ export default {
   computed: {
     isLoading: get('issue/isLoading'),
     isLoaded: get('issue/isLoaded'),
+    isCommentLoading: get('issue/isCommentLoading'),
+    isCommentLoaded: get('issue/isCommentLoaded'),
     // TODO: Add not found vue.
     isNotFound: get('issue/isNotFound'),
     origTitle: get('issue/title'),
     origBody: get('issue/body'),
+    origCreatedAt: get('issue/createdAt'),
+    origCreatedAgo: get('issue/createdAgo'),
     origAuthor: get('issue/author'),
+    origComments: get('issue/comments'),
     id() { return this.issue?.id; },
     number() { return this.issue?.number; },
     url() { return this.issue?.url; },
@@ -67,11 +93,13 @@ export default {
   async created() {
     if (this.id) {
       await this.fetch({ id: this.id });
+      this.fetchComments({ id: this.id });
     }
   },
   methods: {
     ...call([
       'issue/fetch',
+      'issue/fetchComments'
     ]),
     close() { this.$emit('close'); }
   }
@@ -139,7 +167,6 @@ export default {
       color: #2196F3
       font-weight: 400
 
-
   .comment
     position: relative
     margin-bottom: 20px
@@ -160,7 +187,7 @@ export default {
       padding: 10px
 
       a.author
-        display: block
+        display: inline-block
         color: #283593
         font-size: 13px
         font-weight: 600
@@ -169,6 +196,12 @@ export default {
 
         &:hover
           text-decoration: underline
+
+      .ago
+        margin-left: 2px
+        color: #283593
+        font-size: 13px
+        font-weight: 400
 
       .text
         font-family: Roboto
