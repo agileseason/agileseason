@@ -1,7 +1,7 @@
 <template>
   <div class='issue' @click='open'>
     <div class='title'>{{ title }}</div>
-    <a :href='url' class='url'>
+    <a :href='url' class='url' @click.stop='click'>
       <span class='number'>#{{ number }}</span>
       {{ repositoryName }}
     </a>
