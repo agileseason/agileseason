@@ -31,6 +31,7 @@
     <div
       class='modal'
       :class='{ "is-expanded": isExpanded }'
+      v-if='isLoaded'
       v-show='isExpanded'
     >
       <IssueShow

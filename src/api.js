@@ -250,6 +250,7 @@ export default {
             repositoryName
             isClosed
             labels { name color }
+            author { login url avatarUrl }
           }
           errors
         }

@@ -1,6 +1,6 @@
 <template>
   <div class='loader'>
-    <h1>{{ title }}</h1>
+    <h1 v-if='title'>{{ title }}</h1>
     <div class='icon' />
   </div>
 </template>
@@ -9,7 +9,7 @@
 export default {
   name: 'Loader',
   props: {
-    title: { type: String, required: true },
+    title: { type: String, required: false, default: undefined },
   },
   methods: {}
 };

@@ -11,9 +11,14 @@
       </div>
       <Loader v-if='isLoading' />
       <div v-if='!isLoading' class='main-comment comment'>
-        <div class='avatar' />
-        <div class='text'>
-          {{ origBody }}
+        <img class='avatar' :src='origAuthor.avatarUrl' />
+
+        <div class='content'>
+          <a class='author' :href='origAuthor.url'>{{ origAuthor.login }}</a>
+          <div v-if='isBodyEmpty' class='text empty'>No description provided</div>
+          <div v-else class='text'>
+            {{ origBody }}
+          </div>
         </div>
       </div>
       <div v-if='!isLoading' class='comments'>comments...</div>
@@ -45,6 +50,7 @@ export default {
     isNotFound: get('issue/isNotFound'),
     origTitle: get('issue/title'),
     origBody: get('issue/body'),
+    origAuthor: get('issue/author'),
     id() { return this.issue?.id; },
     number() { return this.issue?.number; },
     url() { return this.issue?.url; },
@@ -55,6 +61,7 @@ export default {
         this.issue?.title;
     },
     isClosed() { return this.issue?.isClosed; },
+    isBodyEmpty() { return this.origBody == null || this.origBody.length === 0; },
     state() { return this.issue?.isClosed ? 'closed' : 'open'; },
   },
   async created() {
@@ -146,16 +153,31 @@ export default {
       left: 0
       top: 0
 
-    .text
+    .content
       border-radius: 2px
       border: 1px solid #E8EAF6
       margin-left: 48px
       padding: 10px
 
-      font-family: Roboto
-      font-size: 14px
-      font-style: normal
-      font-weight: 400
-      line-height: 18px
-      letter-spacing: 0.012em
+      a.author
+        display: block
+        color: #283593
+        font-size: 13px
+        font-weight: 600
+        margin-bottom: 14px
+        cursor: pointer
+
+        &:hover
+          text-decoration: underline
+
+      .text
+        font-family: Roboto
+        font-size: 14px
+        font-style: normal
+        font-weight: 400
+        line-height: 18px
+        letter-spacing: 0.012em
+
+        &.empty
+          color: #9E9E9E
 </style>

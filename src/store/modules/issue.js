@@ -7,6 +7,7 @@ export default {
     id: undefined,
     title: undefined,
     body: undefined,
+    author: undefined,
     isLoading: true,
     isLoaded: false
   },
@@ -43,10 +44,12 @@ export default {
       state.isLoaded = false;
     },
     FINISH_LOADING(state, issue) {
-      const { id, title, body } = issue;
+      const { id, title, body, author } = issue;
       state.id = id;
       state.title = title;
       state.body = body;
+      state.author = author;
+
       state.isLoading = false;
       state.isLoaded = true;
     },
