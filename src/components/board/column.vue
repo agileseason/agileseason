@@ -39,9 +39,7 @@ export default {
     issuesCount() { return this.issues.length; }
   },
   methods: {
-    issueNew() {
-      console.log('issue-new');
-    },
+    issueNew() { this.$emit('new', { columnId: this.id }); },
     columnSettings() {
       console.log('column-settings');
     },

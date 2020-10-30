@@ -20,25 +20,38 @@
         @dragend='dragEnd($event, column)'
         @dragover.prevent
         @drop='drop($event, column)'
-        @open='open'
+        @open='openIssueShow'
+        @new='openIssueNew'
       />
       <ColumnNew @submit='createNewColumn' />
     </div>
   </div>
 
-  <div class='modal-backdrop' @click='close' v-if='isExpanded' />
+  <div class='modal-backdrop' @click='closeIssueShow' v-if='isExpandedIssueShow' />
   <transition name='slide' :duration='200'>
     <div
       class='modal'
-      :class='{ "is-expanded": isExpanded }'
+      :class='{ "is-expanded": isExpandedIssueShow }'
       v-if='isLoaded'
-      v-show='isExpanded'
+      v-show='isExpandedIssueShow'
     >
       <IssueShow
-        v-if='isExpanded'
+        v-if='isExpandedIssueShow'
         :issue='currentIssue'
-        @close='close'
+        @close='closeIssueShow'
       />
+    </div>
+  </transition>
+
+  <div class='modal-backdrop' @click='closeIssueNew' v-if='isExpandedIssueNew' />
+  <transition name='slide' :duration='200'>
+    <div
+      class='modal'
+      :class='{ "is-expanded": isExpandedIssueNew }'
+      v-if='isLoaded'
+      v-show='isExpandedIssueNew'
+    >
+      <IssueNew v-if='isExpandedIssueNew' @close='closeIssueNew' />
     </div>
   </transition>
 </template>
@@ -47,6 +60,7 @@
 import Column from '@/components/board/column.vue';
 import ColumnNew from '@/components/board/column_new.vue';
 import IssueShow from '@/components/board/issue_show.vue';
+import IssueNew from '@/components/board/issue_new.vue';
 import Loader from '@/components/loader';
 import TopMenu from '@/components/menu/top.vue';
 import { get, call } from 'vuex-pathify';
@@ -66,12 +80,14 @@ export default {
     Column,
     ColumnNew,
     IssueShow,
+    IssueNew,
     Loader,
     TopMenu
   },
   data: () => ({
     isSubmittingNewColumn: false,
-    isExpanded: false,
+    isExpandedIssueShow: false,
+    isExpandedIssueNew: false,
     currentIssue: null
   }),
   computed: {
@@ -179,15 +195,16 @@ export default {
       e.preventDefault();
       return true;
     },
-    open({ id, number, title, url, repositoryName, isClosed }) {
-      this.isExpanded = true;
+    openIssueShow({ id, number, title, url, repositoryName, isClosed }) {
+      this.isExpandedIssueShow = true;
       this.currentIssue = { id, number, title, url, repositoryName, isClosed };
-      console.log('true ' + id);
     },
-    close() {
-      this.isExpanded = false;
-      console.log('false');
-    }
+    closeIssueShow() { this.isExpandedIssueShow = false; },
+    openIssueNew({ columnId }) {
+      this.isExpandedIssueNew = true;
+      console.log(columnId);
+    },
+    closeIssueNew() { this.isExpandedIssueNew = false; }
   }
 }
 </script>
