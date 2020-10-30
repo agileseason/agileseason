@@ -55,6 +55,8 @@ export default {
     START_LOADING(state) {
       state.isLoading = true;
       state.isLoaded = false;
+      state.isCommentLoading = false;
+      state.isCommentLoaded = false;
     },
     FINISH_LOADING(state, issue) {
       const { id, title, body, author, createdAt, createdAgo } = issue;
