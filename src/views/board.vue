@@ -225,7 +225,7 @@ export default {
 
 .modal
   background-color: #fff
-  height: 500px
+  min-height: 500px
   position: absolute
   top: 36px
   left: 50%

@@ -67,6 +67,23 @@
 
         <div class='columns'>
           <label class='label'>Columns</label>
+          <div v-for='column in columns' class='column' :key='column.id'>
+            <input
+              v-model='selectedColumnId'
+              type='radio'
+              :value='column.id'
+              :id='column.id'
+            />
+            <label :for='column.id'>
+              {{ column.name }}
+            </label>
+          </div>
+        </div>
+
+        <div class='delimeter' />
+
+        <div class='position'>
+          <label class='label'>Position</label>
           TODO
         </div>
       </div>
@@ -90,6 +107,7 @@ export default {
     title: '',
     body: '',
     selectedRepositoryId: undefined,
+    selectedColumnId: undefined,
 
     isSubmitting: false
   }),
@@ -97,6 +115,7 @@ export default {
     username: get('user/username'),
     avatarUrl: get('user/avatarUrl'),
     repositories: get('board/repositories'),
+    columns: get('board/columns'),
     isValid() {
       return this.title.length > 0;
     },
@@ -119,6 +138,7 @@ export default {
   },
   created() {
     this.selectedRepositoryId = this.repositories[0].id;
+    this.selectedColumnId = this.columnId;
   },
   methods: {
     ...call([
@@ -175,6 +195,7 @@ export default {
 
 .issue-body
   position: relative
+  padding-bottom: 40px
 
   .avatar
     width: 40px
@@ -251,8 +272,23 @@ export default {
     font-weight: 700
     margin-bottom: 6px
 
+  // Note: Duplicate with .columns
   .repositories
     .repository
+      margin-bottom: 5px
+
+      &:last-child
+        margin-bottom: 0px
+
+      input
+        margin: 0
+
+      label
+        margin-left: 6px
+
+  // Note: Duplicate with .repositories
+  .columns
+    .column
       margin-bottom: 5px
 
       &:last-child
