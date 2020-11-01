@@ -9,7 +9,7 @@
       <div class='left'>
         <img class='avatar' :src='avatarUrl' />
 
-        <input type='text' class='title' v-model='title' placeholder='Title' />
+        <input type='text' class='title' v-model.trim='title' placeholder='Title' />
         <textarea
           class='body'
           v-model='body'
@@ -17,7 +17,12 @@
         />
 
         <div class='actions'>
-          <Button text='Submit new issue' @click='submit' :is-loading='isSubmitting' />
+          <Button
+            text='Submit new issue'
+            @click='submit'
+            :is-loading='isSubmitting'
+            :is-disabled='!isValid'
+          />
         </div>
       </div>
 
@@ -39,7 +44,31 @@
 
         <div class='delimeter' />
 
-        TODO
+        <div class='assigness'>
+          <label class='label'>Assigness</label>
+          TODO
+        </div>
+
+        <div class='delimeter' />
+
+        <div class='labels'>
+          <label class='label'>Labels</label>
+          TODO
+        </div>
+
+        <div class='delimeter' />
+
+        <div class='colors'>
+          <label class='label'>Colors</label>
+          TODO
+        </div>
+
+        <div class='delimeter' />
+
+        <div class='columns'>
+          <label class='label'>Columns</label>
+          TODO
+        </div>
       </div>
     </div>
   </div>
@@ -68,6 +97,9 @@ export default {
     username: get('user/username'),
     avatarUrl: get('user/avatarUrl'),
     repositories: get('board/repositories'),
+    isValid() {
+      return this.title.length > 0;
+    },
     // isLoading: get('issue/isLoading'),
     // isLoaded: get('issue/isLoaded'),
     // isCommentLoading: get('issue/isCommentLoading'),
@@ -197,14 +229,14 @@ export default {
     display: inline-block
 
   .left
-    width: calc(100% - 180px)
+    width: calc(100% - 220px)
 
   .right
     box-sizing: border-box
     margin-top: 16px
     padding: 0 14px 0 30px
     vertical-align: top
-    width: 180px
+    width: 220px
 
   .actions
     text-align: right
