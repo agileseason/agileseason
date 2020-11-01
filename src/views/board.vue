@@ -4,7 +4,7 @@
   <div class='board'>
     <Loader v-if='isLoading' :title='boardName' />
     <div v-if='isNotFound'>Not Found!</div>
-    <div v-if='isLoaded' class='columns'>
+    <div v-if='isLoaded' class='columns' :style='widthStyles'>
       <Column
         v-for='column in sortedColumns'
         :key='column.id'
@@ -103,6 +103,9 @@ export default {
     boardId() { return parseInt(this.$route.params.id) || 0; },
     boardName() {
       return this.boards.find(v => v.id === this.boardId)?.name || 'Board';
+    },
+    widthStyles() {
+      return this.isLoaded ? { 'min-width': `${280 * (this.columns.length + 1)}px` } : {};
     }
   },
   async created() {
@@ -212,24 +215,26 @@ export default {
 <style scoped lang='sass'>
 .board
   padding: 8px 8px 0px 8px
+  overflow-x: scroll
 
 .modal
   background-color: #fff
   height: 500px
   position: absolute
   top: 36px
-  left: 10% // 100% - 80%(width)/2
+  left: 50%
   width: 80%
+  max-width: 1280px
   z-index: 5
   box-shadow: 0px 6px 10px 0px #BDBDBD
 
-  transform: translateY(2000px)
+  transform: translate(-50%, 2000px)
 
   &.slide-enter-to
-    transform: translateY(0%)
+    transform: translate(-50%, 0%)
 
   &.is-expanded:not(.slide-enter-active)
-    transform: none
+    transform: translateX(-50%)
 
 .slide-enter-active,
 .slide-leave-active
