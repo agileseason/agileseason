@@ -6,65 +6,45 @@
       <div class='close' @click='close' />
     </div>
     <div class='issue-body'>
-      <img class='avatar' :src='avatarUrl' />
+      <div class='left'>
+        <img class='avatar' :src='avatarUrl' />
 
-      <input type='text' class='title' v-model='title' placeholder='Title' />
+        <input type='text' class='title' v-model='title' placeholder='Title' />
+        <textarea
+          class='body'
+          v-model='body'
+          placeholder='Leave a comment...'
+        />
+
+        <div class='actions'>
+          <Button text='Submit new issue' @click='submit' :is-loading='isSubmitting' />
+        </div>
+      </div>
+
+      <div class='right'>
+        TODO
+      </div>
     </div>
-
-    <!--div class='issue-body'>
-      <div class='title'>
-        {{ title }}&nbsp;<a :href='url'>#{{ number }}</a>
-      </div>
-      <Loader v-if='isLoading' />
-      <div v-if='!isLoading' class='main-comment comment'>
-        <img class='avatar' :src='origAuthor.avatarUrl' />
-
-        <div class='content'>
-          <a class='author' :href='origAuthor.url'>{{ origAuthor.login }}</a>
-          <span class='ago' :title='origCreatedAt'>
-            commented {{ origCreatedAgo }}
-          </span>
-
-          <div v-if='isBodyEmpty' class='text empty'>No description provided</div>
-          <div v-else class='text'>
-            {{ origBody }}
-          </div>
-        </div>
-      </div>
-
-      <Loader v-if='isCommentLoading' />
-      <div v-if='isCommentLoaded' class='comments'>
-        <div v-for='item in origComments' :key='item.id' class='comment'>
-          <img class='avatar' :src='item.author.avatarUrl' />
-
-          <div class='content'>
-            <a class='author' :href='item.author.url'>{{ item.author.login }}</a>
-            <span class='ago' :title='item.createdAt'>
-              commented {{ item.createdAgo }}
-            </span>
-
-            <div class='text'>
-              {{ item.body }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div-->
   </div>
 </template>
 
 <script>
+import Button from '@/components/buttons/button.vue'
 import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'IssueNew',
-  components: {},
+  components: {
+    Button
+  },
   props: {
     columnId: { type: Number, required: true }
   },
   data: () => ({
     title: '',
-    body: ''
+    body: '',
+
+    isSubmitting: false
   }),
   computed: {
     username: get('user/username'),
@@ -99,7 +79,12 @@ export default {
       'issue/fetch',
       'issue/fetchComments'
     ]),
-    close() { this.$emit('close'); }
+    close() { this.$emit('close'); },
+    submit() {
+      this.isSubmitting = true;
+      console.log('submit new issue');
+      console.log(this.title + ' ' + this.body);
+    }
   }
 }
 </script>
@@ -155,7 +140,7 @@ export default {
     top: 14px
 
   input.title
-    border-radius: 2px
+    border-radius: 3px
     border: 1px solid #C5CAE9
     box-sizing: border-box
     font-size: 20px
@@ -163,7 +148,7 @@ export default {
     height: 34px
     margin: 16px 0 14px 62px
     padding: 0 8px
-    width: calc(100% - 62px - 14px) // 100% - margin-left - padding-left
+    width: calc(100% - 62px) // 100% - margin-left
 
     &::placeholder
       color: #7986CB
@@ -172,4 +157,45 @@ export default {
       color: #7986CB
     &::-ms-input-placeholder
       color: #7986CB
+
+  textarea.body
+    border-radius: 3px
+    border: 1px solid #C5CAE9
+    box-sizing: border-box
+    font-size: 16px
+    font-weight: 300
+    margin-left: 62px
+    padding: 8px
+    width: calc(100% - 62px) // 100% - margin-left
+    min-height: 200px
+    resize: none
+
+    &::placeholder
+      color: #9FA8DA
+      opacity: 1
+    &:-ms-input-placeholder
+      color: #9FA8DA
+    &::-ms-input-placeholder
+      color: #9FA8DA
+
+  .left,
+  .right
+    display: inline-block
+
+  .left
+    width: calc(100% - 180px)
+
+  .right
+    box-sizing: border-box
+    margin-top: 16px
+    padding: 0 14px 0 30px
+    vertical-align: top
+    width: 180px
+
+  .actions
+    text-align: right
+    margin-top: 12px
+
+    .button
+      min-width: 170px
 </style>
