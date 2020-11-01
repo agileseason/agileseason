@@ -7,6 +7,7 @@ export default {
     id: undefined,
     name: undefined,
     columns: [],
+    repositories: [],
     isLoading: true,
     isLoaded: false
   },
@@ -98,10 +99,11 @@ export default {
       state.isLoaded = false;
     },
     FINISH_LOADING(state, board) {
-      const { id, name, columns } = board;
+      const { id, name, columns, repositories } = board;
       state.id = id;
       state.name = name;
       state.columns = columns;
+      state.repositories = repositories;
       state.isLoading = false;
       state.isLoaded = true;
     },

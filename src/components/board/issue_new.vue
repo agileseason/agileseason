@@ -22,6 +22,23 @@
       </div>
 
       <div class='right'>
+        <div class='repositories'>
+          <label class='label'>Repositories</label>
+          <div v-for='repo in repositories' class='repository' :key='repo.id'>
+            <input
+              v-model='selectedRepositoryId'
+              type='radio'
+              :value='repo.id'
+              :id='repo.id'
+            />
+            <label :for='repo.id' title='repo.fullName'>
+              {{ repo.name }}
+            </label>
+          </div>
+        </div>
+
+        <div class='delimeter' />
+
         TODO
       </div>
     </div>
@@ -43,22 +60,18 @@ export default {
   data: () => ({
     title: '',
     body: '',
+    selectedRepositoryId: undefined,
 
     isSubmitting: false
   }),
   computed: {
     username: get('user/username'),
     avatarUrl: get('user/avatarUrl'),
+    repositories: get('board/repositories'),
     // isLoading: get('issue/isLoading'),
     // isLoaded: get('issue/isLoaded'),
     // isCommentLoading: get('issue/isCommentLoading'),
     // isCommentLoaded: get('issue/isCommentLoaded'),
-    // origTitle: get('issue/title'),
-    // origBody: get('issue/body'),
-    // origCreatedAt: get('issue/createdAt'),
-    // origCreatedAgo: get('issue/createdAgo'),
-    // origAuthor: get('issue/author'),
-    // origComments: get('issue/comments'),
     // id() { return this.issue?.id; },
     // number() { return this.issue?.number; },
     // url() { return this.issue?.url; },
@@ -73,6 +86,7 @@ export default {
     // state() { return this.issue?.isClosed ? 'closed' : 'open'; },
   },
   created() {
+    this.selectedRepositoryId = this.repositories[0].id;
   },
   methods: {
     ...call([
@@ -198,4 +212,28 @@ export default {
 
     .button
       min-width: 170px
+
+  label.label
+    color: #283593
+    display: block
+    font-weight: 700
+    margin-bottom: 6px
+
+  .repositories
+    .repository
+      margin-bottom: 5px
+
+      &:last-child
+        margin-bottom: 0px
+
+      input
+        margin: 0
+
+      label
+        margin-left: 6px
+
+  .delimeter
+    border-bottom: 1px solid #E8EAF6
+    padding-top: 12px
+    margin-bottom: 12px
 </style>

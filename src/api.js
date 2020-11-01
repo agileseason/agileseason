@@ -110,6 +110,11 @@ export default {
               labels { name color }
             }
           }
+          repositories {
+            id
+            name
+            fullName
+          }
         }
       }
     `;
