@@ -5,6 +5,11 @@
       <span class='title'>New Issue</span>
       <div class='close' @click='close' />
     </div>
+    <div class='issue-body'>
+      <img class='avatar' :src='avatarUrl' />
+
+      <input type='text' class='title' v-model='title' placeholder='Title' />
+    </div>
 
     <!--div class='issue-body'>
       <div class='title'>
@@ -49,15 +54,21 @@
 </template>
 
 <script>
-// import { get, call } from 'vuex-pathify';
-import { call } from 'vuex-pathify';
+import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'IssueNew',
   components: {},
-  props: {},
-  data: () => ({}),
+  props: {
+    columnId: { type: Number, required: true }
+  },
+  data: () => ({
+    title: '',
+    body: ''
+  }),
   computed: {
+    username: get('user/username'),
+    avatarUrl: get('user/avatarUrl'),
     // isLoading: get('issue/isLoading'),
     // isLoaded: get('issue/isLoaded'),
     // isCommentLoading: get('issue/isCommentLoading'),
@@ -130,4 +141,35 @@ export default {
 
     &:active
       opacity: 0.9
+
+.issue-body
+  position: relative
+
+  .avatar
+    width: 40px
+    height: 40px
+    border-radius: 20px
+    background: #EEE
+    position: absolute
+    left: 14px
+    top: 14px
+
+  input.title
+    border-radius: 2px
+    border: 1px solid #C5CAE9
+    box-sizing: border-box
+    font-size: 20px
+    font-weight: 300
+    height: 34px
+    margin: 16px 0 14px 62px
+    padding: 0 8px
+    width: calc(100% - 62px - 14px) // 100% - margin-left - padding-left
+
+    &::placeholder
+      color: #7986CB
+      opacity: 1
+    &:-ms-input-placeholder
+      color: #7986CB
+    &::-ms-input-placeholder
+      color: #7986CB
 </style>

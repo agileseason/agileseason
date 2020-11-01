@@ -51,7 +51,11 @@
       v-if='isLoaded'
       v-show='isExpandedIssueNew'
     >
-      <IssueNew v-if='isExpandedIssueNew' @close='closeIssueNew' />
+      <IssueNew
+        v-if='isExpandedIssueNew'
+        :columnId='newIssueColumnId'
+        @close='closeIssueNew'
+      />
     </div>
   </transition>
 </template>
@@ -88,7 +92,8 @@ export default {
     isSubmittingNewColumn: false,
     isExpandedIssueShow: false,
     isExpandedIssueNew: false,
-    currentIssue: null
+    currentIssue: undefined,
+    newIssueColumnId: undefined
   }),
   computed: {
     token: get('user/token'),
@@ -205,7 +210,8 @@ export default {
     closeIssueShow() { this.isExpandedIssueShow = false; },
     openIssueNew({ columnId }) {
       this.isExpandedIssueNew = true;
-      console.log(columnId);
+      this.newIssueColumnId = columnId;
+      // console.log(columnId);
     },
     closeIssueNew() { this.isExpandedIssueNew = false; }
   }
