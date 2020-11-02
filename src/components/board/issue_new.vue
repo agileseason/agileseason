@@ -82,9 +82,19 @@
 
         <div class='delimeter' />
 
-        <div class='position'>
+        <div class='positions'>
           <label class='label'>Position</label>
-          TODO
+          <div v-for='position in positions' class='position' :key='position'>
+            <input
+              v-model='selectedPosition'
+              type='radio'
+              :value='position'
+              :id='position'
+            />
+            <label :for='position'>
+              {{ position.substr(0, 1).toUpperCase() + position.substr(1).toLowerCase() }}
+            </label>
+          </div>
         </div>
       </div>
     </div>
@@ -108,6 +118,7 @@ export default {
     body: '',
     selectedRepositoryId: undefined,
     selectedColumnId: undefined,
+    selectedPosition: undefined,
 
     isSubmitting: false
   }),
@@ -116,6 +127,7 @@ export default {
     avatarUrl: get('user/avatarUrl'),
     repositories: get('board/repositories'),
     columns: get('board/columns'),
+    positions() { return ['top', 'bottom']; },
     isValid() {
       return this.title.length > 0;
     },
@@ -139,6 +151,7 @@ export default {
   created() {
     this.selectedRepositoryId = this.repositories[0].id;
     this.selectedColumnId = this.columnId;
+    this.selectedPosition = this.positions[0];
   },
   methods: {
     ...call([
@@ -289,6 +302,20 @@ export default {
   // Note: Duplicate with .repositories
   .columns
     .column
+      margin-bottom: 5px
+
+      &:last-child
+        margin-bottom: 0px
+
+      input
+        margin: 0
+
+      label
+        margin-left: 6px
+
+  // Note: Duplicate with .repositories, .columns
+  .positions
+    .position
       margin-bottom: 5px
 
       &:last-child
