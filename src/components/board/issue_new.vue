@@ -45,21 +45,21 @@
         <div class='delimeter' />
 
         <div class='assigness'>
-          <label class='label'>Assigness</label>
+          <label class='label active'>Assigness<span class='gear' /></label>
           TODO
         </div>
 
         <div class='delimeter' />
 
         <div class='labels'>
-          <label class='label'>Labels</label>
+          <label class='label active'>Labels<span class='gear' /></label>
           TODO
         </div>
 
         <div class='delimeter' />
 
         <div class='colors'>
-          <label class='label'>Colors</label>
+          <label class='label active'>Colors<span class='gear' /></label>
           TODO
         </div>
 
@@ -284,47 +284,73 @@ export default {
     display: block
     font-weight: 700
     margin-bottom: 6px
+    position: relative
+
+    &.active
+
+      &:hover
+        opacity: 0.8
+
+    .gear
+      background-image: url('../../assets/icons/issue/gear.svg')
+      background-position: center
+      background-repeat: no-repeat
+      cursor: pointer
+      height: 10px
+      width: 10px
+      position: absolute
+      right: 0
+      top: 4px
 
   // Note: Duplicate with .columns
   .repositories
     .repository
+      cursor: pointer
       margin-bottom: 5px
 
       &:last-child
         margin-bottom: 0px
 
       input
+        cursor: pointer
         margin: 0
 
       label
+        cursor: pointer
         margin-left: 6px
 
   // Note: Duplicate with .repositories
   .columns
     .column
+      cursor: pointer
       margin-bottom: 5px
 
       &:last-child
         margin-bottom: 0px
 
       input
+        cursor: pointer
         margin: 0
 
       label
+        cursor: pointer
         margin-left: 6px
 
   // Note: Duplicate with .repositories, .columns
   .positions
     .position
+      cursor: pointer
       margin-bottom: 5px
 
       &:last-child
         margin-bottom: 0px
 
       input
+        cursor: pointer
         margin: 0
 
       label
+        cursor: pointer
         margin-left: 6px
 
   .delimeter
