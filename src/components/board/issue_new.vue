@@ -287,6 +287,7 @@ export default {
     position: relative
 
     &.active
+      cursor: pointer
 
       &:hover
         opacity: 0.8
