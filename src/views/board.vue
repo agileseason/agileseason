@@ -58,6 +58,14 @@
       />
     </div>
   </transition>
+
+  <div
+    class='issue-background'
+    v-if='isIssueOpen'
+    @click.self='closeIssue'
+  >
+    <router-view/>
+  </div>
 </template>
 
 <script>
@@ -213,7 +221,10 @@ export default {
       this.newIssueColumnId = columnId;
       // console.log(columnId);
     },
-    closeIssueNew() { this.isExpandedIssueNew = false; }
+    closeIssueNew() { this.isExpandedIssueNew = false; },
+    isIssueOpen() {
+      return this.$route.name === 'issue'
+    }
   }
 }
 </script>

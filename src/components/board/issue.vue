@@ -1,5 +1,7 @@
 <template>
-  <div class='issue' @click='open'>
+  <!--div class='issue' @click='open'-->
+
+  <div class='issue' @click='goToIssue'>
     <div class='title'>{{ title }}</div>
     <a :href='url' class='url' @click.stop='click'>
       <span class='number'>#{{ number }}</span>
@@ -43,8 +45,12 @@ export default {
   methods: {
     labelStyle({ color }) { return `background-color: #${color}`; },
     open() {
-      console.log('issue-open' + this.id);
+      // console.log('issue-open' + this.id);
       this.$emit('open', this);
+    },
+    goToIssue() {
+      console.log('issue-open');
+      this.$router.push({ name: 'issue', params: { id: this.id } });
     }
   }
 }

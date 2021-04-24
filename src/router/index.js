@@ -7,6 +7,7 @@ import BoardSettings from '../views/board_settings.vue'
 import BoardSync from '../views/board_sync.vue'
 import Boards from '../views/boards.vue'
 import Home from '../views/home.vue'
+import Issue from '../views/issue.vue'
 import OAuth from '../views/oauth.vue'
 
 function requireAuth(to, from, next) {
@@ -31,6 +32,13 @@ const routes = [
     path: '/boards/:id',
     name: 'board',
     component: Board,
+    children: [
+      {
+        path: 'issue/:id',
+        name: 'issue',
+        component: Issue
+      }
+    ],
     beforeEnter: requireAuth
   }, {
     path: '/boards/:id/settings',

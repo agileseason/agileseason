@@ -55,7 +55,7 @@ export default {
       }
     },
     openIssue({ id, number, title, url, repositoryName, isClosed }) {
-      console.log('open-issue-column' + id);
+      // console.log('open-issue-column' + id);
       this.$emit('open', { id, number, title, url, repositoryName, isClosed });
     }
   }
