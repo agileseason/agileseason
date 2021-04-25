@@ -28,7 +28,21 @@
   <div
     class='modal-backdrop'
     v-if='isLoaded'
-    v-show='isModalOpen'
+    v-show='isIssueNewOpen'
+    @click.self='backToBoard'
+  >
+
+    <router-view v-slot='{ Component }'>
+      <transition name='slide' :duration='200'>
+        <component :is='Component' />
+      </transition>
+    </router-view>
+  </div>
+
+  <div
+    class='modal-backdrop'
+    v-if='isLoaded'
+    v-show='isIssueOpen'
     @click.self='backToBoard'
   >
 
@@ -86,8 +100,11 @@ export default {
     widthStyles() {
       return this.isLoaded ? { 'min-width': `${280 * (this.columns.length + 1)}px` } : {};
     },
-    isModalOpen() {
-      return this.$route.name === 'issue' || this.$route.name === 'issue_new';
+    isIssueOpen() {
+      return this.$route.name === 'issue'
+    },
+    isIssueNewOpen() {
+      return this.$route.name === 'issue_new'
     }
   },
   async created() {
