@@ -5,11 +5,14 @@ export default {
 
   state: {
     id: undefined,
+    url: undefined,
     title: undefined,
     body: undefined,
     author: undefined,
     createdAt: undefined,
     createdAgo: undefined,
+    isClosed: undefined,
+    repositoryName: undefined,
     isLoading: true,
     isLoaded: false,
     isCommentLoading: false,
@@ -59,13 +62,16 @@ export default {
       state.isCommentLoaded = false;
     },
     FINISH_LOADING(state, issue) {
-      const { id, title, body, author, createdAt, createdAgo } = issue;
+      const { id, url, title, body, author, createdAt, createdAgo, isClosed, repositoryName } = issue;
       state.id = id;
+      state.url = url;
       state.title = title;
       state.body = body;
       state.author = author;
       state.createdAt = createdAt;
       state.createdAgo = createdAgo;
+      state.isClosed = isClosed
+      state.repositoryName = repositoryName;
 
       state.isLoading = false;
       state.isLoaded = true;

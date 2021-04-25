@@ -1,7 +1,13 @@
 <template>
-  <div class='issue'>
+  <div v-if='isNotFound' class='issue'>
     <div class='issue-header'>
-      <span class='state' :class='{"closed": isClosed}'>{{ state }}</span>
+      <div class='close' @click='close' />
+    </div>
+    <p class='not-found'>Couldn't found issue</p>
+  </div>
+  <div v-else class='issue'>
+    <div class='issue-header'>
+      <span v-if='state' class='state' :class='{"closed": isClosed}'>{{ state }}</span>
       <span class='repo'>{{ repositoryName }}</span>
       <div class='close' @click='close' />
     </div>
@@ -58,10 +64,6 @@ export default {
   },
   props: {
     issue: { type: Object, required: false },
-    // id: { type: Number, required: false },
-    // number: { type: Number, required: false },
-    // title: { type: String, required: false },
-    // url: { type: String, required: false }
   },
   data: () => ({}),
   computed: {
@@ -69,26 +71,31 @@ export default {
     isLoaded: get('issue/isLoaded'),
     isCommentLoading: get('issue/isCommentLoading'),
     isCommentLoaded: get('issue/isCommentLoaded'),
-    // TODO: Add not found vue.
     isNotFound: get('issue/isNotFound'),
+    origUrl: get('issue/url'),
+    origRepositoryName: get('issue/repositoryName'),
     origTitle: get('issue/title'),
     origBody: get('issue/body'),
+    origIsClosed: get('issue/isClosed'),
     origCreatedAt: get('issue/createdAt'),
     origCreatedAgo: get('issue/createdAgo'),
     origAuthor: get('issue/author'),
     origComments: get('issue/comments'),
-    id() { return this.issue?.id; },
-    number() { return this.issue?.number; },
-    url() { return this.issue?.url; },
-    repositoryName() { return this.issue?.repositoryName; },
+    id() { return parseInt(this.$route.params.issueId); },
+    number() { return parseInt(this.$route.params.issueNumber); },
+    url() { return this.issue.url || this.origUrl; },
+    repositoryName() { return this.issue.repositoryName || this.origRepositoryName; },
     title() {
-      return this.isLoaded ?
-        this.origTitle :
-        this.issue?.title;
+      return this.isLoaded ? this.origTitle : this.issue.title;
     },
-    isClosed() { return this.issue?.isClosed; },
+    isClosed() {
+      return this.isLoaded ? this.origIsClosed : this.issue.isClosed;
+    },
     isBodyEmpty() { return this.origBody == null || this.origBody.length === 0; },
-    state() { return this.issue?.isClosed ? 'closed' : 'open'; },
+    state() {
+      if (this.isClosed == null) { return null; }
+      return this.issue.isClosed ? 'closed' : 'open';
+    }
   },
   async created() {
     if (this.id) {
@@ -107,22 +114,29 @@ export default {
 </script>
 
 <style scoped lang='sass'>
+.not-found
+  font-size: 24px
+  font-weight: 600
+  margin: 40px 0
+  text-align: center
+  width: 100%
+
 .issue-header
-  border-bottom: 1px solid #C5CAE9
+  border-bottom: 1px solid #c5cae9
   box-sizing: border-box
   height: 44px
   padding: 10px 14px
   position: relative
 
   .state
-    background-color: #22863A
+    background-color: #22863a
     background-image: url('../../assets/icons/issue/white_open.svg')
     background-position-y: center
     background-position-x: 4px
     background-repeat: no-repeat
     border-radius: 12px
     box-sizing: border-box
-    color: #FFF
+    color: #fff
     display: inline-block
     font-size: 12px
     height: 24px
@@ -132,7 +146,7 @@ export default {
     vertical-align: top
 
     &.closed
-      background-color: #D73A49
+      background-color: #d73a49
       background-image: url('../../assets/icons/issue/white_closed.svg')
 
   .repo
@@ -164,7 +178,7 @@ export default {
     margin-bottom: 12px
 
     a
-      color: #2196F3
+      color: #2196f3
       font-weight: 400
 
   .comment
@@ -175,15 +189,15 @@ export default {
       width: 40px
       height: 40px
       border-radius: 20px
-      background: #EEE
+      background: #eee
       position: absolute
       left: 0
       top: 0
 
     .content
       border-radius: 2px
-      border: 1px solid #E8EAF6
-      margin-left: 48px
+      border: 1px solid #e8eaf6
+      margin-left: 50px
       padding: 10px
 
       a.author
@@ -212,5 +226,5 @@ export default {
         letter-spacing: 0.012em
 
         &.empty
-          color: #9E9E9E
+          color: #9e9e9e
 </style>

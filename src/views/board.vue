@@ -20,28 +20,11 @@
         @dragend='dragEnd($event, column)'
         @dragover.prevent
         @drop='drop($event, column)'
-        @open='openIssueShow'
         @new='openIssueNew'
       />
       <ColumnNew @submit='createNewColumn' />
     </div>
   </div>
-
-  <div class='modal-backdrop' @click='closeIssueShow' v-if='isExpandedIssueShow' />
-  <transition name='slide' :duration='200'>
-    <div
-      class='modal'
-      :class='{ "is-expanded": isExpandedIssueShow }'
-      v-if='isLoaded'
-      v-show='isExpandedIssueShow'
-    >
-      <IssueShow
-        v-if='isExpandedIssueShow'
-        :issue='currentIssue'
-        @close='closeIssueShow'
-      />
-    </div>
-  </transition>
 
   <div class='modal-backdrop' @click='closeIssueNew' v-if='isExpandedIssueNew' />
   <transition name='slide' :duration='200'>
@@ -58,12 +41,25 @@
       />
     </div>
   </transition>
+
+  <div
+    class='modal-backdrop'
+    v-if='isLoaded'
+    v-show='isIssueOpen'
+    @click.self='closeIssue'
+  >
+
+    <router-view v-slot='{ Component }'>
+      <transition name='slide' :duration='200'>
+        <component :is='Component' />
+      </transition>
+    </router-view>
+  </div>
 </template>
 
 <script>
 import Column from '@/components/board/column.vue';
 import ColumnNew from '@/components/board/column_new.vue';
-import IssueShow from '@/components/board/issue_show.vue';
 import IssueNew from '@/components/board/issue_new.vue';
 import Loader from '@/components/loader';
 import TopMenu from '@/components/menu/top.vue';
@@ -83,14 +79,12 @@ export default {
   components: {
     Column,
     ColumnNew,
-    IssueShow,
     IssueNew,
     Loader,
     TopMenu
   },
   data: () => ({
     isSubmittingNewColumn: false,
-    isExpandedIssueShow: false,
     isExpandedIssueNew: false,
     currentIssue: undefined,
     newIssueColumnId: undefined
@@ -111,6 +105,9 @@ export default {
     },
     widthStyles() {
       return this.isLoaded ? { 'min-width': `${280 * (this.columns.length + 1)}px` } : {};
+    },
+    isIssueOpen() {
+      return this.$route.name === 'issue'
     }
   },
   async created() {
@@ -203,17 +200,14 @@ export default {
       e.preventDefault();
       return true;
     },
-    openIssueShow({ id, number, title, url, repositoryName, isClosed }) {
-      this.isExpandedIssueShow = true;
-      this.currentIssue = { id, number, title, url, repositoryName, isClosed };
-    },
-    closeIssueShow() { this.isExpandedIssueShow = false; },
     openIssueNew({ columnId }) {
       this.isExpandedIssueNew = true;
       this.newIssueColumnId = columnId;
-      // console.log(columnId);
     },
-    closeIssueNew() { this.isExpandedIssueNew = false; }
+    closeIssueNew() { this.isExpandedIssueNew = false; },
+    closeIssue() {
+      this.$router.push({ name: 'board', id: this.boardId });
+    }
   }
 }
 </script>

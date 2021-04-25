@@ -1,5 +1,5 @@
 <template>
-  <div class='issue' @click='open'>
+  <div class='issue' @click='goToIssue'>
     <div class='title'>{{ title }}</div>
     <a :href='url' class='url' @click.stop='click'>
       <span class='number'>#{{ number }}</span>
@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import { call } from 'vuex-pathify';
+
 export default {
   name: 'Issue',
   components: {
@@ -41,10 +43,16 @@ export default {
     isActionVisible() { return this.isClosed; }
   },
   methods: {
+    ...call([
+      'board/setCurrentIssue'
+    ]),
     labelStyle({ color }) { return `background-color: #${color}`; },
-    open() {
-      console.log('issue-open' + this.id);
-      this.$emit('open', this);
+    goToIssue() {
+      this.setCurrentIssue({ issue: this });
+      this.$router.push({
+        name: 'issue',
+        params: { issueId: this.id, issueNumber: this.number }
+      });
     }
   }
 }
@@ -101,7 +109,7 @@ export default {
       color: #D73A49
       display: inline-block
       font-size: 11px
-      font-weight: 600
+      font-weight: 400
       height: 22px
       letter-spacing: 0.2px
       line-height: 23px

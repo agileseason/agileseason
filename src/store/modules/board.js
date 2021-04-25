@@ -9,7 +9,8 @@ export default {
     columns: [],
     repositories: [],
     isLoading: true,
-    isLoaded: false
+    isLoaded: false,
+    currentIssue: undefined
   },
 
   getters: {
@@ -90,6 +91,10 @@ export default {
           console.error(result.errors[0]);
         }
       }
+    },
+    setCurrentIssue({ commit }, { issue }) {
+      // { id, number, title, url, repositoryName, isClosed }
+      commit('SET_CURRENT_ISSUE', issue);
     }
   },
 
@@ -113,6 +118,9 @@ export default {
     },
     ADD_COLUMN(state, column) {
       state.columns = [...state.columns, column];
+    },
+    SET_CURRENT_ISSUE(state, issue) {
+      state.currentIssue = issue;
     }
   }
 };
