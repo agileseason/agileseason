@@ -194,7 +194,7 @@ export default {
     `;
     const vars = { name, boardId };
     const data = await this.client(token).request(query, vars);
-    this.log('createColumn', data);
+    this.log('createColumn', data, vars);
 
     return data?.createColumn;
   },
@@ -212,9 +212,8 @@ export default {
     const ids = columns.map(v => v.id);
     const positions = columns.map(v => v.position);
     const vars = { boardId, ids, positions };
-    // console.log(vars);
     const data = await this.client(token).request(query, vars);
-    this.log('updateColumnPositions', data);
+    this.log('updateColumnPositions', data, vars);
 
     return data?.action;
   },
@@ -230,9 +229,8 @@ export default {
       }
     `;
     const vars = { boardId, columnId, issueIds };
-    console.log(vars);
     const data = await this.client(token).request(query, vars);
-    this.log('moveIssue', data);
+    this.log('moveIssue', data, vars);
 
     return data?.action;
   },
@@ -264,9 +262,8 @@ export default {
       }
     `;
     const vars = { boardId, id };
-    console.log(vars);
     const data = await this.client(token).request(query, vars);
-    this.log('fetchIssue', data);
+    this.log('fetchIssue', data, vars);
 
     return data?.action;
   },
@@ -285,9 +282,8 @@ export default {
       }
     `;
     const vars = { boardId, id };
-    console.log(vars);
     const data = await this.client(token).request(query, vars);
-    this.log('fetchIssueComments', data);
+    this.log('fetchIssueComments', data, vars);
 
     return data?.comments;
   },
@@ -308,13 +304,17 @@ export default {
     return token ? { authorization: `Bearer ${token}` } : {};
   },
 
-  log(query, data) {
+  log(query, data, vars) {
     if (!process.env.NODE_ENV == 'development') { return; }
 
+    console.log(`%c${query}`, 'color:#4db6ac');
     if (data != null) {
-      console.log(query, JSON.stringify(data, undefined, 2));
+      console.log(JSON.stringify({ data }, undefined, 2));
     } else {
-      console.log(query, 'Data is NULL!');
+      console.log('%cData is NULL!', 'color:#ff80ab');
+    }
+    if (vars) {
+      console.log(`%c${JSON.stringify({ vars }, undefined, 2)}`, 'color:#64b5f6;');
     }
   }
 };
