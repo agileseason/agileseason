@@ -107,7 +107,7 @@ export default {
       color: #D73A49
       display: inline-block
       font-size: 11px
-      font-weight: 600
+      font-weight: 400
       height: 22px
       letter-spacing: 0.2px
       line-height: 23px
