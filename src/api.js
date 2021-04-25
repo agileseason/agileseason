@@ -288,7 +288,7 @@ export default {
     return data?.comments;
   },
 
-  async createIssue(token, { name, boardId }) {
+  async createIssue(token, { boardId, columnId, repositoryId, title, body }) {
     const query = `
       mutation($boardId:Int!, $columnId:Int!, $repositoryId:Int!, $title:String!, $body:String) {
         createIssue(input: {
@@ -317,7 +317,7 @@ export default {
         }
       }
     `;
-    const vars = { name, boardId };
+    const vars = { boardId, columnId, repositoryId, title, body };
     const data = await this.client(token).request(query, vars);
     this.log('createIssue', data, vars);
 

@@ -68,6 +68,7 @@ export default {
       } else {
         commit('ADD_ISSUE', result.issue);
       }
+      return result?.issue;
     },
 
     removeIssue({ state, getters }, { issueId, columnToId }) {
@@ -136,11 +137,18 @@ export default {
       state.columns = [...state.columns, column];
     },
     ADD_ISSUE(state, issue) {
-      // state.columns...
-      // 1. find column by issue.columnId
-      // 2. add issue to the column by position
-      // 3. remove return
-      return issue
+      const column = state.columns
+        .find(v => v.id === issue.columnId) || state.columns[0];
+      const index = column.issues.findIndex(v => v.position > issue.position);
+      column.issues.splice(index, 0, issue);
+      // if (index === -1) {
+      //   column.issues.unshift(issue);
+      // } else {
+      //   column.issues.splice(index, 0, issue);
+      // }
+      console.log(index);
+      // column.issues.splice(index, 0, issue);
+      // column.issues.push(issue);
     },
     SET_CURRENT_ISSUE(state, issue) {
       state.currentIssue = issue;

@@ -9,7 +9,14 @@
       <div class='left'>
         <img class='avatar' :src='avatarUrl' />
 
-        <input type='text' class='title' v-model.trim='title' placeholder='Title' ref='title' />
+        <input
+          type='text'
+          class='title'
+          v-model.trim='title'
+          placeholder='Title'
+          ref='title'
+          @keyup.enter='submit'
+        />
         <textarea
           class='body'
           v-model='body'
@@ -146,13 +153,29 @@ export default {
   methods: {
     ...call([
       'issue/fetch',
-      'issue/fetchComments'
+      'issue/fetchComments',
+      'board/createIssue'
     ]),
     close() { this.$emit('close'); },
-    submit() {
+    async submit() {
+      if (this.isSubmitting) { return; }
+
       this.isSubmitting = true;
-      console.log('submit new issue');
+      console.log('submit new issue...');
       console.log(this.title + ' ' + this.body);
+      const issue = await this.createIssue({
+        columnId: this.selectedColumnId,
+        repositoryId: this.selectedRepositoryId,
+        title: this.title,
+        body: this.body
+      });
+      console.log(issue);
+      this.isSubmitting = false;
+      if (issue) {
+        this.title = '';
+        this.body = '';
+        this.close();
+      }
     }
   }
 }
