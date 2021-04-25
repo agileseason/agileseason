@@ -27,16 +27,16 @@
       </div>
 
       <div class='right'>
-        <div class='repositories'>
+        <div class='repositories radios'>
           <label class='label'>Repositories</label>
-          <div v-for='repo in repositories' class='repository' :key='repo.id'>
+          <div v-for='repo in repositories' class='repository radio' :key='repo.id'>
             <input
               v-model='selectedRepositoryId'
               type='radio'
               :value='repo.id'
               :id='repo.id'
             />
-            <label :for='repo.id' title='repo.fullName'>
+            <label :for='repo.id' :title='repo.fullName'>
               {{ repo.name }}
             </label>
           </div>
@@ -65,9 +65,9 @@
 
         <div class='delimeter' />
 
-        <div class='columns'>
+        <div class='columns radios'>
           <label class='label'>Columns</label>
-          <div v-for='column in columns' class='column' :key='column.id'>
+          <div v-for='column in columns' class='column radio' :key='column.id'>
             <input
               v-model='selectedColumnId'
               type='radio'
@@ -82,9 +82,9 @@
 
         <div class='delimeter' />
 
-        <div class='positions'>
+        <div class='positions radios'>
           <label class='label'>Position</label>
-          <div v-for='position in positions' class='position' :key='position'>
+          <div v-for='position in positions' class='position radio' :key='position'>
             <input
               v-model='selectedPosition'
               type='radio'
@@ -170,7 +170,7 @@ export default {
 
 <style scoped lang='sass'>
 .issue-header
-  border-bottom: 1px solid #C5CAE9
+  border-bottom: 1px solid #c5cae9
   box-sizing: border-box
   height: 44px
   padding: 10px 14px
@@ -214,49 +214,49 @@ export default {
     width: 40px
     height: 40px
     border-radius: 20px
-    background: #EEE
+    background: #eee
     position: absolute
     left: 14px
     top: 14px
 
   input.title
     border-radius: 3px
-    border: 1px solid #C5CAE9
+    border: 1px solid #c5cae9
     box-sizing: border-box
     font-size: 20px
     font-weight: 300
     height: 34px
-    margin: 16px 0 14px 62px
+    margin: 16px 0 14px 64px
     padding: 0 8px
-    width: calc(100% - 62px) // 100% - margin-left
+    width: calc(100% - 64px) // 100% - margin-left
 
     &::placeholder
-      color: #7986CB
+      color: #7986cb
       opacity: 1
     &:-ms-input-placeholder
-      color: #7986CB
+      color: #7986cb
     &::-ms-input-placeholder
-      color: #7986CB
+      color: #7986cb
 
   textarea.body
     border-radius: 3px
-    border: 1px solid #C5CAE9
+    border: 1px solid #c5cae9
     box-sizing: border-box
     font-size: 16px
     font-weight: 300
-    margin-left: 62px
+    margin-left: 64px
     padding: 8px
-    width: calc(100% - 62px) // 100% - margin-left
+    width: calc(100% - 64px) // 100% - margin-left
     min-height: 200px
     resize: none
 
     &::placeholder
-      color: #9FA8DA
+      color: #9fa8da
       opacity: 1
     &:-ms-input-placeholder
-      color: #9FA8DA
+      color: #9fa8da
     &::-ms-input-placeholder
-      color: #9FA8DA
+      color: #9fa8da
 
   .left,
   .right
@@ -303,45 +303,12 @@ export default {
       right: 0
       top: 4px
 
-  // Note: Duplicate with .columns
-  .repositories
-    .repository
+  .radios
+    .radio
+      align-items: center
       cursor: pointer
-      margin-bottom: 5px
-
-      &:last-child
-        margin-bottom: 0px
-
-      input
-        cursor: pointer
-        margin: 0
-
-      label
-        cursor: pointer
-        margin-left: 6px
-
-  // Note: Duplicate with .repositories
-  .columns
-    .column
-      cursor: pointer
-      margin-bottom: 5px
-
-      &:last-child
-        margin-bottom: 0px
-
-      input
-        cursor: pointer
-        margin: 0
-
-      label
-        cursor: pointer
-        margin-left: 6px
-
-  // Note: Duplicate with .repositories, .columns
-  .positions
-    .position
-      cursor: pointer
-      margin-bottom: 5px
+      display: flex
+      margin-bottom: 6px
 
       &:last-child
         margin-bottom: 0px
@@ -355,7 +322,7 @@ export default {
         margin-left: 6px
 
   .delimeter
-    border-bottom: 1px solid #E8EAF6
+    border-bottom: 1px solid #e8eaf6
     padding-top: 12px
     margin-bottom: 12px
 </style>
