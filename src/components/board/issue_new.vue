@@ -161,15 +161,14 @@ export default {
       if (this.isSubmitting) { return; }
 
       this.isSubmitting = true;
-      console.log('submit new issue...');
-      console.log(this.title + ' ' + this.body);
       const issue = await this.createIssue({
         columnId: this.selectedColumnId,
         repositoryId: this.selectedRepositoryId,
         title: this.title,
-        body: this.body
+        body: this.body,
+        position: this.selectedPosition
       });
-      console.log(issue);
+      // console.log(issue);
       this.isSubmitting = false;
       if (issue) {
         this.title = '';

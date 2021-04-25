@@ -288,15 +288,16 @@ export default {
     return data?.comments;
   },
 
-  async createIssue(token, { boardId, columnId, repositoryId, title, body }) {
+  async createIssue(token, { boardId, columnId, repositoryId, title, body, position }) {
     const query = `
-      mutation($boardId:Int!, $columnId:Int!, $repositoryId:Int!, $title:String!, $body:String) {
+      mutation($boardId:Int!, $columnId:Int!, $repositoryId:Int!, $title:String!, $body:String, $position:String) {
         createIssue(input: {
           boardId: $boardId,
           columnId: $columnId,
           repositoryId: $repositoryId,
           title: $title,
-          body: $body
+          body: $body,
+          position: $position
         }) {
           issue {
             id
@@ -317,7 +318,7 @@ export default {
         }
       }
     `;
-    const vars = { boardId, columnId, repositoryId, title, body };
+    const vars = { boardId, columnId, repositoryId, title, body, position };
     const data = await this.client(token).request(query, vars);
     this.log('createIssue', data, vars);
 
