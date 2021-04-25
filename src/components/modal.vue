@@ -14,6 +14,15 @@ export default {
 </script>
 
 <style lang='sass'>
+.modal-overlay
+  background: rgba(0, 0, 0, 0.3)
+  height: 100vh
+  left: 0
+  position: fixed
+  top: 0
+  width: 100vw
+  z-index: 4
+
 .modal
   background-color: #fff
   min-height: 500px

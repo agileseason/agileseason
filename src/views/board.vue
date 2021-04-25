@@ -26,23 +26,9 @@
   </div>
 
   <div
-    class='modal-backdrop'
+    class='modal-overlay'
     v-if='isLoaded'
-    v-show='isIssueNewOpen'
-    @click.self='backToBoard'
-  >
-
-    <router-view v-slot='{ Component }'>
-      <transition name='slide' :duration='200'>
-        <component :is='Component' />
-      </transition>
-    </router-view>
-  </div>
-
-  <div
-    class='modal-backdrop'
-    v-if='isLoaded'
-    v-show='isIssueOpen'
+    v-show='isModalOpen'
     @click.self='backToBoard'
   >
 
@@ -100,11 +86,8 @@ export default {
     widthStyles() {
       return this.isLoaded ? { 'min-width': `${280 * (this.columns.length + 1)}px` } : {};
     },
-    isIssueOpen() {
-      return this.$route.name === 'issue'
-    },
-    isIssueNewOpen() {
-      return this.$route.name === 'issue_new'
+    isModalOpen() {
+      return this.$route.name === 'issue' || this.$route.name === 'issue_new';
     }
   },
   async created() {
@@ -208,13 +191,4 @@ export default {
 .board
   padding: 8px 8px 0px 8px
   overflow-x: scroll
-
-.modal-backdrop
-  background: rgba(0, 0, 0, 0.3)
-  height: 100vh
-  left: 0
-  position: fixed
-  top: 0
-  width: 100vw
-  z-index: 4
 </style>
