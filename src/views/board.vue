@@ -48,9 +48,12 @@
     v-show='isIssueOpen'
     @click.self='closeIssue'
   >
-    <transition name='slide' :duration='200'>
-      <router-view/>
-    </transition>
+
+    <router-view v-slot='{ Component }'>
+      <transition name='slide' :duration='200'>
+        <component :is='Component' />
+      </transition>
+    </router-view>
   </div>
 </template>
 
