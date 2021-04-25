@@ -1,5 +1,11 @@
 <template>
-  <div class='issue'>
+  <div v-if='isNotFound' class='issue'>
+    <div class='issue-header'>
+      <div class='close' @click='close' />
+    </div>
+    <p class='not-found'>Couldn't found issue</p>
+  </div>
+  <div v-else class='issue'>
     <div class='issue-header'>
       <span v-if='state' class='state' :class='{"closed": isClosed}'>{{ state }}</span>
       <span class='repo'>{{ repositoryName }}</span>
@@ -65,6 +71,7 @@ export default {
     isLoaded: get('issue/isLoaded'),
     isCommentLoading: get('issue/isCommentLoading'),
     isCommentLoaded: get('issue/isCommentLoaded'),
+    isNotFound: get('issue/isNotFound'),
     origUrl: get('issue/url'),
     origRepositoryName: get('issue/repositoryName'),
     origTitle: get('issue/title'),
@@ -88,10 +95,7 @@ export default {
     state() {
       if (this.isClosed == null) { return null; }
       return this.issue.isClosed ? 'closed' : 'open';
-    },
-
-    // TODO: Add not found vue.
-    isNotFound: get('issue/isNotFound')
+    }
   },
   async created() {
     if (this.id) {
@@ -111,22 +115,29 @@ export default {
 </script>
 
 <style scoped lang='sass'>
+.not-found
+  font-size: 24px
+  font-weight: 600
+  margin: 40px 0
+  text-align: center
+  width: 100%
+
 .issue-header
-  border-bottom: 1px solid #C5CAE9
+  border-bottom: 1px solid #c5cae9
   box-sizing: border-box
   height: 44px
   padding: 10px 14px
   position: relative
 
   .state
-    background-color: #22863A
+    background-color: #22863a
     background-image: url('../../assets/icons/issue/white_open.svg')
     background-position-y: center
     background-position-x: 4px
     background-repeat: no-repeat
     border-radius: 12px
     box-sizing: border-box
-    color: #FFF
+    color: #fff
     display: inline-block
     font-size: 12px
     height: 24px
@@ -136,7 +147,7 @@ export default {
     vertical-align: top
 
     &.closed
-      background-color: #D73A49
+      background-color: #d73a49
       background-image: url('../../assets/icons/issue/white_closed.svg')
 
   .repo
@@ -168,7 +179,7 @@ export default {
     margin-bottom: 12px
 
     a
-      color: #2196F3
+      color: #2196f3
       font-weight: 400
 
   .comment
@@ -179,14 +190,14 @@ export default {
       width: 40px
       height: 40px
       border-radius: 20px
-      background: #EEE
+      background: #eee
       position: absolute
       left: 0
       top: 0
 
     .content
       border-radius: 2px
-      border: 1px solid #E8EAF6
+      border: 1px solid #e8eaf6
       margin-left: 48px
       padding: 10px
 
@@ -216,5 +227,5 @@ export default {
         letter-spacing: 0.012em
 
         &.empty
-          color: #9E9E9E
+          color: #9e9e9e
 </style>
