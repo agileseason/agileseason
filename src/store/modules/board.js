@@ -33,6 +33,7 @@ export default {
         commit('FINISH_LOADING', board);
       }
     },
+
     async createColumn({ commit, state, getters }, { name }) {
       const column = await api.createColumn(
         getters.token,
@@ -44,6 +45,7 @@ export default {
         commit('ADD_COLUMN', column);
       }
     },
+
     async updateColumnPositions({ state, getters }, { columns }) {
       const result = await api.updateColumnPositions(
         getters.token,
@@ -55,6 +57,19 @@ export default {
         console.error(result.errors[0]);
       }
     },
+
+    async createIssue({ commit, state, getters }, { columnId, repositoryId, title, body }) {
+      const result = await api.createIssue(
+        getters.token,
+        { boardId: state.id, columnId, repositoryId, title, body }
+      );
+      if (result?.issue == null) {
+        // todo: Show errors (result.errors).
+      } else {
+        commit('ADD_ISSUE', result.issue);
+      }
+    },
+
     removeIssue({ state, getters }, { issueId, columnToId }) {
       console.log('removeIssue');
       console.log('issueId: ' + issueId);
@@ -92,6 +107,7 @@ export default {
         }
       }
     },
+
     setCurrentIssue({ commit }, { issue }) {
       // { id, number, title, url, repositoryName, isClosed }
       commit('SET_CURRENT_ISSUE', issue);
@@ -118,6 +134,13 @@ export default {
     },
     ADD_COLUMN(state, column) {
       state.columns = [...state.columns, column];
+    },
+    ADD_ISSUE(state, issue) {
+      // state.columns...
+      // 1. find column by issue.columnId
+      // 2. add issue to the column by position
+      // 3. remove return
+      return issue
     },
     SET_CURRENT_ISSUE(state, issue) {
       state.currentIssue = issue;

@@ -288,6 +288,41 @@ export default {
     return data?.comments;
   },
 
+  async createIssue(token, { name, boardId }) {
+    const query = `
+      mutation($boardId:Int!, $columnId:Int!, $repositoryId:Int!, $title:String!, $body:String) {
+        createIssue(input: {
+          boardId: $boardId,
+          columnId: $columnId,
+          repositoryId: $repositoryId,
+          title: $title,
+          body: $body
+        }) {
+          issue {
+            id
+            number
+            title
+            body
+            position
+            url
+            repositoryName
+            isClosed
+            createdAt
+            createdAgo
+            labels { name color }
+            author { login url avatarUrl }
+            columnId
+          }
+          errors
+        }
+      }
+    `;
+    const vars = { name, boardId };
+    const data = await this.client(token).request(query, vars);
+    this.log('createIssue', data, vars);
+
+    return data?.createIssue;
+  },
   // ---------------------------------
   // Helpers
   // ---------------------------------
