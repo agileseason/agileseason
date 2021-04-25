@@ -97,6 +97,7 @@ export default {
   text-align: center
   text-decoration: none
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s
+  min-width: 160px
 
   &.disabled
     cursor: default
