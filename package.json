@@ -10,6 +10,7 @@
   "dependencies": {
     "browser-cookies": "^1.2.0",
     "core-js": "^3.6.5",
+    "delay": "^5.0.0",
     "graphql": "^15.3.0",
     "graphql-request": "^3.0.0",
     "sass": "^1.26.10",

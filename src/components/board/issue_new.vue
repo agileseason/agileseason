@@ -9,7 +9,7 @@
       <div class='left'>
         <img class='avatar' :src='avatarUrl' />
 
-        <input type='text' class='title' v-model.trim='title' placeholder='Title' />
+        <input type='text' class='title' v-model.trim='title' placeholder='Title' ref='title' />
         <textarea
           class='body'
           v-model='body'
@@ -105,6 +105,8 @@
 import Button from '@/components/buttons/button.vue'
 import { get, call } from 'vuex-pathify';
 
+const delay = require('delay');
+
 export default {
   name: 'IssueNew',
   components: {
@@ -130,28 +132,16 @@ export default {
     positions() { return ['top', 'bottom']; },
     isValid() {
       return this.title.length > 0;
-    },
-    // isLoading: get('issue/isLoading'),
-    // isLoaded: get('issue/isLoaded'),
-    // isCommentLoading: get('issue/isCommentLoading'),
-    // isCommentLoaded: get('issue/isCommentLoaded'),
-    // id() { return this.issue?.id; },
-    // number() { return this.issue?.number; },
-    // url() { return this.issue?.url; },
-    // repositoryName() { return this.issue?.repositoryName; },
-    // title() {
-    //   return this.isLoaded ?
-    //     this.origTitle :
-    //     this.issue?.title;
-    // },
-    // isClosed() { return this.issue?.isClosed; },
-    // isBodyEmpty() { return this.origBody == null || this.origBody.length === 0; },
-    // state() { return this.issue?.isClosed ? 'closed' : 'open'; },
+    }
   },
   created() {
     this.selectedRepositoryId = this.repositories[0].id;
     this.selectedColumnId = this.columnId;
     this.selectedPosition = this.positions[0];
+  },
+  async mounted() {
+    await delay(300);
+    this.$nextTick(() => this.$refs.title.focus());
   },
   methods: {
     ...call([
