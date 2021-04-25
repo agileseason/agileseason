@@ -92,7 +92,6 @@ export default {
         }
       }
     },
-    // TODO: Remove this method
     setCurrentIssue({ commit }, { issue }) {
       // { id, number, title, url, repositoryName, isClosed }
       commit('SET_CURRENT_ISSUE', issue);
