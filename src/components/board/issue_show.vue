@@ -105,7 +105,6 @@ export default {
   },
   methods: {
     ...call([
-      'board/setCurrentIssue',
       'issue/fetch',
       'issue/fetchComments'
     ]),
