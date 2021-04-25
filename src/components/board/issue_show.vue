@@ -198,7 +198,7 @@ export default {
     .content
       border-radius: 2px
       border: 1px solid #e8eaf6
-      margin-left: 48px
+      margin-left: 50px
       padding: 10px
 
       a.author

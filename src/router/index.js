@@ -34,7 +34,7 @@ const routes = [
     component: Board,
     children: [
       {
-        path: 'issues/:issueId/:issueNumber',
+        path: 'issues/:issueId/number/:issueNumber',
         name: 'issue',
         component: Issue
       }
