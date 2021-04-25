@@ -28,21 +28,7 @@
   <div
     class='modal-backdrop'
     v-if='isLoaded'
-    v-show='isIssueNewOpen'
-    @click.self='backToBoard'
-  >
-
-    <router-view v-slot='{ Component }'>
-      <transition name='slide' :duration='200'>
-        <component :is='Component' />
-      </transition>
-    </router-view>
-  </div>
-
-  <div
-    class='modal-backdrop'
-    v-if='isLoaded'
-    v-show='isIssueOpen'
+    v-show='isIssueOpen || isIssueNewOpen'
     @click.self='backToBoard'
   >
 
@@ -208,29 +194,6 @@ export default {
 .board
   padding: 8px 8px 0px 8px
   overflow-x: scroll
-
-.modal
-  background-color: #fff
-  min-height: 500px
-  position: absolute
-  top: 36px
-  left: 50%
-  width: 80%
-  max-width: 1280px
-  z-index: 5
-  box-shadow: 0px 6px 10px 0px #BDBDBD
-
-  transform: translate(-50%, 2000px)
-
-  &.slide-enter-to
-    transform: translate(-50%, 0%)
-
-  &.is-expanded:not(.slide-enter-active)
-    transform: translateX(-50%)
-
-.slide-enter-active,
-.slide-leave-active
-  transition: transform 200ms
 
 .modal-backdrop
   background: rgba(0, 0, 0, 0.3)
