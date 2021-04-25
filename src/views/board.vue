@@ -20,33 +20,30 @@
         @dragend='dragEnd($event, column)'
         @dragover.prevent
         @drop='drop($event, column)'
-        @new='openIssueNew'
       />
       <ColumnNew @submit='createNewColumn' />
     </div>
   </div>
 
-  <div class='modal-backdrop' @click='closeIssueNew' v-if='isExpandedIssueNew' />
-  <transition name='slide' :duration='200'>
-    <div
-      class='modal'
-      :class='{ "is-expanded": isExpandedIssueNew }'
-      v-if='isLoaded'
-      v-show='isExpandedIssueNew'
-    >
-      <IssueNew
-        v-if='isExpandedIssueNew'
-        :columnId='newIssueColumnId'
-        @close='closeIssueNew'
-      />
-    </div>
-  </transition>
+  <div
+    class='modal-backdrop'
+    v-if='isLoaded'
+    v-show='isIssueNewOpen'
+    @click.self='backToBoard'
+  >
+
+    <router-view v-slot='{ Component }'>
+      <transition name='slide' :duration='200'>
+        <component :is='Component' />
+      </transition>
+    </router-view>
+  </div>
 
   <div
     class='modal-backdrop'
     v-if='isLoaded'
     v-show='isIssueOpen'
-    @click.self='closeIssue'
+    @click.self='backToBoard'
   >
 
     <router-view v-slot='{ Component }'>
@@ -84,10 +81,7 @@ export default {
     TopMenu
   },
   data: () => ({
-    isSubmittingNewColumn: false,
-    isExpandedIssueNew: false,
-    currentIssue: undefined,
-    newIssueColumnId: undefined
+    isSubmittingNewColumn: false
   }),
   computed: {
     token: get('user/token'),
@@ -108,6 +102,9 @@ export default {
     },
     isIssueOpen() {
       return this.$route.name === 'issue'
+    },
+    isIssueNewOpen() {
+      return this.$route.name === 'issue_new'
     }
   },
   async created() {
@@ -200,12 +197,7 @@ export default {
       e.preventDefault();
       return true;
     },
-    openIssueNew({ columnId }) {
-      this.isExpandedIssueNew = true;
-      this.newIssueColumnId = columnId;
-    },
-    closeIssueNew() { this.isExpandedIssueNew = false; },
-    closeIssue() {
+    backToBoard() {
       this.$router.push({ name: 'board', id: this.boardId });
     }
   }

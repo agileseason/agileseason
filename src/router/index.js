@@ -8,6 +8,7 @@ import BoardSync from '../views/board_sync.vue'
 import Boards from '../views/boards.vue'
 import Home from '../views/home.vue'
 import Issue from '../views/issue.vue'
+import IssueNew from '../views/issue_new.vue'
 import OAuth from '../views/oauth.vue'
 
 function requireAuth(to, from, next) {
@@ -37,6 +38,10 @@ const routes = [
         path: 'issues/:issueId/number/:issueNumber',
         name: 'issue',
         component: Issue
+      }, {
+        path: 'columns/:columnId/issues/new',
+        name: 'issue_new',
+        component: IssueNew
       }
     ],
     beforeEnter: requireAuth

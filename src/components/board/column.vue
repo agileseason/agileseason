@@ -38,7 +38,12 @@ export default {
     issuesCount() { return this.issues.length; }
   },
   methods: {
-    issueNew() { this.$emit('new', { columnId: this.id }); },
+    issueNew() {
+      this.$router.push({
+        name: 'issue_new',
+        params: { columnId: this.id }
+      });
+    },
     columnSettings() {
       console.log('column-settings');
     },
