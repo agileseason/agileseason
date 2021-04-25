@@ -28,7 +28,7 @@
   <div
     class='modal-backdrop'
     v-if='isLoaded'
-    v-show='isIssueOpen || isIssueNewOpen'
+    v-show='isModalOpen'
     @click.self='backToBoard'
   >
 
@@ -86,11 +86,8 @@ export default {
     widthStyles() {
       return this.isLoaded ? { 'min-width': `${280 * (this.columns.length + 1)}px` } : {};
     },
-    isIssueOpen() {
-      return this.$route.name === 'issue'
-    },
-    isIssueNewOpen() {
-      return this.$route.name === 'issue_new'
+    isModalOpen() {
+      return this.$route.name === 'issue' || this.$route.name === 'issue_new';
     }
   },
   async created() {
