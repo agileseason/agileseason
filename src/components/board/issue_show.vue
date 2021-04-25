@@ -1,7 +1,7 @@
 <template>
   <div class='issue'>
     <div class='issue-header'>
-      <span class='state' :class='{"closed": isClosed}'>{{ state }}</span>
+      <span v-if='state' class='state' :class='{"closed": isClosed}'>{{ state }}</span>
       <span class='repo'>{{ repositoryName }}</span>
       <div class='close' @click='close' />
     </div>
@@ -58,10 +58,6 @@ export default {
   },
   props: {
     issue: { type: Object, required: false },
-    // id: { type: Number, required: false },
-    // number: { type: Number, required: false },
-    // title: { type: String, required: false },
-    // url: { type: String, required: false }
   },
   data: () => ({}),
   computed: {
@@ -69,26 +65,33 @@ export default {
     isLoaded: get('issue/isLoaded'),
     isCommentLoading: get('issue/isCommentLoading'),
     isCommentLoaded: get('issue/isCommentLoaded'),
-    // TODO: Add not found vue.
-    isNotFound: get('issue/isNotFound'),
+    origUrl: get('issue/url'),
+    origRepositoryName: get('issue/repositoryName'),
     origTitle: get('issue/title'),
     origBody: get('issue/body'),
+    origIsClosed: get('issue/isClosed'),
     origCreatedAt: get('issue/createdAt'),
     origCreatedAgo: get('issue/createdAgo'),
     origAuthor: get('issue/author'),
     origComments: get('issue/comments'),
-    id() { return this.issue?.id; },
-    number() { return this.issue?.number; },
-    url() { return this.issue?.url; },
-    repositoryName() { return this.issue?.repositoryName; },
+    id() { return parseInt(this.$route.params.issueId); },
+    number() { return parseInt(this.$route.params.issueNumber); },
+    url() { return this.issue.url || this.origUrl; },
+    repositoryName() { return this.issue.repositoryName || this.origRepositoryName; },
     title() {
-      return this.isLoaded ?
-        this.origTitle :
-        this.issue?.title;
+      return this.isLoaded ? this.origTitle : this.issue.title;
     },
-    isClosed() { return this.issue?.isClosed; },
+    isClosed() {
+      return this.isLoaded ? this.origIsClosed : this.issue.isClosed;
+    },
     isBodyEmpty() { return this.origBody == null || this.origBody.length === 0; },
-    state() { return this.issue?.isClosed ? 'closed' : 'open'; },
+    state() {
+      if (this.isClosed == null) { return null; }
+      return this.issue.isClosed ? 'closed' : 'open';
+    },
+
+    // TODO: Add not found vue.
+    isNotFound: get('issue/isNotFound')
   },
   async created() {
     if (this.id) {
@@ -98,6 +101,7 @@ export default {
   },
   methods: {
     ...call([
+      'board/setCurrentIssue',
       'issue/fetch',
       'issue/fetchComments'
     ]),

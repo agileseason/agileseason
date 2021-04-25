@@ -60,11 +60,14 @@
   </transition>
 
   <div
-    class='issue-background'
-    v-if='isIssueOpen'
+    class='modal-backdrop'
+    v-if='isLoaded'
+    v-show='isIssueOpen'
     @click.self='closeIssue'
   >
-    <router-view/>
+    <transition name='slide' :duration='200'>
+      <router-view/>
+    </transition>
   </div>
 </template>
 
@@ -119,6 +122,9 @@ export default {
     },
     widthStyles() {
       return this.isLoaded ? { 'min-width': `${280 * (this.columns.length + 1)}px` } : {};
+    },
+    isIssueOpen() {
+      return this.$route.name === 'issue'
     }
   },
   async created() {
@@ -211,19 +217,20 @@ export default {
       e.preventDefault();
       return true;
     },
-    openIssueShow({ id, number, title, url, repositoryName, isClosed }) {
-      this.isExpandedIssueShow = true;
-      this.currentIssue = { id, number, title, url, repositoryName, isClosed };
+    // TODO: Remove this method and isExpandedIssueShow
+    openIssueShow() {
+      // { id, number, title, url, repositoryName, isClosed }
+      // this.isExpandedIssueShow = true;
+      // this.currentIssue = { id, number, title, url, repositoryName, isClosed };
     },
     closeIssueShow() { this.isExpandedIssueShow = false; },
     openIssueNew({ columnId }) {
       this.isExpandedIssueNew = true;
       this.newIssueColumnId = columnId;
-      // console.log(columnId);
     },
     closeIssueNew() { this.isExpandedIssueNew = false; },
-    isIssueOpen() {
-      return this.$route.name === 'issue'
+    closeIssue() {
+      this.$router.push({ name: 'board', id: this.boardId });
     }
   }
 }
