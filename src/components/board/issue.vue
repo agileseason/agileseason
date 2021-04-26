@@ -92,7 +92,7 @@ export default {
       color: #212121
       display: inline-block
       font-size: 11px
-      font-weight: 600
+      font-weight: 500
       height: 19px
       letter-spacing: 0.2px
       line-height: 19px
