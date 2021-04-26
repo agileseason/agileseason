@@ -9,11 +9,15 @@
     <div class='issue-header'>
       <span v-if='state' class='state' :class='{"closed": isClosed}'>{{ state }}</span>
       <span class='repo'>{{ repositoryName }}</span>
-      <div class='close' @click='close' />
+      <div class='icon close' @click='close' />
     </div>
     <div class='issue-body'>
       <div class='title'>
-        {{ title }}&nbsp;<a :href='url'>#{{ number }}</a>
+        <span>
+          {{ title }}&nbsp;
+          <a :href='url'>#{{ number }}</a>
+        </span>
+        <div class='icon edit' @click='editTitle' />
       </div>
       <Loader v-if='isLoading' />
       <div v-if='!isLoading' class='main-comment comment'>
@@ -108,7 +112,10 @@ export default {
       'issue/fetch',
       'issue/fetchComments'
     ]),
-    close() { this.$emit('close'); }
+    close() { this.$emit('close'); },
+    editTitle() {
+      console.log('edit title');
+    }
   }
 }
 </script>
@@ -120,6 +127,18 @@ export default {
   margin: 40px 0
   text-align: center
   width: 100%
+
+.icon
+  cursor: pointer
+  height: 12px
+  padding: 6px
+  width: 12px
+
+  &:hover
+    opacity: 0.7
+
+  &:active
+    opacity: 0.9
 
 .issue-header
   border-bottom: 1px solid #c5cae9
@@ -157,17 +176,7 @@ export default {
     background-image: url('../../assets/icons/issue/x_close.svg')
     background-position: center
     background-repeat: no-repeat
-    cursor: pointer
     float: right
-    height: 10px
-    padding: 6px
-    width: 10px
-
-    &:hover
-      opacity: 0.7
-
-    &:active
-      opacity: 0.9
 
 .issue-body
   padding: 12px 14px
@@ -176,10 +185,18 @@ export default {
     font-size: 20px
     font-weight: 500
     margin-bottom: 12px
+    display: flex
+    justify-content: space-between
+    align-items: center
 
     a
       color: #2196f3
       font-weight: 400
+
+    .edit
+      background-image: url('../../assets/icons/issue/edit.svg')
+      background-position: center
+      background-repeat: no-repeat
 
   .comment
     position: relative
@@ -195,7 +212,7 @@ export default {
       top: 0
 
     .content
-      border-radius: 2px
+      border-radius: 4px
       border: 1px solid #e8eaf6
       margin-left: 50px
       padding: 10px
