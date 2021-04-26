@@ -84,7 +84,7 @@ export default {
 
     .number
       color: #616161
-      font-weight: 600
+      font-weight: 500
 
   .labels
     .label

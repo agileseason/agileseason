@@ -88,7 +88,7 @@ export default {
   cursor: pointer
   display: inline-block
   font-size: 14px
-  font-weight: 600
+  font-weight: 500
   height: 40px
   letter-spacing: 0.3px
   line-height: 38px

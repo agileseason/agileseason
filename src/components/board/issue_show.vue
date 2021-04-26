@@ -116,7 +116,7 @@ export default {
 <style scoped lang='sass'>
 .not-found
   font-size: 24px
-  font-weight: 600
+  font-weight: 500
   margin: 40px 0
   text-align: center
   width: 100%
@@ -204,7 +204,7 @@ export default {
         display: inline-block
         color: #283593
         font-size: 13px
-        font-weight: 600
+        font-weight: 500
         margin-bottom: 14px
         cursor: pointer
 

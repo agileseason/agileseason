@@ -192,7 +192,7 @@ export default {
 
   h2.subtitle
     font-size: 18px
-    font-weight: 600
+    font-weight: 500
     margin-top: 0
     margin-bottom: 18px
 
