@@ -13,6 +13,7 @@ export default {
     createdAgo: undefined,
     isClosed: undefined,
     repositoryName: undefined,
+    columnId: undefined,
     isLoading: true,
     isLoaded: false,
     isCommentLoading: false,
@@ -62,16 +63,23 @@ export default {
       state.isCommentLoaded = false;
     },
     FINISH_LOADING(state, issue) {
-      const { id, url, title, body, author, createdAt, createdAgo, isClosed, repositoryName } = issue;
-      state.id = id;
-      state.url = url;
-      state.title = title;
-      state.body = body;
-      state.author = author;
-      state.createdAt = createdAt;
-      state.createdAgo = createdAgo;
-      state.isClosed = isClosed
-      state.repositoryName = repositoryName;
+      // Dont work:
+      // state = { ...state, ...issue }
+      //
+      // To long:
+      // state.id = issue.id;
+      // state.url = issue.url;
+      // state.title = issue.title;
+      // state.body = issue.body;
+      // state.author = issue.author;
+      // state.createdAt = issue.createdAt;
+      // state.createdAgo = issue.createdAgo;
+      // state.isClosed = issue.isClosed
+      // state.repositoryName = issue.repositoryName;
+      // state.columnId = issue.columnId;
+      Object.keys(issue).forEach(prop => {
+        state[prop] = issue[prop];
+      });
 
       state.isLoading = false;
       state.isLoaded = true;

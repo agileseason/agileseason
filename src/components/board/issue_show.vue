@@ -52,6 +52,10 @@
         </div>
       </div>
     </div>
+
+    <!--div>
+      {{ debugStore }}
+    </div-->
   </div>
 </template>
 
@@ -76,6 +80,7 @@ export default {
     isCommentLoading: get('issue/isCommentLoading'),
     isCommentLoaded: get('issue/isCommentLoaded'),
     isNotFound: get('issue/isNotFound'),
+    fetchedIssue: get('issue'),
     // TODO: Remove this origNNN props and update issue attrs after fetching
     origUrl: get('issue/url'),
     origRepositoryName: get('issue/repositoryName'),
@@ -100,18 +105,27 @@ export default {
     state() {
       if (this.isClosed == null) { return null; }
       return this.issue.isClosed ? 'closed' : 'open';
-    }
+    },
+
+    debugStoreColumns: get('board/columns'),
+    debugStoreCurrentIssue: get('board/currentIssue'),
+
+    debugStore() {
+      return { currentIssue: this.debugStoreCurrentIssue, board: this.debugStoreColumns };
+    },
   },
   async created() {
     if (this.id) {
       await this.fetch({ id: this.id });
       this.fetchComments({ id: this.id });
+      this.updateBoardIssue({ ...this.fetchedIssue, title: '123' });
     }
   },
   methods: {
     ...call([
       'issue/fetch',
-      'issue/fetchComments'
+      'issue/fetchComments',
+      'board/updateBoardIssue'
     ]),
     close() { this.$emit('close'); }
   }

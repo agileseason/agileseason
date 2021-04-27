@@ -9,8 +9,7 @@ export default {
     columns: [],
     repositories: [],
     isLoading: true,
-    isLoaded: false,
-    currentIssue: undefined
+    isLoaded: false
   },
 
   getters: {
@@ -109,9 +108,31 @@ export default {
       }
     },
 
-    setCurrentIssue({ commit }, { issue }) {
-      // { id, number, title, url, repositoryName, isClosed }
-      commit('SET_CURRENT_ISSUE', issue);
+    // setCurrentIssue({ commit }, { issue }) {
+    //   // { id, number, title, url, repositoryName, isClosed }
+    //   commit('SET_CURRENT_ISSUE', issue);
+    // },
+
+    updateBoardIssue({ commit, state }, issue) {
+      // console.log('search issue');
+      // console.log(issue);
+      const column = state.columns.find(v => v.id === issue.columnId);
+      if (column == null) { return; }
+
+      const boardIssue = column.issues.find(v => v.id === issue.id);
+      if (boardIssue == null) { return; }
+
+      // console.log(boardIssue);
+      // commit(
+      //   'UPDATE_BOARD_ISSUE',
+      //   { issue: boardIssue, key: 'title', value: issue.title }
+      // );
+      Object.keys(issue).forEach(prop => {
+        commit(
+          'UPDATE_BOARD_ISSUE',
+          { issue: boardIssue, key: prop, value: issue[prop] }
+        );
+      });
     }
   },
 
@@ -150,8 +171,8 @@ export default {
       // column.issues.splice(index, 0, issue);
       // column.issues.push(issue);
     },
-    SET_CURRENT_ISSUE(state, issue) {
-      state.currentIssue = issue;
+    UPDATE_BOARD_ISSUE(state, { issue, key, value }) {
+      issue[key] = value;
     }
   }
 };

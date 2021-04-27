@@ -43,12 +43,12 @@ export default {
     isActionVisible() { return this.isClosed; }
   },
   methods: {
+    // 'board/setCurrentIssue'
     ...call([
-      'board/setCurrentIssue'
     ]),
     labelStyle({ color }) { return `background-color: #${color}`; },
     goToIssue() {
-      this.setCurrentIssue({ issue: this });
+      // this.setCurrentIssue({ issue: this });
       this.$router.push({
         name: 'issue',
         params: { issueId: this.id, issueNumber: this.number }
