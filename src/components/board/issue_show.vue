@@ -18,25 +18,25 @@
         :number='number'
       />
       <Loader v-if='isLoading' />
-      <div v-if='!isLoading' class='main-comment comment'>
-        <img class='avatar' :src='origAuthor.avatarUrl' />
+      <div v-if='isLoaded' class='main-comment comment'>
+        <img class='avatar' :src='fetchedIssue.author.avatarUrl' />
 
         <div class='content'>
-          <a class='author' :href='origAuthor.url'>{{ origAuthor.login }}</a>
-          <span class='ago' :title='origCreatedAt'>
-            commented {{ origCreatedAgo }}
+          <a class='author' :href='fetchedIssue.author.url'>{{ fetchedIssue.author.login }}</a>
+          <span class='ago' :title='fetchedIssue.createdAt'>
+            commented {{ fetchedIssue.origCreatedAgo }}
           </span>
 
           <div v-if='isBodyEmpty' class='text empty'>No description provided</div>
           <div v-else class='text'>
-            {{ origBody }}
+            {{ fetchedIssue.body }}
           </div>
         </div>
       </div>
 
       <Loader v-if='isCommentLoading' />
       <div v-if='isCommentLoaded' class='comments'>
-        <div v-for='item in origComments' :key='item.id' class='comment'>
+        <div v-for='item in comments' :key='item.id' class='comment'>
           <img class='avatar' :src='item.author.avatarUrl' />
 
           <div class='content'>
@@ -81,27 +81,18 @@ export default {
     isCommentLoaded: get('issue/isCommentLoaded'),
     isNotFound: get('issue/isNotFound'),
     fetchedIssue: get('issue'),
-    // TODO: Remove this origNNN props and update issue attrs after fetching
-    origUrl: get('issue/url'),
-    origRepositoryName: get('issue/repositoryName'),
-    origTitle: get('issue/title'),
-    origBody: get('issue/body'),
-    origIsClosed: get('issue/isClosed'),
-    origCreatedAt: get('issue/createdAt'),
-    origCreatedAgo: get('issue/createdAgo'),
-    origAuthor: get('issue/author'),
-    origComments: get('issue/comments'),
+    comments: get('issue/comments'),
     id() { return parseInt(this.$route.params.issueId); },
     number() { return parseInt(this.$route.params.issueNumber); },
-    url() { return this.issue.url || this.origUrl; },
-    repositoryName() { return this.issue.repositoryName || this.origRepositoryName; },
+    url() { return this.issue.url || this.fetchedIssue?.url; },
+    repositoryName() { return this.issue.repositoryName || this?.fetchedIssue.repositoryName; },
     title() {
-      return this.isLoaded ? this.origTitle : this.issue.title;
+      return this.isLoaded ? this.fetchedIssue.title : this.issue.title;
     },
     isClosed() {
-      return this.isLoaded ? this.origIsClosed : this.issue.isClosed;
+      return this.isLoaded ? this.fetchedIssue.isClosed : this.issue.isClosed;
     },
-    isBodyEmpty() { return this.origBody == null || this.origBody.length === 0; },
+    isBodyEmpty() { return this.fetchedIssue?.body == null || this.fetchedIssue?.body?.length == 0; },
     state() {
       if (this.isClosed == null) { return null; }
       return this.issue.isClosed ? 'closed' : 'open';
@@ -118,7 +109,7 @@ export default {
     if (this.id) {
       await this.fetch({ id: this.id });
       this.fetchComments({ id: this.id });
-      this.updateBoardIssue({ ...this.fetchedIssue, title: '123' });
+      this.updateBoardIssue({ ...this.fetchedIssue });
     }
   },
   methods: {
