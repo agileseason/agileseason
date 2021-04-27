@@ -12,13 +12,11 @@
       <div class='icon close' @click='close' />
     </div>
     <div class='issue-body'>
-      <div class='title'>
-        <span>
-          {{ title }}&nbsp;
-          <a :href='url'>#{{ number }}</a>
-        </span>
-        <div class='icon edit' @click='editTitle' />
-      </div>
+      <Title
+        :title='title'
+        :url='url'
+        :number='number'
+      />
       <Loader v-if='isLoading' />
       <div v-if='!isLoading' class='main-comment comment'>
         <img class='avatar' :src='origAuthor.avatarUrl' />
@@ -59,12 +57,14 @@
 
 <script>
 import Loader from '@/components/loader';
+import Title from '@/components/board/issues/title';
 import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'IssueShow',
   components: {
-    Loader
+    Loader,
+    Title
   },
   props: {
     issue: { type: Object, required: false },
@@ -76,6 +76,7 @@ export default {
     isCommentLoading: get('issue/isCommentLoading'),
     isCommentLoaded: get('issue/isCommentLoaded'),
     isNotFound: get('issue/isNotFound'),
+    // TODO: Remove this origNNN props and update issue attrs after fetching
     origUrl: get('issue/url'),
     origRepositoryName: get('issue/repositoryName'),
     origTitle: get('issue/title'),
@@ -112,10 +113,7 @@ export default {
       'issue/fetch',
       'issue/fetchComments'
     ]),
-    close() { this.$emit('close'); },
-    editTitle() {
-      console.log('edit title');
-    }
+    close() { this.$emit('close'); }
   }
 }
 </script>
@@ -180,23 +178,6 @@ export default {
 
 .issue-body
   padding: 12px 14px
-
-  .title
-    font-size: 20px
-    font-weight: 500
-    margin-bottom: 12px
-    display: flex
-    justify-content: space-between
-    align-items: center
-
-    a
-      color: #2196f3
-      font-weight: 400
-
-    .edit
-      background-image: url('../../assets/icons/issue/edit.svg')
-      background-position: center
-      background-repeat: no-repeat
 
   .comment
     position: relative

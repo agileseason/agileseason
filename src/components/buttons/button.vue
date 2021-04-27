@@ -2,12 +2,7 @@
   <router-link
     v-if='to'
     class='button'
-    :class="[
-      type,
-      {
-        'disabled': isDisabled || isLoading,
-      }
-    ]"
+    :class="[type, size, { 'disabled': isDisabled || isLoading }]"
     :disabled='isDisabled || isLoading'
     tag='button'
     :to='to'
@@ -21,7 +16,7 @@
   <a
     v-else-if='href'
     class='button'
-    :class="[type, { 'disabled': isDisabled || isLoading }]"
+    :class="[type, size, { 'disabled': isDisabled || isLoading }]"
     :href='href'
     @click='click'
   >
@@ -34,7 +29,7 @@
   <button
     v-else
     class='button'
-    :class="[type, { 'disabled': isDisabled || isLoading }]"
+    :class="[type, size, { 'disabled': isDisabled || isLoading }]"
     :disabled='isDisabled || isLoading'
     @click='click'
   >
@@ -48,7 +43,6 @@
 
 <script>
 export default {
-  name: 'AppButton',
   props: {
     type: {
       type: String,
@@ -60,6 +54,17 @@ export default {
           'flat',
           'outline',
           'white'
+        ].indexOf(value) !== -1
+      )
+    },
+    size: {
+      type: String,
+      required: false,
+      default: 'normal',
+      validator: (value) => (
+        [
+          'normal',
+          'small'
         ].indexOf(value) !== -1
       )
     },
@@ -89,44 +94,50 @@ export default {
   display: inline-block
   font-size: 14px
   font-weight: 500
-  height: 40px
   letter-spacing: 0.3px
-  line-height: 38px
   padding: 0 24px
   position: relative
   text-align: center
   text-decoration: none
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s
-  min-width: 160px
+
+  &.normal
+    height: 40px
+    line-height: 38px
+    min-width: 160px
+
+  &.small
+    // do nothing
 
   &.disabled
     cursor: default
 
   &.indigo
-    background: #3F51B5
-    border: 1px solid #3F51B5
+    background: #3f51b5
+    border: 1px solid #3f51b5
 
     &:hover
-      background: #303F9F
-      border-color: #303F9F
+      background: #303f9f
+      border-color: #303f9f
 
     &:active
       background: #283593
       border-color: #283593
 
     &.disabled
-      background-color: #9FA8DA
-      border-color: #9FA8DA
-      color: #F5F5F5
+      background-color: #9fa8da
+      border-color: #9fa8da
+      color: #f5f5f5
 
   &.outline
-    color: #3F51B5
-    border: 1px solid #3F51B5
+    color: #3f51b5
+    border: 1px solid #3f51b5
+    background-color: inherit
 
     &:hover
-      color: #303F9F
-      border-color: #303F9F
-      background-color: #E8EAF6
+      color: #303f9f
+      border-color: #303f9f
+      background-color: #e8eaf6
 
     &:active
       color: #283593
@@ -134,33 +145,37 @@ export default {
 
   &.white
     padding: 0 12px
-    background-color: #FFF
-    border: 1px solid #FFF
+    background-color: #fff
+    border: 1px solid #fff
     color: #283593
-    height: 32px
-    line-height: 30px
+
+    &.normal
+      height: 32px
+      line-height: 30px
 
     &.disabled
-      background-color: #EEE
-      border: 1px solid #EEE
+      background-color: #eee
+      border: 1px solid #eee
 
     &:hover
-      background: #E8EAF6
-      border-color: #E8EAF6
+      background: #e8eaf6
+      border-color: #e8eaf6
 
     &:active
-      background: #C5CAE9
-      border-color: #C5CAE9
+      background: #c5cae9
+      border-color: #c5cae9
 
   &.flat
     background: transparent
     border-color: transparent
     font-weight: 500
-    height: 32px
-    line-height: 30px
+
+    &.normal
+      height: 32px
+      line-height: 30px
 
     &:hover
-      color: #E8EAF6
+      color: #e8eaf6
 
 .loader
   background-image: url('../../assets/button/loader.svg')
