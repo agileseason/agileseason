@@ -98,12 +98,12 @@ export default {
       return this.issue.isClosed ? 'closed' : 'open';
     },
 
-    debugStoreColumns: get('board/columns'),
-    debugStoreCurrentIssue: get('board/currentIssue'),
+    // debugStoreColumns: get('board/columns'),
+    // debugStoreCurrentIssue: get('board/currentIssue'),
 
-    debugStore() {
-      return { currentIssue: this.debugStoreCurrentIssue, board: this.debugStoreColumns };
-    },
+    // debugStore() {
+    //   return { currentIssue: this.debugStoreCurrentIssue, board: this.debugStoreColumns };
+    // },
   },
   async created() {
     if (this.id) {

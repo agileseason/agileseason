@@ -9,7 +9,8 @@ export default {
     columns: [],
     repositories: [],
     isLoading: true,
-    isLoaded: false
+    isLoaded: false,
+    currentIssue: {}
   },
 
   getters: {
@@ -108,10 +109,10 @@ export default {
       }
     },
 
-    // setCurrentIssue({ commit }, { issue }) {
-    //   // { id, number, title, url, repositoryName, isClosed }
-    //   commit('SET_CURRENT_ISSUE', issue);
-    // },
+    setCurrentIssue({ commit }, { issue }) {
+      // { id, number, title, url, repositoryName, isClosed }
+      commit('SET_CURRENT_ISSUE', issue);
+    },
 
     updateBoardIssue({ commit, state }, issue) {
       // console.log('search issue');
@@ -173,6 +174,9 @@ export default {
     },
     UPDATE_BOARD_ISSUE(state, { issue, key, value }) {
       issue[key] = value;
+    },
+    SET_CURRENT_ISSUE(state, issue) {
+      state.currentIssue = issue;
     }
   }
 };
