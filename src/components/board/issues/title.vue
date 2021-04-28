@@ -7,7 +7,11 @@
     <div class='icon edit' @click='startEditTitle' />
   </div>
   <div v-else class='title-edit'>
-    <input type='text' @keyup.enter='save' />
+    <input
+      type='text'
+      @keyup.enter='save'
+      v-model='newTitle'
+    />
     <Button
       type='outline'
       size='small'
@@ -26,30 +30,39 @@
 <script>
 import Button from '@/components/buttons/button.vue'
 
+// TODO:
+// 1. сделать фокус при открытии формы
+// 2. подправить стили input-а.
 export default {
   components: {
     Button
   },
   props: {
     // modelValue: { type: String, required: true },
+    // <input
+    //   type='text'
+    //   @keyup.enter='save'
+    //   @input="$emit('update:modelValue', $event.target.value)"
+    // />
     title: { type: String, default: '...' },
     url: { type: String, default: '' },
     number: { type: [String, Number], default: '' }
   },
   data: () => ({
+    newTitle: '',
     isEdit: false
   }),
   methods: {
     startEditTitle() {
+      this.newTitle = this.title;
       this.isEdit = true;
     },
     save() {
-      console.log('save');
       this.isEdit = false;
+      this.$emit('save', this.newTitle);
     },
     cancel() {
-      console.log('cancel');
-      //this.$emit('update:modelValue', this.title);
+      this.newTitle = this.title;
       this.isEdit = false;
     }
   }

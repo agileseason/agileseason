@@ -115,19 +115,14 @@ export default {
     },
 
     updateBoardIssue({ commit, state }, issue) {
-      // console.log('search issue');
-      // console.log(issue);
       const column = state.columns.find(v => v.id === issue.columnId);
       if (column == null) { return; }
 
       const boardIssue = column.issues.find(v => v.id === issue.id);
       if (boardIssue == null) { return; }
 
-      // console.log(boardIssue);
-      // commit(
-      //   'UPDATE_BOARD_ISSUE',
-      //   { issue: boardIssue, key: 'title', value: issue.title }
-      // );
+      // TODO: После обновления полей вызывать метод для
+      //       обновления в API.
       Object.keys(issue).forEach(prop => {
         commit(
           'UPDATE_BOARD_ISSUE',

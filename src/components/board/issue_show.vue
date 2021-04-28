@@ -16,6 +16,7 @@
         :title='title'
         :url='url'
         :number='number'
+        @save='updateTitle'
       />
       <Loader v-if='isLoading' />
       <div v-if='isLoaded' class='main-comment comment'>
@@ -74,7 +75,9 @@ export default {
     // See setCurrentIssue and currentIssue.
     issue: { type: Object, required: false },
   },
-  data: () => ({}),
+  data: () => ({
+    newTitle: undefined
+  }),
   computed: {
     isLoading: get('issue/isLoading'),
     isLoaded: get('issue/isLoaded'),
@@ -88,6 +91,7 @@ export default {
     url() { return this.issue.url || this.fetchedIssue?.url; },
     repositoryName() { return this.issue.repositoryName || this?.fetchedIssue.repositoryName; },
     title() {
+      if (this.newTitle) { return this.newTitle; }
       return this.isLoaded ? this.fetchedIssue.title : this.issue.title;
     },
     isClosed() {
@@ -121,7 +125,11 @@ export default {
       'issue/fetchComments',
       'board/updateBoardIssue'
     ]),
-    close() { this.$emit('close'); }
+    close() { this.$emit('close'); },
+    updateTitle(newTitle) {
+      this.newTitle = newTitle;
+      this.updateBoardIssue({ ...this.fetchedIssue, title: this.newTitle });
+    }
   }
 }
 </script>
