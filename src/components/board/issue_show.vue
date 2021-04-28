@@ -71,6 +71,7 @@ export default {
     Title
   },
   props: {
+    // See setCurrentIssue and currentIssue.
     issue: { type: Object, required: false },
   },
   data: () => ({}),
@@ -109,6 +110,8 @@ export default {
     if (this.id) {
       await this.fetch({ id: this.id });
       this.fetchComments({ id: this.id });
+      // Возможно стоит перенести этот метод в
+      // modules/issue fetch в commit FINISH_LOADING.
       this.updateBoardIssue({ ...this.fetchedIssue });
     }
   },

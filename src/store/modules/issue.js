@@ -63,20 +63,8 @@ export default {
       state.isCommentLoaded = false;
     },
     FINISH_LOADING(state, issue) {
-      // Dont work:
+      // This approach doesn't work:
       // state = { ...state, ...issue }
-      //
-      // To long:
-      // state.id = issue.id;
-      // state.url = issue.url;
-      // state.title = issue.title;
-      // state.body = issue.body;
-      // state.author = issue.author;
-      // state.createdAt = issue.createdAt;
-      // state.createdAgo = issue.createdAgo;
-      // state.isClosed = issue.isClosed
-      // state.repositoryName = issue.repositoryName;
-      // state.columnId = issue.columnId;
       Object.keys(issue).forEach(prop => {
         state[prop] = issue[prop];
       });
