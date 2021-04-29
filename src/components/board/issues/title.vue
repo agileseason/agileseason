@@ -11,6 +11,7 @@
       type='text'
       @keyup.enter='save'
       v-model='newTitle'
+      ref='title'
     />
     <Button
       type='outline'
@@ -30,9 +31,6 @@
 <script>
 import Button from '@/components/buttons/button.vue'
 
-// TODO:
-// 1. сделать фокус при открытии формы
-// 2. подправить стили input-а.
 export default {
   components: {
     Button
@@ -56,6 +54,7 @@ export default {
     startEditTitle() {
       this.newTitle = this.title;
       this.isEdit = true;
+      this.$nextTick(() => this.$refs.title.focus());
     },
     save() {
       this.isEdit = false;
@@ -75,6 +74,25 @@ export default {
   margin-bottom: 12px
   display: flex
 
+  input
+    margin-right: 12px
+    flex-grow: 1
+
+    border-radius: 3px
+    border: 1px solid #c5cae9
+    box-sizing: border-box
+    font-size: 16px
+    font-weight: 300
+    padding: 4px 4px
+
+    &::placeholder
+      color: #7986cb
+      opacity: 1
+    &:-ms-input-placeholder
+      color: #7986cb
+    &::-ms-input-placeholder
+      color: #7986cb
+
 .title
   font-size: 20px
   font-weight: 500
@@ -91,6 +109,9 @@ export default {
     background-image: url('../../../assets/icons/issue/edit.svg')
     background-position: center
     background-repeat: no-repeat
+
+.button + .button
+  margin-left: 10px
 
 // TODO: Extract the icon component
 .icon

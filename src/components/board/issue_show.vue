@@ -128,10 +128,13 @@ export default {
     close() { this.$emit('close'); },
     updateTitle(newTitle) {
       this.newTitle = newTitle;
-      // TODO: Попробовать напрямую обновить заголовок,
-      //       т.к. ссылку на boardIssue скорее всего можно получить.
-      //       (в updateBoardIssue будет снова происходить поиск по всем
-      //       тикетам на доске).
+      // Попробовать напрямую обновить заголовок,
+      // т.к. ссылку на boardIssue скорее всего можно получить.
+      // (в updateBoardIssue будет снова происходить поиск по всем
+      // тикетам на доске).
+      // UPDATE:
+      // Похоже придется оставить этот вариант, т.к. в общем
+      // случае тикета может не быть на доске.
       this.updateBoardIssue({ ...this.fetchedIssue, title: this.newTitle });
     }
   }
