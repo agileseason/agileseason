@@ -325,6 +325,32 @@ export default {
 
     return data?.createIssue;
   },
+
+  async updateIssue(token, { id, boardId, title, body }) {
+    const query = `
+      mutation($id:Int!, $boardId:Int!, $title:String, $body:String) {
+        updateIssue(input: {
+          id: $id,
+          boardId: $boardId,
+          title: $title,
+          body: $body
+        }) {
+          issue {
+            id
+            number
+            title
+          }
+          errors
+        }
+      }
+    `;
+    const vars = { id, boardId, title, body };
+    const data = await this.client(token).request(query, vars);
+    this.log('updateIssue', data, vars);
+
+    return data?.updateIssue;
+  },
+
   // ---------------------------------
   // Helpers
   // ---------------------------------

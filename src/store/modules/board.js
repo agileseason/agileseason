@@ -71,6 +71,19 @@ export default {
       return result?.issue;
     },
 
+    async updateIssue({ state, getters, dispatch }, { id, columnId, title, body }) {
+      const result = await api.updateIssue(
+        getters.token,
+        { id: id, boardId: state.id, title, body }
+      );
+      if (result?.issue == null) {
+        // todo: Show errors (result.errors).
+      } else {
+        dispatch('updateBoardIssue', { id, title, body, columnId });
+      }
+      return result?.issue;
+    },
+
     removeIssue({ state, getters }, { issueId, columnToId }) {
       console.log('removeIssue');
       console.log('issueId: ' + issueId);

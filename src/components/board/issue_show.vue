@@ -76,7 +76,8 @@ export default {
     issue: { type: Object, required: false },
   },
   data: () => ({
-    newTitle: undefined
+    newTitle: undefined,
+    isSubmitting: false
   }),
   computed: {
     isLoading: get('issue/isLoading'),
@@ -123,19 +124,25 @@ export default {
     ...call([
       'issue/fetch',
       'issue/fetchComments',
+      'board/updateIssue',
       'board/updateBoardIssue'
     ]),
     close() { this.$emit('close'); },
-    updateTitle(newTitle) {
+    async updateTitle(newTitle) {
+      if (this.isSubmitting) { return; }
+
+      // Придумать как тобразить процесс сохранение заголовка.
+      // Возможно стоит не закрывать форму редактирования, disable-ить
+      // и добавлять isLoader к кнопке save.
+      this.isSubmitting = true;
       this.newTitle = newTitle;
-      // Попробовать напрямую обновить заголовок,
-      // т.к. ссылку на boardIssue скорее всего можно получить.
-      // (в updateBoardIssue будет снова происходить поиск по всем
-      // тикетам на доске).
-      // UPDATE:
-      // Похоже придется оставить этот вариант, т.к. в общем
-      // случае тикета может не быть на доске.
-      this.updateBoardIssue({ ...this.fetchedIssue, title: this.newTitle });
+      await this.updateIssue({
+        id: this.id,
+        title: this.newTitle,
+        columnId: this.fetchedIssue.columnId
+      });
+
+      this.isSubmitting = false;
     }
   }
 }
