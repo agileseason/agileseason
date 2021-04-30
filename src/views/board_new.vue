@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopMenu title='New Board' />
+    <TopMenu :breadCrumbs="[{ name: 'Boards', path: '/boards' }]" title='New' />
 
     <div class='steps'>
       <div class='step step-1'>
