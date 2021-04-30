@@ -9,7 +9,7 @@
     <div class='issue-header'>
       <span v-if='state' class='state' :class='{"closed": isClosed}'>{{ state }}</span>
       <span class='repo'>{{ repositoryName }}</span>
-      <div class='icon close' @click='close' />
+      <ButtonIcon name='close' @click='close' style='float: right' />
     </div>
     <div class='issue-body'>
       <Title
@@ -23,10 +23,15 @@
         <img class='avatar' :src='fetchedIssue.author.avatarUrl' />
 
         <div class='content'>
-          <a class='author' :href='fetchedIssue.author.url'>{{ fetchedIssue.author.login }}</a>
-          <span class='ago' :title='fetchedIssue.createdAt'>
-            commented {{ fetchedIssue.origCreatedAgo }}
-          </span>
+          <div class='header'>
+            <div>
+              <a class='author' :href='fetchedIssue.author.url'>{{ fetchedIssue.author.login }}</a>
+              <span class='ago' :title='fetchedIssue.createdAt'>
+                commented {{ fetchedIssue.origCreatedAgo }}
+              </span>
+            </div>
+            <ButtonIcon name='edit' @click='startEditBody' />
+          </div>
 
           <div v-if='isBodyEmpty' class='text empty'>No description provided</div>
           <div v-else class='text'>
@@ -61,6 +66,7 @@
 </template>
 
 <script>
+import ButtonIcon from '@/components/buttons/icon.vue'
 import Loader from '@/components/loader';
 import Title from '@/components/board/issues/title';
 import { get, call } from 'vuex-pathify';
@@ -68,6 +74,7 @@ import { get, call } from 'vuex-pathify';
 export default {
   name: 'IssueShow',
   components: {
+    ButtonIcon,
     Loader,
     Title
   },
@@ -156,18 +163,6 @@ export default {
   text-align: center
   width: 100%
 
-.icon
-  cursor: pointer
-  height: 12px
-  padding: 6px
-  width: 12px
-
-  &:hover
-    opacity: 0.7
-
-  &:active
-    opacity: 0.9
-
 .issue-header
   border-bottom: 1px solid #c5cae9
   box-sizing: border-box
@@ -200,12 +195,6 @@ export default {
     font-weight: 500
     line-height: 22px
 
-  .close
-    background-image: url('../../assets/icons/issue/x_close.svg')
-    background-position: center
-    background-repeat: no-repeat
-    float: right
-
 .issue-body
   padding: 12px 14px
 
@@ -228,22 +217,27 @@ export default {
       margin-left: 50px
       padding: 10px
 
-      a.author
-        display: inline-block
-        color: #283593
-        font-size: 13px
-        font-weight: 500
+      .header
+        display: flex
+        justify-content: space-between
+        align-items: center
         margin-bottom: 14px
-        cursor: pointer
 
-        &:hover
-          text-decoration: underline
+        a.author
+          display: inline-block
+          color: #283593
+          font-size: 13px
+          font-weight: 500
+          cursor: pointer
 
-      .ago
-        margin-left: 2px
-        color: #283593
-        font-size: 13px
-        font-weight: 400
+          &:hover
+            text-decoration: underline
+
+        .ago
+          margin-left: 2px
+          color: #283593
+          font-size: 13px
+          font-weight: 400
 
       .text
         font-family: Roboto

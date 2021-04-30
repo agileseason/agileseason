@@ -4,7 +4,7 @@
       {{ title }}&nbsp;
       <a :href='url'>#{{ number }}</a>
     </span>
-    <div class='icon edit' @click='startEditTitle' />
+    <ButtonIcon name='edit' @click='startEditTitle' />
   </div>
   <div v-else class='title-edit'>
     <input
@@ -30,10 +30,12 @@
 
 <script>
 import Button from '@/components/buttons/button.vue'
+import ButtonIcon from '@/components/buttons/icon.vue'
 
 export default {
   components: {
-    Button
+    Button,
+    ButtonIcon
   },
   props: {
     // modelValue: { type: String, required: true },
@@ -100,29 +102,12 @@ export default {
   display: flex
   justify-content: space-between
   align-items: center
+  padding-right: 10px
 
   a
     color: #2196f3
     font-weight: 400
 
-  .edit
-    background-image: url('../../../assets/icons/issue/edit.svg')
-    background-position: center
-    background-repeat: no-repeat
-
 .button + .button
   margin-left: 10px
-
-// TODO: Extract the icon component
-.icon
-  cursor: pointer
-  height: 12px
-  padding: 6px
-  width: 12px
-
-  &:hover
-    opacity: 0.7
-
-  &:active
-    opacity: 0.9
 </style>
