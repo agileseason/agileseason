@@ -106,8 +106,10 @@ export default {
               position
               url
               repositoryName
-              isClosed
               labels { name color }
+              isClosed
+              isBody
+              commentsCount
             }
           }
           repositories {

@@ -15,6 +15,16 @@
         {{ label.name }}
       </span>
     </div>
+    <div v-if='isAssignedOrExtra' class='assigned-or-extra'>
+      <div class='extras'>
+        <div v-if='isBody' class='extra-item body-present' />
+        <div v-if='commentsCount > 0' class='extra-item comments-count'>
+          {{ commentsCount }}
+        </div>
+      </div>
+      <div class='assigned'>
+      </div>
+    </div>
     <div v-if='isActionVisible' class='actions'>
       <span v-if='isClosed' class='closed'>Closed</span>
     </div>
@@ -35,12 +45,15 @@ export default {
     url: { type: String, required: true },
     repositoryName: { type: String, required: true },
     labels: { type: Array, required: true },
-    isClosed: { type: Boolean, required: true }
+    isClosed: { type: Boolean, required: true },
+    isBody: { type: Boolean, required: true },
+    commentsCount: { type: Number, required: true }
   },
   data: () => ({}),
   computed: {
     isLabels() { return this.labels.length > 0; },
-    isActionVisible() { return this.isClosed; }
+    isActionVisible() { return this.isClosed; },
+    isAssignedOrExtra() { return this.isBody || this.commentsCount > 0; }
   },
   methods: {
     ...call([
@@ -99,6 +112,39 @@ export default {
       margin-top: 6px
       margin-right: 6px
       padding: 0 9px
+
+  .assigned-or-extra
+    margin-top: 8px
+    display: flex
+    justify-content: space-between
+    align-items: flex-end
+
+    .extras
+      display: flex
+
+      .extra-item
+        background-color: #eceff1
+        background-position: center 3px
+        background-repeat: no-repeat
+        background-size: initial
+        border-radius: 4px
+        height: 18px
+        margin-right: 4px
+
+        &.body-present
+          background-image: url('../../assets/icons/issue/grey_book.svg')
+          width: 24px
+
+        &.comments-count
+          background-image: url('../../assets/icons/issue/grey_comment.svg')
+          background-position: 4px 3px
+          color: #455a64
+          font-size: 12px
+          font-weight: 600
+          padding: 0 3px 0 21px
+          line-height: 18px
+
+    .assigned
 
   .actions
     margin-top: 8px
