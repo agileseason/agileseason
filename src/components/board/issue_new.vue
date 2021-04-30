@@ -229,8 +229,8 @@ export default {
     border-radius: 20px
     background: #eee
     position: absolute
-    left: 14px
-    top: 14px
+    left: 0
+    top: 0
 
 input.title
   border-radius: 3px
@@ -239,9 +239,9 @@ input.title
   font-size: 20px
   font-weight: 300
   height: 34px
-  margin: 16px 0 14px 64px
+  margin: 4px 0 14px 50px
   padding: 0 8px
-  width: calc(100% - 64px) // 100% - margin-left
+  width: calc(100% - 50px) // 100% - margin-left
 
   &::placeholder
     color: #7986cb
@@ -257,9 +257,9 @@ textarea.body
   box-sizing: border-box
   font-size: 16px
   font-weight: 300
-  margin-left: 64px
+  margin-left: 50px
   padding: 8px
-  width: calc(100% - 64px) // 100% - margin-left
+  width: calc(100% - 50px) // 100% - margin-left
   min-height: 200px
   resize: none
 

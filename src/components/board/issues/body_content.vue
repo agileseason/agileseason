@@ -11,5 +11,5 @@
   grid-template-rows: 1fr
   gap: 0px 30px
   grid-template-areas: '. .'
-  padding-bottom: 40px
+  padding: 12px 14px 40px 14px
 </style>

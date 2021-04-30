@@ -11,58 +11,63 @@
       <span class='repo'>{{ repositoryName }}</span>
       <ButtonIcon name='close' @click='close' style='float: right' />
     </div>
-    <div class='issue-body'>
-      <Title
-        :title='title'
-        :url='url'
-        :number='number'
-        @save='updateTitle'
-      />
-      <Loader v-if='isLoading' />
-      <div v-if='isLoaded' class='main-comment comment'>
-        <img class='avatar' :src='fetchedIssue.author.avatarUrl' />
-
-        <div class='content'>
-          <div class='header'>
-            <div>
-              <a class='author' :href='fetchedIssue.author.url'>{{ fetchedIssue.author.login }}</a>
-              <span class='ago' :title='fetchedIssue.createdAt'>
-                commented {{ fetchedIssue.origCreatedAgo }}
-              </span>
-            </div>
-            <ButtonIcon name='edit' @click='startEditBody' />
-          </div>
-
-          <div v-if='isBodyEmpty' class='text empty'>No description provided</div>
-          <div v-else class='text'>
-            {{ fetchedIssue.body }}
-          </div>
-        </div>
-      </div>
-
-      <Loader v-if='isCommentLoading' />
-      <div v-if='isCommentLoaded' class='comments'>
-        <div v-for='item in comments' :key='item.id' class='comment'>
-          <img class='avatar' :src='item.author.avatarUrl' />
+    <IssueBody>
+      <div class='left'>
+        <Title
+          :title='title'
+          :url='url'
+          :number='number'
+          @save='updateTitle'
+        />
+        <Loader v-if='isLoading' />
+        <div v-if='isLoaded' class='main-comment comment'>
+          <img class='avatar' :src='fetchedIssue.author.avatarUrl' />
 
           <div class='content'>
             <div class='header'>
               <div>
-                <a class='author' :href='item.author.url'>{{ item.author.login }}</a>
-                <span class='ago' :title='item.createdAt'>
-                  commented {{ item.createdAgo }}
+                <a class='author' :href='fetchedIssue.author.url'>{{ fetchedIssue.author.login }}</a>
+                <span class='ago' :title='fetchedIssue.createdAt'>
+                  commented {{ fetchedIssue.origCreatedAgo }}
                 </span>
               </div>
-              <!--ButtonIcon name='edit' @click='startEditComment' /-->
+              <ButtonIcon name='edit' @click='startEditBody' />
             </div>
 
-            <div class='text'>
-              {{ item.body }}
+            <div v-if='isBodyEmpty' class='text empty'>No description provided</div>
+            <div v-else class='text'>
+              {{ fetchedIssue.body }}
+            </div>
+          </div>
+        </div>
+
+        <Loader v-if='isCommentLoading' />
+        <div v-if='isCommentLoaded' class='comments'>
+          <div v-for='item in comments' :key='item.id' class='comment'>
+            <img class='avatar' :src='item.author.avatarUrl' />
+
+            <div class='content'>
+              <div class='header'>
+                <div>
+                  <a class='author' :href='item.author.url'>{{ item.author.login }}</a>
+                  <span class='ago' :title='item.createdAt'>
+                    commented {{ item.createdAgo }}
+                  </span>
+                </div>
+                <!--ButtonIcon name='edit' @click='startEditComment' /-->
+              </div>
+
+              <div class='text'>
+                {{ item.body }}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <div class='right'>
+        TODO
+      </div>
+    </IssueBody>
 
     <!--div>
       {{ debugStore }}
@@ -72,6 +77,7 @@
 
 <script>
 import ButtonIcon from '@/components/buttons/icon.vue'
+import IssueBody from '@/components/board/issues/body_content.vue'
 import Loader from '@/components/loader';
 import Title from '@/components/board/issues/title';
 import { get, call } from 'vuex-pathify';
@@ -80,6 +86,7 @@ export default {
   name: 'IssueShow',
   components: {
     ButtonIcon,
+    IssueBody,
     Loader,
     Title
   },
@@ -200,59 +207,56 @@ export default {
     font-weight: 500
     line-height: 22px
 
-.issue-body
-  padding: 12px 14px
+.comment
+  position: relative
+  margin-bottom: 20px
 
-  .comment
-    position: relative
-    margin-bottom: 20px
+  .avatar
+    width: 40px
+    height: 40px
+    border-radius: 20px
+    background: #eee
+    position: absolute
+    left: 0
+    top: 0
 
-    .avatar
-      width: 40px
-      height: 40px
-      border-radius: 20px
-      background: #eee
-      position: absolute
-      left: 0
-      top: 0
+  .content
+    border-radius: 4px
+    border: 1px solid #e8eaf6
+    margin-left: 50px
+    padding: 10px
 
-    .content
-      border-radius: 4px
-      border: 1px solid #e8eaf6
-      margin-left: 50px
-      padding: 10px
+    .header
+      display: flex
+      justify-content: space-between
+      align-items: flex-start
+      margin-bottom: 2px
+      min-height: 24px
 
-      .header
-        display: flex
-        justify-content: space-between
-        align-items: flex-start
-        margin-bottom: 2px
-        min-height: 24px
+      a.author
+        display: inline-block
+        color: #283593
+        font-size: 13px
+        font-weight: 500
+        cursor: pointer
 
-        a.author
-          display: inline-block
-          color: #283593
-          font-size: 13px
-          font-weight: 500
-          cursor: pointer
+        &:hover
+          text-decoration: underline
 
-          &:hover
-            text-decoration: underline
-
-        .ago
-          margin-left: 2px
-          color: #283593
-          font-size: 13px
-          font-weight: 400
-
-      .text
-        font-family: Roboto
-        font-size: 14px
-        font-style: normal
+      .ago
+        margin-left: 2px
+        color: #283593
+        font-size: 13px
         font-weight: 400
-        line-height: 18px
-        letter-spacing: 0.012em
 
-        &.empty
-          color: #9e9e9e
+    .text
+      font-family: Roboto
+      font-size: 14px
+      font-style: normal
+      font-weight: 400
+      line-height: 18px
+      letter-spacing: 0.012em
+
+      &.empty
+        color: #9e9e9e
 </style>
