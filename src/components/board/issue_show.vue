@@ -46,10 +46,15 @@
           <img class='avatar' :src='item.author.avatarUrl' />
 
           <div class='content'>
-            <a class='author' :href='item.author.url'>{{ item.author.login }}</a>
-            <span class='ago' :title='item.createdAt'>
-              commented {{ item.createdAgo }}
-            </span>
+            <div class='header'>
+              <div>
+                <a class='author' :href='item.author.url'>{{ item.author.login }}</a>
+                <span class='ago' :title='item.createdAt'>
+                  commented {{ item.createdAgo }}
+                </span>
+              </div>
+              <!--ButtonIcon name='edit' @click='startEditComment' /-->
+            </div>
 
             <div class='text'>
               {{ item.body }}
@@ -220,8 +225,9 @@ export default {
       .header
         display: flex
         justify-content: space-between
-        align-items: center
-        margin-bottom: 14px
+        align-items: flex-start
+        margin-bottom: 2px
+        min-height: 24px
 
         a.author
           display: inline-block
