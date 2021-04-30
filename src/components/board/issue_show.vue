@@ -65,7 +65,7 @@
         </div>
       </div>
       <div class='right'>
-        TODO
+        <Assigness />
       </div>
     </IssueBody>
 
@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import Assigness from '@/components/board/issues/assigness.vue'
 import ButtonIcon from '@/components/buttons/icon.vue'
 import IssueBody from '@/components/board/issues/body_content.vue'
 import Loader from '@/components/loader';
@@ -85,6 +86,7 @@ import { get, call } from 'vuex-pathify';
 export default {
   name: 'IssueShow',
   components: {
+    Assigness,
     ButtonIcon,
     IssueBody,
     Loader,

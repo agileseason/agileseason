@@ -5,6 +5,7 @@
       <span class='title'>New Issue</span>
       <div class='close' @click='close' />
     </div>
+
     <IssueBody>
       <div class='left'>
         <img class='avatar' :src='avatarUrl' />
@@ -50,11 +51,7 @@
         </div>
 
         <div class='delimeter' />
-
-        <div class='assigness'>
-          <label class='label active'>Assigness<span class='gear' /></label>
-          TODO
-        </div>
+        <Assigness />
 
         <div class='delimeter' />
 
@@ -109,6 +106,7 @@
 </template>
 
 <script>
+import Assigness from '@/components/board/issues/assigness.vue'
 import Button from '@/components/buttons/button.vue'
 import IssueBody from '@/components/board/issues/body_content.vue'
 import { get, call } from 'vuex-pathify';
@@ -118,6 +116,7 @@ const delay = require('delay');
 export default {
   name: 'IssueNew',
   components: {
+    Assigness,
     Button,
     IssueBody
   },
@@ -273,7 +272,6 @@ textarea.body
 
 .right
   margin-top: 16px
-  padding-right: 14px
   vertical-align: top
 
 .actions

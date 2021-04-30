@@ -39,4 +39,7 @@ export default {
 
   &.close
     background-image: url('../../assets/icons/issue/x_close.svg')
+
+  &.gear
+    background-image: url('../../assets/icons/issue/gear.svg')
 </style>
