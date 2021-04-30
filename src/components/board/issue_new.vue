@@ -5,7 +5,7 @@
       <span class='title'>New Issue</span>
       <div class='close' @click='close' />
     </div>
-    <div class='issue-body'>
+    <IssueBody>
       <div class='left'>
         <img class='avatar' :src='avatarUrl' />
 
@@ -104,12 +104,13 @@
           </div>
         </div>
       </div>
-    </div>
+    </IssueBody>
   </div>
 </template>
 
 <script>
 import Button from '@/components/buttons/button.vue'
+import IssueBody from '@/components/board/issues/body_content.vue'
 import { get, call } from 'vuex-pathify';
 
 const delay = require('delay');
@@ -117,7 +118,8 @@ const delay = require('delay');
 export default {
   name: 'IssueNew',
   components: {
-    Button
+    Button,
+    IssueBody
   },
   props: {
     columnId: { type: Number, required: true }
@@ -218,9 +220,8 @@ export default {
     &:active
       opacity: 0.9
 
-.issue-body
+.left
   position: relative
-  padding-bottom: 40px
 
   .avatar
     width: 40px
@@ -231,110 +232,101 @@ export default {
     left: 14px
     top: 14px
 
-  input.title
-    border-radius: 3px
-    border: 1px solid #c5cae9
-    box-sizing: border-box
-    font-size: 20px
-    font-weight: 300
-    height: 34px
-    margin: 16px 0 14px 64px
-    padding: 0 8px
-    width: calc(100% - 64px) // 100% - margin-left
+input.title
+  border-radius: 3px
+  border: 1px solid #c5cae9
+  box-sizing: border-box
+  font-size: 20px
+  font-weight: 300
+  height: 34px
+  margin: 16px 0 14px 64px
+  padding: 0 8px
+  width: calc(100% - 64px) // 100% - margin-left
 
-    &::placeholder
-      color: #7986cb
-      opacity: 1
-    &:-ms-input-placeholder
-      color: #7986cb
-    &::-ms-input-placeholder
-      color: #7986cb
+  &::placeholder
+    color: #7986cb
+    opacity: 1
+  &:-ms-input-placeholder
+    color: #7986cb
+  &::-ms-input-placeholder
+    color: #7986cb
 
-  textarea.body
-    border-radius: 3px
-    border: 1px solid #c5cae9
-    box-sizing: border-box
-    font-size: 16px
-    font-weight: 300
-    margin-left: 64px
-    padding: 8px
-    width: calc(100% - 64px) // 100% - margin-left
-    min-height: 200px
-    resize: none
+textarea.body
+  border-radius: 3px
+  border: 1px solid #c5cae9
+  box-sizing: border-box
+  font-size: 16px
+  font-weight: 300
+  margin-left: 64px
+  padding: 8px
+  width: calc(100% - 64px) // 100% - margin-left
+  min-height: 200px
+  resize: none
 
-    &::placeholder
-      color: #9fa8da
-      opacity: 1
-    &:-ms-input-placeholder
-      color: #9fa8da
-    &::-ms-input-placeholder
-      color: #9fa8da
+  &::placeholder
+    color: #9fa8da
+    opacity: 1
+  &:-ms-input-placeholder
+    color: #9fa8da
+  &::-ms-input-placeholder
+    color: #9fa8da
 
-  .left,
-  .right
-    display: inline-block
+.right
+  margin-top: 16px
+  padding-right: 14px
+  vertical-align: top
 
-  .left
-    width: calc(100% - 220px)
+.actions
+  text-align: right
+  margin-top: 12px
 
-  .right
-    box-sizing: border-box
-    margin-top: 16px
-    padding: 0 14px 0 30px
-    vertical-align: top
-    width: 220px
+  .button
+    min-width: 170px
 
-  .actions
-    text-align: right
-    margin-top: 12px
+label.label
+  color: #283593
+  display: block
+  font-weight: 700
+  margin-bottom: 6px
+  position: relative
 
-    .button
-      min-width: 170px
+  &.active
+    cursor: pointer
 
-  label.label
-    color: #283593
-    display: block
-    font-weight: 700
+    &:hover
+      opacity: 0.8
+
+  .gear
+    background-image: url('../../assets/icons/issue/gear.svg')
+    background-position: center
+    background-repeat: no-repeat
+    cursor: pointer
+    height: 10px
+    width: 10px
+    position: absolute
+    right: 0
+    top: 4px
+
+.radios
+  .radio
+    align-items: center
+    cursor: pointer
+    display: flex
     margin-bottom: 6px
-    position: relative
 
-    &.active
+    &:last-child
+      margin-bottom: 0px
+
+    input
       cursor: pointer
+      margin: 0
 
-      &:hover
-        opacity: 0.8
-
-    .gear
-      background-image: url('../../assets/icons/issue/gear.svg')
-      background-position: center
-      background-repeat: no-repeat
+    label
       cursor: pointer
-      height: 10px
-      width: 10px
-      position: absolute
-      right: 0
-      top: 4px
+      margin-left: 6px
 
-  .radios
-    .radio
-      align-items: center
-      cursor: pointer
-      display: flex
-      margin-bottom: 6px
-
-      &:last-child
-        margin-bottom: 0px
-
-      input
-        cursor: pointer
-        margin: 0
-
-      label
-        cursor: pointer
-        margin-left: 6px
-
-  .delimeter
-    border-bottom: 1px solid #e8eaf6
-    padding-top: 12px
-    margin-bottom: 12px
+.delimeter
+  border-bottom: 1px solid #e8eaf6
+  padding-top: 12px
+  margin-bottom: 12px
 </style>
