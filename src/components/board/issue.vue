@@ -91,7 +91,7 @@ export default {
 
 <style scoped lang='sass'>
 .issue
-  background-color: #FFF
+  background-color: #fff
   border-radius: 4px
   margin-bottom: 8px
   padding: 8px
@@ -167,9 +167,9 @@ export default {
         margin-top: 8px
 
         .closed
-          background-color: #FFCDD2
+          background-color: #ffcdd2
           border-radius: 4px
-          color: #D73A49
+          color: #d73a49
           display: inline-block
           font-size: 11px
           font-weight: 400

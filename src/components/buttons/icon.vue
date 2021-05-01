@@ -10,11 +10,6 @@
 export default {
   props: {
     name: { type: String, required: true }
-  },
-  methods: {
-    // click() {
-    //   this.$emit('click');
-    // }
   }
 }
 </script>
