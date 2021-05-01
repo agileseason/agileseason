@@ -20,7 +20,9 @@
     >
       <Loader v-if='isLoading' is-inline />
       <div v-else>
-        TODO
+        <div v-for='user in assignableUsers' class='assignable-user' :key='user.login'>
+          {{ user.login }}
+        </div>
       </div>
     </Select>
     <div v-if='isSelfAssignVisible' class='self-assign'>
@@ -33,7 +35,7 @@
 import ButtonIcon from '@/components/buttons/icon'
 import Loader from '@/components/loader';
 import Select from '@/components/select';
-import { get } from 'vuex-pathify';
+import { get, call } from 'vuex-pathify';
 
 // TODO:
 // [+] 1. Отобразить назначенных на доске (10 максимум)
@@ -51,7 +53,8 @@ export default {
   },
   data: () => ({
     isSelectOpen: false,
-    isLoading: true
+    isLoading: true,
+    assignableUsers: []
   }),
   computed: {
     currentUserName: get('user/username'),
@@ -61,6 +64,9 @@ export default {
     }
   },
   methods: {
+    ...call([
+      'board/fetchAssignableUsers',
+    ]),
     selfAssign() {
       // console.log(this.currentUserName);
       this.$emit('assign', {
@@ -69,8 +75,18 @@ export default {
         url: `https://github.com/${this.currentUserName}`
       });
     },
-    openAssignees() {
+    async openAssignees() {
       this.isSelectOpen = !this.isSelectOpen;
+      if (this.isSelectOpen && this.assignableUsers.length === 0) {
+        this.isLoading = true;
+        const fetchAssignableUsers = await this.fetchAssignableUsers({
+          repositoryFullName: 'agileseason/test_dev'
+        });
+        this.assignableUsers = [...fetchAssignableUsers];
+        // console.log('xxxxxx');
+        // console.log(this.assignableUsers);
+        this.isLoading = false;
+      }
     }
   }
 }
@@ -92,6 +108,7 @@ label.label
   font-weight: 700
   justify-content: space-between
   margin-bottom: 6px
+  user-select: none
 
   &.active
     cursor: pointer
