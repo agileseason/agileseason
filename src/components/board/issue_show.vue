@@ -66,7 +66,7 @@
         </div>
       </div>
       <div class='right'>
-        <Assignees v-if='isLoaded' :assignees='assignees' />
+        <Assignees v-if='isLoaded' :assignees='assignees' @assign='assign' />
       </div>
     </IssueBody>
 
@@ -168,6 +168,9 @@ export default {
       });
 
       this.isSubmitting = false;
+    },
+    assign({ login }) {
+      console.log(login);
     }
   }
 }
