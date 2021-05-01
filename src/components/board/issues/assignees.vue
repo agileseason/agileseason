@@ -21,7 +21,8 @@
       <Loader v-if='isLoading' is-inline />
       <div v-else>
         <div v-for='user in assignableUsers' class='assignable-user' :key='user.login'>
-          {{ user.login }}
+          <img class='avatar' :src='user.avatarUrl' />
+          <span class='login'>{{ user.login }}</span>
         </div>
       </div>
     </Select>
@@ -116,7 +117,8 @@ label.label
     &:hover
       opacity: 0.8
 
-.assignee
+.assignee,
+.assignable-user
   display: flex
   align-items: center
 
