@@ -13,6 +13,13 @@
       <img class='avatar' :src='assignee.avatarUrl' />
       <span class='login'>{{ assignee.login }}</span>
     </div>
+    <Select
+      v-if='isSelectOpen'
+      title='Assign up to 10 people to this issue'
+      class='select-assignees'
+    >
+      TODO
+    </Select>
     <div v-if='isSelfAssignVisible' class='self-assign'>
       None — <b @click='selfAssign'>assign your self</b>
     </div>
@@ -20,7 +27,8 @@
 </template>
 
 <script>
-import ButtonIcon from '@/components/buttons/icon.vue'
+import ButtonIcon from '@/components/buttons/icon'
+import Select from '@/components/select';
 import { get } from 'vuex-pathify';
 
 // TODO:
@@ -30,11 +38,15 @@ import { get } from 'vuex-pathify';
 // 4. Попап для назначения нескольких на просмотре и на новом тикете
 export default {
   components: {
-    ButtonIcon
+    ButtonIcon,
+    Select
   },
   props: {
     assignees: { type: Array, required: true }
   },
+  data: () => ({
+    isSelectOpen: false
+  }),
   computed: {
     currentUserName: get('user/username'),
     currentAvatarUrl: get('user/avatarUrl'),
@@ -52,13 +64,21 @@ export default {
       });
     },
     openAssignees() {
-      console.log('openAssignees');
+      this.isSelectOpen = !this.isSelectOpen;
     }
   }
 }
 </script>
 
 <style scoped lang='sass'>
+.assignees
+  position: relative
+
+.select-assignees
+  position: absolute
+  top: 20px
+  width: 220px
+
 label.label
   align-items: center
   color: #283593
