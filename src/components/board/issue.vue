@@ -15,18 +15,30 @@
         {{ label.name }}
       </span>
     </div>
+
     <div v-if='isAssignedOrExtra' class='assigned-or-extra'>
-      <div class='extras'>
-        <div v-if='isBody' class='extra-item body-present' />
-        <div v-if='commentsCount > 0' class='extra-item comments-count'>
-          {{ commentsCount }}
+      <div class='extras-and-actions'>
+        <div class='extras'>
+          <div v-if='isBody' class='extra-item body-present' />
+          <div v-if='commentsCount > 0' class='extra-item comments-count'>
+            {{ commentsCount }}
+          </div>
+        </div>
+
+        <div v-if='isActionVisible' class='actions'>
+          <span v-if='isClosed' class='closed'>Closed</span>
         </div>
       </div>
+
       <div class='assigned'>
+        <img
+          v-for='(assignee, $index) in assignees'
+          :key='$index'
+          class='assignee'
+          :src='assignee.avatarUrl'
+          :title='assignee.login'
+        />
       </div>
-    </div>
-    <div v-if='isActionVisible' class='actions'>
-      <span v-if='isClosed' class='closed'>Closed</span>
     </div>
   </div>
 </template>
@@ -45,6 +57,7 @@ export default {
     url: { type: String, required: true },
     repositoryName: { type: String, required: true },
     labels: { type: Array, required: true },
+    assignees: { type: Array, required: true },
     isClosed: { type: Boolean, required: true },
     isBody: { type: Boolean, required: true },
     commentsCount: { type: Number, required: true }
@@ -53,7 +66,12 @@ export default {
   computed: {
     isLabels() { return this.labels.length > 0; },
     isActionVisible() { return this.isClosed; },
-    isAssignedOrExtra() { return this.isBody || this.commentsCount > 0; }
+    isAssignedOrExtra() {
+      return this.isBody ||
+        this.isActionVisible ||
+        this.assignees.length > 0 ||
+        this.commentsCount > 0;
+    }
   },
   methods: {
     ...call([
@@ -114,63 +132,75 @@ export default {
       padding: 0 9px
 
   .assigned-or-extra
-    margin-top: 8px
     display: flex
     justify-content: space-between
     align-items: flex-end
 
-    .extras
-      display: flex
+    .extras-and-actions
+      .extras
+        display: flex
 
-      .extra-item
-        background-color: #eceff1
-        background-position: center 3px
-        background-repeat: no-repeat
-        background-size: initial
-        border-radius: 4px
-        height: 18px
-        margin-right: 4px
+        .extra-item
+          background-color: #eceff1
+          background-position: center 3px
+          background-repeat: no-repeat
+          background-size: initial
+          border-radius: 4px
+          height: 18px
+          margin-right: 4px
+          margin-top: 8px
 
-        &.body-present
-          background-image: url('../../assets/icons/issue/grey_book.svg')
-          width: 24px
+          &.body-present
+            background-image: url('../../assets/icons/issue/grey_book.svg')
+            width: 24px
 
-        &.comments-count
-          background-image: url('../../assets/icons/issue/grey_comment.svg')
-          background-position: 4px 3px
-          color: #455a64
-          font-size: 12px
-          font-weight: 600
-          padding: 0 3px 0 21px
-          line-height: 18px
+          &.comments-count
+            background-image: url('../../assets/icons/issue/grey_comment.svg')
+            background-position: 4px 3px
+            color: #455a64
+            font-size: 12px
+            font-weight: 600
+            padding: 0 3px 0 21px
+            line-height: 18px
+
+      .actions
+        margin-top: 8px
+
+        .closed
+          background-color: #FFCDD2
+          border-radius: 4px
+          color: #D73A49
+          display: inline-block
+          font-size: 11px
+          font-weight: 400
+          height: 22px
+          letter-spacing: 0.2px
+          line-height: 23px
+          padding: 0 7px 0 25px
+          position: relative
+
+          &:before
+            background-image: url('../../assets/icons/closed.svg')
+            background-position: center
+            background-repeat: no-repeat
+            content: ''
+            display: inline-block
+            height: 16px
+            left: 5px
+            position: absolute
+            top: 3px
+            width: 16px
 
     .assigned
+      text-align: right
+      width: 130px
+      // width: 104px
 
-  .actions
-    margin-top: 8px
-
-    .closed
-      background-color: #FFCDD2
-      border-radius: 4px
-      color: #D73A49
-      display: inline-block
-      font-size: 11px
-      font-weight: 400
-      height: 22px
-      letter-spacing: 0.2px
-      line-height: 23px
-      padding: 0 7px 0 25px
-      position: relative
-
-      &:before
-        background-image: url('../../assets/icons/closed.svg')
-        background-position: center
-        background-repeat: no-repeat
-        content: ''
+      .assignee
         display: inline-block
-        height: 16px
-        left: 5px
-        position: absolute
-        top: 3px
-        width: 16px
+        vertical-align: bottom
+        border-radius: 11px
+        height: 22px
+        margin: 2px 0 0 4px
+        width: 22px
 </style>

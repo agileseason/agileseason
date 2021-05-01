@@ -107,6 +107,7 @@ export default {
               url
               repositoryName
               labels { name color }
+              assignees { login avatarUrl }
               isClosed
               isBody
               commentsCount
