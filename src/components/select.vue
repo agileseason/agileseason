@@ -23,7 +23,7 @@ export default {
   background-color: #e8eaf6
 
 .title
-  color: #5C6BC0
+  color: #5c6bc0
   font-weight: 500
   border-bottom: 1px solid #c5cae9
   padding-bottom: 8px
