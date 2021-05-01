@@ -293,16 +293,17 @@ export default {
     return data?.comments;
   },
 
-  async createIssue(token, { boardId, columnId, repositoryId, title, body, position }) {
+  async createIssue(token, { boardId, columnId, repositoryId, title, body, position, assignees }) {
     const query = `
-      mutation($boardId:Int!, $columnId:Int!, $repositoryId:Int!, $title:String!, $body:String, $position:String) {
+      mutation($boardId:Int!, $columnId:Int!, $repositoryId:Int!, $title:String!, $body:String, $position:String, $assignees:[String]) {
         createIssue(input: {
           boardId: $boardId,
           columnId: $columnId,
           repositoryId: $repositoryId,
           title: $title,
           body: $body,
-          position: $position
+          position: $position,
+          assignees: $assignees
         }) {
           issue {
             id
@@ -316,6 +317,7 @@ export default {
             createdAt
             createdAgo
             labels { name color }
+            assignees { login url avatarUrl }
             author { login url avatarUrl }
             columnId
           }
@@ -323,7 +325,8 @@ export default {
         }
       }
     `;
-    const vars = { boardId, columnId, repositoryId, title, body, position };
+    const assigneesLogins = assignees ? assignees.map(v => v.login) : null;
+    const vars = { boardId, columnId, repositoryId, title, body, position, assignees: assigneesLogins };
     const data = await this.client(token).request(query, vars);
     this.log('createIssue', data, vars);
 
@@ -344,6 +347,8 @@ export default {
             id
             number
             title
+            labels { name color }
+            assignees { login url avatarUrl }
           }
           errors
         }

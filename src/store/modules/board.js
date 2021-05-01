@@ -58,10 +58,10 @@ export default {
       }
     },
 
-    async createIssue({ commit, state, getters }, { columnId, repositoryId, title, body, position }) {
+    async createIssue({ commit, state, getters }, { columnId, repositoryId, title, body, position, assignees }) {
       const result = await api.createIssue(
         getters.token,
-        { boardId: state.id, columnId, repositoryId, title, body, position }
+        { boardId: state.id, columnId, repositoryId, title, body, position, assignees }
       );
       if (result?.issue == null) {
         // todo: Show errors (result.errors).

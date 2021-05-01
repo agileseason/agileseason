@@ -51,7 +51,7 @@
         </div>
 
         <div class='delimeter' />
-        <Assignees :assignees='[]' />
+        <Assignees :assignees='assignees' @assign='assign' />
 
         <div class='delimeter' />
 
@@ -126,6 +126,7 @@ export default {
   data: () => ({
     title: '',
     body: '',
+    assignees: [],
     selectedRepositoryId: undefined,
     selectedColumnId: undefined,
     selectedPosition: undefined,
@@ -167,6 +168,7 @@ export default {
         repositoryId: this.selectedRepositoryId,
         title: this.title,
         body: this.body,
+        assignees: this.assignees,
         position: this.selectedPosition
       });
       // console.log(issue);
@@ -176,6 +178,9 @@ export default {
         this.body = '';
         this.close();
       }
+    },
+    assign(user) {
+      this.assignees.push(user);
     }
   }
 }
