@@ -18,7 +18,10 @@
       title='Assign up to 10 people to this issue'
       class='select-assignees'
     >
-      TODO
+      <Loader v-if='isLoading' is-inline />
+      <div v-else>
+        TODO
+      </div>
     </Select>
     <div v-if='isSelfAssignVisible' class='self-assign'>
       None — <b @click='selfAssign'>assign your self</b>
@@ -28,6 +31,7 @@
 
 <script>
 import ButtonIcon from '@/components/buttons/icon'
+import Loader from '@/components/loader';
 import Select from '@/components/select';
 import { get } from 'vuex-pathify';
 
@@ -39,13 +43,15 @@ import { get } from 'vuex-pathify';
 export default {
   components: {
     ButtonIcon,
+    Loader,
     Select
   },
   props: {
     assignees: { type: Array, required: true }
   },
   data: () => ({
-    isSelectOpen: false
+    isSelectOpen: false,
+    isLoading: true
   }),
   computed: {
     currentUserName: get('user/username'),

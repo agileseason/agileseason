@@ -71,6 +71,22 @@ export default {
     return data?.githubRepositories;
   },
 
+  async fetchAssignableUsers(token, boardId, repositoryFullName) {
+    const query = `
+      query($boardId:Int!, $repositoryFullName:String!) {
+        githubAssignableUsers(boardId: $boardId, repositoryFullName: $repositoryFullName) {
+          login
+          avatarUrl
+        }
+      }
+    `;
+    const vars = { boardId, repositoryFullName };
+    const data = await this.client(token).request(query, vars);
+    this.log('githubAssignableUsers', data);
+
+    return data?.githubAssignableUsers;
+  },
+
   // ---------------------------------
   // Board
   // ---------------------------------
