@@ -4,7 +4,7 @@
       {{ title }}&nbsp;
       <a :href='url'>#{{ number }}</a>
     </span>
-    <ButtonIcon name='edit' @click='startEditTitle' />
+    <ButtonIcon v-if='isEditable' name='edit' @click='startEditTitle' />
   </div>
   <div v-else class='title-edit'>
     <input
@@ -46,7 +46,8 @@ export default {
     // />
     title: { type: String, default: '...' },
     url: { type: String, default: '' },
-    number: { type: [String, Number], default: '' }
+    number: { type: [String, Number], default: '' },
+    isEditable: { type: Boolean, default: false }
   },
   data: () => ({
     newTitle: '',

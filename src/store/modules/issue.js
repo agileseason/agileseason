@@ -18,6 +18,8 @@ export default {
     isLoaded: false,
     isCommentLoading: false,
     isCommentLoaded: false,
+    assignees: [],
+    labels: [],
     comments: []
   },
 
@@ -61,6 +63,8 @@ export default {
       state.isLoaded = false;
       state.isCommentLoading = false;
       state.isCommentLoaded = false;
+      state.assignees = [];
+      state.labels = [];
     },
     FINISH_LOADING(state, issue) {
       // This approach doesn't work:

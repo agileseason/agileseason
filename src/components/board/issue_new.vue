@@ -51,7 +51,7 @@
         </div>
 
         <div class='delimeter' />
-        <Assigness />
+        <Assignees :assignees='[]' />
 
         <div class='delimeter' />
 
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import Assigness from '@/components/board/issues/assigness.vue'
+import Assignees from '@/components/board/issues/assignees.vue'
 import Button from '@/components/buttons/button.vue'
 import IssueBody from '@/components/board/issues/body_content.vue'
 import { get, call } from 'vuex-pathify';
@@ -116,7 +116,7 @@ const delay = require('delay');
 export default {
   name: 'IssueNew',
   components: {
-    Assigness,
+    Assignees,
     Button,
     IssueBody
   },

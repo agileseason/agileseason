@@ -260,6 +260,7 @@ export default {
             createdAgo
             labels { name color }
             author { login url avatarUrl }
+            assignees { login url avatarUrl }
           }
           errors
         }

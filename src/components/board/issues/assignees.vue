@@ -1,10 +1,18 @@
 <template>
-  <div class='assigness'>
-    <label class='label active' @click='openAssigness'>
-      <span>Assigness</span>
+  <div class='assignees'>
+    <label class='label active' @click='openAssignees'>
+      <span>Assignees</span>
       <ButtonIcon name='gear' style='float: right; padding: 0' />
     </label>
-    TODO
+    <div
+      v-for='(assignee, $index) in assignees'
+      :key='$index'
+      :title='assignee.url'
+      class='assignee'
+    >
+      <img class='avatar' :src='assignee.avatarUrl' />
+      <span class='login'>{{ assignee.login }}</span>
+    </div>
   </div>
 </template>
 
@@ -20,9 +28,12 @@ export default {
   components: {
     ButtonIcon
   },
+  props: {
+    assignees: { type: Array, required: true }
+  },
   methods: {
-    openAssigness() {
-      console.log('openAssigness');
+    openAssignees() {
+      console.log('openAssignees');
     }
   }
 }
@@ -42,4 +53,19 @@ label.label
 
     &:hover
       opacity: 0.7
+
+.assignee
+  display: flex
+  align-items: center
+
+  .avatar
+    border-radius: 11px
+    height: 22px
+    margin-right: 4px
+    margin-top: 2px
+    width: 22px
+
+  .login
+    font-size: 14px
+    font-weight: 500
 </style>

@@ -17,6 +17,7 @@
           :title='title'
           :url='url'
           :number='number'
+          :isEditable='isLoaded'
           @save='updateTitle'
         />
         <Loader v-if='isLoading' />
@@ -65,7 +66,7 @@
         </div>
       </div>
       <div class='right'>
-        <Assigness />
+        <Assignees v-if='isLoaded' :assignees='assignees' />
       </div>
     </IssueBody>
 
@@ -76,7 +77,7 @@
 </template>
 
 <script>
-import Assigness from '@/components/board/issues/assigness.vue'
+import Assignees from '@/components/board/issues/assignees.vue'
 import ButtonIcon from '@/components/buttons/icon.vue'
 import IssueBody from '@/components/board/issues/body_content.vue'
 import Loader from '@/components/loader';
@@ -86,7 +87,7 @@ import { get, call } from 'vuex-pathify';
 export default {
   name: 'IssueShow',
   components: {
-    Assigness,
+    Assignees,
     ButtonIcon,
     IssueBody,
     Loader,
@@ -124,6 +125,9 @@ export default {
       if (this.isClosed == null) { return null; }
       return this.issue.isClosed ? 'closed' : 'open';
     },
+    assignees() {
+      return this.fetchedIssue.assignees;
+    }
 
     // debugStoreColumns: get('board/columns'),
     // debugStoreCurrentIssue: get('board/currentIssue'),
