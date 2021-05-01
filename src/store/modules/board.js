@@ -71,15 +71,15 @@ export default {
       return result?.issue;
     },
 
-    async updateIssue({ state, getters, dispatch }, { id, columnId, title, body }) {
+    async updateIssue({ state, getters, dispatch }, { id, columnId, title, body, assignees }) {
       const result = await api.updateIssue(
         getters.token,
-        { id: id, boardId: state.id, title, body }
+        { id: id, boardId: state.id, title, body, assignees }
       );
       if (result?.issue == null) {
         // todo: Show errors (result.errors).
       } else {
-        dispatch('updateBoardIssue', { id, title, body, columnId });
+        dispatch('updateBoardIssue', { id, title, body, columnId, assignees });
       }
       return result?.issue;
     },
@@ -137,10 +137,12 @@ export default {
       // TODO: После обновления полей вызывать метод для
       //       обновления в API.
       Object.keys(issue).forEach(prop => {
-        commit(
-          'UPDATE_BOARD_ISSUE',
-          { issue: boardIssue, key: prop, value: issue[prop] }
-        );
+        if (issue[prop] != null) {
+          commit(
+            'UPDATE_BOARD_ISSUE',
+            { issue: boardIssue, key: prop, value: issue[prop] }
+          );
+        }
       });
     }
   },

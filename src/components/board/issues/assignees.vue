@@ -37,6 +37,7 @@ export default {
   },
   computed: {
     currentUserName: get('user/username'),
+    currentAvatarUrl: get('user/avatarUrl'),
     isSelfAssignVisible() {
       return this.assignees.length === 0;
     }
@@ -44,7 +45,11 @@ export default {
   methods: {
     selfAssign() {
       // console.log(this.currentUserName);
-      this.$emit('assign', { login: this.currentUserName });
+      this.$emit('assign', {
+        login: this.currentUserName,
+        avatarUrl: this.currentAvatarUrl,
+        url: `https://github.com/${this.currentUserName}`
+      });
     },
     openAssignees() {
       console.log('openAssignees');

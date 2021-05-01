@@ -330,14 +330,15 @@ export default {
     return data?.createIssue;
   },
 
-  async updateIssue(token, { id, boardId, title, body }) {
+  async updateIssue(token, { id, boardId, title, body, assignees }) {
     const query = `
-      mutation($id:Int!, $boardId:Int!, $title:String, $body:String) {
+      mutation($id:Int!, $boardId:Int!, $title:String, $body:String, $assignees:[String]) {
         updateIssue(input: {
           id: $id,
           boardId: $boardId,
           title: $title,
-          body: $body
+          body: $body,
+          assignees: $assignees
         }) {
           issue {
             id
@@ -348,7 +349,8 @@ export default {
         }
       }
     `;
-    const vars = { id, boardId, title, body };
+    const assigneesLogins = assignees ? assignees.map(v => v.login) : null;
+    const vars = { id, boardId, title, body, assignees: assigneesLogins };
     const data = await this.client(token).request(query, vars);
     this.log('updateIssue', data, vars);
 

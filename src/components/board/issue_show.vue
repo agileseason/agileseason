@@ -20,7 +20,6 @@
           :isEditable='isLoaded'
           @save='updateTitle'
         />
-        <Loader v-if='isLoading' />
         <div v-if='isLoaded' class='main-comment comment'>
           <img class='avatar' :src='fetchedIssue.author.avatarUrl' />
 
@@ -69,6 +68,8 @@
         <Assignees v-if='isLoaded' :assignees='assignees' @assign='assign' />
       </div>
     </IssueBody>
+
+    <Loader v-if='isLoading' />
 
     <!--div>
       {{ debugStore }}
@@ -169,8 +170,17 @@ export default {
 
       this.isSubmitting = false;
     },
-    assign({ login }) {
-      console.log(login);
+    async assign(user) {
+      if (this.isSubmitting) { return; }
+
+      this.isSubmitting = true;
+      this.fetchedIssue.assignees.push(user);
+      await this.updateIssue({
+        id: this.id,
+        assignees: this.fetchedIssue.assignees,
+        columnId: this.fetchedIssue.columnId
+      });
+      this.isSubmitting = false;
     }
   }
 }
