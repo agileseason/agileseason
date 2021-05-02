@@ -37,7 +37,11 @@
       <div class='right'>
         <div class='repositories radios'>
           <label class='label'>Repositories</label>
-          <div v-for='repo in repositories' class='repository radio' :key='repo.id'>
+          <div
+            v-for='repo in repositories'
+            class='repository radio'
+            :key='repo.id'
+          >
             <input
               v-model='selectedRepositoryId'
               type='radio'
@@ -51,7 +55,11 @@
         </div>
 
         <div class='delimeter' />
-        <Assignees :assignees='assignees' @assign='assign' />
+        <Assignees
+          :assignees='assignees'
+          :repositoryFullName='selectedRepositoryFullName'
+          @assign='assign'
+        />
 
         <div class='delimeter' />
 
@@ -71,7 +79,11 @@
 
         <div class='columns radios'>
           <label class='label'>Columns</label>
-          <div v-for='column in columns' class='column radio' :key='column.id'>
+          <div
+            v-for='column in columns'
+            class='column radio'
+            :key='column.id'
+          >
             <input
               v-model='selectedColumnId'
               type='radio'
@@ -141,6 +153,11 @@ export default {
     positions() { return ['top', 'bottom']; },
     isValid() {
       return this.title.length > 0;
+    },
+    selectedRepositoryFullName() {
+      return this.repositories
+        .find(v => v.id === this.selectedRepositoryId)
+        ?.fullName;
     }
   },
   created() {

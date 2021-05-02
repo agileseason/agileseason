@@ -65,7 +65,11 @@
         </div>
       </div>
       <div class='right'>
-        <Assignees v-if='isLoaded' :assignees='assignees' @assign='assign' />
+        <Assignees
+          v-if='isLoaded'
+          :assignees='assignees'
+          @assign='assign'
+        />
       </div>
     </IssueBody>
 

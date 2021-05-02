@@ -21,7 +21,6 @@ export default {
   border: 1px solid #c5cae9
   border-radius: 4px
   background-color: #e8eaf6
-  z-index: 2
 
 .title
   color: #5c6bc0

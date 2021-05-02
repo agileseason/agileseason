@@ -57,7 +57,8 @@ export default {
     Select
   },
   props: {
-    assignees: { type: Array, required: true }
+    assignees: { type: Array, required: true },
+    repositoryFullName: { type: String, required: true }
   },
   data: () => ({
     isSelectOpen: false,
@@ -69,6 +70,13 @@ export default {
     currentAvatarUrl: get('user/avatarUrl'),
     isSelfAssignVisible() {
       return this.assignees.length === 0;
+    }
+  },
+  watch: {
+    repositoryFullName(newValue, oldValue) {
+      if (newValue === oldValue) { return; }
+      this.assignableUsers = [];
+      this.isLoading = true;
     }
   },
   methods: {
@@ -93,7 +101,7 @@ export default {
       if (this.isSelectOpen && this.assignableUsers.length === 0) {
         this.isLoading = true;
         const fetchAssignableUsers = await this.fetchAssignableUsers({
-          repositoryFullName: 'agileseason/test_dev'
+          repositoryFullName: this.repositoryFullName
         });
         this.assignableUsers = [...fetchAssignableUsers];
         this.isLoading = false;
@@ -148,7 +156,6 @@ label.label
     border-radius: 11px
     height: 22px
     margin-right: 4px
-    margin-top: 2px
     width: 22px
 
   .login
