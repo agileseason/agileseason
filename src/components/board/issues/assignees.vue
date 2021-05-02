@@ -60,6 +60,7 @@ export default {
     assignees: { type: Array, required: true },
     repositoryFullName: { type: String, required: true }
   },
+  emits: ['assign'],
   data: () => ({
     isSelectOpen: false,
     isLoading: true,

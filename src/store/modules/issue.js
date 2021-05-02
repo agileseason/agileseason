@@ -13,6 +13,7 @@ export default {
     createdAgo: undefined,
     isClosed: undefined,
     repositoryName: undefined,
+    repositoryFullName: undefined,
     columnId: undefined,
     isLoading: true,
     isLoaded: false,

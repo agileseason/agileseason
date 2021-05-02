@@ -270,6 +270,7 @@ export default {
             position
             url
             repositoryName
+            repositoryFullName
             columnId
             isClosed
             createdAt

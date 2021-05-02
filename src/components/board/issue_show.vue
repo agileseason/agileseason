@@ -68,6 +68,7 @@
         <Assignees
           v-if='isLoaded'
           :assignees='assignees'
+          :repositoryFullName='repositoryFullName'
           @assign='assign'
         />
       </div>
@@ -117,7 +118,8 @@ export default {
     id() { return parseInt(this.$route.params.issueId); },
     number() { return parseInt(this.$route.params.issueNumber); },
     url() { return this.issue.url || this.fetchedIssue?.url; },
-    repositoryName() { return this.issue.repositoryName || this?.fetchedIssue.repositoryName; },
+    repositoryName() { return this.issue?.repositoryName || this.fetchedIssue?.repositoryName; },
+    repositoryFullName() { return this.issue.repositoryFullName || this.fetchedIssue?.repositoryFullName },
     title() {
       if (this.newTitle) { return this.newTitle; }
       return this.isLoaded ? this.fetchedIssue.title : this.issue.title;
@@ -190,6 +192,9 @@ export default {
         columnId: this.fetchedIssue.columnId
       });
       this.isSubmitting = false;
+    },
+    startEditBody() {
+      console.log('TODO: startEditBody');
     }
   }
 }
