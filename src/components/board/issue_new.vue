@@ -180,7 +180,12 @@ export default {
       }
     },
     assign(user) {
-      this.assignees.push(user);
+      const userIndex = this.assignees.findIndex(v => v.login === user.login);
+      if (userIndex === -1) {
+        this.assignees.push(user);
+      } else {
+        this.assignees.splice(userIndex, 1);
+      }
     }
   }
 }
