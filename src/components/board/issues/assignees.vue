@@ -45,11 +45,6 @@ import Loader from '@/components/loader';
 import Select from '@/components/select';
 import { get, call } from 'vuex-pathify';
 
-// TODO:
-// [+] 1. Отобразить назначенных на доске (10 максимум)
-// [+] 2. Отобразить назначенных в списке на промсмотре issue и на новом тикете
-// [+] 3. Быстраяя ссылка для назначения себя на просмотре и на новом тикете
-// 4. Попап для назначения нескольких на просмотре и на новом тикете
 export default {
   components: {
     ButtonIcon,
@@ -91,6 +86,8 @@ export default {
       });
     },
     assign(user) {
+      if (this.assignees.length > 10) { return; }
+
       const assignedUser = {
         ...user,
         url: `https://github.com/${user.login}`
@@ -162,6 +159,10 @@ label.label
   .login
     font-size: 14px
     font-weight: 500
+
+.assignee
+  &:not(:last-child)
+    margin-bottom: 4px
 
 .assignable-user
   padding: 8px
