@@ -1,6 +1,6 @@
 <template>
   <div class='assignees'>
-    <label class='label active' @click='openAssignees'>
+    <label class='label active' @click='toggleAssignees'>
       <span>Assignees</span>
       <ButtonIcon name='gear' style='float: right; padding: 0' />
     </label>
@@ -20,7 +20,13 @@
     >
       <Loader v-if='isLoading' is-inline />
       <div v-else>
-        <div v-for='user in assignableUsers' class='assignable-user' :key='user.login'>
+        <div
+          v-for='user in assignableUsers'
+          class='assignable-user'
+          :key='user.login'
+          @click='assign(user)'
+        >
+          <span class='check' :class="{ checked: isAssigned(user) }" />
           <img class='avatar' :src='user.avatarUrl' />
           <span class='login'>{{ user.login }}</span>
         </div>
@@ -30,6 +36,7 @@
       None — <b @click='selfAssign'>assign your self</b>
     </div>
   </div>
+  <div v-if='isSelectOpen' class='select-assignees-overlay' @click.self='toggleAssignees' />
 </template>
 
 <script>
@@ -69,14 +76,19 @@ export default {
       'board/fetchAssignableUsers',
     ]),
     selfAssign() {
-      // console.log(this.currentUserName);
-      this.$emit('assign', {
+      this.assign({
         login: this.currentUserName,
-        avatarUrl: this.currentAvatarUrl,
-        url: `https://github.com/${this.currentUserName}`
+        avatarUrl: this.currentAvatarUrl
       });
     },
-    async openAssignees() {
+    assign(user) {
+      const assignedUser = {
+        ...user,
+        url: `https://github.com/${user.login}`
+      };
+      this.$emit('assign', assignedUser);
+    },
+    async toggleAssignees() {
       this.isSelectOpen = !this.isSelectOpen;
       if (this.isSelectOpen && this.assignableUsers.length === 0) {
         this.isLoading = true;
@@ -84,10 +96,11 @@ export default {
           repositoryFullName: 'agileseason/test_dev'
         });
         this.assignableUsers = [...fetchAssignableUsers];
-        // console.log('xxxxxx');
-        // console.log(this.assignableUsers);
         this.isLoading = false;
       }
+    },
+    isAssigned({ login }) {
+      return this.assignees.findIndex(v => v.login === login) >= 0;
     }
   }
 }
@@ -101,6 +114,15 @@ export default {
   position: absolute
   top: 20px
   width: 220px
+  z-index: 2
+
+.select-assignees-overlay
+  height: 100vh
+  left: 0
+  position: fixed
+  top: 0
+  width: 100vw
+  z-index: 1
 
 label.label
   align-items: center
@@ -132,6 +154,29 @@ label.label
   .login
     font-size: 14px
     font-weight: 500
+
+.assignable-user
+  padding: 8px
+  cursor: pointer
+
+  &:hover
+    background-color: #c5cae9
+
+  &:not(:last-child)
+    border-bottom: 1px solid #c5cae9
+
+  .check
+    background-image: url('../../../assets/icons/issue/check.svg')
+    background-position: center
+    background-repeat: no-repeat
+    height: 16px
+    margin-right: 8px
+    opacity: 0
+    width: 16px
+
+    &.checked
+      opacity: 100
+
 
 .self-assign
   color: #5c6bc0

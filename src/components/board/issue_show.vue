@@ -174,7 +174,12 @@ export default {
       if (this.isSubmitting) { return; }
 
       this.isSubmitting = true;
-      this.fetchedIssue.assignees.push(user);
+      const userIndex = this.fetchedIssue.assignees.findIndex(v => v.login === user.login);
+      if (userIndex === -1) {
+        this.fetchedIssue.assignees.push(user);
+      } else {
+        this.fetchedIssue.assignees.splice(userIndex, 1);
+      }
       await this.updateIssue({
         id: this.id,
         assignees: this.fetchedIssue.assignees,
