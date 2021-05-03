@@ -62,11 +62,10 @@
         />
 
         <div class='delimeter' />
-
-        <div class='labels'>
-          <label class='label active'>Labels<span class='gear' /></label>
-          TODO
-        </div>
+        <Labels
+          v-if='isLoaded'
+          :labels='[]'
+        />
 
         <div class='delimeter' />
 
@@ -121,6 +120,7 @@
 import Assignees from '@/components/board/issues/assignees.vue'
 import Button from '@/components/buttons/button.vue'
 import IssueBody from '@/components/board/issues/body_content.vue'
+import Labels from '@/components/board/issues/labels'
 import { get, call } from 'vuex-pathify';
 
 const delay = require('delay');
@@ -130,7 +130,8 @@ export default {
   components: {
     Assignees,
     Button,
-    IssueBody
+    IssueBody,
+    Labels
   },
   props: {
     columnId: { type: Number, required: true }

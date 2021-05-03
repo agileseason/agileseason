@@ -71,6 +71,11 @@
           :repositoryFullName='repositoryFullName'
           @assign='assign'
         />
+        <div class='delimeter' />
+        <Labels
+          v-if='isLoaded'
+          :labels='[]'
+        />
       </div>
     </IssueBody>
 
@@ -83,9 +88,10 @@
 </template>
 
 <script>
-import Assignees from '@/components/board/issues/assignees.vue'
-import ButtonIcon from '@/components/buttons/icon.vue'
-import IssueBody from '@/components/board/issues/body_content.vue'
+import Assignees from '@/components/board/issues/assignees'
+import ButtonIcon from '@/components/buttons/icon'
+import IssueBody from '@/components/board/issues/body_content'
+import Labels from '@/components/board/issues/labels'
 import Loader from '@/components/loader';
 import Title from '@/components/board/issues/title';
 import { get, call } from 'vuex-pathify';
@@ -96,6 +102,7 @@ export default {
     Assignees,
     ButtonIcon,
     IssueBody,
+    Labels,
     Loader,
     Title
   },
@@ -292,4 +299,9 @@ export default {
 
       &.empty
         color: #9e9e9e
+
+.delimeter
+  border-bottom: 1px solid #e8eaf6
+  padding-top: 12px
+  margin-bottom: 12px
 </style>
