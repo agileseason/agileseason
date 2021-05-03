@@ -71,11 +71,15 @@
           :repositoryFullName='repositoryFullName'
           @assign='assign'
         />
+
         <div class='delimeter' />
         <Labels
           v-if='isLoaded'
           :labels='[]'
         />
+
+        <div class='delimeter' />
+        <Colors v-if='isLoaded' />
       </div>
     </IssueBody>
 
@@ -90,6 +94,7 @@
 <script>
 import Assignees from '@/components/board/issues/assignees'
 import ButtonIcon from '@/components/buttons/icon'
+import Colors from '@/components/board/issues/colors'
 import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
 import Loader from '@/components/loader';
@@ -101,6 +106,7 @@ export default {
   components: {
     Assignees,
     ButtonIcon,
+    Colors,
     IssueBody,
     Labels,
     Loader,

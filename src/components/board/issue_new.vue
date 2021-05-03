@@ -67,10 +67,7 @@
         />
 
         <div class='delimeter' />
-        <div class='colors'>
-          <label class='label active'>Colors<span class='gear' /></label>
-          TODO
-        </div>
+        <Colors />
 
         <div class='delimeter' />
         <div class='columns radios'>
@@ -116,6 +113,7 @@
 <script>
 import Assignees from '@/components/board/issues/assignees'
 import Button from '@/components/buttons/button'
+import Colors from '@/components/board/issues/colors'
 import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
 import { get, call } from 'vuex-pathify';
@@ -127,6 +125,7 @@ export default {
   components: {
     Assignees,
     Button,
+    Colors,
     IssueBody,
     Labels
   },
