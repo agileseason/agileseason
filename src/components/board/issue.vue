@@ -44,7 +44,13 @@
 </template>
 
 <script>
+import { hex } from '@/utils/wcag_contrast';
 import { call } from 'vuex-pathify';
+
+// const DARK_TEXT = '000000';
+// const LIGHT_TEXT = 'ffffff';
+const DARK_TEXT = '212121';
+const LIGHT_TEXT = 'fafafa';
 
 export default {
   name: 'Issue',
@@ -77,7 +83,11 @@ export default {
     ...call([
       'board/setCurrentIssue'
     ]),
-    labelStyle({ color }) { return `background-color: #${color}`; },
+    labelStyle({ color }) {
+      const lightRatio = hex(`#${LIGHT_TEXT}`, `#${color}`)
+      const fontColor = lightRatio < 3.0 ? DARK_TEXT : LIGHT_TEXT;
+      return `background-color: #${color}; color: #${fontColor}`;
+    },
     goToIssue() {
       this.setCurrentIssue({ issue: this });
       this.$router.push({
