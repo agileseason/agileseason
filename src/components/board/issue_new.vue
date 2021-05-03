@@ -63,19 +63,16 @@
 
         <div class='delimeter' />
         <Labels
-          v-if='isLoaded'
           :labels='[]'
         />
 
         <div class='delimeter' />
-
         <div class='colors'>
           <label class='label active'>Colors<span class='gear' /></label>
           TODO
         </div>
 
         <div class='delimeter' />
-
         <div class='columns radios'>
           <label class='label'>Columns</label>
           <div
@@ -117,9 +114,9 @@
 </template>
 
 <script>
-import Assignees from '@/components/board/issues/assignees.vue'
-import Button from '@/components/buttons/button.vue'
-import IssueBody from '@/components/board/issues/body_content.vue'
+import Assignees from '@/components/board/issues/assignees'
+import Button from '@/components/buttons/button'
+import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
 import { get, call } from 'vuex-pathify';
 

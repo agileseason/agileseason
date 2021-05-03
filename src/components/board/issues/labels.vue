@@ -10,6 +10,9 @@
     >
       TODO
     </Select>
+    <div v-if='isPlaceholderVisible' class='placeholder'>
+      None yet
+    </div>
   </div>
   <div v-if='isSelectOpen' class='select-labels-overlay' @click.self='toggleLabels' />
 </template>
@@ -29,9 +32,12 @@ export default {
   data: () => ({
     isSelectOpen: false,
     isLoading: true,
-    assignableLabels: []
+    selectedLabels: []
   }),
   computed: {
+    isPlaceholderVisible() {
+      return this.selectedLabels.length === 0;
+    }
   },
   watch: {
   },
@@ -66,4 +72,9 @@ label.label
 
     &:hover
       opacity: 0.8
+
+.placeholder
+  color: #5c6bc0
+  font-size: 12px
+  font-weight: 100
 </style>
