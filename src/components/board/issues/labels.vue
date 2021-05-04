@@ -27,18 +27,20 @@
     <div v-if='isPlaceholderVisible' class='placeholder'>
       None yet
     </div>
-    <div
-      v-for='(label, $index) in labels'
-      :key='$index'
-      class='label'
-    >
-      {{ label.name }}
+    <div v-if='labels.length > 0' class='applied-labels'>
+      <Label
+        v-for='(label, $index) in labels'
+        :label='label'
+        :key='$index'
+        class='label'
+      />
     </div>
   </div>
 </template>
 
 <script>
 import ButtonIcon from '@/components/buttons/icon'
+import Label from '@/components/board/label'
 import Loader from '@/components/loader';
 import Select from '@/components/select';
 import { call } from 'vuex-pathify';
@@ -46,6 +48,7 @@ import { call } from 'vuex-pathify';
 export default {
   components: {
     ButtonIcon,
+    Label,
     Loader,
     Select
   },
@@ -105,6 +108,9 @@ export default {
 <style scoped lang='sass'>
 .labels
   position: relative
+
+  .label
+    margin: 2px 4px 4px 0
 
 .select-labels
   position: absolute

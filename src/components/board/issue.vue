@@ -6,14 +6,11 @@
       {{ repositoryName }}
     </a>
     <div v-if='isLabels' class='labels'>
-      <span
-        class='label'
-        v-for='label in labels'
-        :key='label'
-        :style='labelStyle(label)'
-      >
-        {{ label.name }}
-      </span>
+      <Label
+        v-for='(label, $index) in labels'
+        :label='label'
+        :key='$index'
+      />
     </div>
 
     <div v-if='isAssignedOrExtra' class='assigned-or-extra'>
@@ -44,17 +41,13 @@
 </template>
 
 <script>
-import { hex } from '@/utils/wcag_contrast';
+import Label from '@/components/board/label'
 import { call } from 'vuex-pathify';
-
-// const DARK_TEXT = '000000';
-// const LIGHT_TEXT = 'ffffff';
-const DARK_TEXT = '212121';
-const LIGHT_TEXT = 'fafafa';
 
 export default {
   name: 'Issue',
   components: {
+    Label
   },
   props: {
     id: { type: Number, required: true },
@@ -83,11 +76,6 @@ export default {
     ...call([
       'board/setCurrentIssue'
     ]),
-    labelStyle({ color }) {
-      const lightRatio = hex(`#${LIGHT_TEXT}`, `#${color}`)
-      const fontColor = lightRatio < 3.0 ? DARK_TEXT : LIGHT_TEXT;
-      return `background-color: #${color}; color: #${fontColor}`;
-    },
     goToIssue() {
       this.setCurrentIssue({ issue: this });
       this.$router.push({
@@ -126,20 +114,6 @@ export default {
     .number
       color: #616161
       font-weight: 500
-
-  .labels
-    .label
-      border-radius: 10px
-      color: #212121
-      display: inline-block
-      font-size: 11px
-      font-weight: 500
-      height: 19px
-      letter-spacing: 0.2px
-      line-height: 19px
-      margin-top: 6px
-      margin-right: 6px
-      padding: 0 9px
 
   .assigned-or-extra
     display: flex
