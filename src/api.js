@@ -363,6 +363,8 @@ export default {
             assignees { login url avatarUrl }
             author { login url avatarUrl }
             columnId
+            isBody
+            commentsCount
           }
           errors
         }
