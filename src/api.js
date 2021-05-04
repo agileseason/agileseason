@@ -8,6 +8,10 @@ const DOMAIN = {
 const ENDPOINT = DOMAIN + '/graphql';
 
 export default {
+  // ---------------------------------
+  // User
+  // ---------------------------------
+
   async fetchProfile(token) {
     const query = `
       query {
@@ -24,6 +28,10 @@ export default {
 
     return data?.user;
   },
+
+  // ---------------------------------
+  // GitHub
+  // ---------------------------------
 
   async fetchInstallactions(token, page = 1) {
     const query = `
@@ -74,7 +82,7 @@ export default {
   async fetchAssignableUsers(token, boardId, repositoryFullName) {
     const query = `
       query($boardId:Int!, $repositoryFullName:String!) {
-        githubAssignableUsers(boardId: $boardId, repositoryFullName: $repositoryFullName) {
+        items:githubAssignableUsers(boardId: $boardId, repositoryFullName: $repositoryFullName) {
           login
           avatarUrl
         }
@@ -84,7 +92,24 @@ export default {
     const data = await this.client(token).request(query, vars);
     this.log('githubAssignableUsers', data);
 
-    return data?.githubAssignableUsers;
+    return data?.items;
+  },
+
+  async fetchLabels(token, boardId, repositoryFullName) {
+    const query = `
+      query($boardId:Int!, $repositoryFullName:String!) {
+        items:githubLabels(boardId: $boardId, repositoryFullName: $repositoryFullName) {
+          name
+          color
+          description
+        }
+      }
+    `;
+    const vars = { boardId, repositoryFullName };
+    const data = await this.client(token).request(query, vars);
+    this.log('githubLabels', data);
+
+    return data?.items;
   },
 
   // ---------------------------------

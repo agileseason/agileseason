@@ -72,6 +72,20 @@ export default {
       return result;
     },
 
+    async fetchLabels({ state, getters }, { repositoryFullName }) {
+      const result = await api.fetchLabels(
+        getters.token,
+        state.id,
+        repositoryFullName
+      );
+
+      if (result == null) {
+        console.log('Error: fetchLabels');
+        return [];
+      }
+      return result;
+    },
+
     async createIssue({ commit, state, getters }, { columnId, repositoryId, title, body, position, assignees }) {
       const result = await api.createIssue(
         getters.token,

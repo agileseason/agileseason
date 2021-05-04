@@ -1,18 +1,10 @@
 <template>
+  <div v-if='isSelectOpen' class='select-assignees-overlay' @click.self='toggleAssignees' />
   <div class='assignees'>
     <label class='label active' @click='toggleAssignees'>
       <span>Assignees</span>
       <ButtonIcon name='gear' style='float: right; padding: 0' />
     </label>
-    <div
-      v-for='(assignee, $index) in assignees'
-      :key='$index'
-      :title='assignee.url'
-      class='assignee'
-    >
-      <img class='avatar' :src='assignee.avatarUrl' />
-      <span class='login'>{{ assignee.login }}</span>
-    </div>
     <Select
       v-if='isSelectOpen'
       title='Assign up to 10 people to this issue'
@@ -35,8 +27,16 @@
     <div v-if='isSelfAssignVisible' class='self-assign'>
       None — <b @click='selfAssign'>assign your self</b>
     </div>
+    <div
+      v-for='(assignee, $index) in assignees'
+      :key='$index'
+      :title='assignee.url'
+      class='assignee'
+    >
+      <img class='avatar' :src='assignee.avatarUrl' />
+      <span class='login'>{{ assignee.login }}</span>
+    </div>
   </div>
-  <div v-if='isSelectOpen' class='select-assignees-overlay' @click.self='toggleAssignees' />
 </template>
 
 <script>

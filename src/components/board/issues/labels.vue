@@ -1,4 +1,5 @@
 <template>
+  <div v-if='isSelectOpen' class='select-labels-overlay' @click.self='toggleLabels' />
   <div class='labels'>
     <label class='label active' @click='toggleLabels'>
       <span>Labels</span>
@@ -7,49 +8,105 @@
     <Select
       v-if='isSelectOpen'
       title='Apply labels to this issue'
+      class='select-labels'
     >
-      TODO
+      <Loader v-if='isLoading' is-inline />
+      <div v-else>
+        <div
+          v-for='label in githubLabels'
+          class='github-label'
+          :key='label.id'
+          @click='toggle(label)'
+        >
+          <!--span class='check' :class="{ checked: isAssigned(user) }" />
+          <img class='avatar' :src='user.avatarUrl' />
+          <span class='login'>{{ user.login }}</span-->
+          {{ label.name }}
+        </div>
+      </div>
     </Select>
     <div v-if='isPlaceholderVisible' class='placeholder'>
       None yet
     </div>
+    <div
+      v-for='(label, $index) in labels'
+      :key='$index'
+      class='label'
+    >
+      {{ label.name }}
+    </div>
   </div>
-  <div v-if='isSelectOpen' class='select-labels-overlay' @click.self='toggleLabels' />
 </template>
 
 <script>
 import ButtonIcon from '@/components/buttons/icon'
+import Loader from '@/components/loader';
 import Select from '@/components/select';
+import { call } from 'vuex-pathify';
 
 export default {
   components: {
     ButtonIcon,
+    Loader,
     Select
   },
   props: {
     labels: { type: Array, required: true },
+    repositoryFullName: { type: String, required: true }
   },
+  emits: ['toggleLabel'],
   data: () => ({
     isSelectOpen: false,
     isLoading: true,
-    selectedLabels: []
+    isLoaded: false,
+    githubLabels: []
   }),
   computed: {
     isPlaceholderVisible() {
-      return this.selectedLabels.length === 0;
+      return this.labels.length === 0;
     }
   },
   watch: {
+    repositoryFullName(newValue, oldValue) {
+      if (newValue === oldValue) { return; }
+      this.githubLabels = [];
+      this.isLoading = true;
+      this.isLoaded = false;
+    }
   },
   methods: {
-    toggleLabels() {
+    ...call([
+      'board/fetchLabels',
+    ]),
+    async toggleLabels() {
       this.isSelectOpen = !this.isSelectOpen;
+      if (this.isSelectOpen && !this.isLoaded) {
+        this.isLoading = true;
+        const fetchLabels = await this.fetchLabels({
+          repositoryFullName: this.repositoryFullName
+        });
+        this.githubLabels = [...fetchLabels];
+        this.isLoading = false;
+        this.isLoaded = true;
+      }
+    },
+    toggle(label) {
+      console.log('label: ' + label);
     }
   }
 }
 </script>
 
 <style scoped lang='sass'>
+.labels
+  position: relative
+
+.select-labels
+  position: absolute
+  top: 20px
+  width: 220px
+  z-index: 2
+
 .select-labels-overlay
   height: 100vh
   left: 0

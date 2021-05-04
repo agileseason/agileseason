@@ -64,6 +64,7 @@
         <div class='delimeter' />
         <Labels
           :labels='[]'
+          :repositoryFullName='selectedRepositoryFullName'
         />
 
         <div class='delimeter' />
