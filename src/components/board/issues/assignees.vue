@@ -1,7 +1,7 @@
 <template>
   <div v-if='isSelectOpen' class='select-assignees-overlay' @click.self='toggleAssignees' />
   <div class='assignees'>
-    <label class='label active' @click='toggleAssignees'>
+    <label class='active' @click='toggleAssignees'>
       <span>Assignees</span>
       <ButtonIcon name='gear' style='float: right; padding: 0' />
     </label>
@@ -130,7 +130,7 @@ export default {
   width: 100vw
   z-index: 1
 
-label.label
+label
   align-items: center
   color: #283593
   display: flex

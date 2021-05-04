@@ -86,10 +86,10 @@ export default {
       return result;
     },
 
-    async createIssue({ commit, state, getters }, { columnId, repositoryId, title, body, position, assignees }) {
+    async createIssue({ commit, state, getters }, { columnId, repositoryId, title, body, position, assignees, labels }) {
       const result = await api.createIssue(
         getters.token,
-        { boardId: state.id, columnId, repositoryId, title, body, position, assignees }
+        { boardId: state.id, columnId, repositoryId, title, body, position, assignees, labels }
       );
       if (result?.issue == null) {
         // todo: Show errors (result.errors).
@@ -99,15 +99,15 @@ export default {
       return result?.issue;
     },
 
-    async updateIssue({ state, getters, dispatch }, { id, columnId, title, body, assignees }) {
+    async updateIssue({ state, getters, dispatch }, { id, columnId, title, body, assignees, labels }) {
       const result = await api.updateIssue(
         getters.token,
-        { id: id, boardId: state.id, title, body, assignees }
+        { id: id, boardId: state.id, title, body, assignees, labels }
       );
       if (result?.issue == null) {
         // todo: Show errors (result.errors).
       } else {
-        dispatch('updateBoardIssue', { id, title, body, columnId, assignees });
+        dispatch('updateBoardIssue', { id, title, body, columnId, assignees, labels });
       }
       return result?.issue;
     },

@@ -1,7 +1,7 @@
 <template>
   <div v-if='isSelectOpen' class='select-labels-overlay' @click.self='toggleLabels' />
   <div class='labels'>
-    <label class='label active' @click='toggleLabels'>
+    <label class='active' @click='toggleLabels'>
       <span>Labels</span>
       <ButtonIcon name='gear' style='float: right; padding: 0' />
     </label>
@@ -157,7 +157,7 @@ export default {
   width: 100vw
   z-index: 1
 
-label.label
+label
   align-items: center
   color: #283593
   display: flex

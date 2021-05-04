@@ -69,13 +69,15 @@
           v-if='isLoaded'
           :assignees='assignees'
           :repositoryFullName='repositoryFullName'
-          @assign='assign'
+          @assign='toggleAssignee'
         />
 
         <div class='delimeter' />
         <Labels
           v-if='isLoaded'
-          :labels='[]'
+          :labels='labels'
+          :repositoryFullName='repositoryFullName'
+          @toggle='toggleLabel'
         />
 
         <div class='delimeter' />
@@ -147,6 +149,9 @@ export default {
     },
     assignees() {
       return this.fetchedIssue.assignees;
+    },
+    labels() {
+      return this.fetchedIssue.labels;
     }
 
     // debugStoreColumns: get('board/columns'),
@@ -189,7 +194,7 @@ export default {
 
       this.isSubmitting = false;
     },
-    async assign(user) {
+    async toggleAssignee(user) {
       if (this.isSubmitting) { return; }
 
       this.isSubmitting = true;
@@ -202,6 +207,23 @@ export default {
       await this.updateIssue({
         id: this.id,
         assignees: this.fetchedIssue.assignees,
+        columnId: this.fetchedIssue.columnId
+      });
+      this.isSubmitting = false;
+    },
+    async toggleLabel(label) {
+      if (this.isSubmitting) { return; }
+
+      this.isSubmitting = true;
+      const labelIndex = this.fetchedIssue.labels.findIndex(v => v.name === label.name);
+      if (labelIndex === -1) {
+        this.fetchedIssue.labels.push(label);
+      } else {
+        this.fetchedIssue.labels.splice(labelIndex, 1);
+      }
+      await this.updateIssue({
+        id: this.id,
+        labels: this.fetchedIssue.labels,
         columnId: this.fetchedIssue.columnId
       });
       this.isSubmitting = false;

@@ -186,6 +186,7 @@ export default {
         title: this.title,
         body: this.body,
         assignees: this.assignees,
+        labels: this.labels,
         position: this.selectedPosition
       });
       // console.log(issue);

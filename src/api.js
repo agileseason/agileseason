@@ -335,9 +335,9 @@ export default {
     return data?.comments;
   },
 
-  async createIssue(token, { boardId, columnId, repositoryId, title, body, position, assignees }) {
+  async createIssue(token, { boardId, columnId, repositoryId, title, body, position, assignees, labels }) {
     const query = `
-      mutation($boardId:Int!, $columnId:Int!, $repositoryId:Int!, $title:String!, $body:String, $position:String, $assignees:[String]) {
+      mutation($boardId:Int!, $columnId:Int!, $repositoryId:Int!, $title:String!, $body:String, $position:String, $assignees:[String], $labels:[String]) {
         createIssue(input: {
           boardId: $boardId,
           columnId: $columnId,
@@ -345,7 +345,8 @@ export default {
           title: $title,
           body: $body,
           position: $position,
-          assignees: $assignees
+          assignees: $assignees,
+          labels: $labels
         }) {
           issue {
             id
@@ -368,22 +369,24 @@ export default {
       }
     `;
     const assigneesLogins = assignees ? assignees.map(v => v.login) : null;
-    const vars = { boardId, columnId, repositoryId, title, body, position, assignees: assigneesLogins };
+    const labelsNames = labels ? labels.map(v => v.name) : null;
+    const vars = { boardId, columnId, repositoryId, title, body, position, assignees: assigneesLogins, labels: labelsNames };
     const data = await this.client(token).request(query, vars);
     this.log('createIssue', data, vars);
 
     return data?.createIssue;
   },
 
-  async updateIssue(token, { id, boardId, title, body, assignees }) {
+  async updateIssue(token, { id, boardId, title, body, assignees, labels }) {
     const query = `
-      mutation($id:Int!, $boardId:Int!, $title:String, $body:String, $assignees:[String]) {
+      mutation($id:Int!, $boardId:Int!, $title:String, $body:String, $assignees:[String], $labels:[String]) {
         updateIssue(input: {
           id: $id,
           boardId: $boardId,
           title: $title,
           body: $body,
-          assignees: $assignees
+          assignees: $assignees,
+          labels: $labels
         }) {
           issue {
             id
@@ -397,7 +400,8 @@ export default {
       }
     `;
     const assigneesLogins = assignees ? assignees.map(v => v.login) : null;
-    const vars = { id, boardId, title, body, assignees: assigneesLogins };
+    const labelsNames = labels ? labels.map(v => v.name) : null;
+    const vars = { id, boardId, title, body, assignees: assigneesLogins, labels: labelsNames };
     const data = await this.client(token).request(query, vars);
     this.log('updateIssue', data, vars);
 
