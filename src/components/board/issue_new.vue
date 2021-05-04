@@ -58,13 +58,14 @@
         <Assignees
           :assignees='assignees'
           :repositoryFullName='selectedRepositoryFullName'
-          @assign='assign'
+          @assign='toggleAssignee'
         />
 
         <div class='delimeter' />
         <Labels
-          :labels='[]'
+          :labels='labels'
           :repositoryFullName='selectedRepositoryFullName'
+          @toggle='toggleLabel'
         />
 
         <div class='delimeter' />
@@ -137,6 +138,7 @@ export default {
     title: '',
     body: '',
     assignees: [],
+    labels: [],
     selectedRepositoryId: undefined,
     selectedColumnId: undefined,
     selectedPosition: undefined,
@@ -194,12 +196,20 @@ export default {
         this.close();
       }
     },
-    assign(user) {
+    toggleAssignee(user) {
       const userIndex = this.assignees.findIndex(v => v.login === user.login);
       if (userIndex === -1) {
         this.assignees.push(user);
       } else {
         this.assignees.splice(userIndex, 1);
+      }
+    },
+    toggleLabel(label) {
+      const labelIndex = this.labels.findIndex(v => v.name === label.name);
+      if (labelIndex === -1) {
+        this.labels.push(label);
+      } else {
+        this.labels.splice(labelIndex, 1);
       }
     }
   }

@@ -18,10 +18,9 @@
           :key='label.id'
           @click='toggle(label)'
         >
-          <!--span class='check' :class="{ checked: isAssigned(user) }" />
-          <img class='avatar' :src='user.avatarUrl' />
-          <span class='login'>{{ user.login }}</span-->
-          {{ label.name }}
+          <span class='check' :class="{ checked: isApplied(label) }" />
+          <span class='color' :style='colorStyles(label)' />
+          <span class='name'>{{ label.name }}</span>
         </div>
       </div>
     </Select>
@@ -54,7 +53,7 @@ export default {
     labels: { type: Array, required: true },
     repositoryFullName: { type: String, required: true }
   },
-  emits: ['toggleLabel'],
+  emits: ['toggle'],
   data: () => ({
     isSelectOpen: false,
     isLoading: true,
@@ -78,6 +77,12 @@ export default {
     ...call([
       'board/fetchLabels',
     ]),
+    isApplied({ name }) {
+      return this.labels.findIndex(v => v.name === name) >= 0;
+    },
+    colorStyles({ color }) {
+      return `background-color: #${color}`;
+    },
     async toggleLabels() {
       this.isSelectOpen = !this.isSelectOpen;
       if (this.isSelectOpen && !this.isLoaded) {
@@ -91,7 +96,7 @@ export default {
       }
     },
     toggle(label) {
-      console.log('label: ' + label);
+      this.$emit('toggle', label);
     }
   }
 }
@@ -106,6 +111,37 @@ export default {
   top: 20px
   width: 220px
   z-index: 2
+
+.github-label
+  display: flex
+  align-items: center
+  padding: 8px
+  cursor: pointer
+
+  &:not(:last-child)
+    border-bottom: 1px solid #c5cae9
+
+  .check
+    background-image: url('../../../assets/icons/issue/check.svg')
+    background-position: center
+    background-repeat: no-repeat
+    height: 16px
+    margin-right: 8px
+    opacity: 0
+    width: 16px
+
+    &.checked
+      opacity: 100
+
+  .color
+    height: 14px
+    width: 14px
+    border-radius: 7px
+    margin-right: 8px
+
+  .name
+    font-size: 14px
+    font-weight: 500
 
 .select-labels-overlay
   height: 100vh
