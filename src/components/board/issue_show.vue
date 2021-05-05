@@ -1,4 +1,9 @@
 <template>
+  <GlobalEvents
+    v-if='isLoaded'
+    :filter="(event, handler, eventName) => event.target.tagName !== 'INPUT'"
+    @keyup.esc='close'
+  />
   <div v-if='isNotFound' class='issue'>
     <div class='issue-header'>
       <div class='close' @click='close' />
@@ -104,6 +109,7 @@ import Labels from '@/components/board/issues/labels'
 import Loader from '@/components/loader';
 import Title from '@/components/board/issues/title';
 import { hexRgb } from '@/utils/wcag_contrast';
+import { GlobalEvents } from 'vue-global-events';
 import { get, call } from 'vuex-pathify';
 
 const DEFAULT_COLOR = 'ffffff';
@@ -114,6 +120,7 @@ export default {
     Assignees,
     ButtonIcon,
     Colors,
+    GlobalEvents,
     IssueBody,
     Labels,
     Loader,
@@ -123,6 +130,7 @@ export default {
     // See setCurrentIssue and currentIssue.
     issue: { type: Object, required: false },
   },
+  emits: ['close'],
   data: () => ({
     newTitle: undefined,
     isSubmitting: false

@@ -8373,6 +8373,11 @@ vue-eslint-parser@^7.1.0:
     esquery "^1.0.1"
     lodash "^4.17.15"
 
+vue-global-events@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/vue-global-events/-/vue-global-events-2.1.0.tgz#a130f07df44ca7f9194b6e7aa42cd9a36c910709"
+  integrity sha512-mS9UKR+VvXwUBmknpXN2/WbW74rekxB3vcLfD8NDlJq3FbUrhQt37etivcOLAve9r8Xf0uWZ9H4FbLQ6WXo0IQ==
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
