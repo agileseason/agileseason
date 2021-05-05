@@ -1,6 +1,6 @@
 <template>
   <div class='issue'>
-    <div class='issue-header'>
+    <div class='issue-header' :style='headerBackgroundColor'>
       <span class='icon' />
       <span class='title'>New Issue</span>
       <div class='close' @click='close' />
@@ -69,7 +69,10 @@
         />
 
         <div class='delimeter' />
-        <Colors />
+        <Colors
+          :color='selectedColor'
+          @toggle='toggleColor'
+        />
 
         <div class='delimeter' />
         <div class='columns radios'>
@@ -139,6 +142,7 @@ export default {
     body: '',
     assignees: [],
     labels: [],
+    selectedColor: undefined,
     selectedRepositoryId: undefined,
     selectedColumnId: undefined,
     selectedPosition: undefined,
@@ -158,6 +162,10 @@ export default {
       return this.repositories
         .find(v => v.id === this.selectedRepositoryId)
         ?.fullName;
+    },
+    headerBackgroundColor() {
+      if (this.selectedColor == null) { return null; }
+      return `background-color: #${this.selectedColor}`;
     }
   },
   created() {
@@ -211,6 +219,13 @@ export default {
         this.labels.push(label);
       } else {
         this.labels.splice(labelIndex, 1);
+      }
+    },
+    toggleColor(color) {
+      if (this.selectedColor === color) {
+        this.selectedColor = undefined;
+      } else {
+        this.selectedColor = color;
       }
     }
   }
