@@ -7,6 +7,7 @@
         class='name'
         type='text'
         @keyup.enter='submit'
+        @keyup.esc='close'
         placeholder='Column name'
         ref='name'
       />
