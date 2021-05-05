@@ -65,51 +65,52 @@ export default {
   width: 270px
 
   .dialog
-    background-color: #3F51B5
+    background-color: #3f51b5
     border-radius: 4px
-    border: 1px solid #3F51B5
-    color: #FFF
+    border: 1px solid #3f51b5
+    color: #fff
+    margin-top: 32px
     padding: 8px
     position: absolute
     text-align: left
     width: 100%
 
     .footer
-      border-top: 1px solid #7986CB
       text-align: right
-      padding-top: 8px
 
       .button
         margin-left: 8px
 
   input.name
-    background-color: #7986CB
+    background-color: #7986cb
     border-radius: 3px
-    border: 1px solid #7986CB
+    border: 1px solid #7986cb
     box-sizing: border-box
     color: #FFF
-    font-size: 16px
-    font-weight: 400
+    font-size: 14px
     height: 28px
     letter-spacing: 0.4px
-    line-height: 28px
     margin-bottom: 8px
     padding: 0 6px
     width: 100%
+    outline: none
+
+    &:focus
+      border-color: #fff
 
     &::placeholder
-      color: #9FA8DA
+      color: #9fa8da
       opacity: 1
     &:-ms-input-placeholder
-      color: #9FA8DA
+      color: #9fa8da
     &::-ms-input-placeholder
-      color: #9FA8DA
+      color: #9fa8da
 
   button.new
     background-color: transparent
     border-radius: 4px
-    border: 1px solid #C5CAE9
-    color: #7986CB
+    border: 1px solid #c5cae9
+    color: #7986cb
     cursor: pointer
     font-size: 14px
     font-weight: 300
@@ -118,10 +119,10 @@ export default {
     width: 100%
 
     &:hover
-      color: #303F9F
-      border: 1px solid #9FA8DA
+      color: #303f9f
+      border: 1px solid #9fa8da
 
     &:active
-      color: #5C6BC0
-      border: 1px solid #7986CB
+      color: #5c6bc0
+      border: 1px solid #7986cb
 </style>

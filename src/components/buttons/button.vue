@@ -169,6 +169,9 @@ export default {
     background: transparent
     border-color: transparent
     font-weight: 500
+    outline: none
+    box-sizing: border-box
+    border: 1px solid transparent
 
     &.normal
       height: 32px
@@ -176,6 +179,9 @@ export default {
 
     &:hover
       color: #e8eaf6
+
+    &:focus
+      border: 1px solid #fff
 
 .loader
   background-image: url('../../assets/button/loader.svg')
