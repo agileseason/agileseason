@@ -21,6 +21,7 @@ export default {
   border: 1px solid #c5cae9
   border-radius: 4px
   background-color: #e8eaf6
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1)
 
 .title
   color: #5c6bc0
