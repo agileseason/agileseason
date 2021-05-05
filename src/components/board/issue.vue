@@ -125,24 +125,23 @@ export default {
         display: flex
 
         .extra-item
-          background-color: #eceff1
           background-position: center 3px
           background-repeat: no-repeat
           background-size: initial
           border-radius: 4px
           height: 18px
-          margin-right: 4px
-          margin-top: 8px
+          margin-right: 2px
+          margin-top: 6px
 
           &.body-present
             background-image: url('../../assets/icons/issue/grey_book.svg')
-            width: 24px
+            width: 16px
 
           &.comments-count
             background-image: url('../../assets/icons/issue/grey_comment.svg')
             background-position: 4px 3px
             color: #455a64
-            font-size: 12px
+            font-size: 10px
             font-weight: 600
             padding: 0 3px 0 21px
             line-height: 18px
