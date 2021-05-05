@@ -9,8 +9,9 @@
   <div v-else class='title-edit'>
     <input
       type='text'
-      @keyup.enter='save'
       v-model='newTitle'
+      @keyup.enter='save'
+      @keyup.esc='cancel'
       ref='title'
     />
     <Button
