@@ -3,9 +3,10 @@
     <button v-if='!isOpen' class='new' @click='open'>New Column...</button>
     <div v-if='isOpen' class='dialog'>
       <input
-        v-model='name'
+        v-model.trim='name'
         class='name'
         type='text'
+        @keyup.enter='submit'
         placeholder='Column name'
         ref='name'
       />
@@ -49,6 +50,8 @@ export default {
       this.isOpen = false;
     },
     submit() {
+      if (this.name === '') { return; }
+
       this.$emit('submit', this.name);
       this.name = '';
       this.close();

@@ -35,7 +35,7 @@ export default {
   },
   data: () => ({}),
   computed: {
-    issuesCount() { return this.issues.length; }
+    issuesCount() { return this.issues?.length || 0; }
   },
   methods: {
     issueNew() {

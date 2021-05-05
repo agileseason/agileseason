@@ -234,6 +234,7 @@ export default {
           id
           name
           position
+          issues { id }
         }
       }
     `;
