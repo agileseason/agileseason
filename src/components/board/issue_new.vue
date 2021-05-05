@@ -198,7 +198,8 @@ export default {
         body: this.body,
         assignees: this.assignees,
         labels: this.labels,
-        position: this.selectedPosition
+        position: this.selectedPosition,
+        color: this.selectedColor
       });
       // console.log(issue);
       this.isSubmitting = false;
