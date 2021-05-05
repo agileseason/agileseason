@@ -114,7 +114,7 @@ export default {
     cursor: pointer
     font-size: 14px
     font-weight: 300
-    height: 30px
+    height: 32px
     margin-top: 32px
     width: 100%
 
