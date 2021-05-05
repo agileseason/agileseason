@@ -114,6 +114,7 @@ export default {
     font-size: 14px
     font-weight: 300
     height: 30px
+    margin-top: 32px
     width: 100%
 
     &:hover
