@@ -164,7 +164,7 @@ export default {
         ?.fullName;
     },
     headerBackgroundColor() {
-      if (this.selectedColor == null) { return null; }
+      if (this.selectedColor == null) { return; }
       return `background-color: #${this.selectedColor}`;
     }
   },

@@ -86,10 +86,10 @@ export default {
       return result;
     },
 
-    async createIssue({ commit, state, getters }, { columnId, repositoryId, title, body, position, assignees, labels }) {
+    async createIssue({ commit, state, getters }, { columnId, repositoryId, title, body, position, assignees, labels, color }) {
       const result = await api.createIssue(
         getters.token,
-        { boardId: state.id, columnId, repositoryId, title, body, position, assignees, labels }
+        { boardId: state.id, columnId, repositoryId, title, body, position, assignees, labels, color }
       );
       if (result?.issue == null) {
         // todo: Show errors (result.errors).
@@ -99,15 +99,15 @@ export default {
       return result?.issue;
     },
 
-    async updateIssue({ state, getters, dispatch }, { id, columnId, title, body, assignees, labels }) {
+    async updateIssue({ state, getters, dispatch }, { id, columnId, title, body, assignees, labels, color }) {
       const result = await api.updateIssue(
         getters.token,
-        { id: id, boardId: state.id, title, body, assignees, labels }
+        { id: id, boardId: state.id, title, body, assignees, labels, color }
       );
       if (result?.issue == null) {
         // todo: Show errors (result.errors).
       } else {
-        dispatch('updateBoardIssue', { id, title, body, columnId, assignees, labels });
+        dispatch('updateBoardIssue', { id, title, body, columnId, assignees, labels, color });
       }
       return result?.issue;
     },
@@ -163,7 +163,7 @@ export default {
       if (boardIssue == null) { return; }
 
       // TODO: После обновления полей вызывать метод для
-      //       обновления в API.
+      //       обновления в API?
       Object.keys(issue).forEach(prop => {
         if (issue[prop] != null) {
           commit(

@@ -25,14 +25,15 @@ export default {
 
 .modal
   background-color: #fff
+  border-radius: 0px 0px 10px 10px
+  box-shadow: 0px 6px 10px 0px #BDBDBD
+  left: 50%
+  max-width: 1280px
   min-height: 500px
   position: absolute
   top: 36px
-  left: 50%
   width: 80%
-  max-width: 1280px
   z-index: 5
-  box-shadow: 0px 6px 10px 0px #BDBDBD
 
   transform: translate(-50%, 2000px)
 

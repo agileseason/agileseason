@@ -21,7 +21,8 @@ export default {
     isCommentLoaded: false,
     assignees: [],
     labels: [],
-    comments: []
+    comments: [],
+    color: undefined
   },
 
   getters: {

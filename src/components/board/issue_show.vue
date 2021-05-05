@@ -6,7 +6,7 @@
     <p class='not-found'>Couldn't found issue</p>
   </div>
   <div v-else class='issue'>
-    <div class='issue-header'>
+    <div class='issue-header' :style='headerBackgroundColor'>
       <span v-if='state' class='state' :class='{"closed": isClosed}'>{{ state }}</span>
       <span class='repo'>{{ repositoryName }}</span>
       <ButtonIcon name='close' @click='close' style='float: right' />
@@ -64,9 +64,9 @@
           </div>
         </div>
       </div>
-      <div class='right'>
+
+      <div v-if='isLoaded' class='right'>
         <Assignees
-          v-if='isLoaded'
           :assignees='assignees'
           :repositoryFullName='repositoryFullName'
           @assign='toggleAssignee'
@@ -74,14 +74,16 @@
 
         <div class='delimeter' />
         <Labels
-          v-if='isLoaded'
           :labels='labels'
           :repositoryFullName='repositoryFullName'
           @toggle='toggleLabel'
         />
 
         <div class='delimeter' />
-        <Colors v-if='isLoaded' />
+        <Colors
+          :color='color'
+          @toggle='toggleColor'
+        />
       </div>
     </IssueBody>
 
@@ -101,7 +103,10 @@ import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
 import Loader from '@/components/loader';
 import Title from '@/components/board/issues/title';
+import { hexRgb } from '@/utils/wcag_contrast';
 import { get, call } from 'vuex-pathify';
+
+const DEFAULT_COLOR = 'ffffff';
 
 export default {
   name: 'IssueShow',
@@ -147,11 +152,18 @@ export default {
       if (this.isClosed == null) { return null; }
       return this.issue.isClosed ? 'closed' : 'open';
     },
-    assignees() {
-      return this.fetchedIssue.assignees;
-    },
-    labels() {
-      return this.fetchedIssue.labels;
+    assignees() { return this.fetchedIssue.assignees; },
+    labels() { return this.fetchedIssue.labels; },
+    color() { return this.fetchedIssue.color; },
+
+    headerBackgroundColor() {
+      if (!this.isLoaded) { return; }
+      if (this.fetchedIssue.color == null) { return }
+      if (this.fetchedIssue.color == DEFAULT_COLOR) { return }
+      const rgba = hexRgb(this.fetchedIssue.color);
+
+      console.log(`background-color: rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.1)`);
+      return `background-color: rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.5)`;
     }
 
     // debugStoreColumns: get('board/columns'),
@@ -226,6 +238,32 @@ export default {
         labels: this.fetchedIssue.labels,
         columnId: this.fetchedIssue.columnId
       });
+      this.isSubmitting = false;
+    },
+    async toggleColor(color) {
+      if (this.isSubmitting) { return; }
+
+      this.isSubmitting = true;
+      let newColor = null;
+      if (this.color == null) {
+        if (color !== DEFAULT_COLOR) {
+          newColor = color;
+        }
+      } else {
+        if (this.color === color) {
+          newColor = DEFAULT_COLOR;
+        } else {
+          newColor = color;
+        }
+      }
+      if (newColor != null) {
+        this.fetchedIssue.color = newColor;
+        await this.updateIssue({
+          id: this.id,
+          color: newColor,
+          columnId: this.fetchedIssue.columnId
+        });
+      }
       this.isSubmitting = false;
     },
     startEditBody() {
