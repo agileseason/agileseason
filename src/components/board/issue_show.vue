@@ -162,8 +162,7 @@ export default {
       if (this.fetchedIssue.color == DEFAULT_COLOR) { return }
       const rgba = hexRgb(this.fetchedIssue.color);
 
-      console.log(`background-color: rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.1)`);
-      return `background-color: rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.5)`;
+      return `background-color: rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.6)`;
     }
 
     // debugStoreColumns: get('board/columns'),

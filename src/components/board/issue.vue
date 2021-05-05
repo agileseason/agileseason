@@ -1,5 +1,5 @@
 <template>
-  <div class='issue' @click='goToIssue'>
+  <div class='issue' @click='goToIssue' :style='colorStyles'>
     <div class='title'>{{ title }}</div>
     <a :href='url' class='url' @click.stop='click'>
       <span class='number'>#{{ number }}</span>
@@ -59,7 +59,8 @@ export default {
     assignees: { type: Array, required: true },
     isClosed: { type: Boolean, required: true },
     isBody: { type: Boolean, required: true },
-    commentsCount: { type: Number, required: true }
+    commentsCount: { type: Number, required: true },
+    color: { type: String, required: false, default: null }
   },
   data: () => ({}),
   computed: {
@@ -70,6 +71,12 @@ export default {
         this.isActionVisible ||
         this.assignees.length > 0 ||
         this.commentsCount > 0;
+    },
+    colorStyles() {
+      if (this.color == null) { return; }
+      if (this.color == 'ffffff') { return; }
+
+      return `background-color: #${this.color}`;
     }
   },
   methods: {

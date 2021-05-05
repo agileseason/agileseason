@@ -121,6 +121,7 @@ import Button from '@/components/buttons/button'
 import Colors from '@/components/board/issues/colors'
 import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
+import { hexRgb } from '@/utils/wcag_contrast';
 import { get, call } from 'vuex-pathify';
 
 const delay = require('delay');
@@ -165,7 +166,9 @@ export default {
     },
     headerBackgroundColor() {
       if (this.selectedColor == null) { return; }
-      return `background-color: #${this.selectedColor}`;
+      const rgba = hexRgb(this.selectedColor);
+
+      return `background-color: rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.6)`;
     }
   },
   created() {
