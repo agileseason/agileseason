@@ -17,6 +17,7 @@
           placeholder='Title'
           ref='title'
           @keyup.enter='submit'
+          @keyup.esc='close'
         />
         <textarea
           class='body'
