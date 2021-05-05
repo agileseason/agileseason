@@ -1,12 +1,13 @@
 <template>
-  <div class='color'>
-    <label class='label active' @click='toggleColors'>
+  <div class='colors'>
+    <label class='active' @click='toggleColors'>
       <span>Color</span>
       <ButtonIcon name='gear' style='float: right; padding: 0' />
     </label>
     <Select
       v-if='isSelectOpen'
       title='Set color'
+      class='select-colors'
     >
       TODO
     </Select>
@@ -48,6 +49,15 @@ export default {
 </script>
 
 <style scoped lang='sass'>
+.colors
+  position: relative
+
+.select-colors
+  position: absolute
+  top: 20px
+  width: 220px
+  z-index: 2
+
 .select-overlay
   height: 100vh
   left: 0
@@ -56,7 +66,7 @@ export default {
   width: 100vw
   z-index: 1
 
-label.label
+label
   align-items: center
   color: #283593
   display: flex
