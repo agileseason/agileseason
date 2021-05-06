@@ -67,6 +67,11 @@
             </div>
           </div>
         </div>
+        <MarkdownEditor
+          v-if='isCommentLoaded'
+          v-model='newComment'
+          class='comment-new'
+        />
         <div v-if='isCommentLoaded' class='comments-actions'>
           <Button type='outline' text='Close issue' @click='closeIssue' />
           <Button type='indigo' text='Comment' @click='submitNewComment' />
@@ -111,6 +116,7 @@ import Colors from '@/components/board/issues/colors'
 import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
 import Loader from '@/components/loader';
+import MarkdownEditor from '@/components/board/issues/markdown_editor'
 import Title from '@/components/board/issues/title';
 import { hexRgb } from '@/utils/wcag_contrast';
 import { GlobalEvents } from 'vue-global-events';
@@ -128,6 +134,7 @@ export default {
     IssueBody,
     Labels,
     Loader,
+    MarkdownEditor,
     Title
   },
   props: {
@@ -137,6 +144,7 @@ export default {
   emits: ['close'],
   data: () => ({
     newTitle: undefined,
+    newComment: '',
     isSubmitting: false
   }),
   computed: {
@@ -383,9 +391,13 @@ export default {
       &.empty
         color: #9e9e9e
 
+.comment-new
+  min-height: 100px
+
 .comments-actions
   display: flex
   justify-content: flex-end
+  margin-top: 12px
 
   button + button
     margin-left: 16px
