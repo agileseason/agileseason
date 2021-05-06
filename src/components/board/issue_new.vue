@@ -23,11 +23,8 @@
           @keyup.enter='submit'
           @keyup.esc='close'
         />
-        <textarea
-          class='body'
-          v-model='body'
-          placeholder='Leave a comment...'
-        />
+
+        <MarkdownEditor v-model='body' />
 
         <div class='actions'>
           <Button
@@ -126,6 +123,7 @@ import Button from '@/components/buttons/button'
 import Colors from '@/components/board/issues/colors'
 import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
+import MarkdownEditor from '@/components/board/issues/markdown_editor'
 import { GlobalEvents } from 'vue-global-events';
 import { hexRgb } from '@/utils/wcag_contrast';
 import { get, call } from 'vuex-pathify';
@@ -140,7 +138,8 @@ export default {
     Colors,
     GlobalEvents,
     IssueBody,
-    Labels
+    Labels,
+    MarkdownEditor
   },
   props: {
     columnId: { type: Number, required: true }
@@ -312,26 +311,6 @@ input.title
     color: #7986cb
   &::-ms-input-placeholder
     color: #7986cb
-
-textarea.body
-  border-radius: 3px
-  border: 1px solid #c5cae9
-  box-sizing: border-box
-  font-size: 16px
-  font-weight: 300
-  margin-left: 50px
-  padding: 8px
-  width: calc(100% - 50px) // 100% - margin-left
-  min-height: 200px
-  resize: none
-
-  &::placeholder
-    color: #9fa8da
-    opacity: 1
-  &:-ms-input-placeholder
-    color: #9fa8da
-  &::-ms-input-placeholder
-    color: #9fa8da
 
 .right
   margin-top: 16px
