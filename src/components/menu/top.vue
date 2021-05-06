@@ -1,4 +1,5 @@
 <template>
+  <GlobalEvents @keyup.esc='close' />
   <div class='menu'>
     <div
       class='left-button'
@@ -52,12 +53,14 @@
 
 <script>
 import BoardSelect from '@/components/menu/select';
+import { GlobalEvents } from 'vue-global-events';
 import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'TopMenu',
   components: {
-    BoardSelect
+    BoardSelect,
+    GlobalEvents
   },
   props: {
     title: { type: String, required: false, default: null },
@@ -85,6 +88,9 @@ export default {
     ]),
     toggle() {
       this.isExpanded = !this.isExpanded;
+    },
+    close() {
+      if (this.isExpanded) { this.isExpanded = false; }
     },
     signout() {
       this.logout();

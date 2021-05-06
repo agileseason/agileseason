@@ -1,4 +1,8 @@
 <template>
+  <GlobalEvents
+    :filter="(event, handler, eventName) => event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA'"
+    @keyup.esc='close'
+  />
   <div class='issue'>
     <div class='issue-header' :style='headerBackgroundColor'>
       <span class='icon' />
@@ -122,6 +126,7 @@ import Button from '@/components/buttons/button'
 import Colors from '@/components/board/issues/colors'
 import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
+import { GlobalEvents } from 'vue-global-events';
 import { hexRgb } from '@/utils/wcag_contrast';
 import { get, call } from 'vuex-pathify';
 
@@ -133,12 +138,14 @@ export default {
     Assignees,
     Button,
     Colors,
+    GlobalEvents,
     IssueBody,
     Labels
   },
   props: {
     columnId: { type: Number, required: true }
   },
+  emits: ['close'],
   data: () => ({
     title: '',
     body: '',
