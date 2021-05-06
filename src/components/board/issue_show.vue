@@ -46,7 +46,6 @@
           </div>
         </div>
 
-        <Loader v-if='isCommentLoading' />
         <div v-if='isCommentLoaded' class='comments'>
           <div v-for='item in comments' :key='item.id' class='comment'>
             <img class='avatar' :src='item.author.avatarUrl' />
@@ -67,6 +66,10 @@
               </div>
             </div>
           </div>
+        </div>
+        <div v-if='isCommentLoaded' class='comments-actions'>
+          <Button type='outline' text='Close issue' @click='closeIssue' />
+          <Button type='indigo' text='Comment' @click='submitNewComment' />
         </div>
       </div>
 
@@ -92,7 +95,7 @@
       </div>
     </IssueBody>
 
-    <Loader v-if='isLoading' />
+    <Loader v-if='isLoading || isCommentLoading' />
 
     <!--div>
       {{ debugStore }}
@@ -102,6 +105,7 @@
 
 <script>
 import Assignees from '@/components/board/issues/assignees'
+import Button from '@/components/buttons/button'
 import ButtonIcon from '@/components/buttons/icon'
 import Colors from '@/components/board/issues/colors'
 import IssueBody from '@/components/board/issues/body_content'
@@ -115,9 +119,9 @@ import { get, call } from 'vuex-pathify';
 const DEFAULT_COLOR = 'ffffff';
 
 export default {
-  name: 'IssueShow',
   components: {
     Assignees,
+    Button,
     ButtonIcon,
     Colors,
     GlobalEvents,
@@ -275,6 +279,12 @@ export default {
     },
     startEditBody() {
       console.log('TODO: startEditBody');
+    },
+    submitNewComment() {
+      console.log('TODO: Submit new comment');
+    },
+    closeIssue() {
+      console.log('TODO: Close isseue');
     }
   }
 }
@@ -372,6 +382,13 @@ export default {
 
       &.empty
         color: #9e9e9e
+
+.comments-actions
+  display: flex
+  justify-content: flex-end
+
+  button + button
+    margin-left: 16px
 
 .delimeter
   border-bottom: 1px solid #e8eaf6
