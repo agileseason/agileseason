@@ -73,7 +73,8 @@
           class='comment-new'
         />
         <div v-if='isCommentLoaded' class='comments-actions'>
-          <Button type='outline' text='Close issue' @click='closeIssue' />
+          <Button v-if='canClose' type='outline' text='Close issue' @click='closeIssue' />
+          <Button v-if='canReopen' type='outline' text='Reopen issue' @click='reopenIssue' />
           <Button type='indigo' text='Comment' @click='submitNewComment' />
         </div>
       </div>
@@ -175,6 +176,8 @@ export default {
     assignees() { return this.fetchedIssue.assignees; },
     labels() { return this.fetchedIssue.labels; },
     color() { return this.fetchedIssue.color; },
+    canClose() { return this.state === 'open'; },
+    canReopen() { return this.state === 'closed'; },
 
     headerBackgroundColor() {
       if (!this.isLoaded) { return; }
@@ -293,6 +296,9 @@ export default {
     },
     closeIssue() {
       console.log('TODO: Close isseue');
+    },
+    reopenIssue() {
+      console.log('TODO: Reopen isseue');
     }
   }
 }
