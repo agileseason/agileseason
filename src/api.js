@@ -413,6 +413,7 @@ export default {
             labels { name color }
             assignees { login url avatarUrl }
             color
+            isClosed
           }
           errors
         }
@@ -425,6 +426,34 @@ export default {
     this.log('updateIssue', data, vars);
 
     return data?.updateIssue;
+  },
+
+  async updateIssueState(token, { id, boardId, isClosed }) {
+    const query = `
+      mutation($id:Int!, $boardId:Int!, $isClosed:Boolean) {
+        action:updateIssue(input: {
+          id: $id,
+          boardId: $boardId,
+          isClosed: $isClosed
+        }) {
+          issue {
+            id
+            number
+            title
+            labels { name color }
+            assignees { login url avatarUrl }
+            color
+            isClosed
+          }
+          errors
+        }
+      }
+    `;
+    const vars = { id, boardId, isClosed };
+    const data = await this.client(token).request(query, vars);
+    this.log('closeIssue', data, vars);
+
+    return data?.action;
   },
 
   // ---------------------------------

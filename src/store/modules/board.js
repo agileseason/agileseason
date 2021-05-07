@@ -112,6 +112,19 @@ export default {
       return result?.issue;
     },
 
+    async updateIssueState({ state, getters, dispatch }, { id, columnId, isClosed }) {
+      const result = await api.updateIssueState(
+        getters.token,
+        { id: id, boardId: state.id, isClosed }
+      );
+      if (result?.issue == null) {
+        // todo: Show errors (result.errors).
+      } else {
+        dispatch('updateBoardIssue', { id, columnId, isClosed });
+      }
+      return result?.issue;
+    },
+
     removeIssue({ state, getters }, { issueId, columnToId }) {
       console.log('removeIssue');
       console.log('issueId: ' + issueId);

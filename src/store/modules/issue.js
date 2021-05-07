@@ -67,6 +67,7 @@ export default {
       state.isCommentLoaded = false;
       state.assignees = [];
       state.labels = [];
+      state.isClosed = false;
     },
     FINISH_LOADING(state, issue) {
       // This approach doesn't work:

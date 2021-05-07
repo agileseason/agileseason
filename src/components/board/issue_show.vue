@@ -171,13 +171,13 @@ export default {
     isBodyEmpty() { return this.fetchedIssue?.body == null || this.fetchedIssue?.body?.length == 0; },
     state() {
       if (this.isClosed == null) { return null; }
-      return this.issue.isClosed ? 'closed' : 'open';
+      return this.isClosed ? 'closed' : 'open';
     },
     assignees() { return this.fetchedIssue.assignees; },
     labels() { return this.fetchedIssue.labels; },
     color() { return this.fetchedIssue.color; },
-    canClose() { return this.state === 'open'; },
-    canReopen() { return this.state === 'closed'; },
+    canClose() { return !this.isClosed },
+    canReopen() { return this.isClosed },
 
     headerBackgroundColor() {
       if (!this.isLoaded) { return; }
@@ -209,6 +209,7 @@ export default {
       'issue/fetch',
       'issue/fetchComments',
       'board/updateIssue',
+      'board/updateIssueState',
       'board/updateBoardIssue'
     ]),
     close() { this.$emit('close'); },
@@ -294,8 +295,16 @@ export default {
     submitNewComment() {
       console.log('TODO: Submit new comment');
     },
-    closeIssue() {
-      console.log('TODO: Close isseue');
+    async closeIssue() {
+      if (this.isSubmitting) { return; }
+
+      this.isSubmitting = true;
+      await this.updateIssueState({
+        id: this.id,
+        columnId: this.fetchedIssue.columnId,
+        isClosed: true
+      });
+      this.isSubmitting = false;
     },
     reopenIssue() {
       console.log('TODO: Reopen isseue');
