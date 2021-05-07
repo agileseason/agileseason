@@ -73,8 +73,22 @@
           class='comment-new'
         />
         <div v-if='isCommentLoaded' class='comments-actions'>
-          <Button v-if='canClose' type='outline' text='Close issue' @click='closeIssue' />
-          <Button v-if='canReopen' type='outline' text='Reopen issue' @click='reopenIssue' />
+          <Button
+            v-if='canClose'
+            :isLoading='isStateSubmitting'
+            class='button-state'
+            type='outline'
+            text='Close issue'
+            @click='closeIssue'
+          />
+          <Button
+            v-if='canReopen'
+            :isLoading='isStateSubmitting'
+            class='button-state'
+            type='outline'
+            text='Reopen issue'
+            @click='reopenIssue'
+          />
           <Button type='indigo' text='Comment' @click='submitNewComment' />
         </div>
       </div>
@@ -146,7 +160,8 @@ export default {
   data: () => ({
     newTitle: undefined,
     newComment: '',
-    isSubmitting: false
+    isSubmitting: false,
+    isStateSubmitting: false
   }),
   computed: {
     isLoading: get('issue/isLoading'),
@@ -296,18 +311,26 @@ export default {
       console.log('TODO: Submit new comment');
     },
     async closeIssue() {
-      if (this.isSubmitting) { return; }
+      if (this.isStateSubmitting) { return; }
 
-      this.isSubmitting = true;
+      this.isStateSubmitting = true;
       await this.updateIssueState({
         id: this.id,
         columnId: this.fetchedIssue.columnId,
         isClosed: true
       });
-      this.isSubmitting = false;
+      this.isStateSubmitting = false;
     },
-    reopenIssue() {
-      console.log('TODO: Reopen isseue');
+    async reopenIssue() {
+      if (this.isStateSubmitting) { return; }
+
+      this.isStateSubmitting = true;
+      await this.updateIssueState({
+        id: this.id,
+        columnId: this.fetchedIssue.columnId,
+        isClosed: false
+      });
+      this.isStateSubmitting = false;
     }
   }
 }
@@ -416,6 +439,9 @@ export default {
 
   button + button
     margin-left: 16px
+
+.button-state
+  width: 140px
 
 .delimeter
   border-bottom: 1px solid #e8eaf6

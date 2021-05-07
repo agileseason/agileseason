@@ -121,6 +121,7 @@ export default {
         // todo: Show errors (result.errors).
       } else {
         dispatch('updateBoardIssue', { id, columnId, isClosed });
+        dispatch('issue/update', { isClosed }, { root: true });
       }
       return result?.issue;
     },

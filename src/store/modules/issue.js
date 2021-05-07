@@ -57,6 +57,9 @@ export default {
       commit('FINISH_COMMENTS_LOADING', comments);
       return comments;
     },
+    update({ commit }, { isClosed }) {
+      commit('UPDATE', { isClosed });
+    }
   },
 
   mutations: {
@@ -78,6 +81,9 @@ export default {
 
       state.isLoading = false;
       state.isLoaded = true;
+    },
+    UPDATE(state, { isClosed }) {
+      state.isClosed = isClosed;
     },
     NOT_FOUND(state) {
       state.isLoading = false;
