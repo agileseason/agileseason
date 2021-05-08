@@ -19,6 +19,7 @@
     <IssueBody>
       <div class='left'>
         <Title
+          v-show='isLoaded'
           :title='title'
           :url='url'
           :number='number'
@@ -70,6 +71,7 @@
         <MarkdownEditor
           v-if='isCommentLoaded'
           v-model='newComment'
+          :disabled='isCommentSubmitting'
           class='comment-new'
         />
         <div v-if='isCommentLoaded' class='comments-actions'>
@@ -89,7 +91,12 @@
             text='Reopen issue'
             @click='reopenIssue'
           />
-          <Button type='indigo' text='Comment' @click='submitNewComment' />
+          <Button
+            :isLoading='isCommentSubmitting'
+            type='indigo'
+            text='Comment'
+            @click='submitNewComment'
+          />
         </div>
       </div>
 
@@ -161,7 +168,8 @@ export default {
     newTitle: undefined,
     newComment: '',
     isSubmitting: false,
-    isStateSubmitting: false
+    isStateSubmitting: false,
+    isCommentSubmitting: false
   }),
   computed: {
     isLoading: get('issue/isLoading'),
@@ -308,7 +316,11 @@ export default {
       console.log('TODO: startEditBody');
     },
     submitNewComment() {
+      if (this.isCommentSubmitting) { return; }
+
+      this.isCommentSubmitting = true;
       console.log('TODO: Submit new comment');
+      this.isCommentSubmitting = false;
     },
     async closeIssue() {
       if (this.isStateSubmitting) { return; }
