@@ -24,6 +24,8 @@
 
         <div v-if='isActionVisible' class='actions'>
           <span v-if='isClosed' class='closed'>Closed</span>
+          <FastButton v-if='!isClosed' name='close' icon='close' />
+          <FastButton name='archive' icon='archive' />
         </div>
       </div>
 
@@ -42,12 +44,14 @@
 
 <script>
 import Label from '@/components/board/label'
+import FastButton from '@/components/board/issues/fast_button'
 import { call } from 'vuex-pathify';
 
 export default {
   name: 'Issue',
   components: {
-    Label
+    Label,
+    FastButton
   },
   props: {
     id: { type: Number, required: true },
@@ -65,7 +69,11 @@ export default {
   data: () => ({}),
   computed: {
     isLabels() { return this.labels.length > 0; },
-    isActionVisible() { return this.isClosed; },
+    isActionVisible() {
+      // TODO: Find way to check last column to show close button.
+      // return this.isClosed;
+      return true;
+    },
     isAssignedOrExtra() {
       return this.isBody ||
         this.isActionVisible ||
@@ -154,6 +162,7 @@ export default {
             line-height: 18px
 
       .actions
+        display: flex
         margin-top: 8px
 
         .closed
@@ -166,6 +175,7 @@ export default {
           height: 22px
           letter-spacing: 0.2px
           line-height: 23px
+          margin-right: 4px
           padding: 0 7px 0 25px
           position: relative
 
