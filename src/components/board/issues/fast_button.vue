@@ -16,14 +16,15 @@ export default {
 
 <style scoped lang='sass'>
 .button
-  display: flex
   align-items: center
   border-radius: 4px
   border: 1px solid #7986cb
   box-sizing: border-box
   color: #5C6BC0
+  display: flex
+  font-size: 11px
   height: 22px
-  min-width: 62px
+  min-width: 60px
   padding: 4px
 
   &:hover
