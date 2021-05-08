@@ -70,7 +70,7 @@
         </div>
         <MarkdownEditor
           v-if='isCommentLoaded'
-          v-model='newComment'
+          v-model.trim='newComment'
           :disabled='isCommentSubmitting'
           class='comment-new'
         />
@@ -86,16 +86,17 @@
           <Button
             v-if='canReopen'
             :isLoading='isStateSubmitting'
-            class='button-state'
             type='outline'
             text='Reopen issue'
             @click='reopenIssue'
+            class='button-state'
           />
           <Button
             :isLoading='isCommentSubmitting'
             type='indigo'
             text='Comment'
             @click='submitNewComment'
+            class='button-comment'
           />
         </div>
       </div>
@@ -231,6 +232,7 @@ export default {
     ...call([
       'issue/fetch',
       'issue/fetchComments',
+      'issue/createComment',
       'board/updateIssue',
       'board/updateIssueState',
       'board/updateBoardIssue'
@@ -315,11 +317,13 @@ export default {
     startEditBody() {
       console.log('TODO: startEditBody');
     },
-    submitNewComment() {
+    async submitNewComment() {
+      if (this.newComment === '') { return; }
       if (this.isCommentSubmitting) { return; }
 
       this.isCommentSubmitting = true;
-      console.log('TODO: Submit new comment');
+      await this.createComment({ body: this.newComment });
+      this.newComment = '';
       this.isCommentSubmitting = false;
     },
     async closeIssue() {
@@ -454,6 +458,9 @@ export default {
 
 .button-state
   width: 140px
+
+.button-comment
+  width: 114px
 
 .delimeter
   border-bottom: 1px solid #e8eaf6

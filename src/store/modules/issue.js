@@ -57,6 +57,24 @@ export default {
       commit('FINISH_COMMENTS_LOADING', comments);
       return comments;
     },
+    async createComment({ commit, state, getters }, { body }) {
+      const result = await api.createComment(
+        getters.token,
+        {
+          boardId: getters.boardId,
+          repositoryFullName: state.repositoryFullName,
+          issueId: state.id,
+          body: body
+        }
+      );
+      if (result.comment) {
+        commit('ADD_COMMENT', result.comment);
+      } else {
+        console.log(result.errors);
+      }
+
+      return result.comment;
+    },
     update({ commit }, { isClosed }) {
       commit('UPDATE', { isClosed });
     }
@@ -98,6 +116,9 @@ export default {
 
       state.isCommentLoading = false;
       state.isCommentLoaded = true;
+    },
+    ADD_COMMENT(state, comment) {
+      state.comments.push(comment);
     },
   }
 };

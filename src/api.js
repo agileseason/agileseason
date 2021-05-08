@@ -456,6 +456,34 @@ export default {
     return data?.action;
   },
 
+  async createComment(token, { boardId, repositoryFullName, issueId, body }) {
+    const query = `
+      mutation($boardId:Int!, $repositoryFullName:String!, $issueId:Int!, $body:String!) {
+        action:createComment(input: {
+          boardId: $boardId,
+          repositoryFullName: $repositoryFullName,
+          issueId: $issueId,
+          body: $body
+        }) {
+          comment {
+            id
+            nodeId
+            body
+            createdAt
+            createdAgo
+            author { url login avatarUrl }
+          }
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, repositoryFullName, issueId, body };
+    const data = await this.client(token).request(query, vars);
+    this.log('closeIssue', data, vars);
+
+    return data?.action;
+  },
+
   // ---------------------------------
   // Helpers
   // ---------------------------------
