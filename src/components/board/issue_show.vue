@@ -70,7 +70,7 @@
         </div>
         <MarkdownEditor
           v-if='isCommentLoaded'
-          v-model.trim='newComment'
+          v-model='newComment'
           :disabled='isCommentSubmitting'
           class='comment-new'
         />
