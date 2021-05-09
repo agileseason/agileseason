@@ -176,10 +176,8 @@ export default {
       const boardIssue = column.issues.find(v => v.id === issue.id);
       if (boardIssue == null) { return; }
 
-      // TODO: После обновления полей вызывать метод для
-      //       обновления в API?
       Object.keys(issue).forEach(prop => {
-        if (issue[prop] != null) {
+        if (issue[prop] !== undefined) {
           commit(
             'UPDATE_BOARD_ISSUE',
             { issue: boardIssue, key: prop, value: issue[prop] }

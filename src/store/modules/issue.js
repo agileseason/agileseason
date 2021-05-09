@@ -100,7 +100,9 @@ export default {
       // This approach doesn't work:
       // state = { ...state, ...issue }
       Object.keys(attrs).forEach(prop => {
-        state[prop] = attrs[prop];
+        if (attrs[prop] !== undefined) {
+          state[prop] = attrs[prop];
+        }
       });
     },
     NOT_FOUND(state) {
