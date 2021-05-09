@@ -379,7 +379,7 @@ export default {
       this.isArchiveSubmitting = true;
       await this.updateIssueState({
         id: this.id,
-        columnId: this.columnId,
+        columnId: this.fetchedIssue.columnId,
         isArchived: true
       });
       this.isArchiveSubmitting = false;
@@ -390,7 +390,7 @@ export default {
       this.isArchiveSubmitting = true;
       await this.updateIssueState({
         id: this.id,
-        columnId: this.columnId,
+        columnId: this.fetchedIssue.columnId,
         isArchived: false
       });
       this.isArchiveSubmitting = false;

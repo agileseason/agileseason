@@ -106,6 +106,7 @@ export default {
       );
       if (result?.issue == null) {
         // todo: Show errors (result.errors).
+        console.error(result.errors[0]);
       } else {
         dispatch('updateBoardIssue', { id, title, body, columnId, assignees, labels, color });
       }
@@ -119,6 +120,7 @@ export default {
       );
       if (result?.issue == null) {
         // todo: Show errors (result.errors).
+        console.error(result.errors);
       } else {
         dispatch('updateBoardIssue', { id, columnId, isClosed, isArchived });
         dispatch('issue/update', { isClosed, isArchived }, { root: true });
@@ -159,7 +161,7 @@ export default {
           }
         );
         if (result?.errors?.length > 0) {
-          console.error(result.errors[0]);
+          console.error(result.errors);
         }
       }
     },

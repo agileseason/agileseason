@@ -456,7 +456,7 @@ export default {
     `;
     const vars = { id, boardId, isClosed, isArchived };
     const data = await this.client(token).request(query, vars);
-    this.log('closeIssue', data, vars);
+    this.log('updateIssueState', data, vars);
 
     return data?.action;
   },
