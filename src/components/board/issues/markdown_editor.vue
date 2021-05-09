@@ -16,7 +16,7 @@
         class='user'
         :class='{ "selected": $index === selectedIndex }'
       >
-        {{ user.label }}
+        {{ user.login }}
       </div>
     </div>
   </div>
@@ -32,21 +32,11 @@ export default {
     modelValue: {
       type: [String, Number],
       default: ''
-    }
+    },
+    assignableUsers: { type: Array, required: true }
   },
-  // TODO: Replace data with props;
   data: () => ({
     keys: ['@'],
-    items: [
-      {
-        value: 'blackchestnut',
-        label: 'blackchestnut'
-      },
-      {
-        value: 'morr',
-        label: 'morr'
-      }
-    ],
     limit: 20,
     key: undefined,
     keyIndex: undefined,
@@ -59,15 +49,15 @@ export default {
   computed: {
     filteredItems() {
       if (!this.searchText) {
-        return this.items;
+        return this.assignableUsers;
       }
       const searchText = this.searchText.toLowerCase();
-      return this.items.filter(item => {
+      return this.assignableUsers.filter(item => {
         let text
         if (item.searchText) {
           text = item.searchText
-        } else if (item.label) {
-          text = item.label
+        } else if (item.login) {
+          text = item.login
         } else {
           text = ''
           for (const key in item) {
@@ -78,8 +68,6 @@ export default {
       });
     },
     displayedItems() {
-      // console.log('displayedItems:');
-      // console.log(this.filteredItems);
       return this.filteredItems.slice(0, this.limit);
     },
     modalPositionStyles() {
@@ -187,7 +175,7 @@ export default {
 
     applyMention(itemIndex) {
       const item = this.displayedItems[itemIndex];
-      const value = this.key + item.value + ' ';
+      const value = this.key + item.login + ' ';
       this.$emit('update:modelValue', this.replaceText(this.$refs.textarea.value, this.searchText, value, this.keyIndex));
       this.setCaretPosition(this.keyIndex + value.length);
       this.closeMenu();

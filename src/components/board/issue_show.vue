@@ -72,6 +72,7 @@
         <MarkdownEditor
           v-if='isCommentLoaded'
           v-model='newComment'
+          :assignable-users='assignableUsers'
           :disabled='isCommentSubmitting'
           class='comment-new'
         />
@@ -190,7 +191,8 @@ export default {
     isSubmitting: false,
     isStateSubmitting: false,
     isArchiveSubmitting: false,
-    isCommentSubmitting: false
+    isCommentSubmitting: false,
+    assignableUsers: []
   }),
   computed: {
     isLoading: get('issue/isLoading'),
@@ -251,16 +253,23 @@ export default {
       // Возможно стоит перенести этот метод в
       // modules/issue fetch в commit FINISH_LOADING.
       this.updateBoardIssue({ ...this.fetchedIssue });
+      const fetchAssignableUsers = await this.fetchAssignableUsers({
+        repositoryFullName: this.repositoryFullName
+      });
+      if (fetchAssignableUsers) {
+        this.assignableUsers = [...fetchAssignableUsers].sort((a, b) => (a.login > b.login) ? 1 : -1);
+      }
     }
   },
   methods: {
     ...call([
-      'issue/fetch',
-      'issue/fetchComments',
-      'issue/createComment',
+      'board/fetchAssignableUsers',
       'board/updateIssue',
       'board/updateIssueState',
-      'board/updateBoardIssue'
+      'board/updateBoardIssue',
+      'issue/fetch',
+      'issue/fetchComments',
+      'issue/createComment'
     ]),
     close() { this.$emit('close'); },
     async updateTitle(newTitle) {
