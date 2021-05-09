@@ -176,13 +176,16 @@ export default {
     applyMention(itemIndex) {
       const item = this.displayedItems[itemIndex];
       const value = this.key + item.login + ' ';
-      this.$emit('update:modelValue', this.replaceText(this.$refs.textarea.value, this.searchText, value, this.keyIndex));
+      this.$emit(
+        'update:modelValue',
+        this.replaceText(this.$refs.textarea.value, this.searchText, value, this.keyIndex)
+      );
       this.setCaretPosition(this.keyIndex + value.length);
       this.closeMenu();
     },
 
     replaceText (text, searchText, newText, index) {
-      return text.slice(0, index) + newText + text.slice(index + searchText.length + 1, text.length);
+      return `${text.slice(0, index)}${newText}${text.slice(index + searchText.length + 1, text.length)}`;
     },
 
     setCaretPosition (index) {
