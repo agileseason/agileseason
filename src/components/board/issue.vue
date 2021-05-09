@@ -76,7 +76,8 @@ export default {
     isBody: { type: Boolean, required: true },
     commentsCount: { type: Number, required: true },
     color: { type: String, required: false, default: null },
-    columnId: { type: Number, required: true }
+    columnId: { type: Number, required: true },
+    isLastColumn: { type: Boolean, default: false }
   },
   data: () => ({
     isSubmitting: false
@@ -84,9 +85,7 @@ export default {
   computed: {
     isLabels() { return this.labels.length > 0; },
     isActionVisible() {
-      // TODO: Find way to check last column to show close button.
-      // return this.isClosed;
-      return true;
+      return this.isClosed || this.isLastColumn;
     },
     isAssignedOrExtra() {
       return this.isBody ||

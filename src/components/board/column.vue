@@ -13,7 +13,8 @@
         v-for='issue in issues'
         :key='issue.id'
         v-bind='issue'
-        :columnId='id'
+        :column-id='id'
+        :is-last-column='isLastColumn'
         draggable='true'
         @dragstart='dragStart($event, issue)'
       />
@@ -31,8 +32,9 @@ export default {
   },
   props: {
     id: { type: Number, required: true },
-    name: { type: String, required: false, default: 'Unknown' },
-    issues: { type: Array, required: true }
+    name: { type: String, default: 'Unknown' },
+    issues: { type: Array, required: true },
+    isLastColumn: { type: Boolean, default: false }
   },
   data: () => ({}),
   computed: {

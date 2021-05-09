@@ -6,13 +6,14 @@
     <div v-if='isNotFound'>Not Found!</div>
     <div v-if='isLoaded' class='columns' :style='widthStyles'>
       <Column
-        v-for='column in sortedColumns'
+        v-for='(column, $index) in sortedColumns'
         :key='column.id'
         v-bind='column'
         :class='{
           "is-drag-enter": column.isDragEnter,
           "is-drag-start": column.isDragStart
         }'
+        :is-last-column='$index === columns.length - 1'
         draggable='true'
         @dragstart='dragStart($event, column)'
         @dragenter='dragEnter($event, column)'
