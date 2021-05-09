@@ -13,6 +13,7 @@
   <div v-else class='issue'>
     <div class='issue-header' :style='headerBackgroundColor'>
       <span v-if='state' class='state' :class='{"closed": isClosed}'>{{ state }}</span>
+      <span v-if='isArchived' class='archive'>Archived</span>
       <span class='repo'>{{ repositoryName }}</span>
       <ButtonIcon name='close' @click='close' style='float: right' />
     </div>
@@ -76,9 +77,27 @@
         />
         <div v-if='isCommentLoaded' class='comments-actions'>
           <Button
+            v-if='canArchive'
+            :isLoading='isArchiveSubmitting'
+            class='button-action'
+            type='outline'
+            text='Archive issue'
+            title='Remove from the board'
+            @click='archiveIssue'
+          />
+          <Button
+            v-if='canUnarchive'
+            :isLoading='isArchiveSubmitting'
+            class='button-action'
+            type='outline'
+            text='Unarchive issue'
+            title='Send to the board'
+            @click='unarchiveIssue'
+          />
+          <Button
             v-if='canClose'
             :isLoading='isStateSubmitting'
-            class='button-state'
+            class='button-action'
             type='outline'
             text='Close issue'
             @click='closeIssue'
@@ -89,7 +108,7 @@
             type='outline'
             text='Reopen issue'
             @click='reopenIssue'
-            class='button-state'
+            class='button-action'
           />
           <Button
             :isLoading='isCommentSubmitting'
@@ -170,6 +189,7 @@ export default {
     newComment: '',
     isSubmitting: false,
     isStateSubmitting: false,
+    isArchiveSubmitting: false,
     isCommentSubmitting: false
   }),
   computed: {
@@ -192,6 +212,9 @@ export default {
     isClosed() {
       return this.isLoaded ? this.fetchedIssue.isClosed : this.issue.isClosed;
     },
+    isArchived() {
+      return this.isLoaded ? this.fetchedIssue.isArchived : false;
+    },
     isBodyEmpty() { return this.fetchedIssue?.body == null || this.fetchedIssue?.body?.length == 0; },
     state() {
       if (this.isClosed == null) { return null; }
@@ -202,6 +225,8 @@ export default {
     color() { return this.fetchedIssue.color; },
     canClose() { return !this.isClosed },
     canReopen() { return this.isClosed },
+    canArchive() { return this.isClosed && !this.isArchived },
+    canUnarchive() { return this.isArchived },
 
     headerBackgroundColor() {
       if (!this.isLoaded) { return; }
@@ -347,7 +372,29 @@ export default {
         isClosed: false
       });
       this.isStateSubmitting = false;
-    }
+    },
+    async archiveIssue() {
+      if (this.isArchiveSubmitting) { return; }
+
+      this.isArchiveSubmitting = true;
+      await this.updateIssueState({
+        id: this.id,
+        columnId: this.columnId,
+        isArchived: true
+      });
+      this.isArchiveSubmitting = false;
+    },
+    async unarchiveIssue() {
+      if (this.isArchiveSubmitting) { return; }
+
+      this.isArchiveSubmitting = true;
+      await this.updateIssueState({
+        id: this.id,
+        columnId: this.columnId,
+        isArchived: false
+      });
+      this.isArchiveSubmitting = false;
+    },
   }
 }
 </script>
@@ -366,6 +413,18 @@ export default {
   height: 44px
   padding: 10px 14px
   position: relative
+
+  .archive
+    background-color: #c5cae9
+    color: #283593
+    border-radius: 12px
+    box-sizing: border-box
+    display: inline-block
+    font-size: 12px
+    height: 24px
+    line-height: 20px
+    margin-right: 8px
+    padding: 2px 8px
 
   .state
     background-color: #22863a
@@ -456,11 +515,9 @@ export default {
   button + button
     margin-left: 16px
 
-.button-state
-  width: 140px
-
+.button-action,
 .button-comment
-  width: 114px
+  min-width: 130px !important
 
 .delimeter
   border-bottom: 1px solid #e8eaf6
