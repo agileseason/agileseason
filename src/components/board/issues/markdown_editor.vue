@@ -7,9 +7,9 @@
       ref='textarea'
       @input='onInput'
       @keydown='onKeyDown'
-      @blur='closeMenu'
+      @blur='closePopup'
     />
-    <div v-if='isOpen' class='mention-modal' :style='modalPositionStyles'>
+    <div v-if='isModalOpen' class='mention-modal' :style='modalPositionStyles'>
       <div
         v-for='(user, $index) in filteredItems'
         :key='$index'
@@ -44,7 +44,7 @@ export default {
     searchText: '',
     lastSearchText: '',
     selectedIndex: 0,
-    isOpen: false
+    isModalOpen: false
   }),
   computed: {
     filteredItems() {
@@ -55,13 +55,13 @@ export default {
       return this.assignableUsers.filter(item => {
         let text
         if (item.searchText) {
-          text = item.searchText
+          text = item.searchText;
         } else if (item.login) {
-          text = item.login
+          text = item.login;
         } else {
           text = ''
           for (const key in item) {
-            text += item[key]
+            text += item[key];
           }
         }
         return text.toLowerCase().includes(searchText);
@@ -112,7 +112,7 @@ export default {
         e.stopPropagation();
       }
       if (e.key === 'Escape' || e.keyCode === 27) {
-        this.closeMenu();
+        this.closePopup();
         e.preventDefault();
         e.stopPropagation();
       }
@@ -126,12 +126,12 @@ export default {
           return false;
         }
         if (searchText != null) {
-          this.openMenu(key, keyIndex);
+          this.openPopup(key, keyIndex);
           this.searchText = searchText;
           return true;
         }
       }
-      this.closeMenu();
+      this.closePopup();
       return false;
     },
     getLastKeyBeforeCaret(caretIndex, value) {
@@ -142,29 +142,27 @@ export default {
       return keyData;
     },
     getLastSearchText (caretIndex, keyIndex, value) {
-      if (keyIndex !== -1) {
-        const searchText = value.substring(keyIndex + 1, caretIndex);
-        // If there is a space we close the menu
-        if (!/\s/.test(searchText)) {
-          return searchText;
-        }
-      }
-      return null;
+      if (keyIndex === -1) { return; }
+
+      const searchText = value.substring(keyIndex + 1, caretIndex);
+      if (/\s/.test(searchText)) { return; }
+
+      return searchText;
     },
-    openMenu(key, keyIndex) {
+    openPopup(key, keyIndex) {
       if (this.key === key) { return; }
 
       this.key = key;
       this.keyIndex = keyIndex;
       this.updateCaretPosition();
       this.selectedIndex = 0;
-      this.isOpen = true;
+      this.isModalOpen = true;
     },
-    closeMenu () {
+    closePopup () {
       if (this.key == null) { return; }
 
-      this.key = null
-      this.isOpen = false;
+      this.key = null;
+      this.isModalOpen = false;
     },
     updateCaretPosition () {
       if (this.key) {
@@ -181,7 +179,7 @@ export default {
         this.replaceText(this.$refs.textarea.value, this.searchText, value, this.keyIndex)
       );
       this.setCaretPosition(this.keyIndex + value.length);
-      this.closeMenu();
+      this.closePopup();
     },
 
     replaceText (text, searchText, newText, index) {
