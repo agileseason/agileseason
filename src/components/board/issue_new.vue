@@ -24,7 +24,10 @@
           @keyup.esc='close'
         />
 
-        <MarkdownEditor v-model='body' />
+        <MarkdownEditor
+          v-model='body'
+          :assignable-users='assignableUsers'
+        />
 
         <div class='actions'>
           <Button
@@ -155,6 +158,7 @@ export default {
     selectedColumnId: undefined,
     selectedPosition: undefined,
 
+    assignableUsers: [],
     isSubmitting: false
   }),
   computed: {
@@ -186,12 +190,20 @@ export default {
   async mounted() {
     await delay(300);
     this.$nextTick(() => this.$refs.title.focus());
+    await this.initAssignableUsers();
+  },
+  watch: {
+    async selectedRepositoryFullName(newValue, oldValue) {
+      if (newValue === oldValue) { return; }
+      await this.initAssignableUsers();
+    }
   },
   methods: {
     ...call([
+      'board/createIssue',
+      'board/fetchAssignableUsers',
       'issue/fetch',
-      'issue/fetchComments',
-      'board/createIssue'
+      'issue/fetchComments'
     ]),
     close() { this.$emit('close'); },
     async submit() {
@@ -214,6 +226,17 @@ export default {
         this.title = '';
         this.body = '';
         this.close();
+      }
+    },
+    async initAssignableUsers() {
+      if (this.assignableUsers.length > 0) {
+        this.assignableUsers = [];
+      }
+      const fetchAssignableUsers = await this.fetchAssignableUsers({
+        repositoryFullName: this.selectedRepositoryFullName
+      });
+      if (fetchAssignableUsers) {
+        this.assignableUsers = [...fetchAssignableUsers].sort((a, b) => (a.login > b.login) ? 1 : -1);
       }
     },
     toggleAssignee(user) {
