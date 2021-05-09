@@ -112,16 +112,16 @@ export default {
       return result?.issue;
     },
 
-    async updateIssueState({ state, getters, dispatch }, { id, columnId, isClosed }) {
+    async updateIssueState({ state, getters, dispatch }, { id, columnId, isClosed, isArchived }) {
       const result = await api.updateIssueState(
         getters.token,
-        { id: id, boardId: state.id, isClosed }
+        { id: id, boardId: state.id, isClosed, isArchived }
       );
       if (result?.issue == null) {
         // todo: Show errors (result.errors).
       } else {
-        dispatch('updateBoardIssue', { id, columnId, isClosed });
-        dispatch('issue/update', { isClosed }, { root: true });
+        dispatch('updateBoardIssue', { id, columnId, isClosed, isArchived });
+        dispatch('issue/update', { isClosed, isArchived }, { root: true });
       }
       return result?.issue;
     },

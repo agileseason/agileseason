@@ -300,6 +300,7 @@ export default {
             repositoryFullName
             columnId
             isClosed
+            isArchived
             createdAt
             createdAgo
             labels { name color }
@@ -371,6 +372,7 @@ export default {
             url
             repositoryName
             isClosed
+            isArchived
             createdAt
             createdAgo
             labels { name color }
@@ -414,6 +416,7 @@ export default {
             assignees { login url avatarUrl }
             color
             isClosed
+            isArchived
           }
           errors
         }
@@ -428,13 +431,14 @@ export default {
     return data?.updateIssue;
   },
 
-  async updateIssueState(token, { id, boardId, isClosed }) {
+  async updateIssueState(token, { id, boardId, isClosed, isArchived }) {
     const query = `
-      mutation($id:Int!, $boardId:Int!, $isClosed:Boolean) {
+      mutation($id:Int!, $boardId:Int!, $isClosed:Boolean, $isArchived:Boolean) {
         action:updateIssue(input: {
           id: $id,
           boardId: $boardId,
-          isClosed: $isClosed
+          isClosed: $isClosed,
+          isArchived: $isArchived
         }) {
           issue {
             id
@@ -444,12 +448,13 @@ export default {
             assignees { login url avatarUrl }
             color
             isClosed
+            isArchived
           }
           errors
         }
       }
     `;
-    const vars = { id, boardId, isClosed };
+    const vars = { id, boardId, isClosed, isArchived };
     const data = await this.client(token).request(query, vars);
     this.log('closeIssue', data, vars);
 

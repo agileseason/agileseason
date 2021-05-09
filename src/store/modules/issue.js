@@ -12,6 +12,7 @@ export default {
     createdAt: undefined,
     createdAgo: undefined,
     isClosed: undefined,
+    isArchived: undefined,
     repositoryName: undefined,
     repositoryFullName: undefined,
     columnId: undefined,
@@ -45,7 +46,8 @@ export default {
       if (issue == null) {
         commit('NOT_FOUND');
       } else {
-        commit('FINISH_LOADING', issue);
+        commit('UPDATE', issue);
+        commit('FINISH_LOADING');
       }
     },
     async fetchComments({ commit, getters }, { id }) {
@@ -75,8 +77,8 @@ export default {
 
       return result.comment;
     },
-    update({ commit }, { isClosed }) {
-      commit('UPDATE', { isClosed });
+    update({ commit }, { isClosed, isArchived }) {
+      commit('UPDATE', { isClosed, isArchived });
     }
   },
 
@@ -90,18 +92,16 @@ export default {
       state.labels = [];
       state.isClosed = false;
     },
-    FINISH_LOADING(state, issue) {
-      // This approach doesn't work:
-      // state = { ...state, ...issue }
-      Object.keys(issue).forEach(prop => {
-        state[prop] = issue[prop];
-      });
-
+    FINISH_LOADING(state) {
       state.isLoading = false;
       state.isLoaded = true;
     },
-    UPDATE(state, { isClosed }) {
-      state.isClosed = isClosed;
+    UPDATE(state, attrs) {
+      // This approach doesn't work:
+      // state = { ...state, ...issue }
+      Object.keys(attrs).forEach(prop => {
+        state[prop] = attrs[prop];
+      });
     },
     NOT_FOUND(state) {
       state.isLoading = false;

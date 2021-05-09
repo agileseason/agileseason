@@ -29,13 +29,14 @@
             name='Close'
             icon='close'
             @click.stop='close'
-            :is-submitting='isSubmitting'
+            :is-submitting='isCloseSubmitting'
           />
           <FastButton
             v-if='isClosed'
             name='Archive'
             icon='archive'
             @click.stop='archive'
+            :is-submitting='isArchiveSubmitting'
           />
         </div>
       </div>
@@ -80,7 +81,8 @@ export default {
     isLastColumn: { type: Boolean, default: false }
   },
   data: () => ({
-    isSubmitting: false
+    isCloseSubmitting: false,
+    isArchiveSubmitting: false
   }),
   computed: {
     isLabels() { return this.labels.length > 0; },
@@ -116,20 +118,26 @@ export default {
       });
     },
     async close() {
-      if (this.isSubmitting) { return; }
+      if (this.isCloseSubmitting) { return; }
 
-      this.isSubmitting = true;
-
+      this.isCloseSubmitting = true;
       await this.updateIssueState({
         id: this.id,
         columnId: this.columnId,
         isClosed: true
       });
-
-      this.isSubmitting = false;
+      this.isCloseSubmitting = false;
     },
-    archive() {
-      console.log('TODO: archive');
+    async archive() {
+      if (this.isArchiveSubmitting) { return; }
+
+      this.isArchiveSubmitting = true;
+      await this.updateIssueState({
+        id: this.id,
+        columnId: this.columnId,
+        isArchived: true
+      });
+      this.isArchiveSubmitting = false;
     }
   }
 }

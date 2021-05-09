@@ -10,7 +10,7 @@
     </div>
     <div class='body'>
       <Issue
-        v-for='issue in issues'
+        v-for='issue in notArchivedIssues'
         :key='issue.id'
         v-bind='issue'
         :column-id='id'
@@ -38,7 +38,8 @@ export default {
   },
   data: () => ({}),
   computed: {
-    issuesCount() { return this.issues?.length || 0; }
+    issuesCount() { return this.issues.length || 0; },
+    notArchivedIssues() { return this.issues.filter(issue => !issue.isArchived); }
   },
   methods: {
     issueNew() {
