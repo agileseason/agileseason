@@ -15,6 +15,8 @@
         :key='$index'
         class='user'
         :class='{ "selected": $index === selectedIndex }'
+        @mouseover='selectedIndex = $index'
+        @mousedown='applyMention($index)'
       >
         {{ user.login }}
       </div>
@@ -207,6 +209,7 @@ export default {
     padding: 0
 
     .user
+      cursor: pointer
       padding: 8px 10px
 
       &:not(:last-child)
