@@ -28,7 +28,6 @@
 import getCaretPosition from 'textarea-caret'
 
 export default {
-  components: {},
   props: {
     placeholder: { type: String, default: 'Leave a comment...' },
     modelValue: {
@@ -50,9 +49,8 @@ export default {
   }),
   computed: {
     filteredItems() {
-      if (!this.searchText) {
-        return this.assignableUsers;
-      }
+      if (!this.searchText) { return this.assignableUsers; }
+
       const searchText = this.searchText.toLowerCase();
       return this.assignableUsers.filter(item => {
         let text
@@ -69,9 +67,7 @@ export default {
         return text.toLowerCase().includes(searchText);
       });
     },
-    displayedItems() {
-      return this.filteredItems.slice(0, this.limit);
-    },
+    displayedItems() { return this.filteredItems.slice(0, this.limit); },
     modalPositionStyles() {
       if (this.caretPosition == null) { return 'top: 20px; left: 68px;' }
       const { top, left } = this.caretPosition;
@@ -79,9 +75,7 @@ export default {
     }
   },
   watch: {
-    displayedItems () {
-      this.selectedIndex = 0;
-    }
+    displayedItems () { this.selectedIndex = 0; }
   },
   methods: {
     onInput(e) {
