@@ -24,8 +24,19 @@
 
         <div v-if='isActionVisible' class='actions'>
           <span v-if='isClosed' class='closed'>Closed</span>
-          <FastButton v-if='!isClosed' name='Close' icon='close' @click.stop='close' />
-          <FastButton name='Archive' icon='archive' @click.stop='archive' />
+          <FastButton
+            v-if='!isClosed'
+            name='Close'
+            icon='close'
+            @click.stop='close'
+            :is-submitting='isSubmitting'
+          />
+          <FastButton
+            v-if='isClosed'
+            name='Archive'
+            icon='archive'
+            @click.stop='archive'
+          />
         </div>
       </div>
 
@@ -67,7 +78,9 @@ export default {
     color: { type: String, required: false, default: null },
     columnId: { type: Number, required: true }
   },
-  data: () => ({}),
+  data: () => ({
+    isSubmitting: false
+  }),
   computed: {
     isLabels() { return this.labels.length > 0; },
     isActionVisible() {
@@ -90,7 +103,8 @@ export default {
   },
   methods: {
     ...call([
-      'board/setCurrentIssue'
+      'board/setCurrentIssue',
+      'board/updateIssueState'
     ]),
     goToIssue() {
       this.setCurrentIssue({ issue: this });
@@ -99,10 +113,20 @@ export default {
         params: { issueId: this.id, issueNumber: this.number }
       });
     },
-    close() {
-      console.log('TODO: close');
+    async close() {
+      if (this.isSubmitting) { return; }
+
+      this.isSubmitting = true;
+
+      await this.updateIssueState({
+        id: this.id,
+        columnId: this.columnId,
+        isClosed: true
+      });
+
+      this.isSubmitting = false;
     },
-    archive() { 
+    archive() {
       console.log('TODO: archive');
     }
   }

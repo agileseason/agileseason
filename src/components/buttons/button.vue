@@ -33,7 +33,7 @@
     :disabled='isDisabled || isLoading'
     @click='click'
   >
-    <span v-if='isLoading' class='loader' />
+    <span v-if='isLoading' class='loader' :class='type' />
     <span v-else>
       {{ text }}
       <slot />
@@ -184,7 +184,7 @@ export default {
       border: 1px solid #fff
 
 .loader
-  background-image: url('../../assets/button/loader.svg')
+  background-image: url('../../assets/button/white_loader.svg')
   background-repeat: no-repeat
   background-size: contain
   height: 38px
@@ -193,4 +193,8 @@ export default {
   top: 50%
   transform: translateY(-50%) translateX(-50%)
   width: 38px
+
+  &.outline,
+  &.white
+    background-image: url('../../assets/button/indigo_loader.svg')
 </style>

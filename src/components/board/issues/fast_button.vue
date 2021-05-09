@@ -1,7 +1,10 @@
 <template>
   <div class='button'>
     <span class='icon' :class='icon' />
-    {{ name }}
+    <div v-if='isSubmitting' class='loader' />
+    <span v-else>
+      {{ name }}
+    </span>
   </div>
 </template>
 
@@ -9,7 +12,8 @@
 export default {
   props: {
     name: { type: String, required: true },
-    icon: { type: String, required: true }
+    icon: { type: String, required: true },
+    isSubmitting: { type: Boolean, default: false }
   }
 }
 </script>
@@ -35,6 +39,9 @@ export default {
   &:active
     border: 1px solid #9fa8da
 
+.button + .button
+  margin-left: 4px
+
 .icon
   background-position: center
   background-repeat: no-repeat
@@ -49,6 +56,10 @@ export default {
   &.archive
     background-image: url('../../../assets/icons/issue/indigo_archive.svg')
 
-.button + .button
-  margin-left: 4px
+.loader
+  background-image: url('../../../assets/button/indigo_loader.svg')
+  background-repeat: no-repeat
+  background-size: contain
+  height: 22px
+  width: 30px
 </style>
