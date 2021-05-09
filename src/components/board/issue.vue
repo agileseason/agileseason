@@ -24,8 +24,8 @@
 
         <div v-if='isActionVisible' class='actions'>
           <span v-if='isClosed' class='closed'>Closed</span>
-          <FastButton v-if='!isClosed' name='close' icon='close' />
-          <FastButton name='archive' icon='archive' />
+          <FastButton v-if='!isClosed' name='Close' icon='close' @click.stop='close' />
+          <FastButton name='Archive' icon='archive' @click.stop='archive' />
         </div>
       </div>
 
@@ -64,7 +64,8 @@ export default {
     isClosed: { type: Boolean, required: true },
     isBody: { type: Boolean, required: true },
     commentsCount: { type: Number, required: true },
-    color: { type: String, required: false, default: null }
+    color: { type: String, required: false, default: null },
+    columnId: { type: Number, required: true }
   },
   data: () => ({}),
   computed: {
@@ -97,6 +98,12 @@ export default {
         name: 'issue',
         params: { issueId: this.id, issueNumber: this.number }
       });
+    },
+    close() {
+      console.log('TODO: close');
+    },
+    archive() { 
+      console.log('TODO: archive');
     }
   }
 }

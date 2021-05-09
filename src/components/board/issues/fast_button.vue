@@ -35,6 +35,20 @@ export default {
   &:active
     border: 1px solid #9fa8da
 
+.icon
+  background-position: center
+  background-repeat: no-repeat
+  display: inline-block
+  margin-right: 4px
+  width: 16px
+  height: 16px
+
+  &.close
+    background-image: url('../../../assets/icons/issue/indigo_close.svg')
+
+  &.archive
+    background-image: url('../../../assets/icons/issue/indigo_archive.svg')
+
 .button + .button
   margin-left: 4px
 </style>

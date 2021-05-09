@@ -13,6 +13,7 @@
         v-for='issue in issues'
         :key='issue.id'
         v-bind='issue'
+        :columnId='id'
         draggable='true'
         @dragstart='dragStart($event, issue)'
       />
