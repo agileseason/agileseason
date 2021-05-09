@@ -42,7 +42,7 @@
 
       <div class='assigned'>
         <img
-          v-for='(assignee, $index) in assignees'
+          v-for='(assignee, $index) in sortedAssignees'
           :key='$index'
           class='assignee'
           :src='assignee.avatarUrl'
@@ -98,6 +98,9 @@ export default {
       if (this.color == 'ffffff') { return; }
 
       return `background-color: #${this.color}`;
+    },
+    sortedAssignees() {
+      return [...this.assignees].sort((a, b) => (a.login > b.login) ? 1 : -1);
     }
   },
   methods: {

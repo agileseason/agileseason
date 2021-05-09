@@ -28,7 +28,7 @@
       None — <b @click='selfAssign'>assign your self</b>
     </div>
     <div
-      v-for='(assignee, $index) in assignees'
+      v-for='(assignee, $index) in sortedAssignees'
       :key='$index'
       :title='assignee.url'
       class='assignee'
@@ -66,6 +66,9 @@ export default {
     currentAvatarUrl: get('user/avatarUrl'),
     isSelfAssignVisible() {
       return this.assignees.length === 0;
+    },
+    sortedAssignees() {
+      return [...this.assignees].sort((a, b) => (a.login > b.login) ? 1 : -1);
     }
   },
   watch: {
@@ -101,7 +104,7 @@ export default {
         const fetchAssignableUsers = await this.fetchAssignableUsers({
           repositoryFullName: this.repositoryFullName
         });
-        this.assignableUsers = [...fetchAssignableUsers];
+        this.assignableUsers = [...fetchAssignableUsers].sort((a, b) => (a.login > b.login) ? 1 : -1);
         this.isLoading = false;
       }
     },
