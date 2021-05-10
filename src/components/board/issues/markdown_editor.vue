@@ -21,13 +21,18 @@
         {{ user.login }}
       </div>
     </div>
+    <GithubCommunityGidelines />
   </div>
 </template>
 
 <script>
+import GithubCommunityGidelines from '@/components/board/issues/github_community_guidelines'
 import getCaretPosition from 'textarea-caret'
 
 export default {
+  components: {
+    GithubCommunityGidelines
+  },
   props: {
     placeholder: { type: String, default: 'Leave a comment...' },
     modelValue: {
@@ -193,24 +198,24 @@ export default {
 .editor
   position: relative
 
-  .mention-modal
-    background-color: #e8eaf6
-    border-radius: 4px
-    border: 1px solid #c5cae9
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1)
-    box-sizing: border-box
-    position: absolute
-    padding: 0
+.mention-modal
+  background-color: #e8eaf6
+  border-radius: 4px
+  border: 1px solid #c5cae9
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1)
+  box-sizing: border-box
+  position: absolute
+  padding: 0
 
-    .user
-      cursor: pointer
-      padding: 8px 10px
+  .user
+    cursor: pointer
+    padding: 8px 10px
 
-      &:not(:last-child)
-        border-bottom: 1px solid #c5cae9
+    &:not(:last-child)
+      border-bottom: 1px solid #c5cae9
 
-      &.selected
-        background-color: #c5cae9
+    &.selected
+      background-color: #c5cae9
 
 textarea
   border-radius: 3px

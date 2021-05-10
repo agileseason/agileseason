@@ -519,7 +519,7 @@ export default {
 .comments-actions
   display: flex
   justify-content: flex-end
-  margin-top: 12px
+  margin-top: 2px
 
   button + button
     margin-left: 16px
