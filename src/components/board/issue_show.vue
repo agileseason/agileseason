@@ -30,7 +30,7 @@
         <div v-if='isLoaded' class='main-comment comment'>
           <img class='avatar' :src='fetchedIssue.author.avatarUrl' />
 
-          <div class='content'>
+          <div v-if='!isEditBody' class='content'>
             <div class='header'>
               <div>
                 <a class='author' :href='fetchedIssue.author.url'>{{ fetchedIssue.author.login }}</a>
@@ -46,6 +46,13 @@
               {{ fetchedIssue.body }}
             </div>
           </div>
+          <MarkdownEditor
+            ref='body'
+            v-if='isEditBody'
+            v-model='newBody'
+            :assignable-users='assignableUsers'
+            :disabled='isSubmitting'
+          />
         </div>
 
         <div v-if='isCommentLoaded' class='comments'>
@@ -165,6 +172,7 @@ import { hexRgb } from '@/utils/wcag_contrast';
 import { GlobalEvents } from 'vue-global-events';
 import { get, call } from 'vuex-pathify';
 
+// const delay = require('delay');
 const DEFAULT_COLOR = 'ffffff';
 
 export default {
@@ -188,6 +196,8 @@ export default {
   data: () => ({
     newTitle: undefined,
     newComment: '',
+    newBody: '',
+    isEditBody: false,
     isSubmitting: false,
     isStateSubmitting: false,
     isArchiveSubmitting: false,
@@ -241,7 +251,6 @@ export default {
 
     // debugStoreColumns: get('board/columns'),
     // debugStoreCurrentIssue: get('board/currentIssue'),
-
     // debugStore() {
     //   return { currentIssue: this.debugStoreCurrentIssue, board: this.debugStoreColumns };
     // },
@@ -249,6 +258,8 @@ export default {
   async created() {
     if (this.id) {
       await this.fetch({ id: this.id });
+      this.newBody = this.fetchedIssue.body;
+
       this.fetchComments({ id: this.id });
       // Возможно стоит перенести этот метод в
       // modules/issue fetch в commit FINISH_LOADING.
@@ -349,7 +360,9 @@ export default {
       this.isSubmitting = false;
     },
     startEditBody() {
-      console.log('TODO: startEditBody');
+      this.isEditBody = true;
+      // await delay(100);
+      this.$nextTick(() => this.$refs.body.$refs.textarea.focus());
     },
     async submitNewComment() {
       if (this.newComment === '') { return; }
