@@ -186,6 +186,12 @@ export default {
           );
         }
       });
+      if ('body' in issue) {
+        commit(
+          'UPDATE_BOARD_ISSUE',
+          { issue: boardIssue, key: 'isBody', value: !!issue.body }
+        );
+      }
     }
   },
 

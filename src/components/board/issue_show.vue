@@ -52,6 +52,7 @@
             v-model='newBody'
             :assignable-users='assignableUsers'
             :disabled='isSubmitting'
+            @submit='updateBody'
           >
             <template v-slot:actions>
               <Button
@@ -61,8 +62,9 @@
               />
               <Button
                 type='indigo'
-                text='Update comment'
-                @click='cancelEditBody'
+                text='Update'
+                :isLoading='isSubmitting'
+                @click='updateBody'
               />
             </template>
           </MarkdownEditor>
@@ -292,6 +294,7 @@ export default {
       'board/updateIssueState',
       'board/updateBoardIssue',
       'issue/fetch',
+      'issue/update',
       'issue/fetchComments',
       'issue/createComment'
     ]),
@@ -311,6 +314,19 @@ export default {
       });
 
       this.isSubmitting = false;
+    },
+    async updateBody() {
+      if (this.isSubmitting) { return; }
+
+      this.isSubmitting = true;
+      await this.updateIssue({
+        id: this.id,
+        body: this.newBody,
+        columnId: this.fetchedIssue.columnId
+      });
+      this.update({ body: this.newBody });
+      this.isSubmitting = false;
+      this.isEditBody = false;
     },
     async toggleAssignee(user) {
       if (this.isSubmitting) { return; }
@@ -374,7 +390,6 @@ export default {
     },
     startEditBody() {
       this.isEditBody = true;
-      // await delay(100);
       this.$nextTick(() => this.$refs.body.$refs.textarea.focus());
     },
     async submitNewComment() {
@@ -432,6 +447,7 @@ export default {
     },
     cancelEditBody() {
       this.isEditBody = false;
+      this.newBody = this.fetchedIssue.body;
     }
   }
 }

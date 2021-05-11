@@ -77,8 +77,8 @@ export default {
 
       return result.comment;
     },
-    update({ commit }, { isClosed, isArchived }) {
-      commit('UPDATE', { isClosed, isArchived });
+    update({ commit }, { isClosed, isArchived, body }) {
+      commit('UPDATE', { isClosed, isArchived, body });
     }
   },
 

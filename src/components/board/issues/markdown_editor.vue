@@ -44,6 +44,7 @@ export default {
     },
     assignableUsers: { type: Array, required: true }
   },
+  emits: ['submit', 'onUpdate:modelValue'],
   data: () => ({
     keys: ['@'],
     limit: 20,
@@ -91,7 +92,10 @@ export default {
       this.checkKey(e.target.value);
     },
     onKeyDown(e) {
-      if (this.key == null) { return; }
+      if (this.key == null) {
+        if (e.metaKey && e.key === 'Enter') { this.$emit('submit'); }
+        return;
+      }
 
       if (e.key === 'ArrowDown' || e.keyCode === 40) {
         this.selectedIndex++;
