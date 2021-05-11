@@ -541,6 +541,7 @@ export default {
 
       &.empty
         color: #9e9e9e
+        font-weight: 200
 
 .comment-new
   min-height: 100px
