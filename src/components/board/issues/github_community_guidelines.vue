@@ -14,10 +14,9 @@ export default {
 
 <style scoped lang='sass'>
 .note
-  margin-top: 2px
   color: #9fa8da
   font-size: 10px
-  margin-left: 50px
+  margin: 2px 0 2px 50px
 
   a
     color: #3f51b5

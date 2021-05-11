@@ -341,7 +341,6 @@ input.title
 
 .actions
   text-align: right
-  margin-top: 2px
 
   .button
     min-width: 170px

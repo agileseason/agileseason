@@ -22,6 +22,9 @@
       </div>
     </div>
     <GithubCommunityGidelines />
+    <div class='actions'>
+      <slot name='actions' />
+    </div>
   </div>
 </template>
 
@@ -236,4 +239,8 @@ textarea
     color: #9fa8da
   &::-ms-input-placeholder
     color: #9fa8da
+
+.actions
+  display: flex
+  justify-content: flex-end
 </style>

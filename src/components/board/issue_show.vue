@@ -52,7 +52,20 @@
             v-model='newBody'
             :assignable-users='assignableUsers'
             :disabled='isSubmitting'
-          />
+          >
+            <template v-slot:actions>
+              <Button
+                type='outline'
+                text='Cancel'
+                @click='cancelEditBody'
+              />
+              <Button
+                type='indigo'
+                text='Update comment'
+                @click='cancelEditBody'
+              />
+            </template>
+          </MarkdownEditor>
         </div>
 
         <div v-if='isCommentLoaded' class='comments'>
@@ -417,6 +430,9 @@ export default {
       });
       this.isArchiveSubmitting = false;
     },
+    cancelEditBody() {
+      this.isEditBody = false;
+    }
   }
 }
 </script>
@@ -532,10 +548,9 @@ export default {
 .comments-actions
   display: flex
   justify-content: flex-end
-  margin-top: 2px
 
-  button + button
-    margin-left: 16px
+.button + .button
+  margin-left: 16px
 
 .button-action,
 .button-comment
