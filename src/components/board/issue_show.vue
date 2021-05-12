@@ -445,6 +445,7 @@ export default {
       this.isEditBody = false;
       this.newBody = this.fetchedIssue.body;
     },
+    // https://marked.js.org/using_advanced#options
     markdown(text) {
       return marked(text, {
         breaks: true
