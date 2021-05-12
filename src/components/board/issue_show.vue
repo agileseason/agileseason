@@ -184,8 +184,6 @@ import { GlobalEvents } from 'vue-global-events';
 import { get, call } from 'vuex-pathify';
 
 const marked = require('marked');
-
-// const delay = require('delay');
 const DEFAULT_COLOR = 'ffffff';
 
 export default {
