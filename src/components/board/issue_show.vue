@@ -42,9 +42,7 @@
             </div>
 
             <div v-if='isBodyEmpty' class='text empty'>No description provided</div>
-            <div v-else class='text'>
-              {{ fetchedIssue.body }}
-            </div>
+            <div v-else class='text markdown-body' v-html='markdown(fetchedIssue.body)' />
           </div>
           <MarkdownEditor
             ref='body'
@@ -85,9 +83,7 @@
                 <!--ButtonIcon name='edit' @click='startEditComment' /-->
               </div>
 
-              <div class='text'>
-                {{ item.body }}
-              </div>
+              <div class='text markdown-body' v-html='markdown(item.body)'/>
             </div>
           </div>
         </div>
@@ -187,7 +183,7 @@ import { hexRgb } from '@/utils/wcag_contrast';
 import { GlobalEvents } from 'vue-global-events';
 import { get, call } from 'vuex-pathify';
 
-// const delay = require('delay');
+const marked = require('marked');
 const DEFAULT_COLOR = 'ffffff';
 
 export default {
@@ -448,6 +444,12 @@ export default {
     cancelEditBody() {
       this.isEditBody = false;
       this.newBody = this.fetchedIssue.body;
+    },
+    // https://marked.js.org/using_advanced#options
+    markdown(text) {
+      return marked(text, {
+        breaks: true
+      });
     }
   }
 }

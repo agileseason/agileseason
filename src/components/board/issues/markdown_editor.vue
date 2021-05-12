@@ -8,6 +8,7 @@
       @input='onInput'
       @keydown='onKeyDown'
       @blur='closePopup'
+      :rows='rows'
     />
     <div v-if='isModalOpen' class='mention-modal' :style='modalPositionStyles'>
       <div
@@ -32,6 +33,8 @@
 import GithubCommunityGidelines from '@/components/board/issues/github_community_guidelines'
 import getCaretPosition from 'textarea-caret'
 
+const MIN_ROWS = 8;
+
 export default {
   components: {
     GithubCommunityGidelines
@@ -44,7 +47,7 @@ export default {
     },
     assignableUsers: { type: Array, required: true }
   },
-  emits: ['submit', 'onUpdate:modelValue'],
+  emits: ['submit', 'update:modelValue'],
   data: () => ({
     keys: ['@'],
     limit: 20,
@@ -54,7 +57,8 @@ export default {
     searchText: '',
     lastSearchText: '',
     selectedIndex: 0,
-    isModalOpen: false
+    isModalOpen: false,
+    rows: MIN_ROWS
   }),
   computed: {
     filteredItems() {
@@ -83,10 +87,22 @@ export default {
       return `top: ${top + 20}px; left: ${left + 68}px;`;
     }
   },
+  mounted() {
+    this.initTextAreaRows();
+  },
   watch: {
-    displayedItems () { this.selectedIndex = 0; }
+    displayedItems() { this.selectedIndex = 0; },
+    modelValue() {
+      this.initTextAreaRows();
+    }
   },
   methods: {
+    initTextAreaRows() {
+      const rows = this.$refs.textarea.value.split(/\r?\n/).length;
+      if (rows > this.rows || rows > MIN_ROWS) {
+        this.rows = rows;
+      }
+    },
     onInput(e) {
       this.$emit('update:modelValue', e.target.value);
       this.checkKey(e.target.value);
@@ -228,13 +244,14 @@ textarea
   border-radius: 3px
   border: 1px solid #c5cae9
   box-sizing: border-box
-  font-size: 16px
+  font-size: 14px
   font-weight: 300
+  line-height: 18px
   margin-left: 50px
+  min-height: 180px
   padding: 8px
-  width: calc(100% - 50px) // 100% - margin-left
-  min-height: 200px
   resize: none
+  width: calc(100% - 50px) // 100% - margin-left
 
   &::placeholder
     color: #9fa8da

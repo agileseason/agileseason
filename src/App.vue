@@ -35,4 +35,40 @@ input, textarea {
 a {
   text-decoration: none;
 }
+
+.markdown-body h1,
+.markdown-body h2 {
+  padding-bottom: .3em;
+  border-bottom: 1px solid #e8eaf6;
+}
+
+.markdown-body {
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.markdown-body a {
+  color: #2196f3;
+}
+
+.markdown-body p {
+  margin: 0 0 16px 0;
+}
+
+.markdown-body ul, .markdown-body ol {
+  margin: 0 0 16px 0;
+  padding-left: 2em;
+}
+
+.markdown-body>:last-child {
+  margin-bottom: 0 !important
+}
+
+.markdown-body ol ol,
+.markdown-body ol ul,
+.markdown-body ul ol,
+.markdown-body ul ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
 </style>
