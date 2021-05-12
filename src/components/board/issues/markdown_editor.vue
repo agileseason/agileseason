@@ -44,7 +44,7 @@ export default {
     },
     assignableUsers: { type: Array, required: true }
   },
-  emits: ['submit', 'onUpdate:modelValue'],
+  emits: ['submit', 'update:modelValue'],
   data: () => ({
     keys: ['@'],
     limit: 20,
@@ -228,13 +228,14 @@ textarea
   border-radius: 3px
   border: 1px solid #c5cae9
   box-sizing: border-box
-  font-size: 16px
+  font-size: 14px
   font-weight: 300
+  line-height: 18px
   margin-left: 50px
-  padding: 8px
-  width: calc(100% - 50px) // 100% - margin-left
   min-height: 200px
+  padding: 8px
   resize: none
+  width: calc(100% - 50px) // 100% - margin-left
 
   &::placeholder
     color: #9fa8da
