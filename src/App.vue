@@ -35,4 +35,29 @@ input, textarea {
 a {
   text-decoration: none;
 }
+
+.markdown-body a {
+  color: #2196f3;
+}
+
+.markdown-body p {
+  margin: 0 0 16px 0;
+}
+
+.markdown-body ul, .markdown-body ol {
+  margin: 0 0 16px 0;
+  padding-left: 2em;
+}
+
+.markdown-body>:last-child {
+  margin-bottom: 0 !important
+}
+
+.markdown-body ol ol,
+.markdown-body ol ul,
+.markdown-body ul ol,
+.markdown-body ul ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
 </style>

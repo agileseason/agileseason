@@ -30,6 +30,4 @@ export default {
   padding-bottom: 8px
   font-size: 12px
   padding: 8px
-
-.body
 </style>
