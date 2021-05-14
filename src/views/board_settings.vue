@@ -187,9 +187,6 @@ export default {
         console.error(errors);
       }
     },
-    beforeDestroy() {
-      console.log('destroy...');
-    },
     async deleteBoard() {
       if (this.isDeleteSubmitting) { return; }
       this.isDeleteSubmitting = true;
