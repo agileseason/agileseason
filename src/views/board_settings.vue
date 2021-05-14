@@ -198,11 +198,11 @@ export default {
 
   .all-repositories
     margin-bottom: 30px
-    width: 270px
+    width: 320px
 
   .linked-repositories
     margin-bottom: 18px
-    min-width: 300px
+    min-width: 320px
 
     table
       border-spacing: 0
