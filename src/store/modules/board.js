@@ -192,6 +192,14 @@ export default {
           { issue: boardIssue, key: 'isBody', value: !!issue.body }
         );
       }
+    },
+
+    async destroy({ state, getters }) {
+      const result = await api.destroyBoard(getters.token, { id: state.id });
+      if (result.errors.length) {
+        console.error(result.errors);
+      }
+      return result.errors;
     }
   },
 

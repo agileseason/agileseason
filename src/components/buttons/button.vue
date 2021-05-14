@@ -18,7 +18,7 @@
     class='button'
     :class="[type, size, { 'disabled': isDisabled || isLoading }]"
     :href='href'
-    @click='click'
+    @click.prevent='click'
   >
     <span v-if='isLoading' class='loader' />
     <span v-else>
@@ -31,7 +31,7 @@
     class='button'
     :class="[type, size, { 'disabled': isDisabled || isLoading }]"
     :disabled='isDisabled || isLoading'
-    @click='click'
+    @click.prevent='click'
   >
     <span v-if='isLoading' class='loader' :class='type' />
     <span v-else>
@@ -76,10 +76,10 @@ export default {
     isLoading: { type: Boolean, required: false, default: false }
   },
   methods: {
-    click() {
+    click(e) {
       if (this.isLoading || this.isDisabled) { return; }
 
-      this.$emit('click');
+      this.$emit('click', e);
     }
   }
 };

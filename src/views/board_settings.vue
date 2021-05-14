@@ -26,6 +26,7 @@
           class='delete-board'
           type='danger'
           :is-loading='isDeleteSubmitting'
+          :is-disabled='isDeleteSubmitting'
           @click='deleteBoard'
         >
           Delete
@@ -159,7 +160,8 @@ export default {
       'boardSettings/fetch',
       'boardSettings/update',
       'boardSettings/save',
-      'boardSettings/reset'
+      'boardSettings/reset',
+      'board/destroy'
     ]),
     selectTab(item) {
       this.active = item;
@@ -188,10 +190,19 @@ export default {
     beforeDestroy() {
       console.log('destroy...');
     },
-    deleteBoard() {
+    async deleteBoard() {
       if (this.isDeleteSubmitting) { return; }
-
       this.isDeleteSubmitting = true;
+
+      this.$nextTick(async () => {
+        if (confirm('Are you sure?')) {
+          const errors = await this.destroy();
+          if (errors.length === 0) {
+            this.$router.push({ name: 'boards' });
+          }
+        }
+        this.isDeleteSubmitting = false;
+      });
     }
   }
 }

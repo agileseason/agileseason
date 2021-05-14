@@ -223,6 +223,21 @@ export default {
     return data?.syncBoardIssues;
   },
 
+  async destroyBoard(token, { id }) {
+    const query = `
+      mutation($id:Int!) {
+        destroyBoard(input: { id: $id }) {
+          errors
+        }
+      }
+    `;
+    const vars = { id };
+    const data = await this.client(token).request(query, vars);
+    this.log('destroyBoard', data);
+
+    return data?.destroyBoard;
+  },
+
   // ---------------------------------
   // Column
   // ---------------------------------
