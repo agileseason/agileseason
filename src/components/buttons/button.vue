@@ -53,7 +53,8 @@ export default {
           'indigo',
           'flat',
           'outline',
-          'white'
+          'white',
+          'danger'
         ].indexOf(value) !== -1
       )
     },
@@ -183,6 +184,21 @@ export default {
     &:focus
       border: 1px solid #fff
 
+  &.danger
+    color: #d50000
+    border: 1px solid #d50000
+    background-color: inherit
+    font-weight: 600
+
+    &:hover
+      color: #b71c1c
+      border-color: #b71c1c
+      background-color: #ffebee
+
+    &:active
+      color: #ff5252
+      border-color: #ff5252
+
 .loader
   background-image: url('../../assets/button/white_loader.svg')
   background-repeat: no-repeat
@@ -197,4 +213,6 @@ export default {
   &.outline,
   &.white
     background-image: url('../../assets/button/indigo_loader.svg')
+  &.danger
+    background-image: url('../../assets/button/red_loader.svg')
 </style>

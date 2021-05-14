@@ -13,7 +13,24 @@
     <Loader v-if='isLoading' title='Settings' />
     <div v-if='isNotFound' class='not-found'>Not Found</div>
     <div v-if='active === "General" && isLoaded'>
-      TODO: {{ active }}
+      <article>
+        <div class='title'>Board Name</div>
+      </article>
+      <article>
+        <div class='title'>Share this board</div>
+      </article>
+      <article>
+        <div class='title'>Delete this board</div>
+        <div>Once you delete a board, there is no going back. Please be certain.</div>
+        <Button
+          class='delete-board'
+          type='danger'
+          :is-loading='isDeleteSubmitting'
+          @click='deleteBoard'
+        >
+          Delete
+        </Button>
+      </article>
     </div>
     <div v-if='active === "Repositories" && isLoaded'>
       <div class='left'>
@@ -104,8 +121,8 @@ export default {
       'Repositories',
       'Members'
     ],
-    active: 'Repositories'
-    // active: 'General'
+    active: 'General',
+    isDeleteSubmitting: false
   }),
   computed: {
     isLoaded: get('boardSettings/isLoaded'),
@@ -170,6 +187,11 @@ export default {
     },
     beforeDestroy() {
       console.log('destroy...');
+    },
+    deleteBoard() {
+      if (this.isDeleteSubmitting) { return; }
+
+      this.isDeleteSubmitting = true;
     }
   }
 }
@@ -231,4 +253,17 @@ export default {
     font-size: 12px
     letter-spacing: 0.2px
     margin-bottom: 16px
+
+article
+  margin-bottom: 50px
+
+  .title
+    font-size: 18px
+    font-weight: bold
+    line-height: 21px
+    margin-bottom: 8px
+
+  .delete-board
+    margin-top: 24px
+    width: 150px
 </style>
