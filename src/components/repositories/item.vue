@@ -6,7 +6,7 @@
       <span v-if='selectedRepositoryIds.length > 0' class='count'>{{ selectedRepositoryIds.length }}</span>
       <span class='icon' />
     </div>
-    <div v-else class='dialog'>
+    <Dialog v-else class='dialog' @close='isSelected = false'>
       <div class='header'>
         <img :src='avatarUrl' />
         <span class='login'>{{ name }}</span>
@@ -36,23 +36,25 @@
             No results matched your search
           </div>
         </div>
-        <div class='actions'>
-          <Button @click='close' type='flat' text='Close' />
-          <Button @click='done' type='white' text='Done' />
-        </div>
       </div>
-    </div>
+      <template #actions>
+        <Button @click='close' type='flat' text='Close' />
+        <Button @click='done' type='white' text='Done' />
+      </template>
+    </Dialog>
   </div>
 </template>
 
 <script>
-import Button from '@/components/buttons/button.vue'
+import Button from '@/components/buttons/button'
+import Dialog from '@/components/dialog'
 import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'Repository',
   components: {
-    Button
+    Button,
+    Dialog
   },
   props: {
     name: { type: String, required: true },
@@ -152,15 +154,6 @@ export default {
       width: 10px
 
   .dialog
-    background-color: #3F51B5
-    border-radius: 3px
-    border: 1px solid #3F51B5
-    color: #FFF
-    position: absolute
-    text-align: left
-    width: 100%
-    z-index: 2
-
     .body
       padding: 0 8px 8px
 
@@ -175,13 +168,8 @@ export default {
         font-weight: 300
         margin: 2px 0 9px
 
-      .actions
-        border-top: 1px solid #7986CB
-        text-align: right
-        padding-top: 8px
-
-        .button
-          margin-left: 8px
+    .button + .button
+      margin-left: 8px
 
   .login
     display: inline-block

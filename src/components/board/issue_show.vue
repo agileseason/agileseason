@@ -52,7 +52,7 @@
             :disabled='isSubmitting'
             @submit='updateBody'
           >
-            <template v-slot:actions>
+            <template #actions>
               <Button
                 type='outline'
                 text='Cancel'
