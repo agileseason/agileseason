@@ -1,10 +1,14 @@
 <template>
   <div class='repository'>
     <div v-if='!isSelected' class='inner' @click='open'>
-      <img :src='avatarUrl' />
-      <span class='login'>{{ name }}</span>
-      <span v-if='selectedRepositoryIds.length > 0' class='count'>{{ selectedRepositoryIds.length }}</span>
-      <span class='icon' />
+      <div class='left'>
+        <img :src='avatarUrl' />
+        <span class='login'>{{ name }}</span>
+      </div>
+      <div class='right'>
+        <span v-if='selectedRepositoryIds.length > 0' class='count'>{{ selectedRepositoryIds.length }}</span>
+        <span class='icon' />
+      </div>
     </div>
     <Dialog v-else class='dialog' @close='isSelected = false'>
       <div class='header'>
@@ -120,15 +124,25 @@ export default {
     border: 1px solid #E0E0E0
     color: #424242
     cursor: pointer
-    height: 36px
     margin-bottom: 8px
-    position: relative
-    text-align: left
     box-sizing: border-box
+    padding: 8px
+    display: flex
+    align-items: center
+    justify-content: space-between
 
     &:hover
       background-color: #F5F5F5
       color: #303F9F
+
+    .left,
+    .right
+      display: flex
+      align-items: center
+
+    .login
+      display: inline-block
+      font-size: 14px
 
     .count
       background-color: #7986CB
@@ -138,25 +152,24 @@ export default {
       font-size: 12px
       font-weight: 500
       padding: 3px 8px
-      position: absolute
-      right: 28px
-      top: 7px
+      margin-right: 12px
 
     .icon
       background-image: url('../../assets/icons/right.svg')
-      background-position: right
+      background-position: center
       background-repeat: no-repeat
-      background-size: 10px
+      background-size: cover
       display: inline-block
-      height: 34px
-      position: absolute
-      right: 8px
-      width: 10px
+      height: 14px
+      width: 8px
 
   .dialog
-    .body
-      padding: 0 8px 8px
+    .header
+      display: flex
+      align-items: center
+      margin-bottom: 8px
 
+    .body
       .items-container
         max-height: 600px
         overflow: auto
@@ -170,12 +183,6 @@ export default {
 
     .button + .button
       margin-left: 8px
-
-  .login
-    display: inline-block
-    font-size: 14px
-    line-height: 34px
-    vertical-align: top
 
 input.search
   background-color: #7986CB
@@ -218,5 +225,5 @@ img
   border-radius: 12px
   height: 24px
   width: 24px
-  margin: 5px 6px
+  margin-right: 6px
 </style>

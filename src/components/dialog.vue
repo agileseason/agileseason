@@ -28,15 +28,17 @@ export default {
   border-radius: 3px
   border: 1px solid #3f51b5
   color: #fff
+  padding: 8px
   position: absolute
   text-align: left
   width: 100%
   z-index: 2
+  box-sizing: border-box
 
   .actions
     border-top: 1px solid #7986cb
     text-align: right
-    padding: 8px
+    padding-top: 8px
 
 .dialog-overlay
   height: 100vh

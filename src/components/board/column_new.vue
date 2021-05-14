@@ -1,7 +1,7 @@
 <template>
   <div class='column-new'>
     <button v-if='!isOpen' class='new' @click='open'>New Column...</button>
-    <div v-if='isOpen' class='dialog'>
+    <Dialog v-if='isOpen' @close='close' style='margin-top: 32px'>
       <input
         v-model.trim='name'
         class='name'
@@ -11,7 +11,7 @@
         placeholder='Column name'
         ref='name'
       />
-      <div class='footer'>
+      <template #actions>
         <Button @click='close' type='flat' text='Close' />
         <Button
           :is-disabled='isDisabled'
@@ -19,18 +19,20 @@
           type='white'
           text='Submit'
         />
-      </div>
-    </div>
+      </template>
+    </Dialog>
   </div>
 </template>
 
 <script>
-import Button from '@/components/buttons/button.vue'
+import Button from '@/components/buttons/button'
+import Dialog from '@/components/dialog'
 
 export default {
   name: 'ColumnNew',
   components: {
-    Button
+    Button,
+    Dialog
   },
   data: () => ({
     name: '',
@@ -67,23 +69,6 @@ export default {
   position: relative
   vertical-align: top
   width: 270px
-
-  .dialog
-    background-color: #3f51b5
-    border-radius: 4px
-    border: 1px solid #3f51b5
-    color: #fff
-    margin-top: 32px
-    padding: 8px
-    position: absolute
-    text-align: left
-    width: 100%
-
-    .footer
-      text-align: right
-
-      .button
-        margin-left: 8px
 
   input.name
     background-color: #7986cb
