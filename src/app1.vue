@@ -55,7 +55,8 @@ a {
   margin: 0 0 16px 0;
 }
 
-.markdown-body ul, .markdown-body ol {
+.markdown-body ul,
+.markdown-body ol {
   margin: 0 0 16px 0;
   padding-left: 2em;
 }
