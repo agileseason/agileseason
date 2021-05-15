@@ -18,7 +18,16 @@
         <div class='board-container'>
           <Input
             class='board-name'
+            :value='boardName'
             v-model='boardName'
+          />
+          <Button
+            type='outline'
+            size='small'
+            text='Rename'
+            class='button-board-rename'
+            @click='renameBoard'
+            :is-loading='isSubmitting'
           />
         </div>
       </article>
@@ -132,6 +141,7 @@ export default {
     ],
     boardName: '',
     active: 'General',
+    isSubmitting: false,
     isDeleteSubmitting: false
   }),
   computed: {
@@ -198,6 +208,13 @@ export default {
         console.error('ERROR sync issues...');
         console.error(errors);
       }
+    },
+    renameBoard() {
+      if (this.isSubmitting) { return; }
+      if (this.boardName === this.currentBoard.name) { return; }
+
+      this.isSubmitting = true;
+      // TODO: Call update board method
     },
     async deleteBoard() {
       if (this.isDeleteSubmitting) { return; }
@@ -293,4 +310,7 @@ article
   .board-name
     width: 240px
     margin-right: 12px
+
+  .button-board-rename
+    min-width: 108px
 </style>

@@ -3,6 +3,7 @@
     v-bind='$attrs'
     type='text'
     :value='modelValue'
+    @input='onInput'
   />
 </template>
 
@@ -15,6 +16,11 @@ export default {
     }
   },
   emits: ['update:modelValue'],
+  methods: {
+    onInput(e) {
+      this.$emit('update:modelValue', e.target.value);
+    }
+  }
 }
 </script>
 
