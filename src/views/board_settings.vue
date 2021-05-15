@@ -15,6 +15,12 @@
     <div v-if='active === "General" && isLoaded'>
       <article>
         <div class='title'>Board Name</div>
+        <div class='board-container'>
+          <Input
+            class='board-name'
+            v-model='boardName'
+          />
+        </div>
       </article>
       <article>
         <div class='title'>Share this board</div>
@@ -95,11 +101,12 @@
 </template>
 
 <script>
-import Button from '@/components/buttons/button.vue';
-import Repository from '@/components/repositories/item.vue';
-import Tabs from '@/components/tabs/tabs.vue';
-import TopMenu from '@/components/menu/top.vue';
+import Button from '@/components/buttons/button';
+import Input from '@/components/inputs/indigo';
 import Loader from '@/components/loader';
+import Repository from '@/components/repositories/item';
+import Tabs from '@/components/tabs/tabs';
+import TopMenu from '@/components/menu/top';
 import { get, call } from 'vuex-pathify';
 
 const APP_URL = {
@@ -111,8 +118,9 @@ export default {
   name: 'BoardSettings',
   components: {
     Button,
-    Repository,
+    Input,
     Loader,
+    Repository,
     Tabs,
     TopMenu
   },
@@ -122,6 +130,7 @@ export default {
       'Repositories',
       'Members'
     ],
+    boardName: '',
     active: 'General',
     isDeleteSubmitting: false
   }),
@@ -137,8 +146,7 @@ export default {
     installationItems: get('installations/items'),
     boardId() { return parseInt(this.$route.params.id) || 0; },
     breadCrumbs() {
-      const board = this.boards.find(v => v.id === this.boardId);
-      if (board == null) {
+      if (this.currentBoard == null) {
         return [
           { name: 'Boards', path: '/boards' }
         ];
@@ -146,13 +154,17 @@ export default {
 
       return [
         { name: 'Boards', path: '/boards' },
-        { name: board.name, path: `/boards/${this.boardId}` }
+        { name: this.currentBoard.name, path: `/boards/${this.boardId}` }
       ];
+    },
+    currentBoard() {
+      return this.boards.find(v => v.id === this.boardId);
     },
     appUrl() { return APP_URL; }
   },
   async created() {
     await this.fetch({ id: this.boardId });
+    this.boardName = this.currentBoard.name;
   },
   methods: {
     ...call([
@@ -274,4 +286,11 @@ article
   .delete-board
     margin-top: 24px
     width: 150px
+
+.board-container
+  display: flex
+
+  .board-name
+    width: 240px
+    margin-right: 12px
 </style>

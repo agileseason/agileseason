@@ -65,7 +65,6 @@
 
       <div v-if='isImportReady' class='step'>
         <div class='title'>3. Import Issues</div>
-        <!--input class='board-name' type='text' v-model.trim='boardName' placeholder='Board Name' /-->
         <Input
           v-model.trim='boardName'
           placeholder='Board Name'
@@ -119,7 +118,7 @@ export default {
     TopMenu
   },
   data: () => ({
-    boardName: 'New Board',
+    boardName: 'Board name',
     // importedRepositoryIds: [],
     isInstalled: false
   }),
@@ -214,7 +213,6 @@ export default {
     margin-bottom: 14px
 
   .subtitle
-    color: #303f9f
     font-size: 14px
 
     a
@@ -288,5 +286,6 @@ export default {
   margin-bottom: 6px
 
 .board-name
+  margin-bottom: 20px
   width: 100%
 </style>

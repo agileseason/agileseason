@@ -20,7 +20,7 @@ export default {
 
 <style scoped lang='sass'>
 input
-  background-color: #c5cae9
+  background-color: #e8eaf6
   border-radius: 3px
   border: 1px solid #c5cae9
   box-sizing: border-box
@@ -29,7 +29,6 @@ input
   font-weight: 300
   height: 28px
   letter-spacing: 0.4px
-  margin-bottom: 20px
   padding: 0 6px
 
   &::placeholder
