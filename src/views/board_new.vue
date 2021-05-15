@@ -65,22 +65,12 @@
 
       <div v-if='isImportReady' class='step'>
         <div class='title'>3. Import Issues</div>
-        <input class='board-name' type='text' v-model.trim='boardName' placeholder='Board Name' />
-        <!--div class='imported-repositories'>
-          <div
-            v-for='repo in selectedRepositories'
-            :key='repo.id'
-            class='github-repository'
-          >
-            <input
-              v-model='importedRepositoryIds'
-              type='checkbox'
-              :value='repo.id'
-              :id='repo.id'
-            />
-            <label :for='repo.id'>{{ repo.fullName }}</label>
-          </div>
-        </div-->
+        <!--input class='board-name' type='text' v-model.trim='boardName' placeholder='Board Name' /-->
+        <Input
+          v-model.trim='boardName'
+          placeholder='Board Name'
+          class='board-name'
+        />
         <div class='selected-repositories imported-repositories'>
           <span
             v-for='repo in selectedRepositories'
@@ -109,9 +99,10 @@
 </template>
 
 <script>
-import Button from '@/components/buttons/button.vue'
-import TopMenu from '@/components/menu/top.vue'
-import Repository from '@/components/repositories/item.vue'
+import Button from '@/components/buttons/button';
+import TopMenu from '@/components/menu/top';
+import Repository from '@/components/repositories/item';
+import Input from '@/components/inputs/indigo';
 import { get, call } from 'vuex-pathify';
 
 const APP_URL = {
@@ -123,11 +114,12 @@ export default {
   name: 'BoardNew',
   components: {
     Button,
+    Input,
     Repository,
     TopMenu
   },
   data: () => ({
-    boardName: 'Board Name',
+    boardName: 'New Board',
     // importedRepositoryIds: [],
     isInstalled: false
   }),
@@ -295,36 +287,6 @@ export default {
   text-align: left
   margin-bottom: 6px
 
-  .github-repository
-    margin-bottom: 8px
-    white-space: nowrap
-
-  input
-    margin: 0px 6px 0px 2px
-
-  label
-    color: #212121
-
-input.board-name
-  background-color: #c5cae9
-  border-radius: 3px
-  border: 1px solid #c5cae9
-  box-sizing: border-box
-  color: #1A237E
-  font-size: 16px
-  font-weight: 300
-  height: 28px
-  letter-spacing: 0.4px
-  line-height: 28px
-  margin-bottom: 20px
-  padding: 0 6px
+.board-name
   width: 100%
-
-  &::placeholder
-    color: #7986cb
-    opacity: 1
-  &:-ms-input-placeholder
-    color: #7986cb
-  &::-ms-input-placeholder
-    color: #7986cb
 </style>
