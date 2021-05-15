@@ -48,6 +48,9 @@ export default {
       commit('FETCH', user);
       return user;
     },
+    updateBoard({ commit }, board) {
+      commit('UPDATE_BOARD', board);
+    },
     logout({ commit }) {
       commit('LOGOUT');
     }
@@ -82,6 +85,11 @@ export default {
       state.username = user.username;
       state.avatarUrl = user.avatarUrl;
       state.boards = user.boards;
+    },
+    UPDATE_BOARD(state, { id, name }) {
+      const board = state.boards.find(v => v.id === id);
+      if (board == null) { return; }
+      board.name = name;
     }
   }
 };

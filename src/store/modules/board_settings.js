@@ -98,6 +98,14 @@ export default {
     },
     reset({ commit }) {
       commit('RESET');
+    },
+
+    async destroyBoard({ getters }, { id }) {
+      const result = await api.destroyBoard(getters.token, { id });
+      if (result.errors.length) {
+        console.error(result.errors);
+      }
+      return result.errors;
     }
   },
 

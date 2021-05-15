@@ -183,8 +183,9 @@ export default {
       'boardSettings/update',
       'boardSettings/save',
       'boardSettings/reset',
-      'board/destroy'
+      'boardSettings/destroyBoard'
     ]),
+    updateBoard: call('board/update'),
     selectTab(item) {
       this.active = item;
     },
@@ -209,12 +210,18 @@ export default {
         console.error(errors);
       }
     },
-    renameBoard() {
+    async renameBoard() {
       if (this.isSubmitting) { return; }
       if (this.boardName === this.currentBoard.name) { return; }
 
       this.isSubmitting = true;
-      // TODO: Call update board method
+      this.$nextTick(async () => {
+        await this.updateBoard({
+          id: this.currentBoard.id,
+          name: this.boardName
+        });
+        this.isSubmitting = false;
+      });
     },
     async deleteBoard() {
       if (this.isDeleteSubmitting) { return; }
@@ -222,7 +229,7 @@ export default {
 
       this.$nextTick(async () => {
         if (confirm('Are you sure?')) {
-          const errors = await this.destroy();
+          const errors = await this.destroyBoard({ id: this.currentBoard.id });
           if (errors.length === 0) {
             this.$router.push({ name: 'boards' });
           }

@@ -223,6 +223,23 @@ export default {
     return data?.syncBoardIssues;
   },
 
+  async updateBoard(token, { id, name }) {
+    const query = `
+      mutation($id:Int!, $name:String!) {
+        action:updateBoard(input: { id: $id, name: $name }) {
+          id
+          name
+          errors
+        }
+      }
+    `;
+    const vars = { id, name };
+    const data = await this.client(token).request(query, vars);
+    this.log('updateBoard', data);
+
+    return data?.action;
+  },
+
   async destroyBoard(token, { id }) {
     const query = `
       mutation($id:Int!) {

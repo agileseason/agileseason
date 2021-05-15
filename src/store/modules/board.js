@@ -194,12 +194,14 @@ export default {
       }
     },
 
-    async destroy({ state, getters }) {
-      const result = await api.destroyBoard(getters.token, { id: state.id });
+    async update({ getters, commit, dispatch }, { id, name }) {
+      const result = await api.updateBoard(getters.token, { id, name });
       if (result.errors.length) {
         console.error(result.errors);
+      } else {
+        commit('UPDATE_BOARD', { name });
+        dispatch('user/updateBoard', { id, name }, { root: true });
       }
-      return result.errors;
     }
   },
 
@@ -243,6 +245,9 @@ export default {
     },
     SET_CURRENT_ISSUE(state, issue) {
       state.currentIssue = issue;
+    },
+    UPDATE_BOARD(state, { name }) {
+      state.name = name;
     }
   }
 };
