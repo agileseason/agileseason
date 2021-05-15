@@ -196,7 +196,7 @@ export default {
   text-align: center
 
 .step
-  background-color: #FFFFFF
+  background-color: #fff
   border-radius: 6px
   box-sizing: border-box
   display: inline-block
@@ -210,10 +210,10 @@ export default {
     height: 280px
 
   &.disabled
-    background-color: #C5CAE9
+    background-color: #c5cae9
 
     .title
-      color: #7986CB
+      color: #7986cb
 
   .title
     color: #212121
@@ -222,7 +222,7 @@ export default {
     margin-bottom: 14px
 
   .subtitle
-    color: #303F9F
+    color: #303f9f
     font-size: 14px
 
     a
@@ -258,9 +258,9 @@ export default {
   text-align: left
 
   .tag
-    background-color: #3F51B5
+    background-color: #3f51b5
     border-radius: 14px
-    color: #FFF
+    color: #fff
     cursor: pointer
     display: inline-block
     font-size: 12px
@@ -270,10 +270,10 @@ export default {
     padding: 4px 8px
 
     &:hover
-      background-color: #303F9F
+      background-color: #303f9f
 
     &:active
-      background-color: #5C6BC0
+      background-color: #5c6bc0
 
     .icon
       background-image: url('../assets/icons/x.svg')
@@ -306,9 +306,9 @@ export default {
     color: #212121
 
 input.board-name
-  background-color: #C5CAE9
+  background-color: #c5cae9
   border-radius: 3px
-  border: 1px solid #C5CAE9
+  border: 1px solid #c5cae9
   box-sizing: border-box
   color: #1A237E
   font-size: 16px
@@ -321,10 +321,10 @@ input.board-name
   width: 100%
 
   &::placeholder
-    color: #7986CB
+    color: #7986cb
     opacity: 1
   &:-ms-input-placeholder
-    color: #7986CB
+    color: #7986cb
   &::-ms-input-placeholder
-    color: #7986CB
+    color: #7986cb
 </style>
