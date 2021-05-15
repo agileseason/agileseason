@@ -226,6 +226,7 @@ export default {
     font-size: 14px
 
     a
+      color: #2196f3
       font-weight: 500
       text-decoration: none
 
@@ -233,7 +234,7 @@ export default {
         text-decoration: underline
 
       &:visited
-        color: #303F9F
+        color: #2196f3
 
   .button.install
     min-width: 150px
