@@ -33,6 +33,11 @@
       </article>
       <article>
         <div class='title'>Share this board</div>
+        <label>
+          <input type='checkbox' />
+          Enable access by link (read only)
+        </label>
+        <a class='public-link' href='#'>TODO</a>
       </article>
       <article>
         <div class='title'>Delete this board</div>
@@ -320,4 +325,8 @@ article
 
   .button-board-rename
     min-width: 108px
+
+.public-link
+  display: block
+  margin-top: 8px
 </style>
