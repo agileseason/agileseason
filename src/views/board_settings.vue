@@ -109,7 +109,19 @@
       </div>
     </div>
     <div v-if='active === "Members" && isLoaded'>
-      TODO: {{ active }}
+      <article>
+        <div class='title'>Current Members</div>
+        <div>TODO: list of members</div>
+      </article>
+      <article>
+        <div class='title'>Invites</div>
+        <div>TODO: list of active invites</div>
+        <div>TODO: search by github user name</div>
+        <p class='note'>
+          Make sure that the user has access to the added repositories.
+          Otherwise, the user will have access to the issue in read-only mode.
+        </p>
+      </article>
     </div>
   </div>
 </template>
