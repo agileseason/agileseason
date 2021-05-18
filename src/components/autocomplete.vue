@@ -13,6 +13,20 @@
       :is-loading='isSubmitting'
       @click='createInvite'
     />
+    <div v-if='isEmpty' class='suggestions'>
+      <div class='suggestion-none'>Nothing found</div>
+    </div>
+    <div v-else class='suggestions'>
+      <div
+        v-for='(item, $index) in suggestions'
+        class='suggestion'
+        :key='$index'
+        @click='select(item)'
+      >
+        <img class='avatar' :src='item.avatarUrl' />
+        <span class='login'>{{ item.login }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -63,6 +77,10 @@ export default {
           });
       }
     }, 1000),
+    select(item) {
+      this.selected = item;
+      this.search = item.login;
+    },
     createInvite() {
       if (this.isSubmitting) { return; }
 
@@ -76,10 +94,48 @@ export default {
 <style scoped lang='sass'>
 .autocomplete
   display: flex
+  position: relative
 
   input
     margin-right: 12px
+    min-width: 220px
 
   button
     width: 134px
+
+  .suggestions
+    background-color: #e8eaf6
+    border-radius: 4px
+    border: 1px solid #c5cae9
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1)
+    left: 0
+    position: absolute
+    top: 32px
+
+    .suggestion-none
+      box-sizing: border-box
+      color: #7986cb
+      font-weight: 300
+      min-width: 220px
+      padding: 6px
+
+    .suggestion
+      align-items: center
+      box-sizing: border-box
+      cursor: pointer
+      display: flex
+      min-width: 220px
+      padding: 6px
+
+      &:not(:last-child)
+        border-bottom: 1px solid #c5cae9
+
+      &:hover
+        background-color: #c5cae9
+
+      .avatar
+        border-radius: 11px
+        height: 22px
+        margin-right: 4px
+        width: 22px
 </style>
