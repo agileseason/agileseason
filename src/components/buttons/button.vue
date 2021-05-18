@@ -135,6 +135,10 @@ export default {
     border: 1px solid #3f51b5
     background-color: inherit
 
+    &.disabled
+      border: 1px solid #bdbdbd
+      color: #9e9e9e
+
     &:hover
       color: #303f9f
       border-color: #303f9f
