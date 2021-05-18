@@ -26,31 +26,43 @@ export default {
     Button,
     Input
   },
+  props: {
+    fetchSuggestions: { type: Function, required: true }
+  },
   data: () => ({
     search: '',
     submittingSearch: '',
-    selectedUser: null,
+    selected: null,
+    suggestions: [],
+    isLoaded: false,
     isSearching: false,
     isSubmitting: false
   }),
   computed: {
     isDisabled() {
-      return this.selectedUser == null || this.isSearching || this.isSubmitting;
+      return this.selected == null || this.isSearching || this.isSubmitting;
+    },
+    isEmpty() {
+      return this.isLoaded && this.suggestions.length === 0;
     }
   },
   methods: {
-    updateInternalValue (event) {
-      this.updateValue(event.target.value)
+    updateInternalValue(event) {
+      this.updateValue(event.target.value);
     },
     updateValue: _debounce(function (value) {
       if (this.submittingSearch != value) {
         this.submittingSearch = value;
         this.isSearching = true;
-        // TODO: Fetch users
-        console.log(this.submittingSearch);
-        console.log('search...');
+        this.isLoaded = false;
+        this.fetchSuggestions(this.submittingSearch)
+          .then(items => {
+            this.suggestions = items;
+            this.isSearching = false;
+            this.isLoaded = true;
+          });
       }
-    }, 600),
+    }, 1000),
     createInvite() {
       if (this.isSubmitting) { return; }
 

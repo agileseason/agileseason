@@ -118,6 +118,7 @@
         <div>TODO: list of active invites</div>
         <div>
           <Autocomplete
+            :fetchSuggestions='fetchSuggestions'
           />
         </div>
         <p class='note'>
@@ -137,6 +138,7 @@ import Loader from '@/components/loader';
 import Repository from '@/components/repositories/item';
 import Tabs from '@/components/tabs/tabs';
 import TopMenu from '@/components/menu/top';
+import api from '@/api';
 import { get, call } from 'vuex-pathify';
 
 const APP_URL = {
@@ -259,7 +261,10 @@ export default {
         }
         this.isDeleteSubmitting = false;
       });
-    }
+    },
+    async fetchSuggestions(search) {
+      return await api.fetchUsers(search);
+    },
   }
 }
 </script>

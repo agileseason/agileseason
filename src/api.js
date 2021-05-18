@@ -112,6 +112,22 @@ export default {
     return data?.items;
   },
 
+  async fetchUsers(search) {
+    const query = `
+      query($search:String!) {
+        items:githubSearchUsers(search: $search) {
+          login
+          avatarUrl
+        }
+      }
+    `;
+    const vars = { search };
+    const data = await this.client().request(query, vars);
+    this.log('githubSearchUsers', data);
+
+    return data?.items;
+  },
+
   // ---------------------------------
   // Board
   // ---------------------------------
