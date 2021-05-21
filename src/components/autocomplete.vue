@@ -16,7 +16,7 @@
     <div v-if='isEmpty' class='suggestions'>
       <div class='suggestion-none'>Nothing found</div>
     </div>
-    <div v-else class='suggestions'>
+    <div v-if='!isEmpty && isOpen' class='suggestions'>
       <div
         v-for='(item, $index) in suggestions'
         class='suggestion'
@@ -53,6 +53,10 @@ export default {
     isSubmitting: false
   }),
   computed: {
+    isOpen() {
+      if (this.selected == null) { return true; }
+      return this.search !== this.selected.login;
+    },
     isDisabled() {
       return this.selected == null || this.isSearching || this.isSubmitting;
     },
