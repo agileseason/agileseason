@@ -4,7 +4,8 @@ const DEFAULT_STATE = {
   id: undefined,
   name: '',
   allRepositories: [],
-  linkedRepositories: []
+  linkedRepositories: [],
+  invites: []
 };
 
 export default {
@@ -106,6 +107,20 @@ export default {
         console.error(result.errors);
       }
       return result.errors;
+    },
+
+    async addInvite({ state, getters, commit }, { username, avatarUrl }) {
+      const result = await api.createInvite(getters.token, {
+        boardId: state.id,
+        username,
+        avatarUrl
+      });
+
+      if (result.errors.length) {
+        console.error(result.errors);
+      } else {
+        commit('ADD_INVITE', result);
+      }
     }
   },
 
@@ -120,6 +135,7 @@ export default {
       state.name = name;
       state.linkedRepositories = settings.repositories;
       state.pendingRepositories = settings.repositories;
+      state.invites = settings.invites;
       state.isLoading = false;
       state.isLoaded = true;
     },
@@ -149,6 +165,9 @@ export default {
       state.isLoading = false;
       state.isLoaded = false;
       state.isSyncingIssues = false;
+    },
+    ADD_INVITE(state, invite) {
+      state.invites.push(invite);
     }
   }
 };

@@ -200,6 +200,9 @@ export default {
             installationAccessTokenUrl
             issuesCount
           }
+          invites {
+            id username avatarUrl token
+          }
         }
       }
     `;
@@ -536,6 +539,48 @@ export default {
 
     return data?.action;
   },
+
+  // ---------------------------------
+  // Invites
+  // ---------------------------------
+  async createInvite(token, { boardId, username, avatarUrl }) {
+    const query = `
+      mutation($boardId:Int!, $username:String!, $avatarUrl:String!) {
+        action:createInvite(input: {
+          boardId: $boardId,
+          username: $username,
+          avatarUrl: $avatarUrl
+        }) {
+          id
+          username
+          avatarUrl
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, username, avatarUrl };
+    const data = await this.client(token).request(query, vars);
+    this.log('createInvite', data, vars);
+
+    return data?.action;
+  },
+
+  // Remove if not needed in the future.
+  // async fetchBoardIvnites(token, { id }) {
+  //   const query = `
+  //     query($id:Int!) {
+  //       invites(boardId: $id) {
+  //         id
+  //         username
+  //         avatarUrl
+  //         token
+  //       }
+  //     }
+  //   `;
+  //   const data = await this.client(token).request(query, { id });
+  //   this.log('boardInvites', data);
+  //   return data?.boardInvites;
+  // },
 
   // ---------------------------------
   // Helpers

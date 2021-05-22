@@ -115,7 +115,14 @@
       </article>
       <article>
         <div class='title'>Invites</div>
-        <div>TODO: list of active invites</div>
+        <div class='invites'>
+          <p v-if='invites.length === 0'>
+            There are no invites yet
+          </p>
+          <div v-for='(invite, $index) in invites' :key='$index' class='invite'>
+            {{ invite.username }}
+          </div>
+        </div>
         <div>
           <Autocomplete
             :fetchSuggestions='fetchSuggestions'
@@ -176,6 +183,7 @@ export default {
     isSyncingIssues: get('boardSettings/isSyncingIssues'),
     token: get('user/token'),
     boards: get('user/boards'),
+    invites: get('boardSettings/invites'),
     repositories: get('boardSettings/repositories'),
     pendingRepositories: get('boardSettings/pendingRepositories'),
     installationItems: get('installations/items'),
