@@ -11,7 +11,7 @@
       text='Create Invite'
       :is-disabled='isDisabled'
       :is-loading='isSubmitting'
-      @click='createInvite'
+      @click='submitSelected'
     />
     <div v-if='isEmpty' class='suggestions'>
       <div class='suggestion-none'>Nothing found</div>
@@ -41,8 +41,10 @@ export default {
     Input
   },
   props: {
-    fetchSuggestions: { type: Function, required: true }
+    fetchSuggestions: { type: Function, required: true },
+    submit: { type: Function, required: true }
   },
+  // emits: ['submit'],
   data: () => ({
     search: '',
     submittingSearch: '',
@@ -85,11 +87,12 @@ export default {
       this.selected = item;
       this.search = item.login;
     },
-    createInvite() {
+    async submitSelected() {
       if (this.isSubmitting) { return; }
 
       this.isSubmitting = true;
-      console.log(this.search);
+      await this.submit(this.selected);
+      this.isSubmitting = false;
     }
   }
 }

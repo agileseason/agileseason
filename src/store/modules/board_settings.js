@@ -109,10 +109,10 @@ export default {
       return result.errors;
     },
 
-    async addInvite({ state, getters, commit }, { username, avatarUrl }) {
+    async createInvite({ state, getters, commit }, { login, avatarUrl }) {
       const result = await api.createInvite(getters.token, {
         boardId: state.id,
-        username,
+        login,
         avatarUrl
       });
 

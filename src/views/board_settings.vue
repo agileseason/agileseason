@@ -126,6 +126,7 @@
         <div>
           <Autocomplete
             :fetchSuggestions='fetchSuggestions'
+            :submit='submitNewInvite'
           />
         </div>
         <p class='note'>
@@ -216,7 +217,8 @@ export default {
       'boardSettings/update',
       'boardSettings/save',
       'boardSettings/reset',
-      'boardSettings/destroyBoard'
+      'boardSettings/destroyBoard',
+      'boardSettings/createInvite'
     ]),
     updateBoard: call('board/update'),
     selectTab(item) {
@@ -272,6 +274,12 @@ export default {
     },
     async fetchSuggestions(search) {
       return await api.fetchUsers(search);
+    },
+    async submitNewInvite({ login, avatarUrl }) {
+      return await this.createInvite({
+        login,
+        avatarUrl
+      });
     },
   }
 }

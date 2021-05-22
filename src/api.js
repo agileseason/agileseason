@@ -543,7 +543,8 @@ export default {
   // ---------------------------------
   // Invites
   // ---------------------------------
-  async createInvite(token, { boardId, username, avatarUrl }) {
+  async createInvite(token, { boardId, login, avatarUrl }) {
+    console.log({ login, boardId, avatarUrl });
     const query = `
       mutation($boardId:Int!, $username:String!, $avatarUrl:String!) {
         action:createInvite(input: {
@@ -558,7 +559,7 @@ export default {
         }
       }
     `;
-    const vars = { boardId, username, avatarUrl };
+    const vars = { boardId, username: login, avatarUrl };
     const data = await this.client(token).request(query, vars);
     this.log('createInvite', data, vars);
 
