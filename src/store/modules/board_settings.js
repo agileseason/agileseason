@@ -167,6 +167,7 @@ export default {
       state.isSyncingIssues = false;
     },
     ADD_INVITE(state, invite) {
+      if (state.invites.find(v => v.id === invite.id)) { return; }
       state.invites.push(invite);
     }
   }

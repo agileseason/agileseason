@@ -92,6 +92,10 @@ export default {
 
       this.isSubmitting = true;
       await this.submit(this.selected);
+      this.search = '';
+      this.suggestions = [];
+      this.selected = null;
+      this.isLoaded = false;
       this.isSubmitting = false;
     }
   }
