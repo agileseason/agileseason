@@ -86,14 +86,14 @@
           <table>
             <thead>
               <th>Name</th>
-              <th class='issues'>Synced Issues</th>
+              <th class='text-right'>Synced Issues</th>
             </thead>
             <tbody>
               <tr v-for='item in repositories' :key='item.id'>
                 <td class='name'>
                   {{ item.fullName }}
                 </td>
-                <td class='issues'>
+                <td class='text-right'>
                   {{ item.issuesCount }}
                 </td>
               </tr>
@@ -115,14 +115,28 @@
       </article>
       <article>
         <div class='title'>Invites</div>
-        <div class='invites'>
-          <p v-if='invites.length === 0'>
-            There are no invites yet
-          </p>
-          <div v-for='(invite, $index) in invites' :key='$index' class='invite'>
-            {{ invite.username }}
-          </div>
-        </div>
+        <p v-if='invites.length === 0'>
+          There are no invites yet
+        </p>
+        <table v-else class='invites'>
+          <thead>
+            <th>Username</th>
+            <th>Link</th>
+            <th>Status</th>
+            <th class='text-right'>Revoke</th>
+          </thead>
+          <tbody>
+            <tr v-for='(invite, $index) in invites' :key='$index'>
+              <td class='invite'>
+                <img :src='invite.avatarUrl' />
+                <span class='login'>{{ invite.username }}</span>
+              </td>
+              <td>{{ invite.token }}</td>
+              <td class='status'>pending</td>
+              <td class='text-right'>X</td>
+            </tr>
+          </tbody>
+        </table>
         <div>
           <Autocomplete
             :fetchSuggestions='fetchSuggestions'
@@ -314,33 +328,33 @@ export default {
     margin-bottom: 18px
     min-width: 320px
 
-    table
-      border-spacing: 0
-      width: 100%
+table
+  border-spacing: 0
+  width: 100%
 
-      th
-        color: #3F51B5
-        text-align: left
-        padding-bottom: 6px
-        border-bottom: 1px solid #E0E0E0
+  th
+    color: #3f51b5
+    text-align: left
+    padding-bottom: 6px
+    border-bottom: 1px solid #e0e0e0
 
-        &.issues
-          text-align: right
+    &.text-right
+      text-align: right
 
-      td
-        border-bottom: 1px solid #E0E0E0
-        color: #424242
-        padding: 8px 0 9px 0
+  td
+    border-bottom: 1px solid #e0e0e0
+    color: #424242
+    padding: 8px 0 9px 0
 
-        &.issues
-          min-width: 120px
-          text-align: right
+    &.text-right
+      min-width: 120px
+      text-align: right
 
-  p
-    color: #616161
-    font-size: 12px
-    letter-spacing: 0.2px
-    margin-bottom: 16px
+p
+  color: #616161
+  font-size: 12px
+  letter-spacing: 0.2px
+  margin-bottom: 16px
 
 article
   margin-bottom: 50px
@@ -368,4 +382,24 @@ article
 .public-link
   display: block
   margin-top: 8px
+
+.invites
+  margin-bottom: 16px
+
+  img
+    border-radius: 12px
+    height: 24px
+    width: 24px
+    margin-right: 6px
+
+  .login
+    display: inline-block
+    font-size: 14px
+
+  .invite
+    display: flex
+    align-items: center
+
+  .status
+    color: #bdbdbd
 </style>
