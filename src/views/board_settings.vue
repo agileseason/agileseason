@@ -127,13 +127,17 @@
           </thead>
           <tbody>
             <tr v-for='(invite, $index) in invites' :key='$index'>
-              <td class='invite'>
-                <img :src='invite.avatarUrl' />
-                <span class='login'>{{ invite.username }}</span>
+              <td>
+                <div class='invite'>
+                  <img :src='invite.avatarUrl' />
+                  <span class='login'>{{ invite.username }}</span>
+                </div>
               </td>
               <td>{{ invite.token }}</td>
               <td class='status'>pending</td>
-              <td class='text-right'>X</td>
+              <td class='text-right'>
+                <a @click='deleteInvite(invite)' class='revoke' />
+              </td>
             </tr>
           </tbody>
         </table>
@@ -295,6 +299,9 @@ export default {
         avatarUrl
       });
     },
+    deleteInvite({ id }) {
+      console.log('Delete: ' + id);
+    }
   }
 }
 </script>
@@ -344,7 +351,7 @@ table
   td
     border-bottom: 1px solid #e0e0e0
     color: #424242
-    padding: 8px 0 9px 0
+    padding: 10px 0
 
     &.text-right
       min-width: 120px
@@ -384,22 +391,39 @@ article
   margin-top: 8px
 
 .invites
-  margin-bottom: 16px
-
-  img
-    border-radius: 12px
-    height: 24px
-    width: 24px
-    margin-right: 6px
-
-  .login
-    display: inline-block
-    font-size: 14px
+  margin-bottom: 32px
 
   .invite
     display: flex
     align-items: center
 
+    img
+      border-radius: 12px
+      display: inline-block
+      height: 24px
+      margin-right: 6px
+      width: 24px
+
+    .login
+      display: inline-block
+      font-size: 14px
+
   .status
     color: #bdbdbd
+
+  .revoke
+    background-image: url('../assets/icons/trash.svg')
+    background-position: center
+    background-repeat: no-repeat
+    border-radius: 4px
+    cursor: pointer
+    display: inline-block
+    height: 24px
+    width: 24px
+
+    &:hover
+      background-color: #e8eaf6
+
+    &:active
+      background-color: #c5cae9
 </style>
