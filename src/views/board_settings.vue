@@ -190,8 +190,8 @@ export default {
       'Members'
     ],
     boardName: '',
-    // active: 'General',
-    active: 'Members',
+    active: 'General',
+    // active: 'Members',
     isSubmitting: false,
     isDeleteSubmitting: false
   }),
