@@ -319,7 +319,10 @@ export default {
     vertical-align: top
 
   .left
-    margin-right: 100px
+    @media screen and (min-width: 480px)
+      margin-right: 100px
+    @media screen and (max-width: 480px)
+      margin-bottom: 40px
 
   h2.subtitle
     font-size: 18px
@@ -365,6 +368,7 @@ p
 
 article
   margin-bottom: 50px
+  overflow: scroll
 
   .title
     font-size: 18px
