@@ -46,7 +46,7 @@
       </div>
     </div>
     <div class='right'>
-      <router-link class='settings' :to='boardSettingsUrl' />
+      <router-link v-if='isShowSettings' class='settings' :to='boardSettingsUrl' />
     </div>
   </div>
 </template>
@@ -74,9 +74,14 @@ export default {
     avatarUrl: get('user/avatarUrl'),
     boards: get('user/boards'),
     isLoaded: get('user/isLoaded'),
+    isBoardLoaded: get('board/isLoaded'),
+    isBoardOwner: get('board/isOwner'),
     isFull() { return this.boards.length > 0; },
     boardId() { return parseInt(this.$route.params.id) || 0; },
-    boardSettingsUrl() { return `/boards/${this.boardId}/settings`; }
+    boardSettingsUrl() { return `/boards/${this.boardId}/settings`; },
+    isShowSettings() {
+      return this.boardId > 0 && this.isBoardLoaded && this.isBoardOwner;
+    }
   },
   async created() {
     await this.fetchProfileLazy();
@@ -103,14 +108,14 @@ export default {
 <style scoped lang='sass'>
 .menu
   height: 36px
-  background-color: #3F51B5
+  background-color: #3f51b5
   position: relative
 
 .center
   text-align: center
 
 .title
-  color: #FFFFFF
+  color: #fff
   font-weight: 500
   line-height: 36px
 
@@ -126,17 +131,17 @@ export default {
   line-height: 36px
 
   a
-    color: #9FA8DA
+    color: #9fa8da
     text-decoration: none
 
     &:hover
-      color: #E8EAF6
+      color: #e8eaf6
 
     &:active
-      color: #C5CAE9
+      color: #c5cae9
 
   .delimiter
-    color: #9FA8DA
+    color: #9fa8da
     margin: 0 3px
 
 .left-button
@@ -158,10 +163,10 @@ export default {
       background-color: #283593
 
   &:hover
-    background-color: #5C6BC0
+    background-color: #5c6bc0
 
   &:active
-    background-color: #303F9F
+    background-color: #303f9f
 
 .left-menu
   background-color: #283593
@@ -177,7 +182,7 @@ export default {
     width: 60px
     border-radius: 30px
     margin: 40px auto 10px
-    background-color: #5C6BC0
+    background-color: #5c6bc0
 
     img
       height: 60px
@@ -185,7 +190,7 @@ export default {
       border-radius: 30px
 
   .username
-    color: #FFF
+    color: #fff
     font-size: 16px
     font-weight: 500
     letter-spacing: 0.3px
@@ -193,14 +198,14 @@ export default {
     text-align: center
 
   .item-group
-    border-top: 1px solid #7986CB
+    border-top: 1px solid #7986cb
     padding: 10px 14px 0 14px
 
     a,
     button
       background-color: transparent
       border: none
-      color: #9FA8DA
+      color: #9fa8da
       cursor: pointer
       display: block
       font-size: 16px
@@ -212,10 +217,10 @@ export default {
       width: 100%
 
       &:hover
-        color: #C5CAE9
+        color: #c5cae9
 
       &:active
-        color: #7986CB
+        color: #7986cb
 
 .left-menu-backdrop
   z-index: 2
@@ -254,8 +259,8 @@ export default {
     width: 28px
 
     &:hover
-      background-color: #5C6BC0
+      background-color: #5c6bc0
 
     &:active
-      background-color: #303F9F
+      background-color: #303f9f
 </style>

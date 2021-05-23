@@ -6,6 +6,7 @@ export default {
   state: {
     id: undefined,
     name: undefined,
+    isOwner: undefined,
     columns: [],
     repositories: [],
     isLoading: true,
@@ -211,9 +212,10 @@ export default {
       state.isLoaded = false;
     },
     FINISH_LOADING(state, board) {
-      const { id, name, columns, repositories } = board;
+      const { id, name, columns, repositories, isOwner } = board;
       state.id = id;
       state.name = name;
+      state.isOwner = isOwner;
       state.columns = columns;
       state.repositories = repositories;
       state.isLoading = false;
