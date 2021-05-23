@@ -4,7 +4,8 @@ const DEFAULT_STATE = {
   id: undefined,
   name: '',
   allRepositories: [],
-  linkedRepositories: []
+  linkedRepositories: [],
+  invites: []
 };
 
 export default {
@@ -106,6 +107,32 @@ export default {
         console.error(result.errors);
       }
       return result.errors;
+    },
+
+    async createInvite({ state, getters, commit }, { login, avatarUrl }) {
+      const result = await api.createInvite(getters.token, {
+        boardId: state.id,
+        login,
+        avatarUrl
+      });
+
+      if (result.errors.length) {
+        console.error(result.errors);
+      } else {
+        commit('ADD_INVITE', result);
+      }
+    },
+
+    async destroyInvite({ state, getters, commit }, { id }) {
+      commit('DESTROY_INVITE', id);
+      const result = await api.destroyInvite(getters.token, {
+        boardId: state.id,
+        id
+      });
+
+      if (result.errors.length) {
+        console.error(result.errors);
+      }
     }
   },
 
@@ -120,6 +147,7 @@ export default {
       state.name = name;
       state.linkedRepositories = settings.repositories;
       state.pendingRepositories = settings.repositories;
+      state.invites = settings.invites;
       state.isLoading = false;
       state.isLoaded = true;
     },
@@ -149,6 +177,14 @@ export default {
       state.isLoading = false;
       state.isLoaded = false;
       state.isSyncingIssues = false;
+    },
+    ADD_INVITE(state, invite) {
+      if (state.invites.find(v => v.id === invite.id)) { return; }
+      state.invites.push(invite);
+    },
+    DESTROY_INVITE(state, id) {
+      const index = state.invites.findIndex(v => v.id === id);
+      state.invites.splice(index, 1);
     }
   }
 };

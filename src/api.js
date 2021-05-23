@@ -112,6 +112,22 @@ export default {
     return data?.items;
   },
 
+  async fetchUsers(search) {
+    const query = `
+      query($search:String!) {
+        items:githubSearchUsers(search: $search) {
+          login
+          avatarUrl
+        }
+      }
+    `;
+    const vars = { search };
+    const data = await this.client().request(query, vars);
+    this.log('githubSearchUsers', data);
+
+    return data?.items;
+  },
+
   // ---------------------------------
   // Board
   // ---------------------------------
@@ -183,6 +199,9 @@ export default {
             installationId
             installationAccessTokenUrl
             issuesCount
+          }
+          invites {
+            id username avatarUrl token
           }
         }
       }
@@ -517,6 +536,50 @@ export default {
     const vars = { boardId, repositoryFullName, issueId, body };
     const data = await this.client(token).request(query, vars);
     this.log('closeIssue', data, vars);
+
+    return data?.action;
+  },
+
+  // ---------------------------------
+  // Invites
+  // ---------------------------------
+  async createInvite(token, { boardId, login, avatarUrl }) {
+    const query = `
+      mutation($boardId:Int!, $username:String!, $avatarUrl:String!) {
+        action:createInvite(input: {
+          boardId: $boardId,
+          username: $username,
+          avatarUrl: $avatarUrl
+        }) {
+          id
+          username
+          avatarUrl
+          token
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, username: login, avatarUrl };
+    const data = await this.client(token).request(query, vars);
+    this.log('createInvite', data, vars);
+
+    return data?.action;
+  },
+
+  async destroyInvite(token, { boardId, id }) {
+    const query = `
+      mutation($boardId:Int!, $id:Int!) {
+        action:destroyInvite(input: {
+          boardId: $boardId,
+          id: $id
+        }) {
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, id };
+    const data = await this.client(token).request(query, vars);
+    this.log('destroyInvite', data, vars);
 
     return data?.action;
   },

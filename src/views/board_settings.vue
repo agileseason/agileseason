@@ -86,14 +86,14 @@
           <table>
             <thead>
               <th>Name</th>
-              <th class='issues'>Synced Issues</th>
+              <th class='text-right'>Synced Issues</th>
             </thead>
             <tbody>
               <tr v-for='item in repositories' :key='item.id'>
                 <td class='name'>
                   {{ item.fullName }}
                 </td>
-                <td class='issues'>
+                <td class='text-right'>
                   {{ item.issuesCount }}
                 </td>
               </tr>
@@ -115,8 +115,38 @@
       </article>
       <article>
         <div class='title'>Invites</div>
-        <div>TODO: list of active invites</div>
-        <div>TODO: search by github user name</div>
+        <p v-if='invites.length === 0'>
+          There are no invites yet
+        </p>
+        <table v-else class='invites'>
+          <thead>
+            <th>Username</th>
+            <th>Link</th>
+            <!--th>Status</th-->
+            <th class='text-right'>Revoke</th>
+          </thead>
+          <tbody>
+            <tr v-for='(invite, $index) in invites' :key='$index'>
+              <td class='w-33p'>
+                <div class='invite'>
+                  <img :src='invite.avatarUrl' />
+                  <span class='login'>{{ invite.username }}</span>
+                </div>
+              </td>
+              <td>{{ invite.token }}</td>
+              <!--td class='status'>pending</td-->
+              <td class='text-right'>
+                <a @click='deleteInvite(invite)' class='revoke' />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <Autocomplete
+            :fetchSuggestions='fetchSuggestions'
+            :submit='submitNewInvite'
+          />
+        </div>
         <p class='note'>
           Make sure that the user has access to the added repositories.
           Otherwise, the user will have access to the issue in read-only mode.
@@ -127,12 +157,14 @@
 </template>
 
 <script>
+import Autocomplete from '@/components/autocomplete';
 import Button from '@/components/buttons/button';
 import Input from '@/components/inputs/indigo';
 import Loader from '@/components/loader';
 import Repository from '@/components/repositories/item';
 import Tabs from '@/components/tabs/tabs';
 import TopMenu from '@/components/menu/top';
+import api from '@/api';
 import { get, call } from 'vuex-pathify';
 
 const APP_URL = {
@@ -143,6 +175,7 @@ const APP_URL = {
 export default {
   name: 'BoardSettings',
   components: {
+    Autocomplete,
     Button,
     Input,
     Loader,
@@ -158,6 +191,7 @@ export default {
     ],
     boardName: '',
     active: 'General',
+    // active: 'Members',
     isSubmitting: false,
     isDeleteSubmitting: false
   }),
@@ -168,6 +202,7 @@ export default {
     isSyncingIssues: get('boardSettings/isSyncingIssues'),
     token: get('user/token'),
     boards: get('user/boards'),
+    invites: get('boardSettings/invites'),
     repositories: get('boardSettings/repositories'),
     pendingRepositories: get('boardSettings/pendingRepositories'),
     installationItems: get('installations/items'),
@@ -200,7 +235,9 @@ export default {
       'boardSettings/update',
       'boardSettings/save',
       'boardSettings/reset',
-      'boardSettings/destroyBoard'
+      'boardSettings/destroyBoard',
+      'boardSettings/createInvite',
+      'boardSettings/destroyInvite'
     ]),
     updateBoard: call('board/update'),
     selectTab(item) {
@@ -253,6 +290,18 @@ export default {
         }
         this.isDeleteSubmitting = false;
       });
+    },
+    async fetchSuggestions(search) {
+      return await api.fetchUsers(search);
+    },
+    async submitNewInvite({ login, avatarUrl }) {
+      return await this.createInvite({
+        login,
+        avatarUrl
+      });
+    },
+    async deleteInvite({ id }) {
+      await this.destroyInvite({ id });
     }
   }
 }
@@ -271,7 +320,10 @@ export default {
     vertical-align: top
 
   .left
-    margin-right: 100px
+    @media screen and (min-width: 480px)
+      margin-right: 100px
+    @media screen and (max-width: 480px)
+      margin-bottom: 40px
 
   h2.subtitle
     font-size: 18px
@@ -287,33 +339,37 @@ export default {
     margin-bottom: 18px
     min-width: 320px
 
-    table
-      border-spacing: 0
-      width: 100%
+table
+  border-spacing: 0
+  width: 100%
 
-      th
-        color: #3F51B5
-        text-align: left
-        padding-bottom: 6px
-        border-bottom: 1px solid #E0E0E0
+  th
+    color: #3f51b5
+    text-align: left
+    padding-bottom: 6px
+    border-bottom: 1px solid #e0e0e0
 
-        &.issues
-          text-align: right
+    &.text-right
+      text-align: right
 
-      td
-        border-bottom: 1px solid #E0E0E0
-        color: #424242
-        padding: 8px 0 9px 0
+  td
+    border-bottom: 1px solid #e0e0e0
+    color: #424242
+    padding: 10px 0
 
-        &.issues
-          min-width: 120px
-          text-align: right
+    &.text-right
+      min-width: 120px
+      text-align: right
 
-  p
-    color: #616161
-    font-size: 12px
-    letter-spacing: 0.2px
-    margin-bottom: 16px
+    &.w-33p
+      @media screen and (min-width: 480px)
+        width: 33%
+
+p
+  color: #616161
+  font-size: 12px
+  letter-spacing: 0.2px
+  margin-bottom: 16px
 
 article
   margin-bottom: 50px
@@ -341,4 +397,41 @@ article
 .public-link
   display: block
   margin-top: 8px
+
+.invites
+  margin-bottom: 32px
+
+  .invite
+    display: flex
+    align-items: center
+
+    img
+      border-radius: 12px
+      display: inline-block
+      height: 24px
+      margin-right: 6px
+      width: 24px
+
+    .login
+      display: inline-block
+      font-size: 14px
+
+  .status
+    color: #bdbdbd
+
+  .revoke
+    background-image: url('../assets/icons/trash.svg')
+    background-position: center
+    background-repeat: no-repeat
+    border-radius: 4px
+    cursor: pointer
+    display: inline-block
+    height: 24px
+    width: 24px
+
+    &:hover
+      background-color: #e8eaf6
+
+    &:active
+      background-color: #c5cae9
 </style>
