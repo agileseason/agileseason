@@ -154,6 +154,7 @@ export default {
         board(id: $id) {
           id
           name
+          isOwner
           columns {
             id name position
             issues {
@@ -191,6 +192,7 @@ export default {
         boardSettings:board(id: $id) {
           id
           name
+          isOwner
           repositories {
             id
             name
