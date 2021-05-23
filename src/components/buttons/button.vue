@@ -18,8 +18,8 @@
     class='button'
     :class="[type, size, { 'disabled': isDisabled || isLoading }]"
     :href='href'
-    @click.prevent='click'
   >
+    <!--@click.prevent='click'-->
     <span v-if='isLoading' class='loader' />
     <span v-else>
       {{ text }}
