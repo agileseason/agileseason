@@ -544,7 +544,6 @@ export default {
   // Invites
   // ---------------------------------
   async createInvite(token, { boardId, login, avatarUrl }) {
-    console.log({ login, boardId, avatarUrl });
     const query = `
       mutation($boardId:Int!, $username:String!, $avatarUrl:String!) {
         action:createInvite(input: {
@@ -555,6 +554,7 @@ export default {
           id
           username
           avatarUrl
+          token
           errors
         }
       }
@@ -566,22 +566,23 @@ export default {
     return data?.action;
   },
 
-  // Remove if not needed in the future.
-  // async fetchBoardIvnites(token, { id }) {
-  //   const query = `
-  //     query($id:Int!) {
-  //       invites(boardId: $id) {
-  //         id
-  //         username
-  //         avatarUrl
-  //         token
-  //       }
-  //     }
-  //   `;
-  //   const data = await this.client(token).request(query, { id });
-  //   this.log('boardInvites', data);
-  //   return data?.boardInvites;
-  // },
+  async destroyInvite(token, { boardId, id }) {
+    const query = `
+      mutation($boardId:Int!, $id:Int!) {
+        action:destroyInvite(input: {
+          boardId: $boardId,
+          id: $id
+        }) {
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, id };
+    const data = await this.client(token).request(query, vars);
+    this.log('destroyInvite', data, vars);
+
+    return data?.action;
+  },
 
   // ---------------------------------
   // Helpers

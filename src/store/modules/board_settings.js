@@ -121,6 +121,18 @@ export default {
       } else {
         commit('ADD_INVITE', result);
       }
+    },
+
+    async destroyInvite({ state, getters, commit }, { id }) {
+      commit('DESTROY_INVITE', id);
+      const result = await api.destroyInvite(getters.token, {
+        boardId: state.id,
+        id
+      });
+
+      if (result.errors.length) {
+        console.error(result.errors);
+      }
     }
   },
 
@@ -169,6 +181,10 @@ export default {
     ADD_INVITE(state, invite) {
       if (state.invites.find(v => v.id === invite.id)) { return; }
       state.invites.push(invite);
+    },
+    DESTROY_INVITE(state, id) {
+      const index = state.invites.findIndex(v => v.id === id);
+      state.invites.splice(index, 1);
     }
   }
 };

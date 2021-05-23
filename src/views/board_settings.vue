@@ -122,19 +122,19 @@
           <thead>
             <th>Username</th>
             <th>Link</th>
-            <th>Status</th>
+            <!--th>Status</th-->
             <th class='text-right'>Revoke</th>
           </thead>
           <tbody>
             <tr v-for='(invite, $index) in invites' :key='$index'>
-              <td>
+              <td class='w-33p'>
                 <div class='invite'>
                   <img :src='invite.avatarUrl' />
                   <span class='login'>{{ invite.username }}</span>
                 </div>
               </td>
               <td>{{ invite.token }}</td>
-              <td class='status'>pending</td>
+              <!--td class='status'>pending</td-->
               <td class='text-right'>
                 <a @click='deleteInvite(invite)' class='revoke' />
               </td>
@@ -236,7 +236,8 @@ export default {
       'boardSettings/save',
       'boardSettings/reset',
       'boardSettings/destroyBoard',
-      'boardSettings/createInvite'
+      'boardSettings/createInvite',
+      'boardSettings/destroyInvite'
     ]),
     updateBoard: call('board/update'),
     selectTab(item) {
@@ -299,8 +300,8 @@ export default {
         avatarUrl
       });
     },
-    deleteInvite({ id }) {
-      console.log('Delete: ' + id);
+    async deleteInvite({ id }) {
+      await this.destroyInvite({ id });
     }
   }
 }
@@ -360,6 +361,10 @@ table
       min-width: 120px
       text-align: right
 
+    &.w-33p
+      @media screen and (min-width: 480px)
+        width: 33%
+
 p
   color: #616161
   font-size: 12px
@@ -368,7 +373,6 @@ p
 
 article
   margin-bottom: 50px
-  overflow: scroll
 
   .title
     font-size: 18px
