@@ -111,7 +111,35 @@
     <div v-if='active === "Members" && isLoaded'>
       <article>
         <div class='title'>Current Members</div>
-        <div>TODO: list of members</div>
+        <table class='memberships'>
+          <thead>
+            <th>Username</th>
+            <th class='text-right'>Revoke</th>
+          </thead>
+          <tbody>
+            <tr v-for='(membership, $index) in memberships' :key='$index'>
+              <td class='w-33p'>
+                <div class='membership'>
+                  <img :src='membership.avatarUrl' />
+                  <span class='login'>{{ membership.username }}</span>
+                </div>
+              </td>
+              <td class='text-right'>
+                <span
+                  v-if='membership.isOwner'
+                >
+                  Owner
+                </span>
+                <a
+                  v-else
+                  class='destroy'
+                  title='Revoke Access'
+                  @click='deleteMembership(membership)'
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </article>
       <article>
         <div class='title'>Invites</div>
@@ -136,7 +164,11 @@
               <td>{{ invite.token }}</td>
               <!--td class='status'>pending</td-->
               <td class='text-right'>
-                <a @click='deleteInvite(invite)' class='revoke' />
+                <a
+                  class='revoke'
+                  title='Revoke Invite'
+                  @click='deleteInvite(invite)'
+                />
               </td>
             </tr>
           </tbody>
@@ -190,8 +222,8 @@ export default {
       'Members'
     ],
     boardName: '',
-    active: 'General',
-    // active: 'Members',
+    // active: 'General',
+    active: 'Members',
     isSubmitting: false,
     isDeleteSubmitting: false
   }),
@@ -202,6 +234,7 @@ export default {
     isSyncingIssues: get('boardSettings/isSyncingIssues'),
     token: get('user/token'),
     boards: get('user/boards'),
+    memberships: get('boardSettings/memberships'),
     invites: get('boardSettings/invites'),
     repositories: get('boardSettings/repositories'),
     pendingRepositories: get('boardSettings/pendingRepositories'),
@@ -398,10 +431,12 @@ article
   display: block
   margin-top: 8px
 
-.invites
+.invites,
+.memberships
   margin-bottom: 32px
 
-  .invite
+  .invite,
+  .membership
     display: flex
     align-items: center
 
@@ -419,7 +454,8 @@ article
   .status
     color: #bdbdbd
 
-  .revoke
+  .revoke,
+  .destroy
     background-image: url('../assets/icons/trash.svg')
     background-position: center
     background-repeat: no-repeat

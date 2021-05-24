@@ -5,6 +5,7 @@ const DEFAULT_STATE = {
   name: '',
   allRepositories: [],
   linkedRepositories: [],
+  memberships: [],
   invites: []
 };
 
@@ -147,6 +148,7 @@ export default {
       state.name = name;
       state.linkedRepositories = settings.repositories;
       state.pendingRepositories = settings.repositories;
+      state.memberships = settings.memberships;
       state.invites = settings.invites;
       state.isLoading = false;
       state.isLoaded = true;

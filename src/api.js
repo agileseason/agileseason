@@ -205,6 +205,9 @@ export default {
           invites {
             id username avatarUrl token
           }
+          memberships {
+            id username avatarUrl isOwner
+          }
         }
       }
     `;
