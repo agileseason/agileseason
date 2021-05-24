@@ -1,15 +1,16 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import store from '@/store/index';
 
-import Board from '../views/board.vue'
-import BoardNew from '../views/board_new.vue'
-import BoardSettings from '../views/board_settings.vue'
-import BoardSync from '../views/board_sync.vue'
-import Boards from '../views/boards.vue'
-import Home from '../views/home.vue'
-import Issue from '../views/issue.vue'
-import IssueNew from '../views/issue_new.vue'
-import OAuth from '../views/oauth.vue'
+import Board from '../views/board';
+import BoardNew from '../views/board_new';
+import BoardSettings from '../views/board_settings';
+import BoardSync from '../views/board_sync';
+import Boards from '../views/boards';
+import Home from '../views/home';
+import Invite from '../views/invite';
+import Issue from '../views/issue';
+import IssueNew from '../views/issue_new';
+import OAuth from '../views/oauth';
 
 function requireAuth(to, from, next) {
   if (!store.getters['user/isSignedIn']) {
@@ -24,6 +25,10 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home
+  }, {
+    path: '/i/:token',
+    name: 'invite',
+    component: Invite
   }, {
     path: '/boards',
     name: 'boards',
