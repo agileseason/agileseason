@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import IssueNew from '@/components/board/issue_new.vue';
-import Modal from '@/components/modal.vue'
+import IssueNew from '@/components/board/issue_new';
+import Modal from '@/components/modal'
 
 export default {
   components: {

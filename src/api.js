@@ -571,6 +571,23 @@ export default {
     return data?.action;
   },
 
+  async fetchInvite({ token }) {
+    const query = `
+      query($token:String!) {
+        invite(token: $token) {
+          id
+          username
+          boardName
+        }
+      }
+    `;
+    const vars = { token };
+    const data = await this.client().request(query, vars);
+    this.log('fetchInvite', data, vars);
+
+    return data?.invite;
+  },
+
   async destroyInvite(token, { boardId, id }) {
     const query = `
       mutation($boardId:Int!, $id:Int!) {
