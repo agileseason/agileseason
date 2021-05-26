@@ -36,14 +36,16 @@ export default {
   },
   data: () => ({
     isLoading: true,
+    inviteId: undefined,
     inviteUsername: undefined,
     inviteBoardName: undefined,
     isSubmitting: false
   }),
   computed: {
+    token: get('user/token'),
     username: get('user/username'),
     isSignedIn: get('user/isSignedIn'),
-    token() { return this.$route.params.token; },
+    inviteToken() { return this.$route.params.token; },
     subtitle() {
       if (this.isLoading) { return ''; }
       if (this.inviteBoardName == null || this.username != this.inviteUsername) {
@@ -63,8 +65,9 @@ export default {
   },
   async created() {
     await this.fetchProfileLazy();
-    const invite = await api.fetchInvite({ token: this.token });
+    const invite = await api.fetchInvite({ token: this.inviteToken });
     if (invite) {
+      this.inviteId = invite.id;
       this.inviteUsername = invite.username;
       this.inviteBoardName = invite.boardName;
     }
@@ -75,9 +78,12 @@ export default {
       'user/fetchProfileLazy',
       'user/login'
     ]),
-    accept() {
+    async accept() {
       this.isSubmitting = true;
-      console.log('accept');
+      const result = await api.acceptInvite(this.token, { inviteId: this.inviteId });
+      if (result.errors.length === 0) {
+        this.$router.push({ name: 'board', params: { id: result.boardId } });
+      }
     }
   }
 }
@@ -88,4 +94,7 @@ export default {
   max-width: 1000px
   margin: 40px auto
   text-align: center
+
+  h1
+    margin-top: 60px
 </style>

@@ -588,6 +588,22 @@ export default {
     return data?.invite;
   },
 
+  async acceptInvite(token, { inviteId }) {
+    const query = `
+      mutation($inviteId:Int!) {
+        action:createMembership(input: { inviteId: $inviteId }) {
+          boardId
+          errors
+        }
+      }
+    `;
+    const vars = { inviteId };
+    const data = await this.client(token).request(query, vars);
+    this.log('acceptInvite', data, vars);
+
+    return data?.action;
+  },
+
   async destroyInvite(token, { boardId, id }) {
     const query = `
       mutation($boardId:Int!, $id:Int!) {
