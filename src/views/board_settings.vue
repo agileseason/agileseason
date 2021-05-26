@@ -161,7 +161,7 @@
                   <span class='login'>{{ invite.username }}</span>
                 </div>
               </td>
-              <td>{{ invite.token }}</td>
+              <td>{{ inviteUrl(invite) }}</td>
               <!--td class='status'>pending</td-->
               <td class='text-right'>
                 <a
@@ -199,6 +199,7 @@ import TopMenu from '@/components/menu/top';
 import api from '@/api';
 import { get, call } from 'vuex-pathify';
 
+const DOMAIN = process.env.VUE_APP_URL
 const APP_URL = {
   development: 'https://github.com/apps/agileseason-dev/installations/new',
   production: 'https://github.com/apps/agileseason/installations/new'
@@ -255,7 +256,8 @@ export default {
     currentBoard() {
       return this.boards.find(v => v.id === this.boardId);
     },
-    appUrl() { return APP_URL; }
+    appUrl() { return APP_URL; },
+    domain() { return DOMAIN; }
   },
   async created() {
     await this.fetch({ id: this.boardId });
@@ -335,6 +337,9 @@ export default {
     },
     async deleteInvite({ id }) {
       await this.destroyInvite({ id });
+    },
+    inviteUrl({ token }) {
+      return `${this.domain}/#/i/${token}`;
     }
   }
 }

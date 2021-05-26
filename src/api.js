@@ -1,11 +1,13 @@
 import { GraphQLClient } from 'graphql-request';
 
-const DOMAIN = {
-  development: 'http://localhost:3000',
-  production: 'https://api.agileseason.com'
-}[process.env.NODE_ENV];
+// const DOMAIN = {
+//   development: 'http://localhost:3000',
+//   production: 'https://api.agileseason.com'
+// }[process.env.NODE_ENV];
 
-const ENDPOINT = DOMAIN + '/graphql';
+const DOMAIN_API = process.env.VUE_APP_API_URL;
+
+const ENDPOINT = DOMAIN_API + '/graphql';
 
 export default {
   // ---------------------------------
