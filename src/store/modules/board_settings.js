@@ -134,6 +134,18 @@ export default {
       if (result.errors.length) {
         console.error(result.errors);
       }
+    },
+
+    async destroyMembership({ state, getters, commit }, { id }) {
+      commit('DESTROY_MEMBERSHIP', id);
+      const result = await api.destroyMembership(getters.token, {
+        boardId: state.id,
+        id
+      });
+
+      if (result.errors.length) {
+        console.error(result.errors);
+      }
     }
   },
 
@@ -187,6 +199,10 @@ export default {
     DESTROY_INVITE(state, id) {
       const index = state.invites.findIndex(v => v.id === id);
       state.invites.splice(index, 1);
+    },
+    DESTROY_MEMBERSHIP(state, id) {
+      const index = state.memberships.findIndex(v => v.id === id);
+      state.memberships.splice(index, 1);
     }
   }
 };

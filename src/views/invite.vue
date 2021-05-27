@@ -1,7 +1,7 @@
 <template>
   <div class='container'>
     <h1>Agile Season</h1>
-    <h2>{{ subtitle }}</h2>
+    <h2 v-if='isSignedIn'>{{ subtitle }}</h2>
     <h3 v-if='username'>@{{ username }}</h3>
     <Loader v-if='isLoading' />
 

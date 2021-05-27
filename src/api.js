@@ -624,6 +624,24 @@ export default {
     return data?.action;
   },
 
+  async destroyMembership(token, { boardId, id }) {
+    const query = `
+      mutation($boardId:Int!, $id:Int!) {
+        action:destroyMembership(input: {
+          boardId: $boardId,
+          id: $id
+        }) {
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, id };
+    const data = await this.client(token).request(query, vars);
+    this.log('destroyMembership', data, vars);
+
+    return data?.action;
+  },
+
   // ---------------------------------
   // Helpers
   // ---------------------------------

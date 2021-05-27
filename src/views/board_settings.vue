@@ -272,7 +272,8 @@ export default {
       'boardSettings/reset',
       'boardSettings/destroyBoard',
       'boardSettings/createInvite',
-      'boardSettings/destroyInvite'
+      'boardSettings/destroyInvite',
+      'boardSettings/destroyMembership'
     ]),
     updateBoard: call('board/update'),
     selectTab(item) {
@@ -336,10 +337,17 @@ export default {
       });
     },
     async deleteInvite({ id }) {
-      await this.destroyInvite({ id });
+      if (confirm('Are you sure?')) {
+        await this.destroyInvite({ id });
+      }
     },
     inviteUrl({ token }) {
       return `${this.domain}/#/i/${token}`;
+    },
+    async deleteMembership({ id }) {
+      if (confirm('Are you sure?')) {
+        await this.destroyMembership({ id });
+      }
     }
   }
 }
