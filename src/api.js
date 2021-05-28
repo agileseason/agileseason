@@ -194,6 +194,7 @@ export default {
         boardSettings:board(id: $id) {
           id
           name
+          isShared
           sharedToken
           repositories {
             id
@@ -249,17 +250,18 @@ export default {
     return data?.syncBoardIssues;
   },
 
-  async updateBoard(token, { id, name }) {
+  async updateBoard(token, { id, name, isShared }) {
     const query = `
-      mutation($id:Int!, $name:String!) {
-        action:updateBoard(input: { id: $id, name: $name }) {
+      mutation($id:Int!, $name:String, $isShared:Boolean) {
+        action:updateBoard(input: { id: $id, name: $name, isShared: $isShared }) {
           id
           name
+          isShared
           errors
         }
       }
     `;
-    const vars = { id, name };
+    const vars = { id, name, isShared };
     const data = await this.client(token).request(query, vars);
     this.log('updateBoard', data);
 

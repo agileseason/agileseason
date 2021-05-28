@@ -34,10 +34,20 @@
       <article>
         <div class='title'>Share this board</div>
         <label class='checkbox'>
-          <input type='checkbox' />
+          <input
+            type='checkbox'
+            :checked='isBoardShared'
+            @change='toggleIsSharedBoard'
+            :disabled='isSubmittingShared'
+          />
           Enable access by link (read only)
         </label>
-        <a class='public-link' :href='sharedUrl' target='_blank'>
+        <a
+          v-if='isBoardShared'
+          class='public-link'
+          :href='sharedUrl'
+          target='_blank'
+        >
           {{ sharedUrl }}
         </a>
       </article>
@@ -225,7 +235,9 @@ export default {
       'Members'
     ],
     boardName: '',
+    isBoardShared: false,
     active: 'General',
+    isSubmittingShared: false,
     isSubmitting: false,
     isDeleteSubmitting: false
   }),
@@ -236,6 +248,7 @@ export default {
     isSyncingIssues: get('boardSettings/isSyncingIssues'),
     token: get('user/token'),
     boards: get('user/boards'),
+    isShared: get('boardSettings/isShared'),
     sharedToken: get('boardSettings/sharedToken'),
     memberships: get('boardSettings/memberships'),
     invites: get('boardSettings/invites'),
@@ -265,6 +278,7 @@ export default {
   async created() {
     await this.fetch({ id: this.boardId });
     this.boardName = this.currentBoard.name;
+    this.isBoardShared = this.isShared;
   },
   methods: {
     ...call([
@@ -276,7 +290,8 @@ export default {
       'boardSettings/destroyBoard',
       'boardSettings/createInvite',
       'boardSettings/destroyInvite',
-      'boardSettings/destroyMembership'
+      'boardSettings/destroyMembership',
+      'boardSettings/toggleIsShared'
     ]),
     updateBoard: call('board/update'),
     selectTab(item) {
@@ -351,6 +366,17 @@ export default {
       if (confirm('Are you sure?')) {
         await this.destroyMembership({ id });
       }
+    },
+    async toggleIsSharedBoard() {
+      this.isSubmittingShared = true;
+      this.isBoardShared = !this.isBoardShared;
+      this.$nextTick(async () => {
+        await this.toggleIsShared({
+          id: this.currentBoard.id,
+          isShared: this.isBoardShared
+        });
+        this.isSubmittingShared = false;
+      });
     }
   }
 }
@@ -391,9 +417,6 @@ export default {
 a
   color: #2196f3
   font-weight: 400
-
-  &:hover
-    text-decoration: underline
 
 table
   border-spacing: 0

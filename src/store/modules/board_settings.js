@@ -3,6 +3,8 @@ import api from '@/api';
 const DEFAULT_STATE = {
   id: undefined,
   name: '',
+  isShared: undefined,
+  sharedToken: undefined,
   allRepositories: [],
   linkedRepositories: [],
   memberships: [],
@@ -73,6 +75,7 @@ export default {
     update({ commit }, { installationId, installationAccessTokenUrl, repositories }) {
       commit('SYNC_PENDING_REPOSITORIES', { installationId, installationAccessTokenUrl, repositories });
     },
+
     async save({ commit, getters, state }, { id }) {
       commit('START_SYNCING_ISSUES');
       const { errors } = await api.saveBoardSettings(
@@ -146,7 +149,16 @@ export default {
       if (result.errors.length) {
         console.error(result.errors);
       }
-    }
+    },
+
+    async toggleIsShared({ getters, commit }, { id, isShared }) {
+      const result = await api.updateBoard(getters.token, { id, isShared });
+      if (result.errors.length) {
+        console.error(result.errors);
+      } else {
+        commit('UPDATE_BOARD_IS_SHARED', { isShared });
+      }
+    },
   },
 
   mutations: {
@@ -155,9 +167,10 @@ export default {
       state.isLoaded = false;
     },
     FINISH_LOADING(state, settings) {
-      const { id, name, sharedToken, repositories } = settings;
+      const { id, name, isShared, sharedToken, repositories } = settings;
       state.id = id;
       state.name = name;
+      state.isShared = isShared;
       state.sharedToken = sharedToken;
       state.linkedRepositories = repositories;
       state.pendingRepositories = repositories;
@@ -204,6 +217,9 @@ export default {
     DESTROY_MEMBERSHIP(state, id) {
       const index = state.memberships.findIndex(v => v.id === id);
       state.memberships.splice(index, 1);
+    },
+    UPDATE_BOARD_IS_SHARED(state, isShared) {
+      state.isShared = isShared;
     }
   }
 };
