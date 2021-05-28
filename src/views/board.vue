@@ -22,7 +22,7 @@
         @dragover.prevent
         @drop='drop($event, column)'
       />
-      <ColumnNew @submit='createNewColumn' />
+      <ColumnNew v-if='isOwner' @submit='createNewColumn' />
     </div>
   </div>
 
@@ -74,6 +74,7 @@ export default {
     token: get('user/token'),
     boards: get('user/boards'),
     columns: get('board/columns'),
+    isOwner: get('board/isOwner'),
     isLoaded: get('board/isLoaded'),
     isLoading: get('board/isLoading'),
     isNotFound: get('board/isNotFound'),
