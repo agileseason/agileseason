@@ -33,7 +33,7 @@
       </article>
       <article>
         <div class='title'>Share this board</div>
-        <label>
+        <label class='checkbox'>
           <input type='checkbox' />
           Enable access by link (read only)
         </label>
@@ -223,8 +223,7 @@ export default {
       'Members'
     ],
     boardName: '',
-    // active: 'General',
-    active: 'Members',
+    active: 'General',
     isSubmitting: false,
     isDeleteSubmitting: false
   }),
@@ -375,7 +374,7 @@ export default {
     font-size: 18px
     font-weight: 500
     margin-top: 0
-    margin-bottom: 18px
+    margin-bottom: 16px
 
   .all-repositories
     margin-bottom: 30px
@@ -424,11 +423,18 @@ article
     font-size: 18px
     font-weight: bold
     line-height: 21px
-    margin-bottom: 8px
+    margin-bottom: 16px
 
   .delete-board
     margin-top: 24px
     width: 150px
+
+  label.checkbox
+    display: flex
+    align-items: center
+
+    input
+      margin: 0 6px 0 0
 
 .board-container
   display: flex
