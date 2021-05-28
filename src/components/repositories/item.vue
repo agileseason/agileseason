@@ -26,13 +26,12 @@
             :key='repo.id'
             class='github-repository'
           >
-            <input
-              v-model='selectedItems'
-              type='checkbox'
-              :value='repo.id'
-              :id='repo.id'
-            />
-            <label :for='repo.id' title='repo.fullName'>
+            <label class='checkbox' title='repo.fullName'>
+              <input
+                v-model='selectedItems'
+                type='checkbox'
+                :value='repo.id'
+              />
               {{ repo.name }}
             </label>
           </div>
@@ -183,6 +182,13 @@ export default {
 
     .button + .button
       margin-left: 8px
+
+  label.checkbox
+    display: flex
+    align-items: center
+
+    input
+      margin: 0 6px 0 0
 
 input.search
   background-color: #7986CB
