@@ -155,11 +155,12 @@ export default {
       state.isLoaded = false;
     },
     FINISH_LOADING(state, settings) {
-      const { id, name } = settings;
+      const { id, name, sharedToken, repositories } = settings;
       state.id = id;
       state.name = name;
-      state.linkedRepositories = settings.repositories;
-      state.pendingRepositories = settings.repositories;
+      state.sharedToken = sharedToken;
+      state.linkedRepositories = repositories;
+      state.pendingRepositories = repositories;
       state.memberships = settings.memberships;
       state.invites = settings.invites;
       state.isLoading = false;

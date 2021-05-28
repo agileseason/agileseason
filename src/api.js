@@ -194,7 +194,7 @@ export default {
         boardSettings:board(id: $id) {
           id
           name
-          isOwner
+          sharedToken
           repositories {
             id
             name

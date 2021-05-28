@@ -37,7 +37,7 @@
           <input type='checkbox' />
           Enable access by link (read only)
         </label>
-        <a class='public-link' href='#'>TODO</a>
+        <a class='public-link' href='#'>{{ sharedToken }}</a>
       </article>
       <article>
         <div class='title'>Delete this board</div>
@@ -234,6 +234,7 @@ export default {
     isSyncingIssues: get('boardSettings/isSyncingIssues'),
     token: get('user/token'),
     boards: get('user/boards'),
+    sharedToken: get('boardSettings/sharedToken'),
     memberships: get('boardSettings/memberships'),
     invites: get('boardSettings/invites'),
     repositories: get('boardSettings/repositories'),
