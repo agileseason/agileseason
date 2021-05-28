@@ -11,6 +11,7 @@ import Invite from '../views/invite';
 import Issue from '../views/issue';
 import IssueNew from '../views/issue_new';
 import OAuth from '../views/oauth';
+import SharedBoard from '../views/shared_board';
 
 function requireAuth(to, from, next) {
   if (!store.getters['user/isSignedIn']) {
@@ -29,6 +30,10 @@ const routes = [
     path: '/i/:token',
     name: 'invite',
     component: Invite
+  }, {
+    path: '/shared/board/:token',
+    name: 'shared_board',
+    component: SharedBoard
   }, {
     path: '/boards',
     name: 'boards',

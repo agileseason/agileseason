@@ -37,7 +37,9 @@
           <input type='checkbox' />
           Enable access by link (read only)
         </label>
-        <a class='public-link' href='#'>{{ sharedToken }}</a>
+        <a class='public-link' :href='sharedUrl' target='_blank'>
+          {{ sharedUrl }}
+        </a>
       </article>
       <article>
         <div class='title'>Delete this board</div>
@@ -257,7 +259,8 @@ export default {
       return this.boards.find(v => v.id === this.boardId);
     },
     appUrl() { return APP_URL; },
-    domain() { return DOMAIN; }
+    domain() { return DOMAIN; },
+    sharedUrl() { return `${this.domain}/#/shared/board/${this.sharedToken}`; }
   },
   async created() {
     await this.fetch({ id: this.boardId });
@@ -384,6 +387,13 @@ export default {
   .linked-repositories
     margin-bottom: 18px
     min-width: 320px
+
+a
+  color: #2196f3
+  font-weight: 400
+
+  &:hover
+    text-decoration: underline
 
 table
   border-spacing: 0
