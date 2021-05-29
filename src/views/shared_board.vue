@@ -1,11 +1,17 @@
 <template>
+  <Menu
+    title='TODO: board name'
+    username='TODO: authour'
+  />
   <div>{{ token }}</div>
 </template>
 
 <script>
+import Menu from '@/components/menu/top_shared';
 
 export default {
   components: {
+    Menu
   },
   data: () => ({
   }),
