@@ -194,6 +194,7 @@ export default {
         board:boardShared(sharedToken: $sharedToken) {
           id
           name
+          owner { login avatarUrl }
           columns {
             id name position
             issues {

@@ -1,7 +1,8 @@
 <template>
   <Menu
     :title='boardName'
-    username='TODO: authour'
+    :username='boardOwner.login'
+    :avatarUrl='boardOwner.avatarUrl'
   />
   <Loader v-if='isLoading' />
   <div v-if='isNotFound'>Not found</div>
@@ -28,7 +29,8 @@ export default {
     // isSignedIn: get('user/isSignedIn'),
     token() { return this.$route.params.token; },
     isNotFound() { return !this.isLoading && this.board == null; },
-    boardName() { return this.board?.name; }
+    boardName() { return this.board?.name; },
+    boardOwner() { return this.board?.owner || {}; }
   },
   async created() {
     this.board = await api.fetchSharedBoard({ sharedToken: this.token });

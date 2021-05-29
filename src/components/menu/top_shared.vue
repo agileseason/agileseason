@@ -7,7 +7,13 @@
       {{ title }}
     </div>
     <div v-if='username' class='author'>
-      Shared by <a :href='githubLink'>{{ username }}</a>
+      Shared by&nbsp;<a :href='githubLink'>{{ username }}</a>
+      <img
+        v-if='avatarUrl'
+        class='avatar'
+        :src='avatarUrl'
+        :title='username'
+      />
     </div>
   </div>
 </template>
@@ -17,7 +23,8 @@
 export default {
   props: {
     title: { type: String, default: null },
-    username: { type: String, default: null }
+    username: { type: String, default: null },
+    avatarUrl: { type: String, default: null },
   },
   computed: {
     githubLink() {
@@ -45,12 +52,25 @@ a
 a:hover
   text-decoration: underline
 
-.note,
-.author
+.note
   color: #fff
   font-weight: 300
   line-height: 36px
 
   .brand
     font-weight: 500
+
+.author
+  align-items: center
+  color: #fff
+  display: flex
+  font-weight: 300
+  line-height: 36px
+
+  .avatar
+    vertical-align: bottom
+    border-radius: 11px
+    height: 22px
+    margin-left: 6px
+    width: 22px
 </style>
