@@ -10,6 +10,35 @@
       class='signin'
       text='Sign in with GitHub'
     />
+
+    <article>
+      <h3>Features</h3>
+
+      <div class='features'>
+        <div class='feature'>
+          <h4>Protect your secrets</h4>
+          <p>
+            We won't be able to read or change your code, since we won't
+            require any of these permissions from GitHub
+          </p>
+        </div>
+        <div class='feature'>
+          <h4>Many repositories in one view</h4>
+          <p>Connect any number of GitHub repositories to a single board</p>
+        </div>
+        <div class='feature'>
+          <h4>Connected to GitHub in real-time</h4>
+          <p>
+            Agile Season connects directly to your GitHub issues, so there's
+            no duplicate work and you're not jumping back and forth between tools
+          </p>
+        </div>
+        <div class='feature'>
+          <h4>Customizable workflow</h4>
+          <p>Add and remove columns to fit how your team works</p>
+        </div>
+      </div>
+    </article>
   </div>
 </template>
 
@@ -50,7 +79,7 @@ export default {
 
 .signin
   min-width: 130px
-  margin-top: 30px
+  margin: 30px 0
 
 h1
   font-size: 40px
@@ -59,4 +88,8 @@ h1
 h2
   font-weight: 400
   margin: 0 0 10px
+
+h3,
+h4
+  font-weight: 500
 </style>
