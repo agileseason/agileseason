@@ -1,5 +1,10 @@
 <template>
-  <div class='issue' @click='goToIssue' :style='colorStyles'>
+  <div
+    class='issue'
+    :class="{ 'read-only': isReadOnly }"
+    :style='colorStyles'
+    @click='goToIssue'
+  >
     <div class='title'>{{ title }}</div>
     <a :href='url' class='url' @click.stop='click'>
       <span class='number'>#{{ number }}</span>
@@ -78,7 +83,8 @@ export default {
     commentsCount: { type: Number, required: true },
     color: { type: String, required: false, default: null },
     columnId: { type: Number, required: true },
-    isLastColumn: { type: Boolean, default: false }
+    isLastColumn: { type: Boolean, default: false },
+    isReadOnly: { type: Boolean, default: false }
   },
   data: () => ({
     isCloseSubmitting: false,
@@ -87,6 +93,7 @@ export default {
   computed: {
     isLabels() { return this.labels.length > 0; },
     isActionVisible() {
+      if (this.isReadOnly) { return false; }
       return this.isClosed || this.isLastColumn;
     },
     isAssignedOrExtra() {
@@ -111,6 +118,8 @@ export default {
       'board/updateIssueState'
     ]),
     goToIssue() {
+      if (this.isReadOnly) { return; }
+
       this.setCurrentIssue({ issue: this });
       this.$router.push({
         name: 'issue',
@@ -149,7 +158,9 @@ export default {
   border-radius: 4px
   margin-bottom: 8px
   padding: 8px
-  cursor: pointer
+
+  &:not(.read-only)
+    cursor: pointer
 
   .title
     color: #212121

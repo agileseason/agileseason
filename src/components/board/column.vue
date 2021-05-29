@@ -1,9 +1,9 @@
 <template>
   <div class='column'>
-    <div class='header'>
+    <div class='header' :class="{ 'read-only': isReadOnly }">
       <span class='issues-count'>{{ issuesCount }}</span>
       <span class='name'>{{ name }}</span>
-      <div class='actions'>
+      <div v-if='!isReadOnly' class='actions'>
         <div class='issue-new' @click='issueNew' />
         <div class='column-settings' @click='columnSettings' />
       </div>
@@ -14,8 +14,9 @@
         :key='issue.id'
         v-bind='issue'
         :column-id='id'
+        :is-read-only='isReadOnly'
         :is-last-column='isLastColumn'
-        draggable='true'
+        :draggable='!isReadOnly'
         @dragstart='dragStart($event, issue)'
       />
     </div>
@@ -34,7 +35,8 @@ export default {
     id: { type: Number, required: true },
     name: { type: String, default: 'Unknown' },
     issues: { type: Array, required: true },
-    isLastColumn: { type: Boolean, default: false }
+    isLastColumn: { type: Boolean, default: false },
+    isReadOnly: { type: Boolean, default: false }
   },
   data: () => ({}),
   computed: {
@@ -82,10 +84,12 @@ export default {
     border-radius: 6px
 
   .header
-    // cursor: grab
-    // cursor: grabbing
-    cursor: pointer
     margin-bottom: 8px
+
+    &:not(.read-only)
+      // cursor: grab
+      // cursor: grabbing
+      cursor: pointer
 
     .issues-count
       background-color: #C5CAE9

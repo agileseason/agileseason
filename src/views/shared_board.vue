@@ -6,16 +6,27 @@
   />
   <Loader v-if='isLoading' />
   <div v-if='isNotFound'>Not found</div>
-  <div v-if='board'>{{ token }}</div>
+  <div v-if='board' class='board'>
+    <div class='columns'>
+      <Column
+        v-for='column in board.columns'
+        :key='column.id'
+        v-bind='column'
+        is-read-only
+      />
+    </div>
+  </div>
 </template>
 
 <script>
+import Column from '@/components/board/column.vue';
 import Loader from '@/components/loader';
 import Menu from '@/components/menu/top_shared';
 import api from '@/api';
 
 export default {
   components: {
+    Column,
     Loader,
     Menu
   },
@@ -42,4 +53,7 @@ export default {
 </script>
 
 <style scoped lang='sass'>
+.board
+  padding: 8px 8px 0px 8px
+  overflow-x: scroll
 </style>

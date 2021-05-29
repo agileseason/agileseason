@@ -41,7 +41,7 @@ export default {
   display: flex
   height: 36px
   justify-content: space-between
-  padding: 0 14px
+  padding: 0 8px
 
 .title,
 a
