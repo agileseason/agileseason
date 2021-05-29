@@ -5,7 +5,7 @@
     :avatarUrl='boardOwner.avatarUrl'
   />
   <Loader v-if='isLoading' />
-  <div v-if='isNotFound'>Not found</div>
+  <div v-if='isNotFound' class='not-found'>Page not found</div>
   <div v-if='board' class='board'>
     <div class='columns'>
       <Column
@@ -56,4 +56,9 @@ export default {
 .board
   padding: 8px 8px 0px 8px
   overflow-x: scroll
+
+.not-found
+  font-size: 16px
+  text-align: center
+  margin-top: 80px
 </style>
