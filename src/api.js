@@ -188,6 +188,38 @@ export default {
     return data?.board;
   },
 
+  async fetchSharedBoard({ sharedToken }) {
+    const query = `
+      query($sharedToken:String!) {
+        board:boardShared(sharedToken: $sharedToken) {
+          id
+          name
+          columns {
+            id name position
+            issues {
+              id
+              number
+              title
+              position
+              url
+              repositoryName
+              labels { name color }
+              assignees { login avatarUrl }
+              isClosed
+              isBody
+              commentsCount
+              color
+            }
+          }
+        }
+      }
+    `;
+    const data = await this.client().request(query, { sharedToken });
+    this.log('board', data);
+
+    return data?.board;
+  },
+
   async fetchBoardSettings(token, { id }) {
     const query = `
       query($id:Int!) {

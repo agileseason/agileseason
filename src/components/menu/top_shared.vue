@@ -7,7 +7,7 @@
       {{ title }}
     </div>
     <div v-if='username' class='author'>
-      Shared by <a :href='githubLink'>blackchestnut</a>
+      Shared by <a :href='githubLink'>{{ username }}</a>
     </div>
   </div>
 </template>
