@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import Button from '@/components/buttons/button'
-import Dialog from '@/components/dialog'
+import Button from '@/components/buttons/button';
+import Dialog from '@/components/dialog';
 
 export default {
   name: 'ColumnNew',
@@ -75,8 +75,9 @@ export default {
     border-radius: 3px
     border: 1px solid #7986cb
     box-sizing: border-box
-    color: #FFF
-    font-size: 14px
+    color: #fff
+    font-size: 16px
+    font-weight: 400
     height: 28px
     letter-spacing: 0.4px
     margin-bottom: 8px

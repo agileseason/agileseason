@@ -1,6 +1,7 @@
 <template>
   <div class='dialog-overlay' @click.self='close' />
   <div class='dialog' v-bind='$attrs'>
+    <div v-if='title' class='title'>{{ title }}</div>
     <slot />
     <div class='actions'>
       <slot name='actions' />
@@ -11,7 +12,7 @@
 <script>
 export default {
   props: {
-    // title: { type: String, required: true }
+    title: { type: String, default: null }
   },
   emits: ['close'],
   methods: {
@@ -27,13 +28,20 @@ export default {
   background-color: #3f51b5
   border-radius: 3px
   border: 1px solid #3f51b5
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1)
+  box-sizing: border-box
   color: #fff
   padding: 8px
   position: absolute
   text-align: left
   width: 100%
   z-index: 2
-  box-sizing: border-box
+
+  .title
+    color: #fff
+    font-size: 14px
+    font-weight: 500
+    margin-bottom: 8px
 
   .actions
     border-top: 1px solid #7986cb

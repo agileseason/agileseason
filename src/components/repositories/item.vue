@@ -191,27 +191,28 @@ export default {
       margin: 0 6px 0 0
 
 input.search
-  background-color: #7986CB
+  background-color: #7986cb
   border-radius: 3px
-  border: 1px solid #7986CB
+  border: 1px solid #7986cb
   box-sizing: border-box
-  color: #FFF
+  color: #fff
   font-size: 16px
   font-weight: 400
   height: 28px
   letter-spacing: 0.4px
   line-height: 28px
   margin-bottom: 8px
+  outline: none
   padding: 0 6px
   width: 100%
 
   &::placeholder
-    color: #9FA8DA
+    color: #9fa8da
     opacity: 1
   &:-ms-input-placeholder
-    color: #9FA8DA
+    color: #9fa8da
   &::-ms-input-placeholder
-    color: #9FA8DA
+    color: #9fa8da
 
 .github-repository
   margin-bottom: 8px

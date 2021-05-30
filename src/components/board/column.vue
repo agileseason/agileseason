@@ -9,9 +9,34 @@
         <div class='column-settings' @click='columnSettings' />
       </div>
       <Select v-if='isSettingsOpen' class='select-settings'>
-        <div class='item'>Rename column</div>
+        <div class='item' @click='openRenameDialog'>Rename column</div>
         <div class='item'>Delete column</div>
       </Select>
+      <Dialog
+        v-if='isRenameDialogOpen'
+        @close='closeRenameDialog'
+        class='dialog'
+        style='top: 32px'
+        title='Column name'
+      >
+        <input
+          v-model.trim='newName'
+          class='dialog-input'
+          type='text'
+          @keyup.enter='submit'
+          @keyup.esc='closeRenameDialog'
+          placeholder='New column name'
+          ref='newName'
+        />
+        <template #actions>
+          <Button @click='closeRenameDialog' type='flat' text='Close' />
+          <Button
+            @click='submitNewName'
+            type='white'
+            text='Update'
+          />
+        </template>
+      </Dialog>
     </div>
     <div class='body'>
       <Issue
@@ -29,12 +54,16 @@
 </template>
 
 <script>
-import Issue from '@/components/board/issue.vue';
+import Button from '@/components/buttons/button';
+import Dialog from '@/components/dialog';
+import Issue from '@/components/board/issue';
 import Select from '@/components/select';
 
 export default {
   name: 'Column',
   components: {
+    Button,
+    Dialog,
     Issue,
     Select
   },
@@ -46,7 +75,9 @@ export default {
     isReadOnly: { type: Boolean, default: false }
   },
   data: () => ({
-    isSettingsOpen: false
+    newName: '',
+    isSettingsOpen: false,
+    isRenameDialogOpen: false
   }),
   computed: {
     issuesCount() { return this.issues.length || 0; },
@@ -62,6 +93,23 @@ export default {
     },
     columnSettings() {
       this.isSettingsOpen = !this.isSettingsOpen;
+    },
+    openRenameDialog() {
+      this.isSettingsOpen = false;
+      this.newName = this.name;
+      this.isRenameDialogOpen = true;
+      this.$nextTick(() => this.$refs.newName?.focus());
+    },
+    closeRenameDialog() {
+      this.isRenameDialogOpen = false;
+    },
+    submitNewName() {
+      if (this.newName === '') { return; }
+      if (this.name === this.newName) {
+        this.isRenameDialogOpen = false;
+      } else {
+        console.log('submit');
+      }
     },
     hideAllSelectes() {
       this.isSettingsOpen = false;
@@ -105,6 +153,39 @@ export default {
 
     &:not(:last-child)
       border-bottom: 1px solid #c5cae9
+
+.dialog
+  top: 10px
+
+  // TODO: Extract dialog-input component. See also column_new.vue
+  input.dialog-input
+    background-color: #7986cb
+    border-radius: 3px
+    border: 1px solid #7986cb
+    box-sizing: border-box
+    color: #fff
+    font-size: 16px
+    font-weight: 400
+    height: 28px
+    letter-spacing: 0.4px
+    margin-bottom: 8px
+    outline: none
+    padding: 0 6px
+    width: 100%
+
+    &:focus
+      border-color: #fff
+
+    &::placeholder
+      color: #9fa8da
+      opacity: 1
+    &:-ms-input-placeholder
+      color: #9fa8da
+    &::-ms-input-placeholder
+      color: #9fa8da
+
+  button + button
+    margin-left: 2px
 
 .column
   display: inline-block
