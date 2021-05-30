@@ -214,6 +214,18 @@ export default {
         column.name = name;
       }
     },
+
+    async removeBoardColumn({ getters, state }, { id }) {
+      const index = state.columns.findIndex(v => v.id === id);
+      if (index === -1) { return; }
+
+      const result = await api.destroyColumn(getters.token, { id, boardId: state.id });
+      if (result.errors.length === 0) {
+        state.columns.splice(index, 1);
+      }
+
+      return result.errors.length === 0;
+    }
   },
 
   mutations: {

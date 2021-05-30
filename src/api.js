@@ -355,6 +355,21 @@ export default {
     return data?.action;
   },
 
+  async destroyColumn(token, { id, boardId }) {
+    const query = `
+      mutation($id:Int!, $boardId:Int!) {
+        action:destroyColumn(input: { id: $id, boardId: $boardId }) {
+          errors
+        }
+      }
+    `;
+    const vars = { id, boardId };
+    const data = await this.client(token).request(query, vars);
+    this.log('destroyColumn', data, vars);
+
+    return data?.action;
+  },
+
   async updateColumnPositions(token, { boardId, columns }) {
     const query = `
       mutation($boardId:Int!, $ids:[Int!]!, $positions:[Int!]!) {

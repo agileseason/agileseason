@@ -10,7 +10,7 @@
       </div>
       <Select v-if='isSettingsOpen' class='select-settings'>
         <div class='item' @click='openRenameDialog'>Rename column</div>
-        <div class='item'>Delete column</div>
+        <div class='item' @click='openDeleteDialog'>Delete column</div>
       </Select>
       <Dialog
         v-if='isRenameDialogOpen'
@@ -35,6 +35,25 @@
             @click='submitNewName'
             type='white'
             text='Update'
+          />
+        </template>
+      </Dialog>
+      <Dialog
+        v-if='isDeleteDialogOpen'
+        @close='closeDeleteDialog'
+        class='dialog'
+        style='top: 32px'
+        :title=deleteDialogTitle
+      >
+        <p v-if='issuesCount > 0'>The column must be without issues</p>
+        <template #actions>
+          <Button @click='closeDeleteDialog' type='flat' text='Close' />
+          <Button
+            :is-loading='isDeleting'
+            :is-disabled='issuesCount > 0'
+            @click='deleteColumn'
+            type='white'
+            text='Delete'
           />
         </template>
       </Dialog>
@@ -80,16 +99,20 @@ export default {
     newName: '',
     isSettingsOpen: false,
     isRenameDialogOpen: false,
-    isSubmittingNewName: false
+    isDeleteDialogOpen: false,
+    isSubmittingNewName: false,
+    isDeleting: false
   }),
   computed: {
-    issuesCount() { return this.issues.length || 0; },
+    issuesCount() { return this.notArchivedIssues.length; },
     notArchivedIssues() { return this.issues.filter(issue => !issue.isArchived); },
-    isAnySelectsOpen() { return this.isSettingsOpen; }
+    isAnySelectsOpen() { return this.isSettingsOpen; },
+    deleteDialogTitle() { return `Delete ${ this.name }`; }
   },
   methods: {
     ...call([
-      'board/updateBoardColumn'
+      'board/updateBoardColumn',
+      'board/removeBoardColumn'
     ]),
     issueNew() {
       this.$router.push({
@@ -101,13 +124,20 @@ export default {
       this.isSettingsOpen = !this.isSettingsOpen;
     },
     openRenameDialog() {
-      this.isSettingsOpen = false;
+      this.hideAllSelectes();
       this.newName = this.name;
       this.isRenameDialogOpen = true;
       this.$nextTick(() => this.$refs.newName?.focus());
     },
+    openDeleteDialog() {
+      this.hideAllSelectes();
+      this.isDeleteDialogOpen = true;
+    },
     closeRenameDialog() {
       this.isRenameDialogOpen = false;
+    },
+    closeDeleteDialog() {
+      this.isDeleteDialogOpen = false;
     },
     async submitNewName() {
       if (this.newName === '') { return; }
@@ -120,6 +150,16 @@ export default {
         await this.updateBoardColumn({ id: this.id, name: this.newName });
         this.isSubmittingNewName = false;
         this.isRenameDialogOpen = false;
+      }
+    },
+    async deleteColumn() {
+      if (this.issuesCount > 0) { return; }
+      if (this.isDeleting) { return; }
+
+      this.isDeleting = true;
+      const isSuccess = await this.removeBoardColumn({ id: this.id });
+      if (!isSuccess) {
+        this.isDeleting = false;
       }
     },
     hideAllSelectes() {
