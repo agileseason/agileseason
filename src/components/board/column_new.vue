@@ -114,4 +114,7 @@ export default {
     &:active
       color: #5c6bc0
       border: 1px solid #7986cb
+
+button + button
+  margin-left: 2px
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div class='column'>
+    <div v-if='isAnySelectsOpen' class='select-overlay' @click.self='hideAllSelectes' />
     <div class='header' :class="{ 'read-only': isReadOnly }">
       <span class='issues-count'>{{ issuesCount }}</span>
       <span class='name'>{{ name }}</span>
@@ -7,6 +8,10 @@
         <div class='issue-new' @click='issueNew' />
         <div class='column-settings' @click='columnSettings' />
       </div>
+      <Select v-if='isSettingsOpen' class='select-settings'>
+        <div class='item'>Rename column</div>
+        <div class='item'>Delete column</div>
+      </Select>
     </div>
     <div class='body'>
       <Issue
@@ -25,11 +30,13 @@
 
 <script>
 import Issue from '@/components/board/issue.vue';
+import Select from '@/components/select';
 
 export default {
   name: 'Column',
   components: {
-    Issue
+    Issue,
+    Select
   },
   props: {
     id: { type: Number, required: true },
@@ -38,10 +45,13 @@ export default {
     isLastColumn: { type: Boolean, default: false },
     isReadOnly: { type: Boolean, default: false }
   },
-  data: () => ({}),
+  data: () => ({
+    isSettingsOpen: false
+  }),
   computed: {
     issuesCount() { return this.issues.length || 0; },
-    notArchivedIssues() { return this.issues.filter(issue => !issue.isArchived); }
+    notArchivedIssues() { return this.issues.filter(issue => !issue.isArchived); },
+    isAnySelectsOpen() { return this.isSettingsOpen; }
   },
   methods: {
     issueNew() {
@@ -51,7 +61,10 @@ export default {
       });
     },
     columnSettings() {
-      console.log('column-settings');
+      this.isSettingsOpen = !this.isSettingsOpen;
+    },
+    hideAllSelectes() {
+      this.isSettingsOpen = false;
     },
     dragStart(e, issue) {
       console.log('[dragStart] Issue: ' + issue?.id);
@@ -69,11 +82,36 @@ export default {
 </script>
 
 <style scoped lang='sass'>
+.select-overlay
+  height: 100vh
+  left: 0
+  position: fixed
+  top: 0
+  width: 100vw
+  z-index: 1
+
+.select-settings
+  position: absolute
+  z-index: 2
+  right: 0
+  top: 0
+
+  .item
+    cursor: pointer
+    padding: 8px 10px
+
+    &:hover
+      background-color: #c5cae9
+
+    &:not(:last-child)
+      border-bottom: 1px solid #c5cae9
+
 .column
   display: inline-block
   margin-right: 8px
   vertical-align: top
   width: 270px
+  position: relative
 
   &.is-drag-enter
     background-color: rgba(197,202,233,0.4)
