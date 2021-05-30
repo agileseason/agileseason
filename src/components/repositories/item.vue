@@ -206,6 +206,9 @@ input.search
   padding: 0 6px
   width: 100%
 
+  &:focus
+    border-color: #fff
+
   &::placeholder
     color: #9fa8da
     opacity: 1

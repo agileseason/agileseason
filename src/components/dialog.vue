@@ -44,8 +44,10 @@ export default {
     margin-bottom: 8px
 
   .actions
+    align-items: center
     border-top: 1px solid #7986cb
-    text-align: right
+    display: flex
+    justify-content: flex-end
     padding-top: 8px
 
 .dialog-overlay

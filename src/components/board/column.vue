@@ -31,6 +31,7 @@
         <template #actions>
           <Button @click='closeRenameDialog' type='flat' text='Close' />
           <Button
+            :is-loading='isSubmittingNewName'
             @click='submitNewName'
             type='white'
             text='Update'
@@ -77,7 +78,8 @@ export default {
   data: () => ({
     newName: '',
     isSettingsOpen: false,
-    isRenameDialogOpen: false
+    isRenameDialogOpen: false,
+    isSubmittingNewName: false
   }),
   computed: {
     issuesCount() { return this.issues.length || 0; },
@@ -105,9 +107,12 @@ export default {
     },
     submitNewName() {
       if (this.newName === '') { return; }
+      if (this.isSubmittingNewName) { return; }
+
       if (this.name === this.newName) {
         this.isRenameDialogOpen = false;
       } else {
+        this.isSubmittingNewName = true;
         console.log('submit');
       }
     },
@@ -142,7 +147,7 @@ export default {
   position: absolute
   z-index: 2
   right: 0
-  top: 0
+  top: 32px
 
   .item
     cursor: pointer
@@ -155,8 +160,6 @@ export default {
       border-bottom: 1px solid #c5cae9
 
 .dialog
-  top: 10px
-
   // TODO: Extract dialog-input component. See also column_new.vue
   input.dialog-input
     background-color: #7986cb
