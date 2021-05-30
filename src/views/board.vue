@@ -111,8 +111,8 @@ export default {
       this.isSubmittingNewColumn = false;
     },
     dragStart(e, column) {
-      console.log('[dragStart] Column: ' + column?.id);
-      // console.log(e.target.className);
+      // console.log('[dragStart] Column: ' + column?.id);
+      // console.log(e);
       if (e.target.className === 'column') {
         column.isDragStart = true;
         e.dataTransfer.dropEffect = 'move';
@@ -120,10 +120,12 @@ export default {
         e.dataTransfer.setData('itemKind', 'column');
         e.dataTransfer.setData('itemID', column.id);
       } else {
+        // column.isDragStart = false;
         console.log('[dragStart] Column: prevent');
       }
     },
     dragEnter(e, column) {
+      // console.log(e);
       column.isDragEnter = true;
       // console.log('[dragEnter] Column: ' + e.target.className);
       // console.log('to: ' + column?.id);
@@ -132,9 +134,13 @@ export default {
       return true;
     },
     dragLeave(e, column) {
+      // if (e.path.every(v => v.className !== 'column is-drag-enter')) {
+      //   column.isDragEnter = false;
+      //   // console.log('[dragLeave]');
+      //   // console.log('from :' + column?.id);
+      //   // console.log(e.path);
+      // }
       column.isDragEnter = false;
-      // console.log('[dragLeave]');
-      // console.log('from :' + column?.id);
 
       e.preventDefault();
       return true;
