@@ -59,6 +59,7 @@ import Button from '@/components/buttons/button';
 import Dialog from '@/components/dialog';
 import Issue from '@/components/board/issue';
 import Select from '@/components/select';
+import { call } from 'vuex-pathify';
 
 export default {
   name: 'Column',
@@ -87,6 +88,9 @@ export default {
     isAnySelectsOpen() { return this.isSettingsOpen; }
   },
   methods: {
+    ...call([
+      'board/updateBoardColumn'
+    ]),
     issueNew() {
       this.$router.push({
         name: 'issue_new',
@@ -105,7 +109,7 @@ export default {
     closeRenameDialog() {
       this.isRenameDialogOpen = false;
     },
-    submitNewName() {
+    async submitNewName() {
       if (this.newName === '') { return; }
       if (this.isSubmittingNewName) { return; }
 
@@ -113,7 +117,9 @@ export default {
         this.isRenameDialogOpen = false;
       } else {
         this.isSubmittingNewName = true;
-        console.log('submit');
+        await this.updateBoardColumn({ id: this.id, name: this.newName });
+        this.isSubmittingNewName = false;
+        this.isRenameDialogOpen = false;
       }
     },
     hideAllSelectes() {

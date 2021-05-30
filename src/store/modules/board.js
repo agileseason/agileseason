@@ -203,7 +203,14 @@ export default {
         commit('UPDATE_BOARD', { name });
         dispatch('user/updateBoard', { id, name }, { root: true });
       }
-    }
+    },
+
+    updateBoardColumn({ state }, { id, name }) {
+      const column = state.columns.find(v => v.id === id);
+      if (column == null) { return; }
+
+      column.name = name;
+    },
   },
 
   mutations: {
