@@ -18,7 +18,15 @@ export default {
     token: (state, getters, rootState, rootGetters) => (
       rootGetters['user/token']
     ),
-    isNotFound: (state) => (!state.isLoading && !state.isLoaded)
+    isNotFound: (state) => (!state.isLoading && !state.isLoaded),
+    mentionIssues: (state) => {
+      if (!state.isLoaded) { return []; }
+
+      return state.columns
+        .map(v => v.issues)
+        .flat(1)
+        .map(v => ({ text: `#${v.number} - ${v.title}`, value: v.number }));
+    }
   },
 
   actions: {

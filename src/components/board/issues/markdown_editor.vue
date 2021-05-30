@@ -12,14 +12,14 @@
     />
     <Select v-if='isModalOpen' class='mention-modal' :style='modalPositionStyles'>
       <div
-        v-for='(user, $index) in filteredItems'
+        v-for='(item, $index) in displayedItems'
         :key='$index'
-        class='user'
+        class='item'
         :class='{ "selected": $index === selectedIndex }'
         @mouseover='selectedIndex = $index'
         @mousedown='applyMention($index)'
       >
-        {{ user.login }}
+        {{ item.login || item.text }}
       </div>
     </Select>
     <GithubCommunityGidelines />
@@ -32,6 +32,7 @@
 <script>
 import GithubCommunityGidelines from '@/components/board/issues/github_community_guidelines'
 import Select from '@/components/select';
+import { get } from 'vuex-pathify';
 import getCaretPosition from 'textarea-caret'
 
 const MIN_ROWS = 8;
@@ -51,8 +52,8 @@ export default {
   },
   emits: ['submit', 'update:modelValue'],
   data: () => ({
-    keys: ['@'],
-    limit: 20,
+    keys: ['@', '#'],
+    limit: 1000,
     key: undefined,
     keyIndex: undefined,
     caretPosition: undefined,
@@ -60,19 +61,25 @@ export default {
     lastSearchText: '',
     selectedIndex: 0,
     isModalOpen: false,
-    rows: MIN_ROWS
+    rows: MIN_ROWS,
+
+    boardIssues: [{ text: '#1234 issue 1', value: '1234' }, { text: '#1235 issue 2', value: '1235' }]
   }),
   computed: {
+    ...get([
+      'board/mentionIssues'
+    ]),
     filteredItems() {
-      if (!this.searchText) { return this.assignableUsers; }
+      const items = this.key === '@' ? this.assignableUsers : this.mentionIssues;
+      if (!this.searchText) { return items; }
 
       const searchText = this.searchText.toLowerCase();
-      return this.assignableUsers.filter(item => {
+      return items.filter(item => {
         let text
         if (item.searchText) {
           text = item.searchText;
-        } else if (item.login) {
-          text = item.login;
+        } else if (item.login || item.text) {
+          text = item.login || item.text;
         } else {
           text = ''
           for (const key in item) {
@@ -199,7 +206,7 @@ export default {
 
     applyMention(itemIndex) {
       const item = this.displayedItems[itemIndex];
-      const value = this.key + item.login + ' ';
+      const value = this.key + (item.login || item.value) + ' ';
       this.$emit(
         'update:modelValue',
         this.replaceText(this.$refs.textarea.value, this.searchText, value, this.keyIndex)
@@ -225,8 +232,10 @@ export default {
 
 .mention-modal
   position: absolute
+  max-width: 600px
+  z-index: 1
 
-  .user
+  .item
     cursor: pointer
     padding: 8px 10px
 
