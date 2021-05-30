@@ -19,7 +19,7 @@
         @mouseover='selectedIndex = $index'
         @mousedown='applyMention($index)'
       >
-        {{ item.login || item.text }}
+        {{ item.login || item.label }}
       </div>
     </Select>
     <GithubCommunityGidelines />
@@ -61,9 +61,7 @@ export default {
     lastSearchText: '',
     selectedIndex: 0,
     isModalOpen: false,
-    rows: MIN_ROWS,
-
-    boardIssues: [{ text: '#1234 issue 1', value: '1234' }, { text: '#1235 issue 2', value: '1235' }]
+    rows: MIN_ROWS
   }),
   computed: {
     ...get([
@@ -78,8 +76,8 @@ export default {
         let text
         if (item.searchText) {
           text = item.searchText;
-        } else if (item.login || item.text) {
-          text = item.login || item.text;
+        } else if (item.login || item.label) {
+          text = item.login || item.label;
         } else {
           text = ''
           for (const key in item) {

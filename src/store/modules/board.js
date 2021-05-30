@@ -25,7 +25,7 @@ export default {
       return state.columns
         .map(v => v.issues)
         .flat(1)
-        .map(v => ({ text: `#${v.number} - ${v.title}`, value: v.number }));
+        .map(v => ({ label: `#${v.number} - ${v.title}`, value: v.number }));
     }
   },
 
