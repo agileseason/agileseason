@@ -10,7 +10,7 @@
       @blur='closePopup'
       :rows='rows'
     />
-    <div v-if='isModalOpen' class='mention-modal' :style='modalPositionStyles'>
+    <Select v-if='isModalOpen' class='mention-modal' :style='modalPositionStyles'>
       <div
         v-for='(user, $index) in filteredItems'
         :key='$index'
@@ -21,7 +21,7 @@
       >
         {{ user.login }}
       </div>
-    </div>
+    </Select>
     <GithubCommunityGidelines />
     <div class='actions'>
       <slot name='actions' />
@@ -31,13 +31,15 @@
 
 <script>
 import GithubCommunityGidelines from '@/components/board/issues/github_community_guidelines'
+import Select from '@/components/select';
 import getCaretPosition from 'textarea-caret'
 
 const MIN_ROWS = 8;
 
 export default {
   components: {
-    GithubCommunityGidelines
+    GithubCommunityGidelines,
+    Select
   },
   props: {
     placeholder: { type: String, default: 'Leave a comment...' },
@@ -222,13 +224,7 @@ export default {
   position: relative
 
 .mention-modal
-  background-color: #e8eaf6
-  border-radius: 4px
-  border: 1px solid #c5cae9
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1)
-  box-sizing: border-box
   position: absolute
-  padding: 0
 
   .user
     cursor: pointer
