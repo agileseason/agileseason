@@ -323,7 +323,7 @@ export default {
   async createColumn(token, { name, boardId }) {
     const query = `
       mutation($name:String!, $boardId:Int!) {
-        createColumn(input: { name: $name, boardId: $boardId }) {
+        action:createColumn(input: { name: $name, boardId: $boardId }) {
           id
           name
           position
@@ -335,7 +335,24 @@ export default {
     const data = await this.client(token).request(query, vars);
     this.log('createColumn', data, vars);
 
-    return data?.createColumn;
+    return data?.action;
+  },
+
+  async updateColumn(token, { id, name, boardId }) {
+    const query = `
+      mutation($id:Int!, $name:String!, $boardId:Int!) {
+        action:updateColumn(input: { id: $id, name: $name, boardId: $boardId }) {
+          id
+          name
+          errors
+        }
+      }
+    `;
+    const vars = { id, name, boardId };
+    const data = await this.client(token).request(query, vars);
+    this.log('updateColumn', data, vars);
+
+    return data?.action;
   },
 
   async updateColumnPositions(token, { boardId, columns }) {

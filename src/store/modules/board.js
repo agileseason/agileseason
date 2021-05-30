@@ -205,11 +205,14 @@ export default {
       }
     },
 
-    updateBoardColumn({ state }, { id, name }) {
+    async updateBoardColumn({ getters, state }, { id, name }) {
       const column = state.columns.find(v => v.id === id);
       if (column == null) { return; }
 
-      column.name = name;
+      const result = await api.updateColumn(getters.token, { id, name, boardId: state.id });
+      if (result.errors.length === 0) {
+        column.name = name;
+      }
     },
   },
 
