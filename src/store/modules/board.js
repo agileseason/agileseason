@@ -69,6 +69,8 @@ export default {
     // },
 
     async moveColumn({ getters, state }, { fromColumnIndex, toColumnIndex }) {
+      if (fromColumnIndex === toColumnIndex) { return; }
+
       const columns = state.columns
       const columnToMove = columns.splice(fromColumnIndex, 1)[0]
       columns.splice(toColumnIndex, 0, columnToMove)

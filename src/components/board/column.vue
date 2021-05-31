@@ -253,19 +253,22 @@ export default {
     margin-left: 2px
 
 .column
+  background-color: #e8eaf6
+  border-radius: 6px
   display: inline-block
   margin-right: 8px
+  position: relative
   vertical-align: top
   width: 270px
-  position: relative
 
   &.is-drag-enter
     background-color: rgba(197,202,233,0.4)
     border-radius: 6px
 
+  // TODO: Remove if unnecessary
   &.is-drag-start
-    background-color: #E8EAF6
-    border-radius: 6px
+    // background-color: #e8eaf6
+    // border-radius: 6px
 
   .header
     margin-bottom: 8px
