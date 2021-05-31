@@ -43,18 +43,10 @@ export default {
       console.log('----------------------');
     },
     moveColumn ({ fromColumnIndex }) {
-      console.log('moveColumn:');
-      console.log(fromColumnIndex);
-      console.log(this.columnIndex);
-      console.log('----------------------');
       this.moveBoardColumn({
         fromColumnIndex,
         toColumnIndex: this.columnIndex
       });
-      // this.$store.commit('MOVE_COLUMN', {
-      //   fromColumnIndex,
-      //   toColumnIndex: this.columnIndex
-      // })
     }
   }
 }
