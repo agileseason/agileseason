@@ -108,8 +108,7 @@ export default {
       'user/fetchProfileLazy',
       'board/createColumn',
       'board/fetch',
-      'board/removeIssue',
-      'board/updateColumnPositions'
+      'board/removeIssue'
     ]),
     async createNewColumn(name) {
       if (this.isSubmittingNewColumn) { return; }
