@@ -1,5 +1,6 @@
 <template>
   <div
+    v-bind='$attrs'
     @drop.stop='onDrop'
     @dragover.prevent
     @dragenter.prevent

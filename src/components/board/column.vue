@@ -1,76 +1,83 @@
 <template>
-  <div class='column'>
-    <div v-if='isAnySelectsOpen' class='select-overlay' @click.self='hideAllSelectes' />
-    <div class='header' :class="{ 'read-only': isReadOnly }">
-      <span class='issues-count'>{{ issuesCount }}</span>
-      <span class='name'>{{ name }}</span>
-      <div v-if='!isReadOnly' class='actions'>
-        <div class='issue-new' @click='issueNew' />
-        <div class='column-settings' @click='columnSettings' />
+  <AppDrop
+    class='column'
+    @drop='moveTaskOrColumn'
+  >
+    <AppDrag
+      :transferData="{ type: 'column', fromColumnIndex: columnIndex }"
+    >
+      <div v-if='isAnySelectsOpen' class='select-overlay' @click.self='hideAllSelectes' />
+      <div class='header' :class="{ 'read-only': isReadOnly }">
+        <span class='issues-count'>{{ issuesCount }}</span>
+        <span class='name'>{{ name }}</span>
+        <div v-if='!isReadOnly' class='actions'>
+          <div class='issue-new' @click='issueNew' />
+          <div class='column-settings' @click='columnSettings' />
+        </div>
+        <Select v-if='isSettingsOpen' class='select-settings'>
+          <div class='item' @click='openRenameDialog'>Rename column</div>
+          <div class='item' @click='openDeleteDialog'>Delete column</div>
+        </Select>
+        <Dialog
+          v-if='isRenameDialogOpen'
+          @close='closeRenameDialog'
+          class='dialog'
+          style='top: 32px'
+          title='Column name'
+        >
+          <input
+            v-model.trim='newName'
+            class='dialog-input'
+            type='text'
+            @keyup.enter='submit'
+            @keyup.esc='closeRenameDialog'
+            placeholder='New column name'
+            ref='newName'
+          />
+          <template #actions>
+            <Button @click='closeRenameDialog' type='flat' text='Close' />
+            <Button
+              :is-loading='isSubmittingNewName'
+              @click='submitNewName'
+              type='white'
+              text='Update'
+            />
+          </template>
+        </Dialog>
+        <Dialog
+          v-if='isDeleteDialogOpen'
+          @close='closeDeleteDialog'
+          class='dialog'
+          style='top: 32px'
+          :title=deleteDialogTitle
+        >
+          <p v-if='issuesCount > 0'>The column must be without issues</p>
+          <template #actions>
+            <Button @click='closeDeleteDialog' type='flat' text='Close' />
+            <Button
+              :is-loading='isDeleting'
+              :is-disabled='issuesCount > 0'
+              @click='deleteColumn'
+              type='white'
+              text='Delete'
+            />
+          </template>
+        </Dialog>
       </div>
-      <Select v-if='isSettingsOpen' class='select-settings'>
-        <div class='item' @click='openRenameDialog'>Rename column</div>
-        <div class='item' @click='openDeleteDialog'>Delete column</div>
-      </Select>
-      <Dialog
-        v-if='isRenameDialogOpen'
-        @close='closeRenameDialog'
-        class='dialog'
-        style='top: 32px'
-        title='Column name'
-      >
-        <input
-          v-model.trim='newName'
-          class='dialog-input'
-          type='text'
-          @keyup.enter='submit'
-          @keyup.esc='closeRenameDialog'
-          placeholder='New column name'
-          ref='newName'
+      <div class='body'>
+        <Issue
+          v-for='issue in notArchivedIssues'
+          :key='issue.id'
+          v-bind='issue'
+          :column-id='id'
+          :is-read-only='isReadOnly'
+          :is-last-column='isLastColumn'
+          :draggable='!isReadOnly'
+          @dragstart='dragStart($event, issue)'
         />
-        <template #actions>
-          <Button @click='closeRenameDialog' type='flat' text='Close' />
-          <Button
-            :is-loading='isSubmittingNewName'
-            @click='submitNewName'
-            type='white'
-            text='Update'
-          />
-        </template>
-      </Dialog>
-      <Dialog
-        v-if='isDeleteDialogOpen'
-        @close='closeDeleteDialog'
-        class='dialog'
-        style='top: 32px'
-        :title=deleteDialogTitle
-      >
-        <p v-if='issuesCount > 0'>The column must be without issues</p>
-        <template #actions>
-          <Button @click='closeDeleteDialog' type='flat' text='Close' />
-          <Button
-            :is-loading='isDeleting'
-            :is-disabled='issuesCount > 0'
-            @click='deleteColumn'
-            type='white'
-            text='Delete'
-          />
-        </template>
-      </Dialog>
-    </div>
-    <div class='body'>
-      <Issue
-        v-for='issue in notArchivedIssues'
-        :key='issue.id'
-        v-bind='issue'
-        :column-id='id'
-        :is-read-only='isReadOnly'
-        :is-last-column='isLastColumn'
-        :draggable='!isReadOnly'
-        @dragstart='dragStart($event, issue)'
-      />
-    </div>
-  </div>
+      </div>
+    </AppDrag>
+  </AppDrop>
 </template>
 
 <script>
@@ -78,11 +85,18 @@ import Button from '@/components/buttons/button';
 import Dialog from '@/components/dialog';
 import Issue from '@/components/board/issue';
 import Select from '@/components/select';
+
+import AppDrag from '@/components/app_drag';
+import AppDrop from '@/components/app_drop';
+import movingIssuesAndColumns from '@/mixins/moving_issues_and_columns';
+
 import { call } from 'vuex-pathify';
 
 export default {
   name: 'Column',
   components: {
+    AppDrag,
+    AppDrop,
     Button,
     Dialog,
     Issue,
@@ -91,10 +105,12 @@ export default {
   props: {
     id: { type: Number, required: true },
     name: { type: String, default: 'Unknown' },
+    position: { type: Number, required: true },
     issues: { type: Array, required: true },
     isLastColumn: { type: Boolean, default: false },
     isReadOnly: { type: Boolean, default: false }
   },
+  mixins: [movingIssuesAndColumns],
   data: () => ({
     newName: '',
     isSettingsOpen: false,

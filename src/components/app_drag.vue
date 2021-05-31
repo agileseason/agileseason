@@ -1,6 +1,7 @@
 <template>
   <div
-    draggable
+    v-bind='$attrs'
+    draggable='true'
     @dragstart.self='onDrag'
     @dragover.prevent
     @dragenter.prevent

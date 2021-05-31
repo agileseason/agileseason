@@ -5,7 +5,7 @@
     <Loader v-if='isLoading' :title='boardName' />
     <div v-if='isNotFound'>Not Found!</div>
     <div v-if='isLoaded' class='columns' :style='widthStyles'>
-      <Column
+      <!--Column
         v-for='(column, $index) in sortedColumns'
         :key='column.id'
         v-bind='column'
@@ -21,6 +21,13 @@
         @dragend='dragEnd($event, column)'
         @dragover.prevent
         @drop='drop($event, column)'
+      /-->
+      <Column
+        v-for='(column, $index) in sortedColumns'
+        :key='column.id'
+        v-bind='column'
+        :column-index='$index'
+        :is-last-column='$index === columns.length - 1'
       />
       <ColumnNew v-if='isOwner' @submit='createNewColumn' />
     </div>

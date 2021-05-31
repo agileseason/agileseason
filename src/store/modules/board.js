@@ -55,7 +55,24 @@ export default {
       }
     },
 
+    // TODO: remove
     async updateColumnPositions({ state, getters }, { columns }) {
+      const result = await api.updateColumnPositions(
+        getters.token,
+        { boardId: state.id, columns }
+      );
+      if (result?.errors?.length == 0) {
+        console.log('success');
+      } else {
+        console.error(result.errors[0]);
+      }
+    },
+
+    async moveColumn({ getters, state }, { fromColumnIndex, toColumnIndex }) {
+      const columns = state.columns
+      const columnToMove = columns.splice(fromColumnIndex, 1)[0]
+      columns.splice(toColumnIndex, 0, columnToMove)
+      columns.map((v, index) => v.position = index);
       const result = await api.updateColumnPositions(
         getters.token,
         { boardId: state.id, columns }
