@@ -65,7 +65,7 @@
         </Dialog>
       </div>
       <div class='body'>
-        <Issue
+        <!--Issue
           v-for='issue in notArchivedIssues'
           :key='issue.id'
           v-bind='issue'
@@ -74,6 +74,16 @@
           :is-last-column='isLastColumn'
           :draggable='!isReadOnly'
           @dragstart='dragStart($event, issue)'
+        /-->
+        <Issue
+          v-for='(issue, $index) in notArchivedIssues'
+          :key='issue.id'
+          v-bind='issue'
+          :column-id='id'
+          :column-index='columnIndex'
+          :task-index='$index'
+          :is-read-only='isReadOnly'
+          :is-last-column='isLastColumn'
         />
       </div>
     </AppDrag>
@@ -181,17 +191,18 @@ export default {
     hideAllSelectes() {
       this.isSettingsOpen = false;
     },
-    dragStart(e, issue) {
-      console.log('[dragStart] Issue: ' + issue?.id);
-      // console.log(e.target.className);
-      if (e.target.className === 'issue') {
-        // issue.isDragStart = true;
-        e.dataTransfer.dropEffect = 'move';
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('itemKind', 'issue');
-        e.dataTransfer.setData('itemID', issue.id);
-      }
-    }
+    // TODO: Remove
+    // dragStart(e, issue) {
+    //   console.log('[dragStart] Issue: ' + issue?.id);
+    //   // console.log(e.target.className);
+    //   if (e.target.className === 'issue') {
+    //     // issue.isDragStart = true;
+    //     e.dataTransfer.dropEffect = 'move';
+    //     e.dataTransfer.effectAllowed = 'move';
+    //     e.dataTransfer.setData('itemKind', 'issue');
+    //     e.dataTransfer.setData('itemID', issue.id);
+    //   }
+    // }
   }
 }
 </script>
