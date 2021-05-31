@@ -152,44 +152,43 @@ export default {
       e.preventDefault();
       return true;
     },
-    drop (e, column) {
-      column.isDragEnter = false;
-      console.log('[drop] ID:' + e.dataTransfer.getData('itemID'));
-      console.log('[drop] Kind: ' + e.dataTransfer.getData('itemKind'));
-      console.log('[drop] Column ID: ' + column?.id);
 
-      if (e.dataTransfer.getData('itemKind') === 'column') {
-        const columnMoved = this.columns
-          .find(v => v.id == e.dataTransfer.getData('itemID'));
+    // TODO: Remove
+    // drop (e, column) {
+    //   column.isDragEnter = false;
+    //   console.log('[drop] ID:' + e.dataTransfer.getData('itemID'));
+    //   console.log('[drop] Kind: ' + e.dataTransfer.getData('itemKind'));
+    //   console.log('[drop] Column ID: ' + column?.id);
+    //   if (e.dataTransfer.getData('itemKind') === 'column') {
+    //     const columnMoved = this.columns
+    //       .find(v => v.id == e.dataTransfer.getData('itemID'));
+    //     if (columnMoved != null) {
+    //       const fromRightToLeft = columnMoved.position < column.position;
+    //       const columnsWoMoved = this.columns.filter(v => v.id != columnMoved.id);
+    //       const columnsBefore = fromRightToLeft ?
+    //         columnsWoMoved.filter(v => v.position <= column.position) :
+    //         columnsWoMoved.filter(v => v.position < column.position);
+    //       // console.log(columnsBefore.map(v => v.name));
+    //       const columnsAfter = fromRightToLeft ?
+    //         columnsWoMoved.filter(v => v.position > column.position) :
+    //         columnsWoMoved.filter(v => v.position >= column.position);
+    //       // console.log(columnsAfter.map(v => v.name));
+    //       const newColumns = [...columnsBefore, columnMoved, ...columnsAfter];
+    //       newColumns.map((v, i) => v.position = i + 1);
+    //       // console.log(newColumns.map(v => v.name));
+    //       // Note: Can't write a computed prop (readonly).
+    //       // this.columns = newColumns;
+    //       this.updateColumnPositions({ columns: this.columns });
+    //     }
+    //   } else {
+    //     this.removeIssue({
+    //       issueId: e.dataTransfer.getData('itemID'),
+    //       columnToId: column.id
+    //     });
+    //   }
+    //   e.stopPropagation();
+    // },
 
-        if (columnMoved != null) {
-          const fromRightToLeft = columnMoved.position < column.position;
-          const columnsWoMoved = this.columns.filter(v => v.id != columnMoved.id);
-          const columnsBefore = fromRightToLeft ?
-            columnsWoMoved.filter(v => v.position <= column.position) :
-            columnsWoMoved.filter(v => v.position < column.position);
-          // console.log(columnsBefore.map(v => v.name));
-
-          const columnsAfter = fromRightToLeft ?
-            columnsWoMoved.filter(v => v.position > column.position) :
-            columnsWoMoved.filter(v => v.position >= column.position);
-          // console.log(columnsAfter.map(v => v.name));
-
-          const newColumns = [...columnsBefore, columnMoved, ...columnsAfter];
-          newColumns.map((v, i) => v.position = i + 1);
-          // console.log(newColumns.map(v => v.name));
-          // Note: Can't write a computed prop (readonly).
-          // this.columns = newColumns;
-          this.updateColumnPositions({ columns: this.columns });
-        }
-      } else {
-        this.removeIssue({
-          issueId: e.dataTransfer.getData('itemID'),
-          columnToId: column.id
-        });
-      }
-      e.stopPropagation();
-    },
     dragEnd(e, column) {
       column.isDragStart = false;
       e.preventDefault();

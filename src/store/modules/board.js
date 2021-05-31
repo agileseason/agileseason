@@ -56,17 +56,17 @@ export default {
     },
 
     // TODO: remove
-    async updateColumnPositions({ state, getters }, { columns }) {
-      const result = await api.updateColumnPositions(
-        getters.token,
-        { boardId: state.id, columns }
-      );
-      if (result?.errors?.length == 0) {
-        console.log('success');
-      } else {
-        console.error(result.errors[0]);
-      }
-    },
+    // async updateColumnPositions({ state, getters }, { columns }) {
+    //   const result = await api.updateColumnPositions(
+    //     getters.token,
+    //     { boardId: state.id, columns }
+    //   );
+    //   if (result?.errors?.length == 0) {
+    //     console.log('success');
+    //   } else {
+    //     console.error(result.errors[0]);
+    //   }
+    // },
 
     async moveColumn({ getters, state }, { fromColumnIndex, toColumnIndex }) {
       const columns = state.columns
