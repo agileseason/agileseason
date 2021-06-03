@@ -17,11 +17,9 @@ export default {
   },
   methods: {
     moveBoardColumn: call('board/moveColumn'),
+    moveColumnIssue: call('board/moveIssue'),
     // TODO: Rename
     moveTaskOrColumn (transferData) {
-      console.log('moveTaskOrColumn:');
-      console.log(transferData);
-      console.log('----------------------');
       if (transferData.type === 'column') {
         this.moveColumn(transferData)
       } else {
@@ -30,17 +28,12 @@ export default {
     },
     // TODO: Rename
     moveTask ({ fromColumnIndex, fromTaskIndex }) {
-      // const fromTasks = this.board.columns[fromColumnIndex].tasks
-      // this.$store.commit('MOVE_TASK', {
-      //   fromTasks,
-      //   fromTaskIndex,
-      //   toTasks: this.column.tasks,
-      //   toTaskIndex: this.taskIndex
-      // })
-      console.log('moveIssue:');
-      console.log('fromColumnIndex - ' + fromColumnIndex);
-      console.log('fromTaskIndex - ' + fromTaskIndex);
-      console.log('----------------------');
+      this.moveColumnIssue({
+        fromColumnIndex,
+        toColumnIndex: this.columnIndex,
+        fromIssueIndex: fromTaskIndex,
+        toIssueIndex: this.taskIndex
+      });
     },
     moveColumn ({ fromColumnIndex }) {
       this.moveBoardColumn({

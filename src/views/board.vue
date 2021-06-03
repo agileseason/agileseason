@@ -81,8 +81,7 @@ export default {
     ...call([
       'user/fetchProfileLazy',
       'board/createColumn',
-      'board/fetch',
-      'board/removeIssue'
+      'board/fetch'
     ]),
     async createNewColumn(name) {
       if (this.isSubmittingNewColumn) { return; }

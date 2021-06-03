@@ -73,6 +73,27 @@ export default {
       }
     },
 
+    async moveIssue({ getters, state }, { fromColumnIndex, toColumnIndex, fromIssueIndex, toIssueIndex }) {
+      if (fromColumnIndex === undefined) { return; }
+      if (toColumnIndex === undefined) { return; }
+      if (fromIssueIndex === undefined) { return; }
+      if (toIssueIndex === undefined) { return; }
+
+      const fromIssues = state.columns[fromColumnIndex].issues;
+      const toIssues = state.columns[toColumnIndex].issues;
+
+      const issueToMove = fromIssues.splice(fromIssueIndex, 1)[0];
+      toIssues.splice(toIssueIndex, 0, issueToMove);
+      await api.moveIssues(
+        getters.token,
+        {
+          boardId: state.id,
+          columnId: state.columns[toColumnIndex].id,
+          issueIds: toIssues.map(v => v.id)
+        }
+      );
+    },
+
     async fetchAssignableUsers({ state, getters }, { repositoryFullName }) {
       const result = await api.fetchAssignableUsers(
         getters.token,
@@ -143,6 +164,7 @@ export default {
       return result?.issue;
     },
 
+    // TODO: Remove
     removeIssue({ state, getters }, { issueId, columnToId }) {
       console.log('removeIssue');
       console.log('issueId: ' + issueId);
