@@ -1,77 +1,90 @@
 <template>
-  <div
-    class='issue'
-    :class="{ 'read-only': isReadOnly }"
-    :style='colorStyles'
-    @click='goToIssue'
-  >
-    <div class='title'>{{ title }}</div>
-    <a :href='url' class='url' @click.stop='click'>
-      <span class='number'>#{{ number }}</span>
-      {{ repositoryName }}
-    </a>
-    <div v-if='isLabels' class='labels'>
-      <Label
-        v-for='(label, $index) in labels'
-        :label='label'
-        :key='$index'
-      />
-    </div>
+  <AppDrop @drop='moveIssueOrColumn'>
+    <AppDrag
+      class='issue'
+      :class="{ 'read-only': isReadOnly }"
+      :style='colorStyles'
+      :transferData="{
+        type: 'issue',
+        fromColumnIndex: columnIndex,
+        fromIssueIndex: issueIndex
+      }"
+      @click='goToIssue'
+    >
+      <div class='title'>{{ title }}</div>
+      <a :href='url' class='url' @click.stop='click'>
+        <span class='number'>#{{ number }}</span>
+        {{ repositoryName }}
+      </a>
+      <div v-if='isLabels' class='labels'>
+        <Label
+          v-for='(label, $index) in labels'
+          :label='label'
+          :key='$index'
+        />
+      </div>
 
-    <div v-if='isAssignedOrExtra' class='assigned-or-extra'>
-      <div class='extras-and-actions'>
-        <div class='extras'>
-          <div v-if='isBody' class='extra-item body-present' />
-          <div v-if='commentsCount > 0' class='extra-item comments-count'>
-            {{ commentsCount }}
+      <div v-if='isAssignedOrExtra' class='assigned-or-extra'>
+        <div class='extras-and-actions'>
+          <div class='extras'>
+            <div v-if='isBody' class='extra-item body-present' />
+            <div v-if='commentsCount > 0' class='extra-item comments-count'>
+              {{ commentsCount }}
+            </div>
+          </div>
+
+          <div v-if='isActionVisible' class='actions'>
+            <span v-if='isClosed' class='closed'>Closed</span>
+            <FastButton
+              v-if='!isClosed'
+              name='Close'
+              icon='close'
+              @click.stop='close'
+              :is-submitting='isCloseSubmitting'
+            />
+            <FastButton
+              v-if='isClosed'
+              name='Archive'
+              icon='archive'
+              @click.stop='archive'
+              :is-submitting='isArchiveSubmitting'
+            />
           </div>
         </div>
 
-        <div v-if='isActionVisible' class='actions'>
-          <span v-if='isClosed' class='closed'>Closed</span>
-          <FastButton
-            v-if='!isClosed'
-            name='Close'
-            icon='close'
-            @click.stop='close'
-            :is-submitting='isCloseSubmitting'
-          />
-          <FastButton
-            v-if='isClosed'
-            name='Archive'
-            icon='archive'
-            @click.stop='archive'
-            :is-submitting='isArchiveSubmitting'
+        <div class='assigned'>
+          <img
+            v-for='(assignee, $index) in sortedAssignees'
+            :key='$index'
+            class='assignee'
+            :src='assignee.avatarUrl'
+            :title='assignee.login'
           />
         </div>
       </div>
-
-      <div class='assigned'>
-        <img
-          v-for='(assignee, $index) in sortedAssignees'
-          :key='$index'
-          class='assignee'
-          :src='assignee.avatarUrl'
-          :title='assignee.login'
-        />
-      </div>
-    </div>
-  </div>
+    </AppDrag>
+  </AppDrop>
 </template>
 
 <script>
+import AppDrag from '@/components/app_drag';
+import AppDrop from '@/components/app_drop';
 import Label from '@/components/board/label'
 import FastButton from '@/components/board/issues/fast_button'
+import movingIssuesAndColumns from '@/mixins/moving_issues_and_columns';
 import { call } from 'vuex-pathify';
 
 export default {
   name: 'Issue',
   components: {
+    AppDrag,
+    AppDrop,
     Label,
     FastButton
   },
   props: {
     id: { type: Number, required: true },
+    issueIndex: { type: Number, required: true },
     number: { type: Number, required: true },
     title: { type: String, required: true },
     url: { type: String, required: true },
@@ -86,6 +99,7 @@ export default {
     isLastColumn: { type: Boolean, default: false },
     isReadOnly: { type: Boolean, default: false }
   },
+  mixins: [movingIssuesAndColumns],
   data: () => ({
     isCloseSubmitting: false,
     isArchiveSubmitting: false

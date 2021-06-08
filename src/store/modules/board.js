@@ -55,7 +55,13 @@ export default {
       }
     },
 
-    async updateColumnPositions({ state, getters }, { columns }) {
+    async moveColumn({ getters, state }, { fromColumnIndex, toColumnIndex }) {
+      if (fromColumnIndex === toColumnIndex) { return; }
+
+      const columns = state.columns
+      const columnToMove = columns.splice(fromColumnIndex, 1)[0]
+      columns.splice(toColumnIndex, 0, columnToMove)
+      columns.map((v, index) => v.position = index);
       const result = await api.updateColumnPositions(
         getters.token,
         { boardId: state.id, columns }
@@ -65,6 +71,29 @@ export default {
       } else {
         console.error(result.errors[0]);
       }
+    },
+
+    async moveIssue({ getters, state }, { fromColumnIndex, toColumnIndex, fromIssueIndex, toIssueIndex }) {
+      if (fromColumnIndex === undefined) { return; }
+      if (toColumnIndex === undefined) { return; }
+      if (fromIssueIndex === undefined) { return; }
+      if (toIssueIndex === undefined) {
+        toIssueIndex = state.columns[toColumnIndex].issues.length + 1;
+      }
+
+      const fromIssues = state.columns[fromColumnIndex].issues;
+      const toIssues = state.columns[toColumnIndex].issues;
+
+      const issueToMove = fromIssues.splice(fromIssueIndex, 1)[0];
+      toIssues.splice(toIssueIndex, 0, issueToMove);
+      await api.moveIssues(
+        getters.token,
+        {
+          boardId: state.id,
+          columnId: state.columns[toColumnIndex].id,
+          issueIds: toIssues.map(v => v.id)
+        }
+      );
     },
 
     async fetchAssignableUsers({ state, getters }, { repositoryFullName }) {
@@ -137,6 +166,7 @@ export default {
       return result?.issue;
     },
 
+    // TODO: Remove
     removeIssue({ state, getters }, { issueId, columnToId }) {
       console.log('removeIssue');
       console.log('issueId: ' + issueId);
