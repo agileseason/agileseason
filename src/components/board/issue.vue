@@ -1,5 +1,5 @@
 <template>
-  <AppDrop @drop='moveTaskOrColumn'>
+  <AppDrop @drop='moveIssueOrColumn'>
     <AppDrag
       class='issue'
       :class="{ 'read-only': isReadOnly }"
@@ -7,7 +7,7 @@
       :transferData="{
         type: 'issue',
         fromColumnIndex: columnIndex,
-        fromTaskIndex: taskIndex
+        fromIssueIndex: issueIndex
       }"
       @click='goToIssue'
     >
@@ -84,7 +84,7 @@ export default {
   },
   props: {
     id: { type: Number, required: true },
-    taskIndex: { type: Number, required: true },
+    issueIndex: { type: Number, required: true },
     number: { type: Number, required: true },
     title: { type: String, required: true },
     url: { type: String, required: true },

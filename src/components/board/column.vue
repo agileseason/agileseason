@@ -1,7 +1,7 @@
 <template>
   <AppDrop
     class='column'
-    @drop='moveTaskOrColumn'
+    @drop='moveIssueOrColumn'
   >
     <AppDrag
       :transferData="{ type: 'column', fromColumnIndex: columnIndex }"
@@ -81,7 +81,7 @@
           v-bind='issue'
           :column-id='id'
           :column-index='columnIndex'
-          :task-index='$index'
+          :issue-index='$index'
           :is-read-only='isReadOnly'
           :is-last-column='isLastColumn'
         />
