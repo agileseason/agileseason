@@ -22,7 +22,6 @@
     v-show='isModalOpen'
     @click.self='backToBoard'
   >
-
     <router-view v-slot='{ Component }'>
       <transition name='slide' :duration='200'>
         <component :is='Component' />
