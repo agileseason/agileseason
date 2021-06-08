@@ -77,7 +77,9 @@ export default {
       if (fromColumnIndex === undefined) { return; }
       if (toColumnIndex === undefined) { return; }
       if (fromIssueIndex === undefined) { return; }
-      if (toIssueIndex === undefined) { return; }
+      if (toIssueIndex === undefined) {
+        toIssueIndex = state.columns[toColumnIndex].issues.length + 1;
+      }
 
       const fromIssues = state.columns[fromColumnIndex].issues;
       const toIssues = state.columns[toColumnIndex].issues;

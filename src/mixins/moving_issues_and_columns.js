@@ -28,6 +28,13 @@ export default {
     },
     // TODO: Rename
     moveTask ({ fromColumnIndex, fromTaskIndex }) {
+      // console.log('moveTask');
+      // console.log({
+      //   fromColumnIndex,
+      //   toColumnIndex: this.columnIndex,
+      //   fromIssueIndex: fromTaskIndex,
+      //   toIssueIndex: this.taskIndex
+      // });
       this.moveColumnIssue({
         fromColumnIndex,
         toColumnIndex: this.columnIndex,
