@@ -9,6 +9,7 @@
         fromColumnIndex: columnIndex,
         fromIssueIndex: issueIndex
       }"
+      :is-read-only='isReadOnly'
       @click='goToIssue'
     >
       <div class='title'>{{ title }}</div>

@@ -9,8 +9,9 @@
   <div v-if='board' class='board'>
     <div class='columns'>
       <Column
-        v-for='column in board.columns'
+        v-for='(column, $index) in board.columns'
         :key='column.id'
+        :column-index='$index'
         v-bind='column'
         is-read-only
       />

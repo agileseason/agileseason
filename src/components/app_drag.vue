@@ -1,7 +1,7 @@
 <template>
   <div
     v-bind='$attrs'
-    draggable='true'
+    :draggable='!isReadOnly'
     @dragstart.self='onDrag'
     @dragover.prevent
     @dragenter.prevent
@@ -25,7 +25,8 @@ export default {
     transferData: {
       type: Object,
       required: true
-    }
+    },
+    isReadOnly: { type: Boolean, default: false }
   },
   methods: {
     onDrag (e) {

@@ -5,6 +5,7 @@
   >
     <AppDrag
       :transferData="{ type: 'column', fromColumnIndex: columnIndex }"
+      :is-read-only='isReadOnly'
     >
       <div v-if='isAnySelectsOpen' class='select-overlay' @click.self='hideAllSelectes' />
       <div class='header' :class="{ 'read-only': isReadOnly }">
