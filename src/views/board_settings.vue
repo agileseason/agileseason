@@ -481,7 +481,7 @@ article
     min-width: 108px
 
 .public-link
-  display: block
+  display: inline-block
   margin-top: 8px
 
 .invites,
