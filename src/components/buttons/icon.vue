@@ -37,4 +37,7 @@ export default {
 
   &.gear
     background-image: url('../../assets/icons/issue/gear.svg')
+
+  &.dots
+    background-image: url('../../assets/icons/issue/dots.svg')
 </style>

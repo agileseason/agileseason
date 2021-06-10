@@ -80,7 +80,7 @@
                     commented {{ item.createdAgo }}
                   </span>
                 </div>
-                <!--ButtonIcon name='edit' @click='startEditComment' /-->
+                <ButtonIcon name='dots' @click='startEditComment' />
               </div>
 
               <div class='text markdown-body' v-html='markdown(item.body)'/>
@@ -396,6 +396,9 @@ export default {
       await this.createComment({ body: this.newComment });
       this.newComment = '';
       this.isCommentSubmitting = false;
+    },
+    startEditComment() {
+      console.log('startEditComment');
     },
     async closeIssue() {
       if (this.isStateSubmitting) { return; }
