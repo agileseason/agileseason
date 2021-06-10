@@ -12,8 +12,8 @@
         </div>
         <ButtonIcon name='dots' @click='openSettings' />
         <Select v-if='isSettingsOpen' class='select-settings'>
-          <div class='item' @click='editComment'>Edit</div>
           <div class='item' @click='replyComment'>Quote reply</div>
+          <div class='item' @click='editComment'>Edit</div>
           <div class='item' @click='deleteComment'>Delete</div>
         </Select>
       </div>
