@@ -69,23 +69,11 @@
         </div>
 
         <div v-if='isCommentLoaded' class='comments'>
-          <div v-for='item in comments' :key='item.id' class='comment'>
-            <img class='avatar' :src='item.author.avatarUrl' />
-
-            <div class='content'>
-              <div class='header'>
-                <div>
-                  <a class='author' :href='item.author.url'>{{ item.author.login }}</a>
-                  <span class='ago' :title='item.createdAt'>
-                    commented {{ item.createdAgo }}
-                  </span>
-                </div>
-                <ButtonIcon name='dots' @click='startEditComment' />
-              </div>
-
-              <div class='text markdown-body' v-html='markdown(item.body)'/>
-            </div>
-          </div>
+          <Comment
+            v-for='item in comments'
+            v-bind='item'
+            :key='item.id'
+          />
         </div>
         <MarkdownEditor
           v-if='isCommentLoaded'
@@ -174,6 +162,7 @@ import Assignees from '@/components/board/issues/assignees'
 import Button from '@/components/buttons/button'
 import ButtonIcon from '@/components/buttons/icon'
 import Colors from '@/components/board/issues/colors'
+import Comment from '@/components/board/issues/comment'
 import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
 import Loader from '@/components/loader';
@@ -192,6 +181,7 @@ export default {
     Button,
     ButtonIcon,
     Colors,
+    Comment,
     GlobalEvents,
     IssueBody,
     Labels,
@@ -396,9 +386,6 @@ export default {
       await this.createComment({ body: this.newComment });
       this.newComment = '';
       this.isCommentSubmitting = false;
-    },
-    startEditComment() {
-      console.log('startEditComment');
     },
     async closeIssue() {
       if (this.isStateSubmitting) { return; }
