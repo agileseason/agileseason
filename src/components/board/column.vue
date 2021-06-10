@@ -7,7 +7,7 @@
       :transferData="{ type: 'column', fromColumnIndex: columnIndex }"
       :is-read-only='isReadOnly'
     >
-      <div v-if='isAnySelectsOpen' class='select-overlay' @click.self='hideAllSelectes' />
+      <div v-if='isAnySelectsOpen' class='select-overlay' @click.self='hideAllSelects' />
       <div class='header' :class="{ 'read-only': isReadOnly }">
         <span class='issues-count'>{{ issuesCount }}</span>
         <span class='name'>{{ name }}</span>
@@ -141,13 +141,13 @@ export default {
       this.isSettingsOpen = !this.isSettingsOpen;
     },
     openRenameDialog() {
-      this.hideAllSelectes();
+      this.hideAllSelects();
       this.newName = this.name;
       this.isRenameDialogOpen = true;
       this.$nextTick(() => this.$refs.newName?.focus());
     },
     openDeleteDialog() {
-      this.hideAllSelectes();
+      this.hideAllSelects();
       this.isDeleteDialogOpen = true;
     },
     closeRenameDialog() {
@@ -179,7 +179,7 @@ export default {
         this.isDeleting = false;
       }
     },
-    hideAllSelectes() {
+    hideAllSelects() {
       this.isSettingsOpen = false;
     }
   }
