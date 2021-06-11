@@ -286,7 +286,7 @@ export default {
       state.isLoaded = false;
     },
     ADD_COLUMN(state, column) {
-      state.columns = [...state.columns, column];
+      state.columns.push(column);
     },
     ADD_ISSUE(state, issue) {
       const column = state.columns

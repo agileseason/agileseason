@@ -614,6 +614,26 @@ export default {
     return data?.action;
   },
 
+  async destroyComment(token, { boardId, repositoryFullName, issueId, id }) {
+    const query = `
+      mutation($boardId:Int!, $repositoryFullName:String!, $issueId:Int!, $id:Int!) {
+        action:destroyComment(input: {
+          boardId: $boardId,
+          repositoryFullName: $repositoryFullName,
+          issueId: $issueId,
+          id: $id
+        }) {
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, repositoryFullName, issueId, id };
+    const data = await this.client(token).request(query, vars);
+    this.log('destroyComment', data);
+
+    return data?.action;
+  },
+
   // ---------------------------------
   // Invites
   // ---------------------------------

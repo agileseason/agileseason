@@ -59,7 +59,7 @@ export default {
       commit('FINISH_COMMENTS_LOADING', comments);
       return comments;
     },
-    async createComment({ commit, state, getters }, { body }) {
+    async createComment({ commit, state, getters, dispatch }, { body }) {
       const result = await api.createComment(
         getters.token,
         {
@@ -71,11 +71,47 @@ export default {
       );
       if (result.comment) {
         commit('ADD_COMMENT', result.comment);
+        dispatch(
+          'board/updateBoardIssue',
+          {
+            columnId: state.columnId,
+            id: state.id,
+            commentsCount: state.comments.length
+          },
+          { root: true }
+        );
       } else {
         console.log(result.errors);
       }
 
       return result.comment;
+    },
+    async destroyComment({ commit, state, getters, dispatch }, { id }) {
+      const result = await api.destroyComment(
+        getters.token,
+        {
+          boardId: getters.boardId,
+          repositoryFullName: state.repositoryFullName,
+          issueId: state.id,
+          id: id
+        }
+      );
+      if (result.errors.length === 0) {
+        commit('REMOVE_COMMENT', id);
+        dispatch(
+          'board/updateBoardIssue',
+          {
+            columnId: state.columnId,
+            id: state.id,
+            commentsCount: state.comments.length
+          },
+          { root: true }
+        );
+      } else {
+        console.log(result.errors);
+      }
+
+      return result;
     },
     update({ commit }, { isClosed, isArchived, body }) {
       commit('UPDATE', { isClosed, isArchived, body });
@@ -121,6 +157,10 @@ export default {
     },
     ADD_COMMENT(state, comment) {
       state.comments.push(comment);
+    },
+    REMOVE_COMMENT(state, id) {
+      const index = state.comments.findIndex(v => v.id === id);
+      state.comments.splice(index, 1);
     },
   }
 };

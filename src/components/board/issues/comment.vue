@@ -1,5 +1,5 @@
 <template>
-  <div class='comment'>
+  <div class='comment' :class="{ 'disabled': isDeleting }">
     <img class='avatar' :src='author.avatarUrl' />
 
     <div class='content'>
@@ -28,6 +28,7 @@
 <script>
 import ButtonIcon from '@/components/buttons/icon'
 import Select from '@/components/select';
+import { call } from 'vuex-pathify';
 
 const marked = require('marked');
 
@@ -44,9 +45,13 @@ export default {
     Select
   },
   data: () => ({
-    isSettingsOpen: false
+    isSettingsOpen: false,
+    isDeleting: false
   }),
   methods: {
+    ...call([
+      'issue/destroyComment'
+    ]),
     openSettings() { this.isSettingsOpen = true; },
     closeSettings() { this.isSettingsOpen = false; },
     editComment() {
@@ -57,10 +62,13 @@ export default {
       console.log('reply');
       this.isSettingsOpen = false;
     },
-    deleteComment() {
+    async deleteComment() {
+      if (this.isDeleting) { return; }
+
       if (confirm('Are you sure you want to delete this?')) {
         this.isSettingsOpen = false;
-        console.log('TODO: Delete comment - ' + this.id);
+        this.isDeleting = true;
+        await this.destroyComment({ id: this.id });
       }
     },
     // https://marked.js.org/using_advanced#options
@@ -85,6 +93,9 @@ export default {
 .comment
   position: relative
   margin-bottom: 20px
+
+  &.disabled
+    opacity: 0.5
 
   .avatar
     width: 40px
