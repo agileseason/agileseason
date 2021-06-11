@@ -14,7 +14,7 @@
         <Select v-if='isSettingsOpen' class='select-settings'>
           <div class='item' @click='replyComment'>Quote reply</div>
           <div class='item' @click='editComment'>Edit</div>
-          <div class='item' @click='deleteComment'>Delete</div>
+          <div class='item danger' @click='deleteComment'>Delete</div>
         </Select>
       </div>
 
@@ -137,15 +137,24 @@ export default {
         color: #9e9e9e
         font-weight: 200
 
+// TODO: Remove duplications (see board/column.vue)
 .select-settings
   position: absolute
   z-index: 2
   right: 0
   top: 32px
+  overflow: hidden
 
   .item
     cursor: pointer
     padding: 8px 10px
+
+    &.danger
+      color: #d73a49
+
+      &:hover
+        background-color: #d73a49
+        color: #fff
 
     &:hover
       background-color: #c5cae9
