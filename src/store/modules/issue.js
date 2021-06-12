@@ -86,6 +86,24 @@ export default {
 
       return result.comment;
     },
+    async updateComment({ commit, state, getters }, { id, body }) {
+      const result = await api.updateComment(
+        getters.token,
+        {
+          boardId: getters.boardId,
+          repositoryFullName: state.repositoryFullName,
+          id,
+          body
+        }
+      );
+      if (result.errors.length === 0) {
+        commit('UPDATE_COMMENT', { id, body });
+      } else {
+        console.log(result.errors);
+      }
+
+      return result;
+    },
     async destroyComment({ commit, state, getters, dispatch }, { id }) {
       const result = await api.destroyComment(
         getters.token,
@@ -93,7 +111,7 @@ export default {
           boardId: getters.boardId,
           repositoryFullName: state.repositoryFullName,
           issueId: state.id,
-          id: id
+          id
         }
       );
       if (result.errors.length === 0) {
@@ -158,9 +176,15 @@ export default {
     ADD_COMMENT(state, comment) {
       state.comments.push(comment);
     },
+    UPDATE_COMMENT(state, { id, body }) {
+      const comment = state.comments.find(v => v.id === id);
+      if (comment) {
+        comment.body = body;
+      }
+    },
     REMOVE_COMMENT(state, id) {
       const index = state.comments.findIndex(v => v.id === id);
       state.comments.splice(index, 1);
-    },
+    }
   }
 };

@@ -614,6 +614,26 @@ export default {
     return data?.action;
   },
 
+  async updateComment(token, { boardId, repositoryFullName, id, body }) {
+    const query = `
+      mutation($boardId:Int!, $repositoryFullName:String!, $id:Int!, $body:String!) {
+        action:updateComment(input: {
+          boardId: $boardId,
+          repositoryFullName: $repositoryFullName,
+          id: $id,
+          body: $body
+        }) {
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, repositoryFullName, id, body };
+    const data = await this.client(token).request(query, vars);
+    this.log('updateComment', data);
+
+    return data?.action;
+  },
+
   async destroyComment(token, { boardId, repositoryFullName, issueId, id }) {
     const query = `
       mutation($boardId:Int!, $repositoryFullName:String!, $issueId:Int!, $id:Int!) {

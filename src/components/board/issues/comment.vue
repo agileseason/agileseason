@@ -1,5 +1,5 @@
 <template>
-  <div class='comment' :class="{ 'disabled': isDeleting }">
+  <div class='comment' :class="{ 'disabled': isDeleting || isSubmitting }">
     <img class='avatar' :src='author.avatarUrl' />
 
     <div v-if='!isEdit' class='content'>
@@ -87,6 +87,7 @@ export default {
   },
   methods: {
     ...call([
+      'issue/updateComment',
       'issue/destroyComment'
     ]),
     openSettings() { this.isSettingsOpen = true; },
@@ -101,9 +102,14 @@ export default {
       this.isSettingsOpen = false;
       this.$emit('reply', this.bodyReply);
     },
-    update() {
-      console.log('update');
+    async update() {
+      if (this.newComment == '') { return; }
+      if (this.isSubmitting) { return; }
+
+      this.isSubmitting = true;
+      await this.updateComment({ id: this.id, body: this.newComment });
       this.isEdit = false;
+      this.isSubmitting = false;
     },
     cancel() {
       this.isEdit = false;
