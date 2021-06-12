@@ -2,7 +2,7 @@
   <div class='comment' :class="{ 'disabled': isDeleting }">
     <img class='avatar' :src='author.avatarUrl' />
 
-    <div class='content'>
+    <div v-if='!isStartEdit' class='content'>
       <div class='header'>
         <div>
           <a class='author' :href='author.url'>{{ author.login }}</a>
@@ -20,13 +20,34 @@
 
       <div class='text markdown-body' v-html='markdown(body)'/>
     </div>
+    <MarkdownEditor
+      v-if='isStartEdit'
+      v-model='newComment'
+      class='content'
+    >
+      <template #actions>
+        <Button
+          type='outline'
+          text='Cancel'
+          @click='cancelEditBody'
+        />
+        <Button
+          type='indigo'
+          text='Update comment'
+          :isLoading='isSubmitting'
+          @click='updateBody'
+        />
+      </template>
+    </MarkdownEditor>
 
     <div v-if='isSettingsOpen' class='select-overlay' @click.self='closeSettings' />
   </div>
 </template>
 
 <script>
+import Button from '@/components/buttons/button'
 import ButtonIcon from '@/components/buttons/icon'
+import MarkdownEditor from '@/components/board/issues/markdown_editor'
 import Select from '@/components/select';
 import { call } from 'vuex-pathify';
 
@@ -41,12 +62,16 @@ export default {
     body: { type: String, required: true }
   },
   components: {
+    Button,
     ButtonIcon,
+    MarkdownEditor,
     Select
   },
   emits: ['reply'],
   data: () => ({
+    newComment: '',
     isSettingsOpen: false,
+    isStartEdit: false,
     isDeleting: false
   }),
   computed: {
@@ -178,4 +203,7 @@ export default {
 
     &:not(:last-child)
       border-bottom: 1px solid #c5cae9
+
+.button + .button
+  margin-left: 16px
 </style>

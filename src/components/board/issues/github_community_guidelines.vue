@@ -16,7 +16,7 @@ export default {
 .note
   color: #9fa8da
   font-size: 10px
-  margin: 2px 0 2px 50px
+  margin: 2px 0 2px 0
 
   a
     color: #3f51b5

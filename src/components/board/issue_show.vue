@@ -559,6 +559,7 @@ export default {
 
 .comment-new
   min-height: 100px
+  margin-left: 50px
 
 .comments-actions
   display: flex

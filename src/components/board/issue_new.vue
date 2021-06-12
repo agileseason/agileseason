@@ -27,6 +27,7 @@
         <MarkdownEditor
           v-model='body'
           :assignable-users='assignableUsers'
+          class='body'
         />
 
         <div class='actions'>
@@ -334,6 +335,9 @@ input.title
     color: #7986cb
   &::-ms-input-placeholder
     color: #7986cb
+
+.body
+  margin-left: 50px
 
 .right
   margin-top: 16px

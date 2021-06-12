@@ -250,11 +250,10 @@ textarea
   font-size: 14px
   font-weight: 300
   line-height: 18px
-  margin-left: 50px
   min-height: 180px
   padding: 8px
   resize: none
-  width: calc(100% - 50px) // 100% - margin-left
+  width: 100%
 
   &::placeholder
     color: #9fa8da
