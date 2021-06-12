@@ -48,7 +48,9 @@ export default {
       type: [String, Number],
       default: ''
     },
-    assignableUsers: { type: Array, required: true }
+    assignableUsers: { type: Array, required: true },
+    mentionPositionTop: { type: Number, default: 20 },
+    mentionPositionLeft: { type: Number, default: 20 }
   },
   emits: ['submit', 'update:modelValue'],
   data: () => ({
@@ -89,9 +91,12 @@ export default {
     },
     displayedItems() { return this.filteredItems.slice(0, this.limit); },
     modalPositionStyles() {
-      if (this.caretPosition == null) { return 'top: 20px; left: 68px;' }
+      if (this.caretPosition == null) {
+        return `top: ${this.mentionPositionTop}px; left: ${this.mentionPositionLeft}px;`;
+      }
+
       const { top, left } = this.caretPosition;
-      return `top: ${top + 20}px; left: ${left + 68}px;`;
+      return `top: ${top + this.mentionPositionTop}px; left: ${left + this.mentionPositionLeft}px;`;
     }
   },
   mounted() {

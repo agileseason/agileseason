@@ -2,7 +2,7 @@
   <div class='comment' :class="{ 'disabled': isDeleting }">
     <img class='avatar' :src='author.avatarUrl' />
 
-    <div v-if='!isStartEdit' class='content'>
+    <div v-if='!isEdit' class='content'>
       <div class='header'>
         <div>
           <a class='author' :href='author.url'>{{ author.login }}</a>
@@ -21,21 +21,24 @@
       <div class='text markdown-body' v-html='markdown(body)'/>
     </div>
     <MarkdownEditor
-      v-if='isStartEdit'
+      v-if='isEdit'
       v-model='newComment'
+      :assignable-users='assignableUsers'
+      :mention-position-top=30
+      :mention-position-left=30
       class='content'
     >
       <template #actions>
         <Button
           type='outline'
           text='Cancel'
-          @click='cancelEditBody'
+          @click='cancel'
         />
         <Button
           type='indigo'
           text='Update comment'
           :isLoading='isSubmitting'
-          @click='updateBody'
+          @click='update'
         />
       </template>
     </MarkdownEditor>
@@ -59,7 +62,8 @@ export default {
     author: { type: Object, required: true },
     createdAt: { type: String, required: true },
     createdAgo: { type: String, required: true },
-    body: { type: String, required: true }
+    body: { type: String, required: true },
+    assignableUsers: { type: Array, required: true }
   },
   components: {
     Button,
@@ -71,7 +75,8 @@ export default {
   data: () => ({
     newComment: '',
     isSettingsOpen: false,
-    isStartEdit: false,
+    isEdit: false,
+    isSubmitting: false,
     isDeleting: false
   }),
   computed: {
@@ -86,12 +91,19 @@ export default {
     openSettings() { this.isSettingsOpen = true; },
     closeSettings() { this.isSettingsOpen = false; },
     editComment() {
-      console.log('edit');
       this.isSettingsOpen = false;
+      this.isEdit = true;
     },
     replyComment() {
       this.isSettingsOpen = false;
       this.$emit('reply', this.bodyReply);
+    },
+    update() {
+      console.log('update');
+      this.isEdit = false;
+    },
+    cancel() {
+      this.isEdit = false;
     },
     async deleteComment() {
       if (this.isDeleting) { return; }

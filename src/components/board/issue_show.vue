@@ -72,6 +72,7 @@
           <Comment
             v-for='item in comments'
             v-bind='item'
+            :assignable-users='assignableUsers'
             :key='item.id'
             @reply='replyComment'
           />
