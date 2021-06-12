@@ -48,9 +48,10 @@ a {
 }
 
 .markdown-body blockquote {
+  border-left: .25em solid #9fa8da;
+  color: #757575;
   margin: 0;
   padding: 0 1em;
-  border-left: .25em solid #9fa8da;
 }
 
 .markdown-body a {
