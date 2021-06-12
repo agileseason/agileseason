@@ -73,11 +73,13 @@
             v-for='item in comments'
             v-bind='item'
             :key='item.id'
+            @reply='replyComment'
           />
         </div>
         <MarkdownEditor
           v-if='isCommentLoaded'
           v-model='newComment'
+          ref='newComment'
           :assignable-users='assignableUsers'
           :disabled='isCommentSubmitting'
           class='comment-new'
@@ -434,6 +436,10 @@ export default {
     cancelEditBody() {
       this.isEditBody = false;
       this.newBody = this.fetchedIssue.body;
+    },
+    replyComment(body) {
+      this.newComment = `${body}\n\n`;
+      this.$nextTick(() => this.$refs.newComment.$refs.textarea.focus());
     },
     // https://marked.js.org/using_advanced#options
     markdown(text) {

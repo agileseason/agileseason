@@ -44,10 +44,16 @@ export default {
     ButtonIcon,
     Select
   },
+  emits: ['reply'],
   data: () => ({
     isSettingsOpen: false,
     isDeleting: false
   }),
+  computed: {
+    bodyReply() {
+      return this.body.replace(/^/g, '> ').replace(/\n/g, "\n> ");
+    }
+  },
   methods: {
     ...call([
       'issue/destroyComment'
@@ -59,8 +65,8 @@ export default {
       this.isSettingsOpen = false;
     },
     replyComment() {
-      console.log('reply');
       this.isSettingsOpen = false;
+      this.$emit('reply', this.bodyReply);
     },
     async deleteComment() {
       if (this.isDeleting) { return; }

@@ -36,15 +36,21 @@ a {
   text-decoration: none;
 }
 
+.markdown-body {
+  font-size: 14px;
+  line-height: 18px;
+}
+
 .markdown-body h1,
 .markdown-body h2 {
   padding-bottom: .3em;
   border-bottom: 1px solid #e8eaf6;
 }
 
-.markdown-body {
-  font-size: 14px;
-  line-height: 18px;
+.markdown-body blockquote {
+  margin: 0;
+  padding: 0 1em;
+  border-left: .25em solid #9fa8da;
 }
 
 .markdown-body a {
