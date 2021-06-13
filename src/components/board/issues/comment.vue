@@ -204,11 +204,11 @@ export default {
 
 // TODO: Remove duplications (see board/column.vue)
 .select-settings
+  overflow: hidden
   position: absolute
-  z-index: 2
   right: 0
   top: 32px
-  overflow: hidden
+  z-index: 2
 
   .item
     cursor: pointer

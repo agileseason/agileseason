@@ -16,8 +16,8 @@
           <div class='column-settings' @click='columnSettings' />
         </div>
         <Select v-if='isSettingsOpen' class='select-settings'>
-          <div class='item' @click='openRenameDialog'>Rename column</div>
-          <div class='item' @click='openDeleteDialog'>Delete column</div>
+          <div class='item' @click='openRenameDialog'>Edit</div>
+          <div class='item danger' @click='openDeleteDialog'>Delete</div>
         </Select>
         <Dialog
           v-if='isRenameDialogOpen'
@@ -35,6 +35,17 @@
             placeholder='New column name'
             ref='newName'
           />
+          <div class='automation'>
+            <div class='title'>Automation</div>
+            <label>
+              <input type='checkbox'>
+              Auto-assign yourself
+            </label>
+            <label>
+              <input type='checkbox'>
+              Auto-close issue
+            </label>
+          </div>
           <template #actions>
             <Button @click='closeRenameDialog' type='flat' text='Close' />
             <Button
@@ -196,14 +207,23 @@ export default {
   z-index: 1
 
 .select-settings
+  overflow: hidden
   position: absolute
-  z-index: 2
   right: 0
   top: 32px
+  z-index: 2
 
   .item
     cursor: pointer
     padding: 8px 10px
+    min-width: 100px
+
+    &.danger
+      color: #d73a49
+
+      &:hover
+        background-color: #d73a49
+        color: #fff
 
     &:hover
       background-color: #c5cae9
@@ -238,6 +258,26 @@ export default {
       color: #9fa8da
     &::-ms-input-placeholder
       color: #9fa8da
+
+  .automation
+    margin: 8px 0 12px
+
+    .title
+      color: #fff
+      font-size: 14px
+      font-weight: 500
+      margin-bottom: 8px
+
+    label
+      align-items: center
+      cursor: pointer
+      display: block
+      display: flex
+      font-weight: 200
+      margin-bottom: 8px
+
+      input
+        margin: 0 6px 0 0
 
   button + button
     margin-left: 2px
