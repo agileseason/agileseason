@@ -20,7 +20,7 @@
           <div class='item danger' @click='openDeleteDialog'>Delete</div>
         </Select>
         <Dialog
-          v-if='isRenameDialogOpen'
+          v-if='isDialogOpen'
           @close='closeRenameDialog'
           class='dialog'
           style='top: 32px'
@@ -38,19 +38,19 @@
           <div class='automation'>
             <div class='title'>Automation</div>
             <label>
-              <input type='checkbox'>
+              <input v-model='newIsAutoAssign' type='checkbox'>
               Auto-assign yourself
             </label>
             <label>
-              <input type='checkbox'>
+              <input v-model='newIsAutoClose' type='checkbox'>
               Auto-close issue
             </label>
           </div>
           <template #actions>
             <Button @click='closeRenameDialog' type='flat' text='Close' />
             <Button
-              :is-loading='isSubmittingNewName'
-              @click='submitNewName'
+              :is-loading='isSubmitting'
+              @click='submit'
               type='white'
               text='Update'
             />
@@ -119,16 +119,20 @@ export default {
     name: { type: String, default: 'Unknown' },
     position: { type: Number, required: true },
     issues: { type: Array, required: true },
+    isAutoAssign: { type: Boolean, default: false },
+    isAutoClose: { type: Boolean, default: false },
     isLastColumn: { type: Boolean, default: false },
     isReadOnly: { type: Boolean, default: false }
   },
   mixins: [movingIssuesAndColumns],
   data: () => ({
     newName: '',
+    newIsAutoAssign: false,
+    newIsAutoClose: false,
     isSettingsOpen: false,
-    isRenameDialogOpen: false,
+    isDialogOpen: false,
     isDeleteDialogOpen: false,
-    isSubmittingNewName: false,
+    isSubmitting: false,
     isDeleting: false
   }),
   computed: {
@@ -154,7 +158,9 @@ export default {
     openRenameDialog() {
       this.hideAllSelects();
       this.newName = this.name;
-      this.isRenameDialogOpen = true;
+      this.newIsAutoAssign = this.isAutoAssign;
+      this.newIsAutoClose = this.isAutoClose;
+      this.isDialogOpen = true;
       this.$nextTick(() => this.$refs.newName?.focus());
     },
     openDeleteDialog() {
@@ -162,22 +168,26 @@ export default {
       this.isDeleteDialogOpen = true;
     },
     closeRenameDialog() {
-      this.isRenameDialogOpen = false;
+      this.isDialogOpen = false;
     },
     closeDeleteDialog() {
       this.isDeleteDialogOpen = false;
     },
-    async submitNewName() {
-      if (this.newName === '') { return; }
-      if (this.isSubmittingNewName) { return; }
+    async submit() {
+      if (this.isSubmitting) { return; }
 
-      if (this.name === this.newName) {
-        this.isRenameDialogOpen = false;
+      if (this.name === this.newName && this.isAutoAssign === this.newIsAutoAssign && this.isAutoClose === this.newIsAutoClose) {
+        this.isDialogOpen = false;
       } else {
-        this.isSubmittingNewName = true;
-        await this.updateBoardColumn({ id: this.id, name: this.newName });
-        this.isSubmittingNewName = false;
-        this.isRenameDialogOpen = false;
+        this.isSubmitting = true;
+        await this.updateBoardColumn({
+          id: this.id,
+          name: this.newName,
+          isAutoAssign: this.newIsAutoAssign,
+          isAutoClose: this.newIsAutoClose
+        });
+        this.isSubmitting = false;
+        this.isDialogOpen = false;
       }
     },
     async deleteColumn() {

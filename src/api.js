@@ -158,7 +158,7 @@ export default {
           name
           isOwner
           columns {
-            id name position
+            id name position isAutoAssign isAutoClose
             issues {
               id
               number
@@ -338,17 +338,29 @@ export default {
     return data?.action;
   },
 
-  async updateColumn(token, { id, name, boardId }) {
+  async updateColumn(token, { id, boardId, name, isAutoAssign, isAutoClose }) {
     const query = `
-      mutation($id:Int!, $name:String!, $boardId:Int!) {
-        action:updateColumn(input: { id: $id, name: $name, boardId: $boardId }) {
+      mutation(
+        $id:Int!,
+        $boardId:Int!,
+        $name:String!,
+        $isAutoAssign:Boolean!,
+        $isAutoClose:Boolean!
+      ) {
+        action:updateColumn(input: {
+          id: $id,
+          boardId: $boardId,
+          name: $name,
+          isAutoAssign: $isAutoAssign,
+          isAutoClose: $isAutoClose
+        }) {
           id
           name
           errors
         }
       }
     `;
-    const vars = { id, name, boardId };
+    const vars = { id, boardId, name, isAutoAssign, isAutoClose };
     const data = await this.client(token).request(query, vars);
     this.log('updateColumn', data, vars);
 

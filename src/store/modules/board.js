@@ -243,13 +243,18 @@ export default {
       }
     },
 
-    async updateBoardColumn({ getters, state }, { id, name }) {
+    async updateBoardColumn({ getters, state }, { id, name, isAutoAssign, isAutoClose }) {
       const column = state.columns.find(v => v.id === id);
       if (column == null) { return; }
 
-      const result = await api.updateColumn(getters.token, { id, name, boardId: state.id });
+      const result = await api.updateColumn(
+        getters.token,
+        { id, name, boardId: state.id, isAutoAssign, isAutoClose }
+      );
       if (result.errors.length === 0) {
         column.name = name;
+        column.isAutoAssign = isAutoAssign;
+        column.isAutoClose = isAutoClose;
       }
     },
 
