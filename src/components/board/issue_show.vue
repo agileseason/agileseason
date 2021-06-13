@@ -83,6 +83,7 @@
           ref='newComment'
           :assignable-users='assignableUsers'
           :disabled='isCommentSubmitting'
+          @submit='submitNewComment'
           class='comment-new'
         />
         <div v-if='isCommentLoaded' class='comments-actions'>

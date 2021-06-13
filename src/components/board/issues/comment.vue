@@ -27,6 +27,7 @@
       :assignable-users='assignableUsers'
       :mention-position-top=30
       :mention-position-left=30
+      @submit='update'
       class='content'
     >
       <template #actions>
