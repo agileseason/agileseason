@@ -18,6 +18,9 @@ export default {
     token: (state, getters, rootState, rootGetters) => (
       rootGetters['user/token']
     ),
+    username: (state, getters, rootState, rootGetters) => (
+      rootGetters['user/username']
+    ),
     isNotFound: (state) => (!state.isLoading && !state.isLoaded),
     mentionIssues: (state) => {
       if (!state.isLoaded) { return []; }
@@ -86,14 +89,6 @@ export default {
 
       const issueToMove = fromIssues.splice(fromIssueIndex, 1)[0];
       toIssues.splice(toIssueIndex, 0, issueToMove);
-      await api.moveIssues(
-        getters.token,
-        {
-          boardId: state.id,
-          columnId: state.columns[toColumnIndex].id,
-          issueIds: toIssues.map(v => v.id)
-        }
-      );
       const toColumn = state.columns[toColumnIndex];
       if (toColumn.isAutoClose && !issueToMove.isClosed) {
         dispatch(
@@ -107,6 +102,27 @@ export default {
           }
         );
       }
+      if (toColumn.isAutoAssign && issueToMove.assignees.length === 0) {
+        const login = getters.username;
+        dispatch(
+          'board/updateIssue',
+          {
+            id: issueToMove.id,
+            columnId: state.columns[toColumnIndex].id,
+            assignees: [{ login }]
+          }, {
+            root: true
+          }
+        );
+      }
+      await api.moveIssues(
+        getters.token,
+        {
+          boardId: state.id,
+          columnId: state.columns[toColumnIndex].id,
+          issueIds: toIssues.map(v => v.id)
+        }
+      );
     },
 
     async fetchAssignableUsers({ state, getters }, { repositoryFullName }) {
@@ -159,7 +175,7 @@ export default {
         // todo: Show errors (result.errors).
         console.error(result.errors[0]);
       } else {
-        dispatch('updateBoardIssue', { id, title, body, columnId, assignees, labels, color });
+        dispatch('updateBoardIssue', { ...result.issue, columnId });
       }
       return result?.issue;
     },

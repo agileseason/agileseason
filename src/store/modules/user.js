@@ -25,6 +25,7 @@ export default {
   getters: {
     isSignedIn: state => (state.rememberToken != null),
     token: state => (state.rememberToken),
+    username: state => (state.username),
     isLoaded: state => (state.username !== undefined)
   },
 

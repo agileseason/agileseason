@@ -535,7 +535,7 @@ export default {
 
   async updateIssue(token, { id, boardId, title, body, assignees, labels, color }) {
     const query = `
-      mutation($id:Int!, $boardId:Int!, $title:String, $body:String, $assignees:[String], $labels:[String], $color:String) {
+      mutation($id:Int!, $boardId:Int!, $title:String, $body:String, $assignees:[String!], $labels:[String!], $color:String) {
         updateIssue(input: {
           id: $id,
           boardId: $boardId,
