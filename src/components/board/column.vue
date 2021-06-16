@@ -11,6 +11,10 @@
       <div class='header' :class="{ 'read-only': isReadOnly }">
         <span class='issues-count'>{{ issuesCount }}</span>
         <span class='name'>{{ name }}</span>
+        <span v-if='isIcons' class='icons'>
+          <span v-if='isAutoAssign' class='icon is-auto-assign' title='Auto-assign youself' />
+          <span v-if='isAutoClose' class='icon is-auto-close' title='Auto-close issue' />
+        </span>
         <div v-if='!isReadOnly' class='actions'>
           <div class='issue-new' @click='issueNew' />
           <div class='column-settings' @click='columnSettings' />
@@ -122,7 +126,7 @@ export default {
     isAutoAssign: { type: Boolean, default: false },
     isAutoClose: { type: Boolean, default: false },
     isLastColumn: { type: Boolean, default: false },
-    isReadOnly: { type: Boolean, default: false }
+    isReadOnly: { type: Boolean, default: false },
   },
   mixins: [movingIssuesAndColumns],
   data: () => ({
@@ -139,7 +143,8 @@ export default {
     issuesCount() { return this.notArchivedIssues.length; },
     notArchivedIssues() { return this.issues.filter(issue => !issue.isArchived); },
     isAnySelectsOpen() { return this.isSettingsOpen; },
-    deleteDialogTitle() { return `Delete ${ this.name }`; }
+    deleteDialogTitle() { return `Delete ${ this.name }`; },
+    isIcons() { return this.isAutoAssign || this.isAutoClose; }
   },
   methods: {
     ...call([
@@ -338,6 +343,24 @@ export default {
       font-weight: 500
       line-height: 24px
       vertical-align: bottom
+
+    .icons
+      .icon
+        background-position: center
+        background-repeat: no-repeat
+        display: inline-block
+        height: 16px
+        margin-left: 6px
+        vertical-align: bottom
+        width: 16px
+
+        &.is-auto-assign
+          margin-bottom: 3px
+          background-image: url('../../assets/icons/column/person.svg')
+
+        &.is-auto-close
+          background-image: url('../../assets/icons/column/closed.svg')
+          margin-bottom: 4px
 
     .actions
       float: right
