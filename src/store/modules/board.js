@@ -73,7 +73,7 @@ export default {
       }
     },
 
-    async moveIssue({ getters, state }, { fromColumnIndex, toColumnIndex, fromIssueIndex, toIssueIndex }) {
+    async moveIssue({ getters, state, dispatch }, { fromColumnIndex, toColumnIndex, fromIssueIndex, toIssueIndex }) {
       if (fromColumnIndex === undefined) { return; }
       if (toColumnIndex === undefined) { return; }
       if (fromIssueIndex === undefined) { return; }
@@ -94,6 +94,19 @@ export default {
           issueIds: toIssues.map(v => v.id)
         }
       );
+      const toColumn = state.columns[toColumnIndex];
+      if (toColumn.isAutoClose && !issueToMove.isClosed) {
+        dispatch(
+          'board/updateIssueState',
+          {
+            id: issueToMove.id,
+            columnId: state.columns[toColumnIndex].id,
+            isClosed: true
+          }, {
+            root: true
+          }
+        );
+      }
     },
 
     async fetchAssignableUsers({ state, getters }, { repositoryFullName }) {
