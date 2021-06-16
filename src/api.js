@@ -485,8 +485,8 @@ export default {
         $title:String!,
         $body:String,
         $position:String,
-        $assignees:[String],
-        $labels:[String],
+        $assignees:[String!],
+        $labels:[String!],
         $color:String
       ) {
         createIssue(input: {
