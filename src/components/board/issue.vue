@@ -63,7 +63,9 @@
           />
         </div>
       </div>
-      <Progress :percentage='progress' />
+      <div v-if='total' class='progress-container'>
+        <Progress :total='total' :done='done' />
+      </div>
     </AppDrag>
   </AppDrop>
 </template>
@@ -105,7 +107,8 @@ export default {
   },
   mixins: [movingIssuesAndColumns],
   data: () => ({
-    progress: 50,
+    total: 10,
+    done: 5,
     isCloseSubmitting: false,
     isArchiveSubmitting: false
   }),
@@ -175,7 +178,9 @@ export default {
 .issue
   background-color: #fff
   border-radius: 4px
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12)
   margin-bottom: 8px
+  overflow: hidden
   padding: 8px
 
   &:not(.read-only)
@@ -273,4 +278,7 @@ export default {
         height: 22px
         margin: 2px 0 0 4px
         width: 22px
+
+  .progress-container
+    margin: 8px -10px -8px -10px
 </style>
