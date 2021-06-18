@@ -505,6 +505,11 @@ export default {
     font-weight: 500
     line-height: 22px
 
+.issue
+  .left
+    max-height: 88vh
+    overflow-y: scroll
+
 .comment
   position: relative
   margin-bottom: 20px
