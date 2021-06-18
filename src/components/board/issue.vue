@@ -63,6 +63,7 @@
           />
         </div>
       </div>
+      <Progress :percentage='progress' />
     </AppDrag>
   </AppDrop>
 </template>
@@ -70,8 +71,9 @@
 <script>
 import AppDrag from '@/components/app_drag';
 import AppDrop from '@/components/app_drop';
-import Label from '@/components/board/label'
-import FastButton from '@/components/board/issues/fast_button'
+import Label from '@/components/board/label';
+import Progress from '@/components/board/issues/progress';
+import FastButton from '@/components/board/issues/fast_button';
 import movingIssuesAndColumns from '@/mixins/moving_issues_and_columns';
 import { call } from 'vuex-pathify';
 
@@ -81,7 +83,8 @@ export default {
     AppDrag,
     AppDrop,
     Label,
-    FastButton
+    FastButton,
+    Progress
   },
   props: {
     id: { type: Number, required: true },
@@ -102,6 +105,7 @@ export default {
   },
   mixins: [movingIssuesAndColumns],
   data: () => ({
+    progress: 50,
     isCloseSubmitting: false,
     isArchiveSubmitting: false
   }),
@@ -261,7 +265,6 @@ export default {
     .assigned
       text-align: right
       width: 130px
-      // width: 104px
 
       .assignee
         display: inline-block
