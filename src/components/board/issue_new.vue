@@ -340,7 +340,7 @@ input.title
   margin-left: 50px
 
 .right
-  margin-top: 16px
+  margin: 16px 0
   vertical-align: top
 
 .actions
