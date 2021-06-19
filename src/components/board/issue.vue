@@ -63,8 +63,8 @@
           />
         </div>
       </div>
-      <div v-if='total' class='progress-container'>
-        <Progress :total='total' :done='done' />
+      <div v-if='totalSubtasks > 0' class='progress-container'>
+        <Progress :total='totalSubtasks' :done='doneSubtasks' />
       </div>
     </AppDrag>
   </AppDrop>
@@ -102,13 +102,13 @@ export default {
     commentsCount: { type: Number, required: true },
     color: { type: String, required: false, default: null },
     columnId: { type: Number, required: true },
+    totalSubtasks: { type: Number, required: true },
+    doneSubtasks: { type: Number, required: true },
     isLastColumn: { type: Boolean, default: false },
     isReadOnly: { type: Boolean, default: false }
   },
   mixins: [movingIssuesAndColumns],
   data: () => ({
-    total: 10,
-    done: 5,
     isCloseSubmitting: false,
     isArchiveSubmitting: false
   }),

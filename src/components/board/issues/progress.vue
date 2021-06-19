@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if='percentage'
+    v-if='isVisible'
     v-bind='$attrs'
     class='progress'
   >
@@ -14,18 +14,18 @@
 <script>
 export default {
   props: {
-    total: { type: Number, default: null },
-    done: { type: Number, default: null }
+    total: { type: Number, default: 0 },
+    done: { type: Number, default: 0 }
   },
   computed: {
+    isVisible() { return this.total > 0; },
     percentage() {
-      if (this.total == null || this.done == null) { return null; }
-      if (this.done == 0) { return 0; }
+      if (this.done === 0) { return 0; }
 
       return Math.round((this.done / this.total) * 100);
     },
     barStyle() {
-      return 'width: 50%';
+      return `width: ${this.percentage}%`;
     }
   }
 }
