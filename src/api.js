@@ -172,6 +172,8 @@ export default {
               isBody
               commentsCount
               color
+              totalSubtasks
+              doneSubtasks
             }
           }
           repositories {
@@ -444,6 +446,8 @@ export default {
             author { login url avatarUrl }
             assignees { login url avatarUrl }
             color
+            totalSubtasks
+            doneSubtasks
           }
           errors
         }
@@ -519,6 +523,8 @@ export default {
             isBody
             commentsCount
             color
+            totalSubtasks
+            doneSubtasks
           }
           errors
         }
@@ -554,6 +560,8 @@ export default {
             color
             isClosed
             isArchived
+            totalSubtasks
+            doneSubtasks
           }
           errors
         }

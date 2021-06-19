@@ -48,6 +48,7 @@
             ref='body'
             v-if='isEditBody'
             v-model='newBody'
+            class='issue-body-editor'
             :assignable-users='assignableUsers'
             :disabled='isSubmitting'
             @submit='updateBody'
@@ -509,6 +510,9 @@ export default {
   .left
     max-height: 88vh
     overflow-y: scroll
+
+  .issue-body-editor
+    padding-left: 50px
 
 .comment
   position: relative

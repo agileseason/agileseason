@@ -63,6 +63,9 @@
           />
         </div>
       </div>
+      <div v-if='totalSubtasks > 0' class='progress-container'>
+        <Progress :total='totalSubtasks' :done='doneSubtasks' />
+      </div>
     </AppDrag>
   </AppDrop>
 </template>
@@ -70,8 +73,9 @@
 <script>
 import AppDrag from '@/components/app_drag';
 import AppDrop from '@/components/app_drop';
-import Label from '@/components/board/label'
-import FastButton from '@/components/board/issues/fast_button'
+import Label from '@/components/board/label';
+import Progress from '@/components/board/issues/progress';
+import FastButton from '@/components/board/issues/fast_button';
 import movingIssuesAndColumns from '@/mixins/moving_issues_and_columns';
 import { call } from 'vuex-pathify';
 
@@ -81,7 +85,8 @@ export default {
     AppDrag,
     AppDrop,
     Label,
-    FastButton
+    FastButton,
+    Progress
   },
   props: {
     id: { type: Number, required: true },
@@ -97,6 +102,8 @@ export default {
     commentsCount: { type: Number, required: true },
     color: { type: String, required: false, default: null },
     columnId: { type: Number, required: true },
+    totalSubtasks: { type: Number, required: true },
+    doneSubtasks: { type: Number, required: true },
     isLastColumn: { type: Boolean, default: false },
     isReadOnly: { type: Boolean, default: false }
   },
@@ -171,7 +178,9 @@ export default {
 .issue
   background-color: #fff
   border-radius: 4px
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12)
   margin-bottom: 8px
+  overflow: hidden
   padding: 8px
 
   &:not(.read-only)
@@ -261,7 +270,6 @@ export default {
     .assigned
       text-align: right
       width: 130px
-      // width: 104px
 
       .assignee
         display: inline-block
@@ -270,4 +278,7 @@ export default {
         height: 22px
         margin: 2px 0 0 4px
         width: 22px
+
+  .progress-container
+    margin: 8px -10px -8px -10px
 </style>
