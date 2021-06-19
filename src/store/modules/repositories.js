@@ -3,11 +3,7 @@ import api from '@/api';
 export default {
   namespaced: true,
 
-  state: {
-    items: [],
-    totalCount: 0,
-    isLoading: true
-  },
+  state: {},
 
   getters: {
     token: (state, getters, rootState, rootGetters) => (
@@ -16,28 +12,25 @@ export default {
   },
 
   actions: {
-    async fetch({ commit, getters }, installationId) {
-      commit('START_LOADING');
-      const data = await api.fetchRepositories(getters.token, installationId);
-      commit('FINISH_LOADING');
-      if (data == null) { return; }
-
-      commit('FETCH', data);
-      return data?.items;
-    },
+    async fetch({ getters }, installationId) {
+      let page = 1;
+      let totalItems = [];
+      while (page <= 10) {
+        let data = await api.fetchRepositories(getters.token, installationId, page);
+        if (data == null || data.items == null || data.items.length === 0) {
+          return totalItems;
+        }
+        let { items, totalCount } = data;
+        totalItems = [...totalItems, ...items];
+        if (totalItems.length >= totalCount) {
+          return totalItems;
+        }
+        page++;
+      }
+      return totalItems;
+    }
   },
 
   mutations: {
-    START_LOADING(state) {
-      state.isLoading = true;
-    },
-    FINISH_LOADING(state, items) {
-      state.items = items;
-      state.isLoading = false;
-    },
-    FETCH(state, { items, totalCount }) {
-      state.totalCount = totalCount;
-      state.items = items;
-    }
   }
 };

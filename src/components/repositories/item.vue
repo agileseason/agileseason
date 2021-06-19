@@ -51,7 +51,7 @@
 <script>
 import Button from '@/components/buttons/button'
 import Dialog from '@/components/dialog'
-import { get, call } from 'vuex-pathify';
+import { call } from 'vuex-pathify';
 
 export default {
   name: 'Repository',
@@ -70,10 +70,10 @@ export default {
     search: '',
     items: [],
     selectedItems: [],
-    isSelected: false
+    isSelected: false,
+    isLoading: true
   }),
   computed: {
-    isLoading: get('repositories/isLoading'),
     visibleItems() {
       if (this.search === '') { return this.items; }
       return this.items
@@ -91,6 +91,7 @@ export default {
   },
   async created() {
     this.items = await this.fetch(this.installationId);
+    this.isLoading = false;
   },
   methods: {
     ...call([
@@ -120,7 +121,7 @@ export default {
 
   .inner
     border-radius: 3px
-    border: 1px solid #E0E0E0
+    border: 1px solid #e0e0e0
     color: #424242
     cursor: pointer
     margin-bottom: 8px
@@ -131,8 +132,8 @@ export default {
     justify-content: space-between
 
     &:hover
-      background-color: #F5F5F5
-      color: #303F9F
+      background-color: #f5f5f5
+      color: #303f9f
 
     .left,
     .right
@@ -144,9 +145,9 @@ export default {
       font-size: 14px
 
     .count
-      background-color: #7986CB
+      background-color: #7986cb
       border-radius: 10px
-      color: #FFFFFF
+      color: #fff
       display: inline-block
       font-size: 12px
       font-weight: 500
@@ -174,7 +175,7 @@ export default {
         overflow: auto
 
       .not-found
-        color: #C5CAE9
+        color: #c5cae9
         font-size: 14px
         font-style: italic
         font-weight: 300
