@@ -256,7 +256,7 @@ export default {
           position: relative
 
           &:before
-            background-image: url('../../assets/icons/closed.svg')
+            background-image: url('../../assets/icons/issue/red_closed.svg')
             background-position: center
             background-repeat: no-repeat
             content: ''
