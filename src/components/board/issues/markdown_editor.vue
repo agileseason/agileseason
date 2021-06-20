@@ -158,7 +158,12 @@ export default {
       if (index >= 0) {
         const { key, keyIndex } = this.getLastKeyBeforeCaret(index, value);
         const searchText = this.lastSearchText = this.getLastSearchText(index, keyIndex, value);
-        if (!(keyIndex < 1 || /\s/.test(value[keyIndex - 1]))) {
+        const prevChar = value[keyIndex - 1];
+        if (this.keys.some(v => v === prevChar)) {
+          this.closePopup();
+          return false;
+        }
+        if (!(keyIndex < 1 || /\s/.test(prevChar))) {
           return false;
         }
         if (searchText != null) {
