@@ -16,11 +16,19 @@
         <span class='login'>{{ name }}</span>
       </div>
       <div class='body'>
-        <input class='search' type='text' v-model.trim='search' placeholder='Search...' />
+        <input
+          class='search'
+          type='text'
+          v-model.trim='search'
+          placeholder='Search...'
+          ref='search'
+        />
+
         <div v-if='isLoading'>
           Loading...
         </div>
-        <div class='items-container' v-else>
+
+        <div v-if='!isLoading' class='items-container'>
           <div
             v-for='repo in visibleItems'
             :key='repo.id'
@@ -100,6 +108,7 @@ export default {
     ]),
     open() {
       this.isSelected = true;
+      this.$nextTick(() => this.$refs.search?.focus());
     },
     done() {
       this.isSelected = false;
