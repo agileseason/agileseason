@@ -118,8 +118,7 @@ export default {
     TopMenu
   },
   data: () => ({
-    boardName: 'Board name',
-    // importedRepositoryIds: [],
+    boardName: '',
     isInstalled: false
   }),
   computed: {
@@ -137,14 +136,6 @@ export default {
       this.isInstalled = true;
     }
   },
-  // watch: {
-  //   selectedRepositories: function() {
-  //     this.importedRepositoryIds = this.selectedRepositories.map(v => v.id);
-  //   },
-  //   importedRepositoryIds: function() {
-  //     this.syncImportedRepositoryIds(this.importedRepositoryIds);
-  //   }
-  // },
   methods: {
     ...call([
       'installations/fetch',
