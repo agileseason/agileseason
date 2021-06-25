@@ -56,7 +56,7 @@ export default {
     boardId() { return parseInt(this.$route.params.id) || 0; },
     boardName() {
       const board = this.boards.find(v => v.id === this.boardId);
-      return board?.name || '';
+      return board?.name || this.$route.query?.name || 'Board';
     }
   },
   async created() {

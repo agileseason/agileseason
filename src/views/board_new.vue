@@ -170,7 +170,7 @@ export default {
       const board = await this.submit({ boardName: this.boardName });
       if (board?.id != null) {
         this.$router.push({
-          name: 'board',
+          name: 'board_sync',
           params: { id: board.id },
           query: { name: board.name }
         });
