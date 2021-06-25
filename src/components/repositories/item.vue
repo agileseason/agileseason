@@ -24,7 +24,7 @@
           ref='search'
         />
 
-        <div v-if='isLoading'>
+        <div v-if='isLoading' class='loader'>
           Loading...
         </div>
 
@@ -246,4 +246,7 @@ img
   height: 24px
   width: 24px
   margin-right: 6px
+
+.loader
+  margin: 2px 0 10px
 </style>
