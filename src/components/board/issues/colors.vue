@@ -1,8 +1,12 @@
 <template>
   <div class='colors'>
-    <label class='active' @click='toggleColors'>
+    <label
+      class='active'
+      :class="{ 'is-readonly': isReadonly }"
+      @click='toggleColors'
+    >
       <span>Color</span>
-      <ButtonIcon name='gear' style='float: right; padding: 0' />
+      <ButtonIcon v-if='!isReadonly' name='gear' style='float: right; padding: 0' />
     </label>
     <Select
       v-if='isSelectOpen'
@@ -69,7 +73,8 @@ export default {
     Select
   },
   props: {
-    color: { type: String, required: false, default: null }
+    color: { type: String, required: false, default: null },
+    isReadonly: { type: Boolean, default: false }
   },
   emits: ['toggle'],
   data: () => ({
@@ -91,6 +96,7 @@ export default {
   },
   methods: {
     toggleColors() {
+      if (this.isReadonly) { return; }
       this.isSelectOpen = !this.isSelectOpen;
     },
     isApplied({ color }) {
@@ -137,7 +143,7 @@ label
   margin-bottom: 6px
   user-select: none
 
-  &.active
+  &.active:not(.is-readonly)
     cursor: pointer
 
     &:hover

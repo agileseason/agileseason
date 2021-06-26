@@ -1,9 +1,13 @@
 <template>
   <div v-if='isSelectOpen' class='select-labels-overlay' @click.self='toggleLabels' />
   <div class='labels'>
-    <label class='active' @click='toggleLabels'>
+    <label
+      class='active'
+      :class="{ 'is-readonly': isReadonly }"
+      @click='toggleLabels'
+    >
       <span>Labels</span>
-      <ButtonIcon name='gear' style='float: right; padding: 0' />
+      <ButtonIcon v-if='!isReadonly' name='gear' style='float: right; padding: 0' />
     </label>
     <Select
       v-if='isSelectOpen'
@@ -54,7 +58,8 @@ export default {
   },
   props: {
     labels: { type: Array, required: true },
-    repositoryFullName: { type: String, required: true }
+    repositoryFullName: { type: String, required: true },
+    isReadonly: { type: Boolean, default: false }
   },
   emits: ['toggle'],
   data: () => ({
@@ -87,6 +92,8 @@ export default {
       return `background-color: #${color}`;
     },
     async toggleLabels() {
+      if (this.isReadonly) { return; }
+
       this.isSelectOpen = !this.isSelectOpen;
       if (this.isSelectOpen && !this.isLoaded) {
         this.isLoading = true;
@@ -166,7 +173,7 @@ label
   margin-bottom: 6px
   user-select: none
 
-  &.active
+  &.active:not(.is-readonly)
     cursor: pointer
 
     &:hover

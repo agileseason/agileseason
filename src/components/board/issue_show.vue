@@ -24,7 +24,7 @@
           :title='title'
           :url='url'
           :number='number'
-          :isEditable='isLoaded'
+          :isEditable='isLoaded && !isReadonly'
           @save='updateTitle'
         />
         <div v-if='isLoaded' class='main-comment comment'>
@@ -38,7 +38,7 @@
                   commented {{ fetchedIssue.origCreatedAgo }}
                 </span>
               </div>
-              <ButtonIcon name='edit' @click='startEditBody' />
+              <ButtonIcon v-if='!isReadonly' name='edit' @click='startEditBody' />
             </div>
 
             <div v-if='isBodyEmpty' class='text empty'>No description provided</div>
@@ -73,6 +73,7 @@
           <Comment
             v-for='item in comments'
             v-bind='item'
+            :is-readonly='isReadonly'
             :assignable-users='assignableUsers'
             :key='item.id'
             @reply='replyComment'
@@ -136,6 +137,7 @@
         <Assignees
           :assignees='assignees'
           :repositoryFullName='repositoryFullName'
+          :is-readonly='isReadonly'
           @assign='toggleAssignee'
         />
 
@@ -143,12 +145,14 @@
         <Labels
           :labels='labels'
           :repositoryFullName='repositoryFullName'
+          :is-readonly='isReadonly'
           @toggle='toggleLabel'
         />
 
         <div class='delimeter' />
         <Colors
           :color='color'
+          :is-readonly='isReadonly'
           @toggle='toggleColor'
         />
       </div>

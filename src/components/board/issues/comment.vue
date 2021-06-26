@@ -10,7 +10,7 @@
             commented {{ createdAgo }}
           </span>
         </div>
-        <ButtonIcon name='dots' @click='openSettings' />
+        <ButtonIcon v-if='!isReadonly' name='dots' @click='openSettings' />
         <Select v-if='isSettingsOpen' class='select-settings'>
           <div class='item' @click='replyComment'>Quote reply</div>
           <div class='item' @click='editComment'>Edit</div>
@@ -64,7 +64,8 @@ export default {
     createdAt: { type: String, required: true },
     createdAgo: { type: String, required: true },
     body: { type: String, required: true },
-    assignableUsers: { type: Array, required: true }
+    assignableUsers: { type: Array, required: true },
+    isReadonly: { type: Boolean, default: false }
   },
   components: {
     Button,

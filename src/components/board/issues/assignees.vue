@@ -1,9 +1,13 @@
 <template>
   <div v-if='isSelectOpen' class='select-assignees-overlay' @click.self='toggleAssignees' />
   <div class='assignees'>
-    <label class='active' @click='toggleAssignees'>
+    <label
+      class='active'
+      :class="{ 'is-readonly': isReadonly }"
+      @click='toggleAssignees'
+    >
       <span>Assignees</span>
-      <ButtonIcon name='gear' style='float: right; padding: 0' />
+      <ButtonIcon v-if='!isReadonly' name='gear' style='float: right; padding: 0' />
     </label>
     <Select
       v-if='isSelectOpen'
@@ -24,8 +28,15 @@
         </div>
       </div>
     </Select>
-    <div v-if='isSelfAssignVisible' class='self-assign'>
-      None — <b @click='selfAssign'>assign your self</b>
+    <div
+      v-if='isSelfAssignVisible'
+      class='self-assign'
+      :class="{ 'is-readonly': isReadonly }"
+    >
+      None
+      <span v-if='!isReadonly'>
+        — <b @click='selfAssign'>assign your self</b>
+      </span>
     </div>
     <div
       v-for='(assignee, $index) in sortedAssignees'
@@ -53,7 +64,8 @@ export default {
   },
   props: {
     assignees: { type: Array, required: true },
-    repositoryFullName: { type: String, required: true }
+    repositoryFullName: { type: String, required: true },
+    isReadonly: { type: Boolean, default: false }
   },
   emits: ['assign'],
   data: () => ({
@@ -98,6 +110,8 @@ export default {
       this.$emit('assign', assignedUser);
     },
     async toggleAssignees() {
+      if (this.isReadonly) { return; }
+
       this.isSelectOpen = !this.isSelectOpen;
       if (this.isSelectOpen && this.assignableUsers.length === 0) {
         this.isLoading = true;
@@ -142,7 +156,7 @@ label
   margin-bottom: 6px
   user-select: none
 
-  &.active
+  &.active:not(.is-readonly)
     cursor: pointer
 
     &:hover
@@ -192,9 +206,11 @@ label
 
 .self-assign
   color: #5c6bc0
-  cursor: pointer
   font-size: 12px
   font-weight: 100
+
+  &:not(.is-readonly)
+    cursor: pointer
 
   b
     font-weight: 400
