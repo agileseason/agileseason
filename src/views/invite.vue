@@ -97,4 +97,7 @@ export default {
 
   h1
     margin-top: 60px
+
+  h3
+    font-weight: 500
 </style>
