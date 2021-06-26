@@ -1,5 +1,8 @@
+// https://marked.js.org/using_advanced#options
 const marked = require('marked');
+
 const renderer = new marked.Renderer();
+
 // https://marked.js.org/using_pro#renderer
 renderer.list = (body, ordered) => {
   if (ordered) {
