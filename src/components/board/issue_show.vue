@@ -79,7 +79,7 @@
           />
         </div>
         <MarkdownEditor
-          v-if='isCommentLoaded'
+          v-if='isCommentLoaded && !isReadonly'
           v-model='newComment'
           ref='newComment'
           :assignable-users='assignableUsers'
@@ -87,7 +87,7 @@
           @submit='submitNewComment'
           class='comment-new'
         />
-        <div v-if='isCommentLoaded' class='comments-actions'>
+        <div v-if='isCommentLoaded && !isReadonly' class='comments-actions'>
           <Button
             v-if='canArchive'
             :isLoading='isArchiveSubmitting'
@@ -211,6 +211,7 @@ export default {
     assignableUsers: []
   }),
   computed: {
+    username: get('user/username'),
     isLoading: get('issue/isLoading'),
     isLoaded: get('issue/isLoaded'),
     isCommentLoading: get('issue/isCommentLoading'),
@@ -253,6 +254,12 @@ export default {
       const rgba = hexRgb(this.fetchedIssue.color);
 
       return `background-color: rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.6)`;
+    },
+    isReadonly() {
+      if (this.assignableUsers.length === 0) { return true; }
+      const currentUser = this.assignableUsers.find(v => v.login === this.username);
+      if (currentUser == null) { return true; }
+      return false;
     }
 
     // debugStoreColumns: get('board/columns'),
