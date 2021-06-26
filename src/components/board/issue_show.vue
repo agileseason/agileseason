@@ -171,13 +171,13 @@ import Comment from '@/components/board/issues/comment'
 import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
 import Loader from '@/components/loader';
+import Markdown from '@/utils/markdown';
 import MarkdownEditor from '@/components/board/issues/markdown_editor'
 import Title from '@/components/board/issues/title';
 import { hexRgb } from '@/utils/wcag_contrast';
 import { GlobalEvents } from 'vue-global-events';
 import { get, call } from 'vuex-pathify';
 
-const marked = require('marked');
 const DEFAULT_COLOR = 'ffffff';
 
 export default {
@@ -444,11 +444,8 @@ export default {
       this.newComment = `${body}\n\n`;
       this.$nextTick(() => this.$refs.newComment.$refs.textarea.focus());
     },
-    // https://marked.js.org/using_advanced#options
     markdown(text) {
-      return marked(text, {
-        breaks: true
-      });
+      return Markdown.render(text);
     }
   }
 }

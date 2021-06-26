@@ -68,6 +68,15 @@ a {
   padding-left: 2em;
 }
 
+.markdown-body ul.checkbox-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.markdown-body ul.checkbox-list > li > ul {
+  padding-left: 2em;
+}
+
 .markdown-body>:last-child {
   margin-bottom: 0 !important
 }

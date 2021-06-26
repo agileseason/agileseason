@@ -52,11 +52,10 @@
 <script>
 import Button from '@/components/buttons/button'
 import ButtonIcon from '@/components/buttons/icon'
+import Markdown from '@/utils/markdown';
 import MarkdownEditor from '@/components/board/issues/markdown_editor'
 import Select from '@/components/select';
 import { call } from 'vuex-pathify';
-
-const marked = require('marked');
 
 export default {
   props: {
@@ -125,11 +124,8 @@ export default {
         await this.destroyComment({ id: this.id });
       }
     },
-    // https://marked.js.org/using_advanced#options
     markdown(text) {
-      return marked(text, {
-        breaks: true
-      });
+      return Markdown.render(text);
     }
   }
 }
