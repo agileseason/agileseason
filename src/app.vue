@@ -62,6 +62,10 @@ a {
   margin: 0 0 16px 0;
 }
 
+.markdown-body img {
+  max-width: 100%;
+}
+
 .markdown-body ul,
 .markdown-body ol {
   margin: 0 0 16px 0;
