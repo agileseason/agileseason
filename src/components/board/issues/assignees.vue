@@ -137,7 +137,7 @@ label
   align-items: center
   color: #283593
   display: flex
-  font-weight: 700
+  font-weight: 500
   justify-content: space-between
   margin-bottom: 6px
   user-select: none

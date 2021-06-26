@@ -352,7 +352,7 @@ input.title
 label.label
   color: #283593
   display: block
-  font-weight: 700
+  font-weight: 500
   margin-bottom: 6px
   position: relative
 
