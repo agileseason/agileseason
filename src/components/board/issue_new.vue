@@ -7,6 +7,7 @@
     <div class='issue-header' :style='headerBackgroundColor'>
       <span class='icon' />
       <span class='title'>New Issue</span>
+      <span v-if='isReadonly' class='readonly' title='You do not have write access for this repository'>Read only</span>
       <div class='close' @click='close' />
     </div>
 
@@ -286,6 +287,15 @@ export default {
   height: 44px
   padding: 10px 14px
   position: relative
+
+  .readonly
+    background-color: #e0e0e0
+    border-radius: 4px
+    color: #424242
+    padding: 4px 16px
+    position: absolute
+    top: 10px
+    left: calc(50% - 50px)
 
   .icon
     background-image: url('../../assets/icons/issue/green_open.svg')
