@@ -19,6 +19,7 @@
           class='title'
           v-model.trim='title'
           placeholder='Title'
+          :disabled='isReadonly'
           ref='title'
           @keyup.enter='submit'
           @keyup.esc='close'
@@ -128,6 +129,7 @@ import Colors from '@/components/board/issues/colors'
 import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
 import MarkdownEditor from '@/components/board/issues/markdown_editor'
+import readonlyByAssignableUsers from '@/mixins/readonly_by_assignable_users';
 import { GlobalEvents } from 'vue-global-events';
 import { hexRgb } from '@/utils/wcag_contrast';
 import { get, call } from 'vuex-pathify';
@@ -149,6 +151,7 @@ export default {
     columnId: { type: Number, required: true }
   },
   emits: ['close'],
+  mixins: [readonlyByAssignableUsers],
   data: () => ({
     title: '',
     body: '',
@@ -183,19 +186,20 @@ export default {
       return `background-color: rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.6)`;
     }
   },
-  created() {
+  async created() {
     this.selectedRepositoryId = this.repositories[0].id;
     this.selectedColumnId = this.columnId;
     this.selectedPosition = this.positions[0];
+    await this.initAssignableUsers();
   },
   async mounted() {
-    await delay(300);
+    await delay(200);
     this.$nextTick(() => this.$refs.title.focus());
-    await this.initAssignableUsers();
   },
   watch: {
     async selectedRepositoryFullName(newValue, oldValue) {
       if (newValue === oldValue) { return; }
+      this.$nextTick(() => this.$refs.title.focus());
       await this.initAssignableUsers();
     }
   },

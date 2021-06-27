@@ -178,6 +178,7 @@ import Loader from '@/components/loader';
 import Markdown from '@/utils/markdown';
 import MarkdownEditor from '@/components/board/issues/markdown_editor'
 import Title from '@/components/board/issues/title';
+import readonlyByAssignableUsers from '@/mixins/readonly_by_assignable_users';
 import { hexRgb } from '@/utils/wcag_contrast';
 import { GlobalEvents } from 'vue-global-events';
 import { get, call } from 'vuex-pathify';
@@ -203,6 +204,7 @@ export default {
     issue: { type: Object, required: false },
   },
   emits: ['close'],
+  mixins: [readonlyByAssignableUsers],
   data: () => ({
     newTitle: undefined,
     newComment: '',
@@ -215,7 +217,6 @@ export default {
     assignableUsers: []
   }),
   computed: {
-    username: get('user/username'),
     isLoading: get('issue/isLoading'),
     isLoaded: get('issue/isLoaded'),
     isCommentLoading: get('issue/isCommentLoading'),
@@ -258,12 +259,6 @@ export default {
       const rgba = hexRgb(this.fetchedIssue.color);
 
       return `background-color: rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.6)`;
-    },
-    isReadonly() {
-      if (this.assignableUsers.length === 0) { return true; }
-      const currentUser = this.assignableUsers.find(v => v.login === this.username);
-      if (currentUser == null) { return true; }
-      return false;
     }
 
     // debugStoreColumns: get('board/columns'),
