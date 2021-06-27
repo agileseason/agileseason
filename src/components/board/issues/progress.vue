@@ -34,6 +34,7 @@ export default {
 <style scoped lang='sass'>
 .progress
   background-color: rgba(0, 0, 0, 0.06)
+  // background-color: rgba(121, 134, 203, 0.08)
   height: 15px
   display: flex
   align-items: center
@@ -41,13 +42,18 @@ export default {
   position: relative
 
   .bar
-    background-color: rgba(121, 134, 203, 0.4)
+    // background-color: rgba(121, 134, 203, 0.5)
+    // background-color: rgba(0, 0, 0, 0.1)
+    background-color: rgba(0, 200, 83, 0.8)
     position: absolute
     left: 0
     top: 0
     height: 15px
+    z-index: 1
 
   .label
-    color: #1a237e
+    // color: #1a237e
+    color: rgba(0, 0, 0, 0.8)
     font-size: 10px
+    z-index: 2
 </style>
