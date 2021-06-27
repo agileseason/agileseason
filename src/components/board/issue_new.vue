@@ -28,6 +28,7 @@
         <MarkdownEditor
           v-model='body'
           :assignable-users='assignableUsers'
+          :disabled='isReadonly'
           class='body'
         />
 
@@ -36,7 +37,7 @@
             text='Submit new issue'
             @click='submit'
             :is-loading='isSubmitting'
-            :is-disabled='!isValid'
+            :is-disabled='!isValid || isReadonly'
           />
         </div>
       </div>
@@ -65,6 +66,7 @@
         <Assignees
           :assignees='assignees'
           :repositoryFullName='selectedRepositoryFullName'
+          :is-readonly='isReadonly'
           @assign='toggleAssignee'
         />
 
@@ -72,12 +74,14 @@
         <Labels
           :labels='labels'
           :repositoryFullName='selectedRepositoryFullName'
+          :is-readonly='isReadonly'
           @toggle='toggleLabel'
         />
 
         <div class='delimeter' />
         <Colors
           :color='selectedColor'
+          :is-readonly='isReadonly'
           @toggle='toggleColor'
         />
 
@@ -94,6 +98,7 @@
               type='radio'
               :value='column.id'
               :id='column.id'
+              :disabled='isReadonly'
             />
             <label :for='column.id'>
               {{ column.name }}
@@ -111,6 +116,7 @@
               type='radio'
               :value='position'
               :id='position'
+              :disabled='isReadonly'
             />
             <label :for='position'>
               {{ position.substr(0, 1).toUpperCase() + position.substr(1).toLowerCase() }}
@@ -199,6 +205,8 @@ export default {
   watch: {
     async selectedRepositoryFullName(newValue, oldValue) {
       if (newValue === oldValue) { return; }
+      this.assignees = [];
+      this.labels = [];
       this.$nextTick(() => this.$refs.title.focus());
       await this.initAssignableUsers();
     }
