@@ -5,6 +5,7 @@ const DEFAULT_STATE = {
   name: '',
   isShared: undefined,
   sharedToken: undefined,
+  isIssueProgressVisible: undefined,
   allRepositories: [],
   linkedRepositories: [],
   memberships: [],
@@ -159,6 +160,15 @@ export default {
         commit('UPDATE_BOARD_IS_SHARED', { isShared });
       }
     },
+
+    async toggleIsIssueProgressVisible({ getters, commit }, { id, isIssueProgressVisible }) {
+      const result = await api.updateBoard(getters.token, { id, isIssueProgressVisible });
+      if (result.errors.length) {
+        console.error(result.errors);
+      } else {
+        commit('UPDATE_BOARD_IS_ISSUE_PROGRESS_VISIBLE', { isIssueProgressVisible });
+      }
+    },
   },
 
   mutations: {
@@ -167,11 +177,20 @@ export default {
       state.isLoaded = false;
     },
     FINISH_LOADING(state, settings) {
-      const { id, name, isShared, sharedToken, repositories } = settings;
+      const {
+        id,
+        name,
+        isShared,
+        sharedToken,
+        repositories,
+        isIssueProgressVisible
+      } = settings;
+
       state.id = id;
       state.name = name;
       state.isShared = isShared;
       state.sharedToken = sharedToken;
+      state.isIssueProgressVisible = isIssueProgressVisible;
       state.linkedRepositories = repositories;
       state.pendingRepositories = repositories;
       state.memberships = settings.memberships;
@@ -220,6 +239,9 @@ export default {
     },
     UPDATE_BOARD_IS_SHARED(state, isShared) {
       state.isShared = isShared;
+    },
+    UPDATE_BOARD_IS_ISSUE_PROGRESS_VISIBLE(state, isIssueProgressVisible) {
+      state.isIssueProgressVisible = isIssueProgressVisible;
     }
   }
 };

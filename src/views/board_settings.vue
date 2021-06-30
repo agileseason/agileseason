@@ -27,7 +27,7 @@
             text='Rename'
             class='button-board-rename'
             @click='renameBoard'
-            :is-loading='isSubmitting'
+            :is-loading='isSubmittingName'
           />
         </div>
       </article>
@@ -38,7 +38,7 @@
             type='checkbox'
             :checked='isBoardShared'
             @change='toggleIsSharedBoard'
-            :disabled='isSubmittingShared'
+            :disabled='isSubmitting'
           />
           Enable access by link (read only)
         </label>
@@ -50,6 +50,18 @@
         >
           {{ sharedUrl }}
         </a>
+      </article>
+      <article>
+        <div class='title'>Board issues</div>
+        <label class='checkbox'>
+          <input
+            type='checkbox'
+            :checked='isBoardIssueProgressVisible'
+            @change='toggleIsIssueProgressVisibleBoard'
+            :disabled='isSubmitting'
+          />
+          Show issue completion percentage by checkboxes in body
+        </label>
       </article>
       <article>
         <div class='title'>Delete this board</div>
@@ -236,9 +248,10 @@ export default {
     ],
     boardName: '',
     isBoardShared: false,
+    isBoardIssueProgressVisible: false,
     active: 'General',
-    isSubmittingShared: false,
     isSubmitting: false,
+    isSubmittingName: false,
     isDeleteSubmitting: false
   }),
   computed: {
@@ -250,6 +263,7 @@ export default {
     boards: get('user/boards'),
     isShared: get('boardSettings/isShared'),
     sharedToken: get('boardSettings/sharedToken'),
+    isIssueProgressVisible: get('boardSettings/isIssueProgressVisible'),
     memberships: get('boardSettings/memberships'),
     invites: get('boardSettings/invites'),
     repositories: get('boardSettings/repositories'),
@@ -279,6 +293,7 @@ export default {
     await this.fetch({ id: this.boardId });
     this.boardName = this.currentBoard.name;
     this.isBoardShared = this.isShared;
+    this.isBoardIssueProgressVisible = this.isIssueProgressVisible;
   },
   methods: {
     ...call([
@@ -291,7 +306,8 @@ export default {
       'boardSettings/createInvite',
       'boardSettings/destroyInvite',
       'boardSettings/destroyMembership',
-      'boardSettings/toggleIsShared'
+      'boardSettings/toggleIsShared',
+      'boardSettings/toggleIsIssueProgressVisible'
     ]),
     updateBoard: call('board/update'),
     selectTab(item) {
@@ -319,16 +335,16 @@ export default {
       }
     },
     async renameBoard() {
-      if (this.isSubmitting) { return; }
+      if (this.isSubmittingName) { return; }
       if (this.boardName === this.currentBoard.name) { return; }
 
-      this.isSubmitting = true;
+      this.isSubmittingName = true;
       this.$nextTick(async () => {
         await this.updateBoard({
           id: this.currentBoard.id,
           name: this.boardName
         });
-        this.isSubmitting = false;
+        this.isSubmittingName = false;
       });
     },
     async deleteBoard() {
@@ -368,14 +384,25 @@ export default {
       }
     },
     async toggleIsSharedBoard() {
-      this.isSubmittingShared = true;
+      this.isSubmitting = true;
       this.isBoardShared = !this.isBoardShared;
       this.$nextTick(async () => {
         await this.toggleIsShared({
           id: this.currentBoard.id,
           isShared: this.isBoardShared
         });
-        this.isSubmittingShared = false;
+        this.isSubmitting = false;
+      });
+    },
+    async toggleIsIssueProgressVisibleBoard() {
+      this.isSubmitting = true;
+      this.isBoardIssueProgressVisible = !this.isBoardIssueProgressVisible;
+      this.$nextTick(async () => {
+        await this.toggleIsIssueProgressVisible({
+          id: this.currentBoard.id,
+          isIssueProgressVisible: this.isBoardIssueProgressVisible
+        });
+        this.isSubmitting = false;
       });
     }
   }

@@ -231,6 +231,7 @@ export default {
           name
           isShared
           sharedToken
+          isIssueProgressVisible
           repositories {
             id
             name
@@ -285,18 +286,24 @@ export default {
     return data?.syncBoardIssues;
   },
 
-  async updateBoard(token, { id, name, isShared }) {
+  async updateBoard(token, { id, name, isShared, isIssueProgressVisible }) {
     const query = `
-      mutation($id:Int!, $name:String, $isShared:Boolean) {
-        action:updateBoard(input: { id: $id, name: $name, isShared: $isShared }) {
+      mutation($id:Int!, $name:String, $isShared:Boolean, $isIssueProgressVisible:Boolean) {
+        action:updateBoard(input: {
+          id: $id,
+          name: $name,
+          isShared: $isShared,
+          isIssueProgressVisible: $isIssueProgressVisible
+        }) {
           id
           name
           isShared
+          isIssueProgressVisible
           errors
         }
       }
     `;
-    const vars = { id, name, isShared };
+    const vars = { id, name, isShared, isIssueProgressVisible };
     const data = await this.client(token).request(query, vars);
     this.log('updateBoard', data);
 
