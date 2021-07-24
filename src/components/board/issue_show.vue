@@ -43,7 +43,10 @@
             </div>
 
             <div v-if='isBodyEmpty' class='text empty'>No description provided</div>
-            <div v-else class='text markdown-body' v-html='markdown(fetchedIssue.body)' />
+            <div v-else
+              class='text markdown-body'
+              v-html='markdown(fetchedIssue.body)'
+            />
           </div>
           <MarkdownEditor
             ref='body'
@@ -70,7 +73,7 @@
           </MarkdownEditor>
         </div>
 
-        <div v-if='isCommentLoaded' class='comments'>
+        <div v-if='isCommentLoaded && false' class='comments'>
           <Comment
             v-for='item in comments'
             v-bind='item'
@@ -260,7 +263,7 @@ export default {
       const rgba = hexRgb(this.fetchedIssue.color);
 
       return `background-color: rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.6)`;
-    }
+    },
 
     // debugStoreColumns: get('board/columns'),
     // debugStoreCurrentIssue: get('board/currentIssue'),
@@ -452,7 +455,7 @@ export default {
       this.$nextTick(() => this.$refs.newComment.$refs.textarea.focus());
     },
     markdown(text) {
-      return Markdown.render(text);
+      return Markdown.render(text, this.repositoryFullName);
     }
   }
 }

@@ -57,6 +57,9 @@ a {
 .markdown-body a {
   color: #2196f3;
 }
+.markdown-body a:hover {
+  text-decoration: underline
+}
 
 .markdown-body a.username {
   color: #212121;
