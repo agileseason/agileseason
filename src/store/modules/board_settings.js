@@ -6,6 +6,7 @@ const DEFAULT_STATE = {
   isShared: undefined,
   sharedToken: undefined,
   isIssueProgressVisible: undefined,
+  autoarchiveDaysLimit: undefined,
   allRepositories: [],
   linkedRepositories: [],
   memberships: [],
@@ -169,6 +170,15 @@ export default {
         commit('UPDATE_BOARD_IS_ISSUE_PROGRESS_VISIBLE', { isIssueProgressVisible });
       }
     },
+
+    async updateAutoarchiveDaysLimit({ getters, commit }, { id, autoarchiveDaysLimit }) {
+      const result = await api.updateBoard(getters.token, { id, autoarchiveDaysLimit });
+      if (result.errors.length) {
+        console.error(result.errors);
+      } else {
+        commit('UPDATE_BOARD_AUTOARCHIVE_DAYS_LIMIT', { autoarchiveDaysLimit });
+      }
+    },
   },
 
   mutations: {
@@ -183,7 +193,8 @@ export default {
         isShared,
         sharedToken,
         repositories,
-        isIssueProgressVisible
+        isIssueProgressVisible,
+        autoarchiveDaysLimit
       } = settings;
 
       state.id = id;
@@ -191,6 +202,7 @@ export default {
       state.isShared = isShared;
       state.sharedToken = sharedToken;
       state.isIssueProgressVisible = isIssueProgressVisible;
+      state.autoarchiveDaysLimit = autoarchiveDaysLimit;
       state.linkedRepositories = repositories;
       state.pendingRepositories = repositories;
       state.memberships = settings.memberships;
@@ -242,6 +254,9 @@ export default {
     },
     UPDATE_BOARD_IS_ISSUE_PROGRESS_VISIBLE(state, isIssueProgressVisible) {
       state.isIssueProgressVisible = isIssueProgressVisible;
+    },
+    UPDATE_BOARD_AUTOARCHIVE_DAYS_LIMIT(state, autoarchiveDaysLimit) {
+      state.autoarchiveDaysLimit = autoarchiveDaysLimit;
     }
   }
 };

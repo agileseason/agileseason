@@ -65,7 +65,11 @@
 
         <p>
           Autoarchive closed issues &mdash;
-          <select v-model='autoarchiveOption' class='auto-archive'>
+          <select
+            v-model='autoarchiveOption'
+            class='auto-archive'
+            @change='changeAutoarchiveOptionBoard'
+          >
             <option
               v-for='option in autoarchiveOptions'
               :key='option.value'
@@ -261,7 +265,7 @@ export default {
     ],
     autoarchiveOption: 90,
     autoarchiveOptions: [
-      { text: 'never', value: null },
+      { text: 'never', value: 1000000 },
       { text: 'after 180 days', value: 180 },
       { text: 'after 90 days', value: 90 },
       { text: 'after 30 days', value: 30 },
@@ -285,6 +289,7 @@ export default {
     isShared: get('boardSettings/isShared'),
     sharedToken: get('boardSettings/sharedToken'),
     isIssueProgressVisible: get('boardSettings/isIssueProgressVisible'),
+    autoarchiveDaysLimit: get('boardSettings/autoarchiveDaysLimit'),
     memberships: get('boardSettings/memberships'),
     invites: get('boardSettings/invites'),
     repositories: get('boardSettings/repositories'),
@@ -315,6 +320,7 @@ export default {
     this.boardName = this.currentBoard.name;
     this.isBoardShared = this.isShared;
     this.isBoardIssueProgressVisible = this.isIssueProgressVisible;
+    this.autoarchiveOption = this.autoarchiveDaysLimit;
   },
   methods: {
     ...call([
@@ -328,7 +334,8 @@ export default {
       'boardSettings/destroyInvite',
       'boardSettings/destroyMembership',
       'boardSettings/toggleIsShared',
-      'boardSettings/toggleIsIssueProgressVisible'
+      'boardSettings/toggleIsIssueProgressVisible',
+      'boardSettings/updateAutoarchiveDaysLimit'
     ]),
     updateBoard: call('board/update'),
     selectTab(item) {
@@ -424,6 +431,12 @@ export default {
           isIssueProgressVisible: this.isBoardIssueProgressVisible
         });
         this.isSubmitting = false;
+      });
+    },
+    async changeAutoarchiveOptionBoard() {
+      await this.updateAutoarchiveDaysLimit({
+        id: this.currentBoard.id,
+        autoarchiveDaysLimit: this.autoarchiveOption
       });
     }
   }
