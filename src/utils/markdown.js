@@ -26,17 +26,17 @@ renderer.listitem = (text, task, checked) => {
   }
   return `<li>${text}</li>`;
 }
-// const walkTokens = (token) => {
-//   if (token.type === 'list_item' && token.task) {
-//     console.log(token);
-//   }
-// };
+renderer.text = (text) => {
+  if (/@\w+/.test(text)) {
+    return text.replace(/@(\w+)/g, `<a href='https://github.com/$1' class='username'>@$1</a>`);
+  }
+  return text;
+}
 
 export default {
   render(text) {
     return marked(text, {
       breaks: true,
-      // walkTokens
       renderer
     });
   }

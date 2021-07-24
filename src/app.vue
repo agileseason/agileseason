@@ -58,6 +58,15 @@ a {
   color: #2196f3;
 }
 
+.markdown-body a.username {
+  color: #212121;
+  font-weight: 500;
+}
+
+.markdown-body a.username:hover {
+  text-decoration: underline
+}
+
 .markdown-body p {
   margin: 0 0 16px 0;
 }
