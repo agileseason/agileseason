@@ -30,6 +30,9 @@ renderer.text = (text) => {
   if (/@\w+/.test(text)) {
     return text.replace(/@(\w+)/g, `<a href='https://github.com/$1' class='username'>@$1</a>`);
   }
+  if (/https:\/\/github.com\/[/\w]+\/issues\/\d+/.test(text)) {
+    return text.replace(/(https:\/\/github.com\/([/\w]+)\/issues\/(\d+))/g, '<a href="$1">$2#$3</a>');
+  }
   return text;
 }
 
