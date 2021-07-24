@@ -62,6 +62,19 @@
           />
           Show issue completion percentage by checkboxes in body
         </label>
+
+        <p>
+          Autoarchive closed issues &mdash;
+          <select v-model='autoarchiveOption' class='auto-archive'>
+            <option
+              v-for='option in autoarchiveOptions'
+              :key='option.value'
+              v-bind:value='option.value'
+            >
+              {{ option.text }}
+            </option>
+          </select>
+        </p>
       </article>
       <article>
         <div class='title'>Delete this board</div>
@@ -92,7 +105,7 @@
             @done='done'
           />
         </div>
-        <p>
+        <p class='note'>
           Couldn't find a repository?<br>
           Manage your installation settings
         </p>
@@ -167,7 +180,7 @@
       </article>
       <article>
         <div class='title'>Invites</div>
-        <p v-if='invites.length === 0'>
+        <p v-if='invites.length === 0' class='note'>
           There are no invites yet
         </p>
         <table v-else class='invites'>
@@ -245,6 +258,14 @@ export default {
       'General',
       'Repositories',
       'Members'
+    ],
+    autoarchiveOption: 90,
+    autoarchiveOptions: [
+      { text: 'never', value: null },
+      { text: 'after 180 days', value: 180 },
+      { text: 'after 90 days', value: 90 },
+      { text: 'after 30 days', value: 30 },
+      { text: 'after 7 days', value: 7 }
     ],
     boardName: '',
     isBoardShared: false,
@@ -471,7 +492,7 @@ table
       @media screen and (min-width: 480px)
         width: 33%
 
-p
+p.note
   color: #616161
   font-size: 12px
   letter-spacing: 0.2px
@@ -496,6 +517,17 @@ article
 
     input
       margin: 0 6px 0 0
+
+  select.auto-archive
+    border: none
+    color: #3f51b5
+    cursor: pointer
+    font-size: 14px
+    margin-left: -2px
+    padding: 1px 0
+
+    &:hover
+      background-color: #e8eaf6
 
 .board-container
   display: flex
