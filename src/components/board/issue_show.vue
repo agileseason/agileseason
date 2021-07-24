@@ -73,13 +73,14 @@
           </MarkdownEditor>
         </div>
 
-        <div v-if='isCommentLoaded && false' class='comments'>
+        <div v-if='isCommentLoaded' class='comments'>
           <Comment
             v-for='item in comments'
             v-bind='item'
             :is-readonly='isReadonly'
             :assignable-users='assignableUsers'
             :key='item.id'
+            :repository-full-name='repositoryFullName'
             @reply='replyComment'
           />
         </div>

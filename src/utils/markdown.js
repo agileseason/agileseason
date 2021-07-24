@@ -1,32 +1,33 @@
 // https://marked.js.org/using_advanced#options
 const marked = require('marked');
 
-export default {
-  render(text, repositoryFullName) {
-    const renderer = new marked.Renderer();
+const renderer = new marked.Renderer();
 
-    // https://marked.js.org/using_pro#renderer
-    renderer.list = (body, ordered) => {
-      if (ordered) {
-        return `<ol>${body}</ol>`;
-      }
+// https://marked.js.org/using_pro#renderer
+renderer.list = (body, ordered) => {
+  if (ordered) {
+    return `<ol>${body}</ol>`;
+  }
 
-      if (/type="checkbox">/.test(body)) {
-        return `<ul class='checkbox-list'>${body}</ul>`;
-      }
+  if (/type="checkbox">/.test(body)) {
+    return `<ul class='checkbox-list'>${body}</ul>`;
+  }
 
-      return `<ul>${body}</ul>`;
-    }
-    renderer.listitem = (text, task, checked) => {
-      if (task) {
-        if (checked) {
-          return `<li class='checked'>${text}</li>`;
-        } else {
-          return `<li>${text}</li>`;
-        }
-      }
+  return `<ul>${body}</ul>`;
+}
+renderer.listitem = (text, task, checked) => {
+  if (task) {
+    if (checked) {
+      return `<li class='checked'>${text}</li>`;
+    } else {
       return `<li>${text}</li>`;
     }
+  }
+  return `<li>${text}</li>`;
+}
+
+export default {
+  render(text, repositoryFullName) {
     renderer.text = (text) => {
       // @aaa => <a href=...>@aaa</a>
       if (/@\w+/.test(text)) {

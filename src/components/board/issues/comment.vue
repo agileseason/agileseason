@@ -65,6 +65,7 @@ export default {
     createdAgo: { type: String, required: true },
     body: { type: String, required: true },
     assignableUsers: { type: Array, required: true },
+    repositoryFullName: { type: String, required: false },
     isReadonly: { type: Boolean, default: false }
   },
   components: {
@@ -126,7 +127,7 @@ export default {
       }
     },
     markdown(text) {
-      return Markdown.render(text);
+      return Markdown.render(text, this.repositoryFullName);
     }
   }
 }
