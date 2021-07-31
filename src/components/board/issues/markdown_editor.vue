@@ -1,15 +1,30 @@
 <template>
   <div class='editor'>
-    <textarea
-      v-bind='$attrs'
-      :value='modelValue'
-      :placeholder='placeholder'
-      ref='textarea'
-      @input='onInput'
-      @keydown='onKeyDown'
-      @blur='closePopup'
-      :rows='rows'
-    />
+    <div class='textarea-container'>
+      <textarea
+        v-bind='$attrs'
+        :value='modelValue'
+        :disabled='isUploading'
+        :placeholder='placeholder'
+        ref='textarea'
+        @input='onInput'
+        @keydown='onKeyDown'
+        @blur='closePopup'
+        @paste='onPaste'
+        :rows='rows'
+      />
+      <Loader v-if='isUploading' class='loader' />
+      <div class='attach-image'>
+        <input
+          accept='.gif,.jpeg,.jpg,.png'
+          type='file'
+          :id='uploadId'
+          :name='uploadId'
+          @change='onFileChange'
+        />
+        <span class='note'>Attach images by selecting or pasting them.</span>
+      </div>
+    </div>
     <Select v-if='isModalOpen' class='mention-modal' :style='modalPositionStyles'>
       <div
         v-for='(item, $index) in displayedItems'
@@ -31,15 +46,20 @@
 
 <script>
 import GithubCommunityGidelines from '@/components/board/issues/github_community_guidelines'
+import Loader from '@/components/loader';
 import Select from '@/components/select';
 import { get } from 'vuex-pathify';
 import getCaretPosition from 'textarea-caret'
+
+import Uppy from '@uppy/core';
+import AwsS3 from '@uppy/aws-s3';
 
 const MIN_ROWS = 8;
 
 export default {
   components: {
     GithubCommunityGidelines,
+    Loader,
     Select
   },
   props: {
@@ -63,7 +83,9 @@ export default {
     lastSearchText: '',
     selectedIndex: 0,
     isModalOpen: false,
-    rows: MIN_ROWS
+    isUploading: false,
+    rows: MIN_ROWS,
+    uppy: undefined
   }),
   computed: {
     ...get([
@@ -97,10 +119,54 @@ export default {
 
       const { top, left } = this.caretPosition;
       return `top: ${top + this.mentionPositionTop}px; left: ${left + this.mentionPositionLeft}px;`;
-    }
+    },
+    uploadId() { return `upload_id_${Math.random().toString(36).substr(2)}`; }
   },
   mounted() {
     this.initTextAreaRows();
+
+    this.uppy = Uppy({
+      id: this.uploadId,
+      autoProceed: true,
+      debug: false,
+      restrictions: {
+        maxFileSize: 1024 * 1024 * 10,
+        allowedFileTypes: ['image/*']
+      },
+      onBeforeUpload: (files) => {
+        const updatedFiles = Object.assign({}, files);
+        Object
+          .keys(updatedFiles)
+          .forEach(fileId => {
+            updatedFiles[fileId].name = `${this.uuid()}.${updatedFiles[fileId].extension}`;
+            // console.log('uploading...');
+          });
+        return updatedFiles;
+      }
+    })
+      .use(AwsS3, {
+        getUploadParameters: (file) => (
+          fetch(`http://localhost:3000/s3/params?filename=${file.name}&extension=.${file.extension}&type=${file.type}`)
+            .then(response => response.json())
+        )
+      })
+      .on('upload-success', (result) => {
+        // console.log('upload-success');
+        // console.log(result);
+        // console.log(result.meta.key);
+        // console.log('URL:');
+        // console.log(`https://agileseason3.s3.eu-central-1.amazonaws.com/${result.meta.key}`);
+        const fileName = result.meta.key;
+        const url = `https://agileseason3.s3.eu-central-1.amazonaws.com/${fileName}`;
+        const imgTag = `![img](${url})`;
+        const value = this.$refs.textarea.value;
+        this.$emit('update:modelValue', `${value}\n${imgTag}`);
+        this.isUploading = false;
+      })
+      .on('upload-error', (file, error) => {
+        alert(error.message);
+        this.isUploading = false;
+      });
   },
   watch: {
     displayedItems() { this.selectedIndex = 0; },
@@ -109,6 +175,39 @@ export default {
     }
   },
   methods: {
+    uuid() { return `${Math.random().toString(36).substr(2)}-${Math.random().toString(36).substr(2)}`; },
+    onFileChange({ currentTarget }) {
+      if (currentTarget.files.length === 0) { return; }
+
+      Array
+        .from(currentTarget.files)
+        .forEach(file => this.addFile(file));
+    },
+    onPaste(e) {
+      let files = [];
+      for (var i = 0 ; i < e.clipboardData.items.length ; i++) {
+        var item = e.clipboardData.items[i];
+        if (item.type.indexOf('image') != -1) {
+          files.push(item.getAsFile());
+        }
+      }
+
+      if (files.length > 0) {
+        e.preventDefault();
+        this.addFile(files[0]);
+        // NOTE: Uploading many files is unstable.
+        // files.forEach(file => this._addFile(file));
+      }
+    },
+    addFile(file) {
+      try {
+        this.isUploading = true;
+        this.uppy.addFile({ name: file.name, type: file.type, data: file });
+      } catch(err) {
+        alert(err.message);
+        this.isUploading = false;
+      }
+    },
     initTextAreaRows() {
       const rows = this.$refs.textarea.value.split(/\r?\n/).length;
       if (rows > this.rows || rows > MIN_ROWS) {
@@ -261,7 +360,7 @@ textarea
   font-weight: 300
   line-height: 18px
   min-height: 180px
-  padding: 8px
+  padding: 8px 8px 32px 8px
   resize: none
   width: 100%
 
@@ -272,6 +371,41 @@ textarea
     color: #9fa8da
   &::-ms-input-placeholder
     color: #9fa8da
+
+  &:focus + .attach-image
+    border-top: 1px dashed #005FCC
+
+.textarea-container
+  position: relative
+
+  .loader
+    position: absolute
+    top: -14px
+    left: calc(50% - 20px)
+
+  .attach-image
+    position: absolute
+    bottom: 6px
+    left: 0
+    height: 24px
+    width: 100%
+    border-top: 1px dashed #c5cae9
+
+    input
+      position: absolute
+      bottom: 0
+      height: 24px
+      opacity: 0
+      width: 100%
+      z-index: 1
+
+    .note
+      position: absolute
+      bottom: 4px
+      left: 10px
+      color: #9fa8da
+      font-size: 12px
+      z-index: 0
 
 .actions
   display: flex
