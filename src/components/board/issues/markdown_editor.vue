@@ -13,6 +13,7 @@
         @paste='onPaste'
         :rows='rows'
       />
+      <Loader v-if='isUploading' class='loader' />
       <div class='attach-image'>
         <input
           accept='.gif,.jpeg,.jpg,.png'
@@ -45,6 +46,7 @@
 
 <script>
 import GithubCommunityGidelines from '@/components/board/issues/github_community_guidelines'
+import Loader from '@/components/loader';
 import Select from '@/components/select';
 import { get } from 'vuex-pathify';
 import getCaretPosition from 'textarea-caret'
@@ -57,6 +59,7 @@ const MIN_ROWS = 8;
 export default {
   components: {
     GithubCommunityGidelines,
+    Loader,
     Select
   },
   props: {
@@ -136,7 +139,7 @@ export default {
           .keys(updatedFiles)
           .forEach(fileId => {
             updatedFiles[fileId].name = `${this.uuid()}.${updatedFiles[fileId].extension}`;
-            console.log('uploading...');
+            // console.log('uploading...');
           });
         return updatedFiles;
       }
@@ -349,9 +352,6 @@ export default {
     &.selected
       background-color: #c5cae9
 
-.textarea-container
-  position: relative
-
 textarea
   border-radius: 3px
   border: 1px solid #c5cae9
@@ -375,29 +375,37 @@ textarea
   &:focus + .attach-image
     border-top: 1px dashed #005FCC
 
-.attach-image
-  position: absolute
-  bottom: 6px
-  left: 0
-  height: 24px
-  width: 100%
-  border-top: 1px dashed #c5cae9
+.textarea-container
+  position: relative
 
-  input
+  .loader
     position: absolute
-    bottom: 0
+    top: -14px
+    left: calc(50% - 20px)
+
+  .attach-image
+    position: absolute
+    bottom: 6px
+    left: 0
     height: 24px
-    opacity: 0
     width: 100%
-    z-index: 1
+    border-top: 1px dashed #c5cae9
 
-  .note
-    position: absolute
-    bottom: 4px
-    left: 10px
-    color: #9fa8da
-    font-size: 12px
-    z-index: 0
+    input
+      position: absolute
+      bottom: 0
+      height: 24px
+      opacity: 0
+      width: 100%
+      z-index: 1
+
+    .note
+      position: absolute
+      bottom: 4px
+      left: 10px
+      color: #9fa8da
+      font-size: 12px
+      z-index: 0
 
 .actions
   display: flex
