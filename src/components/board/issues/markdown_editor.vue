@@ -3,13 +3,25 @@
     <textarea
       v-bind='$attrs'
       :value='modelValue'
+      :disabled='isUploading'
       :placeholder='placeholder'
       ref='textarea'
       @input='onInput'
       @keydown='onKeyDown'
       @blur='closePopup'
+      @paste='onPaste'
       :rows='rows'
     />
+    <div class='attach-image'>
+      <input
+        accept='.gif,.jpeg,.jpg,.png'
+        type='file'
+        :id='uploadId'
+        :name='uploadId'
+        @change='onFileChange'
+      />
+      <span class='note'>Attach images by selecting or pasting them.</span>
+    </div>
     <Select v-if='isModalOpen' class='mention-modal' :style='modalPositionStyles'>
       <div
         v-for='(item, $index) in displayedItems'
@@ -23,13 +35,6 @@
       </div>
     </Select>
     <GithubCommunityGidelines />
-    <input
-      accept='.gif,.jpeg,.jpg,.png'
-      type='file'
-      :id='uploadId'
-      :name='uploadId'
-      @change='onFileChange'
-    />
     <div class='actions'>
       <slot name='actions' />
     </div>
@@ -73,6 +78,7 @@ export default {
     lastSearchText: '',
     selectedIndex: 0,
     isModalOpen: false,
+    isUploading: false,
     rows: MIN_ROWS,
     uppy: undefined
   }),
@@ -130,7 +136,6 @@ export default {
             updatedFiles[fileId].name = `${this.uuid()}.${updatedFiles[fileId].extension}`;
             console.log('uploading...');
           });
-
         return updatedFiles;
       }
     })
@@ -151,8 +156,12 @@ export default {
         const imgTag = `![img](${url})`;
         const value = this.$refs.textarea.value;
         this.$emit('update:modelValue', `${value}\n${imgTag}`);
+        this.isUploading = false;
       })
-      .on('upload-error', (file, error) => alert(error.message));
+      .on('upload-error', (file, error) => {
+        alert(error.message);
+        this.isUploading = false;
+      });
   },
   watch: {
     displayedItems() { this.selectedIndex = 0; },
@@ -163,16 +172,35 @@ export default {
   methods: {
     uuid() { return `${Math.random().toString(36).substr(2)}-${Math.random().toString(36).substr(2)}`; },
     onFileChange({ currentTarget }) {
-      if (currentTarget.files.length) { return; }
+      if (currentTarget.files.length === 0) { return; }
+
       Array
         .from(currentTarget.files)
         .forEach(file => this.addFile(file));
     },
+    onPaste(e) {
+      let files = [];
+      for (var i = 0 ; i < e.clipboardData.items.length ; i++) {
+        var item = e.clipboardData.items[i];
+        if (item.type.indexOf('image') != -1) {
+          files.push(item.getAsFile());
+        }
+      }
+
+      if (files.length > 0) {
+        e.preventDefault();
+        this.addFile(files[0]);
+        // NOTE: Uploading many files is unstable.
+        // files.forEach(file => this._addFile(file));
+      }
+    },
     addFile(file) {
       try {
+        this.isUploading = true;
         this.uppy.addFile({ name: file.name, type: file.type, data: file });
       } catch(err) {
         alert(err.message);
+        this.isUploading = false;
       }
     },
     initTextAreaRows() {
@@ -327,7 +355,7 @@ textarea
   font-weight: 300
   line-height: 18px
   min-height: 180px
-  padding: 8px
+  padding: 8px 8px 32px 8px
   resize: none
   width: 100%
 
@@ -338,6 +366,35 @@ textarea
     color: #9fa8da
   &::-ms-input-placeholder
     color: #9fa8da
+
+  &:focus + .attach-image
+    border-top: 1px dashed #005FCC
+
+.attach-image
+  position: absolute
+  //padding: 0 10px
+  bottom: 20px
+  left: 0
+  height: 24px
+  width: 100%
+  border-top: 1px dashed #c5cae9
+
+  input
+    position: absolute
+    // background-color: #eee
+    bottom: 0
+    height: 24px
+    opacity: 0
+    width: 100%
+    z-index: 1
+
+  .note
+    position: absolute
+    bottom: 4px
+    left: 10px
+    color: #9fa8da
+    font-size: 12px
+    z-index: 0
 
 .actions
   display: flex
