@@ -23,6 +23,13 @@
       </div>
     </Select>
     <GithubCommunityGidelines />
+    <input
+      accept='.gif,.jpeg,.jpg,.png'
+      type='file'
+      :id='uploadId'
+      :name='uploadId'
+      @change='onFileChange'
+    />
     <div class='actions'>
       <slot name='actions' />
     </div>
@@ -34,6 +41,9 @@ import GithubCommunityGidelines from '@/components/board/issues/github_community
 import Select from '@/components/select';
 import { get } from 'vuex-pathify';
 import getCaretPosition from 'textarea-caret'
+
+import Uppy from '@uppy/core';
+import AwsS3 from '@uppy/aws-s3';
 
 const MIN_ROWS = 8;
 
@@ -63,7 +73,8 @@ export default {
     lastSearchText: '',
     selectedIndex: 0,
     isModalOpen: false,
-    rows: MIN_ROWS
+    rows: MIN_ROWS,
+    uppy: undefined
   }),
   computed: {
     ...get([
@@ -97,10 +108,51 @@ export default {
 
       const { top, left } = this.caretPosition;
       return `top: ${top + this.mentionPositionTop}px; left: ${left + this.mentionPositionLeft}px;`;
-    }
+    },
+    uploadId() { return `upload_id_${Math.random().toString(36).substr(2)}`; }
   },
   mounted() {
     this.initTextAreaRows();
+
+    this.uppy = Uppy({
+      id: this.uploadId,
+      autoProceed: true,
+      debug: false,
+      restrictions: {
+        maxFileSize: 1024 * 1024 * 10,
+        allowedFileTypes: ['image/*']
+      },
+      onBeforeUpload: (files) => {
+        const updatedFiles = Object.assign({}, files);
+        Object
+          .keys(updatedFiles)
+          .forEach(fileId => {
+            updatedFiles[fileId].name = `${this.uuid()}.${updatedFiles[fileId].extension}`;
+            console.log('uploading...');
+          });
+
+        return updatedFiles;
+      }
+    })
+      .use(AwsS3, {
+        getUploadParameters: (file) => (
+          fetch(`http://localhost:3000/s3/params?filename=${file.name}&extension=.${file.extension}&type=${file.type}`)
+            .then(response => response.json())
+        )
+      })
+      .on('upload-success', (result) => {
+        // console.log('upload-success');
+        // console.log(result);
+        // console.log(result.meta.key);
+        // console.log('URL:');
+        // console.log(`https://agileseason3.s3.eu-central-1.amazonaws.com/${result.meta.key}`);
+        const fileName = result.meta.key;
+        const url = `https://agileseason3.s3.eu-central-1.amazonaws.com/${fileName}`;
+        const imgTag = `![img](${url})`;
+        const value = this.$refs.textarea.value;
+        this.$emit('update:modelValue', `${value}\n${imgTag}`);
+      })
+      .on('upload-error', (file, error) => alert(error.message));
   },
   watch: {
     displayedItems() { this.selectedIndex = 0; },
@@ -109,6 +161,20 @@ export default {
     }
   },
   methods: {
+    uuid() { return `${Math.random().toString(36).substr(2)}-${Math.random().toString(36).substr(2)}`; },
+    onFileChange({ currentTarget }) {
+      if (currentTarget.files.length) { return; }
+      Array
+        .from(currentTarget.files)
+        .forEach(file => this.addFile(file));
+    },
+    addFile(file) {
+      try {
+        this.uppy.addFile({ name: file.name, type: file.type, data: file });
+      } catch(err) {
+        alert(err.message);
+      }
+    },
     initTextAreaRows() {
       const rows = this.$refs.textarea.value.split(/\r?\n/).length;
       if (rows > this.rows || rows > MIN_ROWS) {
