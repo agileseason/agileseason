@@ -1,26 +1,28 @@
 <template>
   <div class='editor'>
-    <textarea
-      v-bind='$attrs'
-      :value='modelValue'
-      :disabled='isUploading'
-      :placeholder='placeholder'
-      ref='textarea'
-      @input='onInput'
-      @keydown='onKeyDown'
-      @blur='closePopup'
-      @paste='onPaste'
-      :rows='rows'
-    />
-    <div class='attach-image'>
-      <input
-        accept='.gif,.jpeg,.jpg,.png'
-        type='file'
-        :id='uploadId'
-        :name='uploadId'
-        @change='onFileChange'
+    <div class='textarea-container'>
+      <textarea
+        v-bind='$attrs'
+        :value='modelValue'
+        :disabled='isUploading'
+        :placeholder='placeholder'
+        ref='textarea'
+        @input='onInput'
+        @keydown='onKeyDown'
+        @blur='closePopup'
+        @paste='onPaste'
+        :rows='rows'
       />
-      <span class='note'>Attach images by selecting or pasting them.</span>
+      <div class='attach-image'>
+        <input
+          accept='.gif,.jpeg,.jpg,.png'
+          type='file'
+          :id='uploadId'
+          :name='uploadId'
+          @change='onFileChange'
+        />
+        <span class='note'>Attach images by selecting or pasting them.</span>
+      </div>
     </div>
     <Select v-if='isModalOpen' class='mention-modal' :style='modalPositionStyles'>
       <div
@@ -347,6 +349,9 @@ export default {
     &.selected
       background-color: #c5cae9
 
+.textarea-container
+  position: relative
+
 textarea
   border-radius: 3px
   border: 1px solid #c5cae9
@@ -372,8 +377,7 @@ textarea
 
 .attach-image
   position: absolute
-  //padding: 0 10px
-  bottom: 20px
+  bottom: 6px
   left: 0
   height: 24px
   width: 100%
@@ -381,7 +385,6 @@ textarea
 
   input
     position: absolute
-    // background-color: #eee
     bottom: 0
     height: 24px
     opacity: 0
