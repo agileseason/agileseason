@@ -251,7 +251,6 @@ export default {
   top: 4px
 
   .icon
-    background-image: url('../../assets/icons/menu/gear.svg')
     background-position: center
     background-repeat: no-repeat
     border-radius: 4px

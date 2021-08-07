@@ -7,20 +7,25 @@
       </div>
       <div @click='close' class='icon close'/>
     </div>
-    <div class='notes'>
+
+    <Loader v-if='true' color='white' />
+    <div v-else class='notes'>
       <div class='note'>
         TODO: Notes
       </div>
       <div>MORE</div>
     </div>
+
   </Modal>
 </template>
 
 <script>
-import Modal from '@/components/modal'
+import Loader from '@/components/loader';
+import Modal from '@/components/modal';
 
 export default {
   components: {
+    Loader,
     Modal
   },
   props: {},
@@ -88,4 +93,5 @@ export default {
   background-color: #283593
   border-radius: 0
   box-shadow: none
+  min-height: 100vh
 </style>

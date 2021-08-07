@@ -1,7 +1,7 @@
 <template>
   <div class='loader' :class="{ inline: isInline }">
     <h1 v-if='title'>{{ title }}</h1>
-    <div class='icon' />
+    <div class='icon' :class='color' />
   </div>
 </template>
 
@@ -9,8 +9,9 @@
 export default {
   name: 'Loader',
   props: {
-    title: { type: String, required: false, default: undefined },
-    isInline: { type: Boolean, required: false, default: false }
+    title: { type: String, default: undefined },
+    color: { type: String, default: 'indigo' },
+    isInline: { type: Boolean, default: false }
   },
   methods: {}
 };
@@ -25,9 +26,14 @@ export default {
     margin-top: 0
 
   .icon
-    background-image: url('../assets/page_loader.svg')
     background-repeat: no-repeat
     display: inline-block
     height: 50px
     width: 50px
+
+    &.indigo
+      background-image: url('../assets/page_loader.svg')
+
+    &.white
+      background-image: url('../assets/page_loader_white.svg')
 </style>
