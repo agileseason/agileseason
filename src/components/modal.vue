@@ -44,7 +44,12 @@ export default {
     transform: translateX(-50%)
 
   &.right-side
+    left: auto
+    min-height: auto
+    right: 0
+    top: 0
     transform: translateX(100%)
+    width: 60%
 
     &.slide-enter-to
       transform: translateX(0%)
