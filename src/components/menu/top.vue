@@ -46,7 +46,7 @@
       </div>
     </div>
     <div class='right'>
-      <router-link class='icon note' :to='boardNotesUrl' />
+      <router-link v-if='isBoardLoaded' class='icon notes' :to='boardNotesUrl' />
       <router-link v-if='isShowSettings' class='icon settings' :to='boardSettingsUrl' />
     </div>
   </div>
@@ -270,6 +270,6 @@ export default {
     &.settings
       background-image: url('../../assets/icons/menu/gear.svg')
 
-    &.note
+    &.notes
       background-image: url('../../assets/icons/menu/note.svg')
 </style>
