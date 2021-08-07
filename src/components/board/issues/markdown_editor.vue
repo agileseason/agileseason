@@ -22,7 +22,7 @@
           :name='uploadId'
           @change='onFileChange'
         />
-        <span class='note'>Attach images by selecting or pasting them.</span>
+        <span class='note'>Attach images by selecting or pasting them</span>
       </div>
     </div>
     <Select v-if='isModalOpen' class='mention-modal' :style='modalPositionStyles'>
