@@ -46,7 +46,8 @@
       </div>
     </div>
     <div class='right'>
-      <router-link v-if='isShowSettings' class='settings' :to='boardSettingsUrl' />
+      <router-link class='icon note' :to='boardNotesUrl' />
+      <router-link v-if='isShowSettings' class='icon settings' :to='boardSettingsUrl' />
     </div>
   </div>
 </template>
@@ -79,6 +80,7 @@ export default {
     isFull() { return this.boards.length > 0; },
     boardId() { return parseInt(this.$route.params.id) || 0; },
     boardSettingsUrl() { return `/boards/${this.boardId}/settings`; },
+    boardNotesUrl() { return `/boards/${this.boardId}/notes`; },
     isShowSettings() {
       return this.boardId > 0 && this.isBoardLoaded && this.isBoardOwner;
     }
@@ -248,7 +250,7 @@ export default {
   right: 8px
   top: 4px
 
-  .settings
+  .icon
     background-image: url('../../assets/icons/menu/gear.svg')
     background-position: center
     background-repeat: no-repeat
@@ -256,6 +258,7 @@ export default {
     cursor: pointer
     display: inline-block
     height: 28px
+    margin-left: 4px
     width: 28px
 
     &:hover
@@ -263,4 +266,10 @@ export default {
 
     &:active
       background-color: #303f9f
+
+    &.settings
+      background-image: url('../../assets/icons/menu/gear.svg')
+
+    &.note
+      background-image: url('../../assets/icons/menu/note.svg')
 </style>

@@ -69,7 +69,9 @@ export default {
       return this.isLoaded ? { 'min-width': `${280 * (this.columns.length + 1)}px` } : {};
     },
     isModalOpen() {
-      return this.$route.name === 'issue' || this.$route.name === 'issue_new';
+      return this.$route.name === 'issue' ||
+        this.$route.name === 'issue_new' ||
+        this.$route.name === 'notes';
     }
   },
   async created() {

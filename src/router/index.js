@@ -10,6 +10,7 @@ import Home from '../views/home';
 import Invite from '../views/invite';
 import Issue from '../views/issue';
 import IssueNew from '../views/issue_new';
+import Notes from '../views/notes';
 import OAuth from '../views/oauth';
 import SharedBoard from '../views/shared_board';
 
@@ -52,6 +53,10 @@ const routes = [
         path: 'columns/:columnId/issues/new',
         name: 'issue_new',
         component: IssueNew
+      }, {
+        path: 'notes',
+        name: 'notes',
+        component: Notes
       }
     ],
     beforeEnter: requireAuth

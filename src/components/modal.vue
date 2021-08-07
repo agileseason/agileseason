@@ -1,5 +1,5 @@
 <template>
-  <div class='modal is-expanded'>
+  <div class='modal is-expanded' v-bind='$attrs'>
     <slot/>
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
 .modal
   background-color: #fff
   border-radius: 0px 0px 10px 10px
-  box-shadow: 0px 6px 10px 0px #BDBDBD
+  box-shadow: 0px 6px 10px 0px #bdbdbd
   left: 50%
   max-width: 1280px
   min-height: 500px
@@ -42,6 +42,15 @@ export default {
 
   &.is-expanded:not(.slide-enter-active)
     transform: translateX(-50%)
+
+  &.right-side
+    transform: translateX(100%)
+
+    &.slide-enter-to
+      transform: translateX(0%)
+
+    &.is-expanded:not(.slide-enter-active)
+      transform: none
 
 .slide-enter-active,
 .slide-leave-active
