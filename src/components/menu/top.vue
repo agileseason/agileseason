@@ -145,7 +145,7 @@ export default {
     margin: 0 3px
 
 .left-button
-  background-image: url('../../assets/icons/three-bars.svg')
+  background-image: url('../../assets/icons/menu/three-bars.svg')
   background-position: center
   background-repeat: no-repeat
   border-radius: 4px
@@ -249,7 +249,7 @@ export default {
   top: 4px
 
   .settings
-    background-image: url('../../assets/icons/gear.svg')
+    background-image: url('../../assets/icons/menu/gear.svg')
     background-position: center
     background-repeat: no-repeat
     border-radius: 4px
