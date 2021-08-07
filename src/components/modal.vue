@@ -49,7 +49,7 @@ export default {
     right: 0
     top: 0
     transform: translateX(100%)
-    width: 60%
+    width: 50%
 
     &.slide-enter-to
       transform: translateX(0%)
