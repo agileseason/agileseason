@@ -111,7 +111,7 @@ export default {
     min-width: 100px
 
   &.medium
-    height: 22px
+    height: 24px
     font-size: 12px
 
   &.small
@@ -161,7 +161,8 @@ export default {
     background-color: #3f51b5
 
     &.disabled
-      border: 1px solid #bdbdbd
+      background-color: inherit
+      border: 1px solid #9e9e9e
       color: #9e9e9e
 
     &:hover:not(.disabled)

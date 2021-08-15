@@ -16,6 +16,7 @@
           size='medium'
           text='New note'
           @click='onNew'
+          :is-disabled='isNew'
         />
       </div>
       <div v-if='isNew' class='new-note'>
@@ -37,6 +38,7 @@
             text='Submit new note'
             @click='submit'
             :is-loading='isSubmitting'
+            class='submit'
           />
         </div>
       </div>
@@ -170,6 +172,9 @@ export default {
     .actions
       padding: 4px 0
       margin-bottom: 0
+
+      .submit
+        min-width: 160px
 
   .note
     background-color: #fff
