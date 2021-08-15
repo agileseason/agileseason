@@ -37,7 +37,7 @@
         {{ item.login || item.label }}
       </div>
     </Select>
-    <GithubCommunityGidelines />
+    <GithubCommunityGidelines v-if='!hideGithubGidelines' />
     <div class='actions'>
       <slot name='actions' />
     </div>
@@ -70,7 +70,8 @@ export default {
     },
     assignableUsers: { type: Array, required: true },
     mentionPositionTop: { type: Number, default: 20 },
-    mentionPositionLeft: { type: Number, default: 20 }
+    mentionPositionLeft: { type: Number, default: 20 },
+    hideGithubGidelines: { type: Boolean, default: false }
   },
   emits: ['submit', 'update:modelValue'],
   data: () => ({

@@ -11,9 +11,6 @@ export default {
   getters: {
     token: (state, getters, rootState, rootGetters) => (
       rootGetters['user/token']
-    ),
-    isEmpty: (state) => (
-      !state.isLoading && state.items.length === 0
     )
   },
 
