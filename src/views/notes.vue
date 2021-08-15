@@ -44,10 +44,12 @@
         </div>
       </div>
       <div v-if='isEmpty' class='empty'>There are no notes for this board. Be the first! :)</div>
-      <!--div class='note'>
-        TODO: Notes
-      </div>
-      <div>MORE</div-->
+      <div
+        v-for='item in items'
+        :key='item.id'
+        class='note'
+        v-html='markdown(item.body)'
+      />
     </div>
 
   </Modal>
@@ -56,6 +58,7 @@
 <script>
 import Button from '@/components/buttons/button';
 import Loader from '@/components/loader';
+import Markdown from '@/utils/markdown';
 import MarkdownEditor from '@/components/board/issues/markdown_editor'
 import Modal from '@/components/modal';
 
@@ -88,20 +91,33 @@ export default {
   methods: {
     ...call([
       'notes/fetch',
+      'notes/createNote'
     ]),
     onNew() {
       this.isNew = true;
       this.$nextTick(() => this.$refs.note.$refs.textarea.focus());
     },
-    submit() {
+    async submit() {
       if (this.isSubmitting) { return; }
       this.isSubmitting = true;
+
+      await this.createNote({
+        boardId: this.boardId,
+        body: this.note
+      });
+
+      this.isNew = false;
+      this.isSubmitting = false;
+      this.note = '';
     },
     cancel() {
       this.isNew = false;
     },
     close() {
       this.$router.push({ name: 'board', id: this.boardId });
+    },
+    markdown(text) {
+      return Markdown.render(text);
     }
   }
 }
@@ -180,7 +196,6 @@ export default {
 
   .note
     background-color: #fff
-    height: 2200px
     border-radius: 3px
     padding: 6px 8px
 

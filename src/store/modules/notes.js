@@ -21,6 +21,18 @@ export default {
       commit('FINISH_LOADING', items || []);
       return items;
     },
+    async createNote({ commit, getters }, { boardId, body }) {
+      const result = await api.createNote(
+        getters.token,
+        { boardId, body }
+      );
+      if (result?.note == null) {
+        alert(result.errors);
+      } else {
+        commit('ADD_NOTE', result.note);
+      }
+      return result?.note;
+    }
   },
 
   mutations: {
@@ -30,6 +42,9 @@ export default {
     FINISH_LOADING(state, items) {
       state.items = items;
       state.isLoading = false;
+    },
+    ADD_NOTE(state, note) {
+      state.items.push(note);
     }
   }
 };

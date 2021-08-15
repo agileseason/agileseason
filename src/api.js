@@ -802,6 +802,31 @@ export default {
     return data?.board?.items;
   },
 
+  async createNote(token, { boardId, body }) {
+    const query = `
+      mutation(
+        $boardId:Int!,
+        $body:String!
+      ) {
+        createNote(input: {
+          boardId: $boardId,
+          body: $body
+        }) {
+          note {
+            id
+            body
+          }
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, body };
+    const data = await this.client(token).request(query, vars);
+    this.log('createNote', data, vars);
+
+    return data?.createNote;
+  },
+
   // ---------------------------------
   // Helpers
   // ---------------------------------
