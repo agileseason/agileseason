@@ -7,6 +7,7 @@ import boardSettings from './modules/board_settings';
 import boardSync from './modules/board_sync';
 import installations from './modules/installations';
 import issue from './modules/issue';
+import notes from './modules/notes';
 import repositories from './modules/repositories';
 import user from './modules/user';
 
@@ -25,6 +26,7 @@ export default createStore({
     boardSync,
     installations,
     issue,
+    notes,
     repositories,
     user
   }

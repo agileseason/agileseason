@@ -785,6 +785,23 @@ export default {
     return data?.action;
   },
 
+  async fetchNotes(token, { boardId }) {
+    const query = `
+      query($id:Int!) {
+        board(id: $id) {
+          items:notes {
+            id
+            body
+          }
+        }
+      }
+    `;
+    const data = await this.client(token).request(query, { id: boardId });
+    this.log('notes', data);
+
+    return data?.board?.items;
+  },
+
   // ---------------------------------
   // Helpers
   // ---------------------------------

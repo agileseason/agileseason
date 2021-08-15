@@ -8,31 +8,48 @@
       <div @click='close' class='icon close'/>
     </div>
 
-    <Loader v-if='true' color='white' />
+    <Loader v-if='isLoading' color='white' />
     <div v-else class='notes'>
-      <div class='note'>
+      <div class='actions'>
+        <Button class='outline-white' size='medium' text='New note' />
+      </div>
+      <div v-if='isEmpty' class='empty'>There are no notes for this board. Be the first! :)</div>
+      <!--div class='note'>
         TODO: Notes
       </div>
-      <div>MORE</div>
+      <div>MORE</div-->
     </div>
 
   </Modal>
 </template>
 
 <script>
+import Button from '@/components/buttons/button';
 import Loader from '@/components/loader';
 import Modal from '@/components/modal';
 
+import { get, call } from 'vuex-pathify';
+
 export default {
   components: {
+    Button,
     Loader,
     Modal
   },
   props: {},
   computed: {
+    isLoading: get('notes/isLoading'),
+    isEmpty: get('notes/isEmpty'),
+    items: get('notes/items'),
     boardId() { return parseInt(this.$route.params.id); }
   },
+  async mounted() {
+    await this.fetch({ boardId: this.boardId });
+  },
   methods: {
+    ...call([
+      'notes/fetch',
+    ]),
     close() {
       this.$router.push({ name: 'board', id: this.boardId });
     }
@@ -77,17 +94,27 @@ export default {
     &:active
       background-color: #303f9f
 
+.actions
+  display: flex
+  justify-content: flex-end
+  margin-bottom: 12px
+
 .notes
   box-sizing: border-box
   height: calc(100vh - 36px)
   overflow-y: scroll
   padding: 0 8px
 
-.note
-  background-color: #fff
-  height: 2200px
-  border-radius: 3px
-  padding: 6px 8px
+  .empty
+    color: #fff
+    text-align: center
+    margin-top: 40%
+
+  .note
+    background-color: #fff
+    height: 2200px
+    border-radius: 3px
+    padding: 6px 8px
 
 .right-side
   background-color: #283593

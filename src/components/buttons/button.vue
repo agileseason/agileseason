@@ -53,6 +53,7 @@ export default {
           'indigo',
           'flat',
           'outline',
+          'outline-white',
           'white',
           'danger'
         ].indexOf(value) !== -1
@@ -65,6 +66,7 @@ export default {
       validator: (value) => (
         [
           'normal',
+          'medium',
           'small'
         ].indexOf(value) !== -1
       )
@@ -108,6 +110,10 @@ export default {
     line-height: 38px
     min-width: 100px
 
+  &.medium
+    height: 22px
+    font-size: 12px
+
   &.small
     // do nothing
 
@@ -148,6 +154,23 @@ export default {
     &:active
       color: #283593
       border-color: #283593
+
+  &.outline-white
+    color: #fff
+    border: 1px solid #fff
+    background-color: #3f51b5
+
+    &.disabled
+      border: 1px solid #bdbdbd
+      color: #9e9e9e
+
+    &:hover:not(.disabled)
+      color: #e0e0e0
+      border-color: #e0e0e0
+
+    &:active
+      color: #f5f5f5
+      border-color: #f5f5f5
 
   &.white
     padding: 0 12px
