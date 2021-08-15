@@ -27,6 +27,7 @@
           :assignable-users='[]'
           hide-github-gidelines
           class='body'
+          @submit='submit'
         />
         <div class='actions'>
           <Button
@@ -172,7 +173,7 @@ export default {
   box-sizing: border-box
   height: calc(100vh - 36px)
   overflow-y: scroll
-  padding: 0 8px
+  padding: 0 12px
 
   .empty
     color: #fff
@@ -183,6 +184,7 @@ export default {
     background-color: #fff
     border-radius: 3px
     padding: 6px 8px
+    margin-bottom: 12px
 
     .body
       padding-top: 2px
@@ -197,7 +199,8 @@ export default {
   .note
     background-color: #fff
     border-radius: 3px
-    padding: 6px 8px
+    padding: 6px 12px
+    margin-bottom: 12px
 
 .right-side
   background-color: #283593

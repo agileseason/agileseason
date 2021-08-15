@@ -44,7 +44,10 @@ export default {
       state.isLoading = false;
     },
     ADD_NOTE(state, note) {
-      state.items.push(note);
+      state.items = [
+        note,
+        ...state.items
+      ]
     }
   }
 };

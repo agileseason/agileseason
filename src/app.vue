@@ -104,4 +104,8 @@ a {
   margin-top: 0;
   margin-bottom: 0;
 }
+
+.note h1, h2, h3, h4, h5 {
+  margin-top: 6px;
+}
 </style>
