@@ -21,6 +21,7 @@
       </div>
       <div v-if='isNew' class='new-note'>
         <MarkdownEditor
+          ref='note'
           v-model='note'
           placeholder='New note...'
           :assignable-users='[]'
@@ -90,6 +91,7 @@ export default {
     ]),
     onNew() {
       this.isNew = true;
+      this.$nextTick(() => this.$refs.note.$refs.textarea.focus());
     },
     submit() {
       if (this.isSubmitting) { return; }
