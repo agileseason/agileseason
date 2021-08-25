@@ -19,6 +19,7 @@
           :is-disabled='isNew'
         />
       </div>
+
       <div v-if='isNew' class='new-note'>
         <MarkdownEditor
           ref='note'
@@ -45,11 +46,11 @@
         </div>
       </div>
       <div v-if='isEmpty' class='empty'>There are no notes for this board. Be the first! :)</div>
-      <div
+
+      <Note
         v-for='item in items'
         :key='item.id'
-        class='note'
-        v-html='markdown(item.body)'
+        v-bind='item'
       />
     </div>
 
@@ -60,8 +61,9 @@
 import Button from '@/components/buttons/button';
 import Loader from '@/components/loader';
 import Markdown from '@/utils/markdown';
-import MarkdownEditor from '@/components/board/issues/markdown_editor'
+import MarkdownEditor from '@/components/board/issues/markdown_editor';
 import Modal from '@/components/modal';
+import Note from '@/components/board/notes/note';
 
 import { get, call } from 'vuex-pathify';
 
@@ -70,7 +72,8 @@ export default {
     Button,
     Loader,
     MarkdownEditor,
-    Modal
+    Modal,
+    Note
   },
   props: {},
   data: () => ({
@@ -195,12 +198,6 @@ export default {
 
       .submit
         min-width: 160px
-
-  .note
-    background-color: #fff
-    border-radius: 3px
-    padding: 6px 12px
-    margin-bottom: 12px
 
 .right-side
   background-color: #283593

@@ -1,5 +1,6 @@
 <template>
   <div class='comment' :class="{ 'disabled': isDeleting || isSubmitting }">
+    <div v-if='isSettingsOpen' class='select-overlay' @click.self='closeSettings' />
     <img class='avatar' :src='author.avatarUrl' />
 
     <div v-if='!isEdit' class='content'>
@@ -44,8 +45,6 @@
         />
       </template>
     </MarkdownEditor>
-
-    <div v-if='isSettingsOpen' class='select-overlay' @click.self='closeSettings' />
   </div>
 </template>
 
@@ -134,6 +133,7 @@ export default {
 </script>
 
 <style scoped lang='sass'>
+// TODO: Remove duplicate comment.vue / note.vue
 .select-overlay
   height: 100vh
   left: 0
