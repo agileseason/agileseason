@@ -49,10 +49,10 @@
 </template>
 
 <script>
-import Button from '@/components/buttons/button'
-import ButtonIcon from '@/components/buttons/icon'
+import Button from '@/components/buttons/button';
+import ButtonIcon from '@/components/buttons/icon';
 import Markdown from '@/utils/markdown';
-import MarkdownEditor from '@/components/board/issues/markdown_editor'
+import MarkdownEditor from '@/components/board/issues/markdown_editor';
 import Select from '@/components/select';
 import { call } from 'vuex-pathify';
 
@@ -125,9 +125,7 @@ export default {
         await this.destroyComment({ id: this.id });
       }
     },
-    markdown(text) {
-      return Markdown.render(text, this.repositoryFullName);
-    }
+    markdown(text) { return Markdown.render(text, this.repositoryFullName); }
   }
 }
 </script>
@@ -200,7 +198,7 @@ export default {
         color: #9e9e9e
         font-weight: 200
 
-// TODO: Remove duplications (see board/column.vue)
+// TODO: Remove duplications (see board/column/note_.vue)
 .select-settings
   overflow: hidden
   position: absolute

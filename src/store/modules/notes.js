@@ -11,10 +11,14 @@ export default {
   getters: {
     token: (state, getters, rootState, rootGetters) => (
       rootGetters['user/token']
+    ),
+    boardId: (state, getters, rootState) => (
+      rootState?.board?.id
     )
   },
 
   actions: {
+    // TODO: Remove boardId from args
     async fetch({ commit, getters }, { boardId }) {
       commit('START_LOADING');
       const items = await api.fetchNotes(getters.token, { boardId });
@@ -32,7 +36,23 @@ export default {
         commit('ADD_NOTE', result.note);
       }
       return result?.note;
-    }
+    },
+    async destroyNote({ commit, getters }, { id }) {
+      const result = await api.destroyNote(
+        getters.token,
+        {
+          boardId: getters.boardId,
+          id
+        }
+      );
+      if (result.errors.length === 0) {
+        commit('REMOVE_NOTE', id);
+      } else {
+        console.log(result.errors);
+      }
+
+      return result;
+    },
   },
 
   mutations: {
@@ -48,6 +68,10 @@ export default {
         note,
         ...state.items
       ]
+    },
+    REMOVE_NOTE(state, id) {
+      const index = state.items.findIndex(v => v.id === id);
+      state.items.splice(index, 1);
     }
   }
 };

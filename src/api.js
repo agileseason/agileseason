@@ -827,6 +827,24 @@ export default {
     return data?.createNote;
   },
 
+  async destroyNote(token, { boardId, id }) {
+    const query = `
+      mutation($boardId:Int!, $id:Int!) {
+        action:destroyNote(input: {
+          boardId: $boardId,
+          id: $id
+        }) {
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, id };
+    const data = await this.client(token).request(query, vars);
+    this.log('destroyNote', data);
+
+    return data?.action;
+  },
+
   // ---------------------------------
   // Helpers
   // ---------------------------------
