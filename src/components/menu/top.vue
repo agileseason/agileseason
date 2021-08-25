@@ -46,8 +46,8 @@
       </div>
     </div>
     <div class='right'>
-      <router-link v-if='isBoardLoaded' class='icon notes' :to='boardNotesUrl' />
       <router-link v-if='isShowSettings' class='icon settings' :to='boardSettingsUrl' />
+      <router-link v-if='isBoardLoaded' class='icon notes' :to='boardNotesUrl' />
     </div>
   </div>
 </template>
