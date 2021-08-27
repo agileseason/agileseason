@@ -147,8 +147,6 @@ export default {
       color: #9e9e9e
 
     &:hover:not(.disabled)
-      color: #303f9f
-      border-color: #303f9f
       background-color: #e8eaf6
 
     &:active
@@ -156,9 +154,9 @@ export default {
       border-color: #283593
 
   &.outline-white
-    color: #fff
+    background-color: inherit
     border: 1px solid #fff
-    background-color: #3f51b5
+    color: #fff
 
     &.disabled
       background-color: inherit
@@ -166,8 +164,9 @@ export default {
       color: #9e9e9e
 
     &:hover:not(.disabled)
-      color: #e0e0e0
+      background-color: #3f51b5
       border-color: #e0e0e0
+      color: #fff
 
     &:active
       color: #f5f5f5
