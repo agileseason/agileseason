@@ -22,7 +22,7 @@
       <div class='text markdown-body' v-html='markdown(body)'/>
     </div>
     <MarkdownEditor
-      ref='newComment'
+      ref='commentEditor'
       v-if='isEdit'
       v-model='newComment'
       :assignable-users='assignableUsers'
@@ -76,8 +76,8 @@ export default {
   emits: ['reply'],
   data: () => ({
     newComment: '',
-    isSettingsOpen: false,
     isEdit: false,
+    isSettingsOpen: false,
     isSubmitting: false,
     isDeleting: false
   }),
@@ -97,7 +97,7 @@ export default {
       this.isSettingsOpen = false;
       this.newComment = this.body;
       this.isEdit = true;
-      this.$nextTick(() => this.$refs.newComment.$refs.textarea.focus());
+      this.$nextTick(() => this.$refs.commentEditor.$refs.textarea.focus());
     },
     replyComment() {
       this.isSettingsOpen = false;

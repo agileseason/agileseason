@@ -25,6 +25,7 @@ export default {
       commit('FINISH_LOADING', items || []);
       return items;
     },
+    // TODO: Remove boardId from args
     async createNote({ commit, getters }, { boardId, body }) {
       const result = await api.createNote(
         getters.token,
@@ -36,6 +37,23 @@ export default {
         commit('ADD_NOTE', result.note);
       }
       return result?.note;
+    },
+    async updateNote({ commit, getters }, { id, body }) {
+      const result = await api.updateNote(
+        getters.token,
+        {
+          boardId: getters.boardId,
+          id,
+          body
+        }
+      );
+      if (result.errors.length === 0) {
+        commit('UPDATE_NOTE', { id, body });
+      } else {
+        console.log(result.errors);
+      }
+
+      return result;
     },
     async destroyNote({ commit, getters }, { id }) {
       const result = await api.destroyNote(
@@ -68,6 +86,12 @@ export default {
         note,
         ...state.items
       ]
+    },
+    UPDATE_NOTE(state, { id, body }) {
+      const note = state.items.find(v => v.id === id);
+      if (note) {
+        note.body = body;
+      }
     },
     REMOVE_NOTE(state, id) {
       const index = state.items.findIndex(v => v.id === id);

@@ -1,21 +1,48 @@
 <template>
   <div class='note-wrapper'>
     <div
+      v-if='!isEdit'
       class='note'
       v-html='markdown(body)'
     />
-    <ButtonIcon name='dots' @click='openSettings' />
+    <ButtonIcon v-if='!isEdit' name='dots' @click='openSettings' />
     <Select v-if='isSettingsOpen' class='select-settings'>
       <div class='item' @click='editNote'>Edit</div>
       <div class='item danger' @click='deleteNote'>Delete</div>
     </Select>
     <div v-if='isSettingsOpen' class='select-overlay' @click.self='closeSettings' />
+
+    <div v-if='isEdit' class='edit-note'>
+      <MarkdownEditor
+        ref='noteEditor'
+        v-model='newNote'
+        :assignable-users='[]'
+        @submit='update'
+        hide-github-gidelines
+      >
+        <template #actions>
+          <Button
+            type='outline'
+            text='Cancel'
+            @click='cancel'
+          />
+          <Button
+            type='indigo'
+            text='Update note'
+            :isLoading='isSubmitting'
+            @click='update'
+          />
+        </template>
+      </MarkdownEditor>
+    </div>
   </div>
 </template>
 
 <script>
+import Button from '@/components/buttons/button';
 import ButtonIcon from '@/components/buttons/icon';
 import Markdown from '@/utils/markdown';
+import MarkdownEditor from '@/components/board/issues/markdown_editor';
 import Select from '@/components/select';
 import { call } from 'vuex-pathify';
 
@@ -25,22 +52,43 @@ export default {
     body: { type: String, required: true }
   },
   components: {
+    Button,
     ButtonIcon,
+    MarkdownEditor,
     Select
   },
   data: () => ({
+    newNote: '',
+    isEdit: false,
     isSettingsOpen: false,
+    isSubmitting: false,
     isDeleting: false
   }),
   methods: {
     ...call([
-      // 'issue/updateComment',
+      'notes/updateNote',
       'notes/destroyNote'
     ]),
     openSettings() { this.isSettingsOpen = true; },
     closeSettings() { this.isSettingsOpen = false; },
     editNote() {
-      console.log('todo: edit');
+      this.isEdit = true;
+      this.newNote = this.body;
+      this.closeSettings();
+      this.$nextTick(() => this.$refs.noteEditor.$refs.textarea.focus());
+    },
+    async update() {
+      if (this.newComment == '') { return; }
+      if (this.isSubmitting) { return; }
+
+      this.isSubmitting = true;
+      await this.updateNote({ id: this.id, body: this.newNote });
+      this.isEdit = false;
+      this.isSubmitting = false;
+    },
+    cancel() {
+      this.isEdit = false;
+      this.newNote = this.body;
     },
     async deleteNote() {
       if (this.isDeleting) { return; }
@@ -103,4 +151,20 @@ export default {
 
     &:not(:last-child)
       border-bottom: 1px solid #c5cae9
+
+.edit-note
+  background-color: #fff
+  border-radius: 3px
+  padding: 6px 8px
+  margin-bottom: 12px
+
+  .actions
+    padding: 4px 0
+    margin-bottom: 0
+
+  .button
+    margin: 4px 0 2px
+
+  .button + .button
+    margin-left: 16px
 </style>

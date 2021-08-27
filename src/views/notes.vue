@@ -193,7 +193,7 @@ export default {
       padding-top: 2px
 
     .actions
-      padding: 4px 0
+      padding: 4px 0 2px
       margin-bottom: 0
 
       .submit

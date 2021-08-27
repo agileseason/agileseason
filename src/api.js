@@ -827,6 +827,25 @@ export default {
     return data?.createNote;
   },
 
+  async updateNote(token, { boardId, id, body }) {
+    const query = `
+      mutation($boardId:Int!, $id:Int!, $body:String!) {
+        action:updateNote(input: {
+          boardId: $boardId,
+          id: $id,
+          body: $body
+        }) {
+          errors
+        }
+      }
+    `;
+    const vars = { boardId, id, body };
+    const data = await this.client(token).request(query, vars);
+    this.log('updateNote', data);
+
+    return data?.action;
+  },
+
   async destroyNote(token, { boardId, id }) {
     const query = `
       mutation($boardId:Int!, $id:Int!) {
