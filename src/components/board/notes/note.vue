@@ -1,16 +1,26 @@
 <template>
   <div class='note-wrapper'>
+    <div v-if='isSettingsOpen' class='select-overlay' @click.self='closeSettings' />
     <div
       v-if='!isEdit'
       class='note'
-      v-html='markdown(body)'
-    />
-    <ButtonIcon v-if='!isEdit' name='dots' @click='openSettings' />
-    <Select v-if='isSettingsOpen' class='select-settings'>
-      <div class='item' @click='editNote'>Edit</div>
-      <div class='item danger' @click='deleteNote'>Delete</div>
-    </Select>
-    <div v-if='isSettingsOpen' class='select-overlay' @click.self='closeSettings' />
+    >
+      <div class='header'>
+        <a class='author' :href='author.url'>{{ author.login }}</a>
+        <span class='ago' :title='createdAt'>
+          created this note {{ createdAgo }}
+        </span>
+      </div>
+      <ButtonIcon name='dots' @click='openSettings' />
+      <Select v-if='isSettingsOpen' class='select-settings'>
+        <div class='item' @click='editNote'>Edit</div>
+        <div class='item danger' @click='deleteNote'>Delete</div>
+      </Select>
+      <div
+        class='body markdown-body'
+        v-html='markdown(body)'
+      />
+    </div>
 
     <div v-if='isEdit' class='edit-note'>
       <MarkdownEditor
@@ -49,7 +59,10 @@ import { call } from 'vuex-pathify';
 export default {
   props: {
     id: { type: [String, Number], required: true },
-    body: { type: String, required: true }
+    body: { type: String, required: true },
+    createdAt: { type: String, required: true },
+    createdAgo: { type: String, required: true },
+    author: { type: Object, required: true }
   },
   components: {
     Button,
@@ -111,8 +124,35 @@ export default {
 .note
   background-color: #fff
   border-radius: 3px
-  padding: 6px 12px
+  padding: 10px 12px
   margin-bottom: 12px
+
+  .header
+    padding-bottom: 8px
+
+    a.author
+      display: inline-block
+      color: #283593
+      font-size: 13px
+      font-weight: 500
+      cursor: pointer
+
+      &:hover
+        text-decoration: underline
+
+    .ago
+      margin-left: 2px
+      color: #283593
+      font-size: 13px
+      font-weight: 400
+
+  .body
+    font-family: Roboto
+    font-size: 14px
+    font-style: normal
+    font-weight: 400
+    line-height: 18px
+    letter-spacing: 0.012em
 
 .icon
   position: absolute

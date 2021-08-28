@@ -792,6 +792,9 @@ export default {
           items:notes {
             id
             body
+            createdAt
+            createdAgo
+            author { login url avatarUrl }
           }
         }
       }
@@ -815,6 +818,9 @@ export default {
           note {
             id
             body
+            createdAt
+            createdAgo
+            author { login url avatarUrl }
           }
           errors
         }
