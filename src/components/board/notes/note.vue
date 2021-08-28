@@ -128,7 +128,7 @@ export default {
   margin-bottom: 12px
 
   .header
-    padding-bottom: 10px
+    padding-bottom: 8px
 
     a.author
       display: inline-block
