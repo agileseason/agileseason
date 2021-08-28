@@ -36,7 +36,7 @@
               <div>
                 <a class='author' :href='fetchedIssue.author.url'>{{ fetchedIssue.author.login }}</a>
                 <span class='ago' :title='fetchedIssue.createdAt'>
-                  commented {{ fetchedIssue.origCreatedAgo }}
+                  commented {{ fetchedIssue.createdAgo }}
                 </span>
               </div>
               <ButtonIcon v-if='!isReadonly' name='edit' @click='startEditBody' />
