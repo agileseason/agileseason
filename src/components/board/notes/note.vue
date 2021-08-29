@@ -32,6 +32,26 @@
         hide-github-gidelines
       >
         <template #actions>
+          <div class='actions'>
+            <div class='visibility radios'>
+              <label class='label'>Visibility:</label>
+              <div
+                v-for='(v, $index) in visibility'
+                class='radio'
+                :key='$index'
+              >
+                <input
+                  v-model='newIsPrivate'
+                  type='radio'
+                  :value='v.value'
+                  :id='$index'
+                />
+                <label :for='$index' :title='v.title'>
+                  {{ v.label }}
+                </label>
+              </div>
+            </div>
+          </div>
           <Button
             type='outline'
             text='Cancel'
@@ -73,7 +93,12 @@ export default {
     Select
   },
   data: () => ({
+    visibility: [
+      { value: true, label: 'Private', title: 'Private. Only you can see it' },
+      { value: false, label: 'Members', title: 'You and board members can see it' }
+    ],
     newNote: '',
+    newIsPrivate: true,
     isEdit: false,
     isSettingsOpen: false,
     isSubmitting: false,
@@ -89,6 +114,7 @@ export default {
     editNote() {
       this.isEdit = true;
       this.newNote = this.body;
+      this.newIsPrivate = this.isPrivate;
       this.closeSettings();
       this.$nextTick(() => this.$refs.noteEditor.$refs.textarea.focus());
     },
@@ -97,7 +123,11 @@ export default {
       if (this.isSubmitting) { return; }
 
       this.isSubmitting = true;
-      await this.updateNote({ id: this.id, body: this.newNote });
+      await this.updateNote({
+        id: this.id,
+        body: this.newNote,
+        isPrivate: this.newIsPrivate
+      });
       this.isEdit = false;
       this.isSubmitting = false;
     },
@@ -217,12 +247,37 @@ export default {
   margin-bottom: 12px
 
   .actions
-    padding: 4px 0
-    margin-bottom: 0
+    display: flex
+    justify-content: space-between
+    width: 100%
 
   .button
     margin: 4px 0 2px
 
   .button + .button
     margin-left: 16px
+
+  .radios
+    margin-left: 2px
+    display: flex
+    align-items: center
+
+    label.label
+      color: #283593
+      font-weight: 500
+      margin-right: 8px
+
+    .radio
+      align-items: center
+      cursor: pointer
+      display: flex
+
+
+      input
+        cursor: pointer
+        margin: 0 4px 0 0
+
+      label
+        cursor: pointer
+        margin-right: 10px
 </style>

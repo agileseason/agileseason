@@ -38,17 +38,18 @@ export default {
       }
       return result?.note;
     },
-    async updateNote({ commit, getters }, { id, body }) {
+    async updateNote({ commit, getters }, { id, body, isPrivate }) {
       const result = await api.updateNote(
         getters.token,
         {
           boardId: getters.boardId,
           id,
-          body
+          body,
+          isPrivate
         }
       );
       if (result.errors.length === 0) {
-        commit('UPDATE_NOTE', { id, body });
+        commit('UPDATE_NOTE', { id, body, isPrivate });
       } else {
         console.log(result.errors);
       }
@@ -87,10 +88,11 @@ export default {
         ...state.items
       ]
     },
-    UPDATE_NOTE(state, { id, body }) {
+    UPDATE_NOTE(state, { id, body, isPrivate }) {
       const note = state.items.find(v => v.id === id);
       if (note) {
         note.body = body;
+        note.isPrivate = isPrivate;
       }
     },
     REMOVE_NOTE(state, id) {

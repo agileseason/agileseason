@@ -108,7 +108,6 @@ export default {
   &.normal
     height: 40px
     line-height: 38px
-    min-width: 100px
 
   &.medium
     height: 24px
