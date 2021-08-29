@@ -15,7 +15,7 @@
       <ButtonIcon name='dots' @click='openSettings' />
       <Select v-if='isSettingsOpen' class='select-settings'>
         <div class='item' @click='editNote'>Edit</div>
-        <div class='item danger' @click='deleteNote'>Delete</div>
+        <div v-if='isOwner' class='item danger' @click='deleteNote'>Delete</div>
       </Select>
       <div
         class='body markdown-body'
@@ -33,7 +33,7 @@
       >
         <template #actions>
           <div class='actions'>
-            <div class='visibility radios'>
+            <div v-if='isOwner' class='visibility radios'>
               <label class='label'>Visibility:</label>
               <div
                 v-for='(v, $index) in visibility'
@@ -75,7 +75,7 @@ import ButtonIcon from '@/components/buttons/icon';
 import Markdown from '@/utils/markdown';
 import MarkdownEditor from '@/components/board/issues/markdown_editor';
 import Select from '@/components/select';
-import { call } from 'vuex-pathify';
+import { get, call } from 'vuex-pathify';
 
 export default {
   props: {
@@ -104,6 +104,10 @@ export default {
     isSubmitting: false,
     isDeleting: false
   }),
+  computed: {
+    username: get('user/username'),
+    isOwner() { return this.author.login === this.username; }
+  },
   methods: {
     ...call([
       'notes/updateNote',
