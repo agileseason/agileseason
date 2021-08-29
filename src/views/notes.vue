@@ -10,7 +10,7 @@
 
     <Loader v-if='isLoading' color='white' />
     <div v-else class='notes'>
-      <div class='actions'>
+      <div class='header-ations'>
         <Button
           class='outline-white'
           size='medium'
@@ -29,21 +29,42 @@
           hide-github-gidelines
           class='body'
           @submit='submit'
-        />
-        <div class='actions'>
-          <Button
-            text='Cancel'
-            type='outline'
-            @click='cancel'
-            :is-disabled='isSubmitting'
-          />
-          <Button
-            text='Submit new note'
-            @click='submit'
-            :is-loading='isSubmitting'
-            class='submit'
-          />
-        </div>
+        >
+          <template #actions>
+            <div class='actions'>
+              <div class='visibility radios'>
+                <label class='label'>Visibility:</label>
+                <div
+                  v-for='(v, $index) in visibility'
+                  class='radio'
+                  :key='$index'
+                >
+                  <input
+                    v-model='isPrivate'
+                    type='radio'
+                    :value='v.value'
+                    :id='$index'
+                  />
+                  <label :for='$index' :title='v.title'>
+                    {{ v.label }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <Button
+              text='Cancel'
+              type='outline'
+              @click='cancel'
+              :is-disabled='isSubmitting'
+            />
+            <Button
+              text='Submit new note'
+              @click='submit'
+              :is-loading='isSubmitting'
+              class='submit'
+            />
+          </template>
+        </MarkdownEditor>
       </div>
       <div v-if='isEmpty' class='empty'>There are no notes for this board. Be the first! :)</div>
 
@@ -77,9 +98,14 @@ export default {
   },
   props: {},
   data: () => ({
+    visibility: [
+      { value: true, label: 'Private', title: 'Private. Only you can see it' },
+      { value: false, label: 'Members', title: 'You and board members can see it' }
+    ],
     isNew: false,
     isSubmitting: false,
-    note: ''
+    note: '',
+    isPrivate: true
   }),
   computed: {
     isLoading: get('notes/isLoading'),
@@ -107,7 +133,8 @@ export default {
 
       await this.createNote({
         boardId: this.boardId,
-        body: this.note
+        body: this.note,
+        isPrivate: this.isPrivate
       });
 
       this.isNew = false;
@@ -164,13 +191,45 @@ export default {
     &:active
       background-color: #303f9f
 
-.actions
+.header-ations
   display: flex
   justify-content: flex-end
   margin-bottom: 12px
 
-  button + button
+.actions
+  display: flex
+  justify-content: space-between
+  width: 100%
+
+  .button
+    margin: 4px 0 2px
+
+  .button + .button
     margin-left: 16px
+
+  .radios
+    margin-left: 2px
+    display: flex
+    align-items: center
+
+    label.label
+      color: #283593
+      font-weight: 500
+      margin-right: 8px
+
+    .radio
+      align-items: center
+      cursor: pointer
+      display: flex
+
+
+      input
+        cursor: pointer
+        margin: 0 4px 0 0
+
+      label
+        cursor: pointer
+        margin-right: 10px
 
 .notes
   box-sizing: border-box

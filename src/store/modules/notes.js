@@ -26,10 +26,10 @@ export default {
       return items;
     },
     // TODO: Remove boardId from args
-    async createNote({ commit, getters }, { boardId, body }) {
+    async createNote({ commit, getters }, { boardId, body, isPrivate }) {
       const result = await api.createNote(
         getters.token,
-        { boardId, body }
+        { boardId, body, isPrivate }
       );
       if (result?.note == null) {
         alert(result.errors);
