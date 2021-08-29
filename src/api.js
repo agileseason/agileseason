@@ -794,6 +794,7 @@ export default {
             body
             createdAt
             createdAgo
+            isPrivate
             author { login url avatarUrl }
           }
         }
@@ -805,47 +806,51 @@ export default {
     return data?.board?.items;
   },
 
-  async createNote(token, { boardId, body }) {
+  async createNote(token, { boardId, body, isPrivate }) {
     const query = `
       mutation(
         $boardId:Int!,
-        $body:String!
+        $body:String!,
+        $isPrivate:Boolean!
       ) {
         createNote(input: {
           boardId: $boardId,
-          body: $body
+          body: $body,
+          isPrivate: $isPrivate
         }) {
           note {
             id
             body
             createdAt
             createdAgo
+            isPrivate
             author { login url avatarUrl }
           }
           errors
         }
       }
     `;
-    const vars = { boardId, body };
+    const vars = { boardId, body, isPrivate };
     const data = await this.client(token).request(query, vars);
     this.log('createNote', data, vars);
 
     return data?.createNote;
   },
 
-  async updateNote(token, { boardId, id, body }) {
+  async updateNote(token, { boardId, id, body, isPrivate }) {
     const query = `
-      mutation($boardId:Int!, $id:Int!, $body:String!) {
+      mutation($boardId:Int!, $id:Int!, $body:String!, $isPrivate:Boolean) {
         action:updateNote(input: {
           boardId: $boardId,
           id: $id,
-          body: $body
+          body: $body,
+          isPrivate: $isPrivate
         }) {
           errors
         }
       }
     `;
-    const vars = { boardId, id, body };
+    const vars = { boardId, id, body, isPrivate };
     const data = await this.client(token).request(query, vars);
     this.log('updateNote', data);
 

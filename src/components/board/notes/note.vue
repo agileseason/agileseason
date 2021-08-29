@@ -6,6 +6,7 @@
       class='note'
     >
       <div class='header'>
+        <span class='note-icon' :class="{ 'private': isPrivate }" />
         <a class='author' :href='author.url'>{{ author.login }}</a>
         <span class='ago' :title='createdAt'>
           created this note {{ createdAgo }}
@@ -62,7 +63,8 @@ export default {
     body: { type: String, required: true },
     createdAt: { type: String, required: true },
     createdAgo: { type: String, required: true },
-    author: { type: Object, required: true }
+    author: { type: Object, required: true },
+    isPrivate: { type: Boolean, required: true }
   },
   components: {
     Button,
@@ -129,6 +131,22 @@ export default {
 
   .header
     padding-bottom: 8px
+    display: flex
+    justify-content: flex-start
+    align-items: center
+
+    .note-icon
+      background-position: center
+      background-repeat: no-repeat
+      cursor: pointer
+      display: inline-block
+      height: 15px
+      margin-right: 6px
+      width: 12px
+      background-image: url('../../../assets/icons/notes/lock-open.svg')
+
+      &.private
+        background-image: url('../../../assets/icons/notes/lock-closed.svg')
 
     a.author
       display: inline-block
