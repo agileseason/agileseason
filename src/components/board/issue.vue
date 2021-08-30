@@ -1,5 +1,9 @@
 <template>
-  <AppDrop @drop='moveIssueOrColumn'>
+  <AppDrop
+    @drop='moveIssueOrColumn'
+    @dragenter='dragenter'
+    :transferData="{ type: 'issue', enterColumnIndex: columnIndex }"
+  >
     <AppDrag
       class='issue'
       :class="{ 'read-only': isReadOnly }"

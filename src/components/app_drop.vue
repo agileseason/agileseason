@@ -2,8 +2,8 @@
   <div
     v-bind='$attrs'
     @drop.stop='onDrop'
+    @dragenter.stop='onDragenter'
     @dragover.prevent
-    @dragenter.prevent
   >
     <slot/>
   </div>
@@ -20,10 +20,19 @@
 // 7. dragend
 
 export default {
+  props: {
+    transferData: {
+      type: Object,
+      required: true
+    }
+  },
   methods: {
-    onDrop (e) {
-      const transferData = JSON.parse(e.dataTransfer.getData('payload'))
-      this.$emit('drop', transferData)
+    onDrop(e) {
+      const transferData = JSON.parse(e.dataTransfer.getData('payload'));
+      this.$emit('drop', transferData);
+    },
+    onDragenter() {
+      this.$emit('dragenter', this.transferData);
     }
   }
 }

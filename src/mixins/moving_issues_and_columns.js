@@ -10,14 +10,14 @@ export default {
   methods: {
     moveBoardColumn: call('board/moveColumn'),
     moveColumnIssue: call('board/moveIssue'),
-    moveIssueOrColumn (transferData) {
+    moveIssueOrColumn(transferData) {
       if (transferData.type === 'column') {
         this.moveColumn(transferData)
       } else {
         this.moveIssue(transferData)
       }
     },
-    moveIssue ({ fromColumnIndex, fromIssueIndex }) {
+    moveIssue({ fromColumnIndex, fromIssueIndex }) {
       this.moveColumnIssue({
         fromColumnIndex,
         toColumnIndex: this.columnIndex,
@@ -25,11 +25,16 @@ export default {
         toIssueIndex: this.issueIndex
       });
     },
-    moveColumn ({ fromColumnIndex }) {
+    moveColumn({ fromColumnIndex }) {
       this.moveBoardColumn({
         fromColumnIndex,
         toColumnIndex: this.columnIndex
       });
+    },
+    dragenter({ enterColumnIndex }) {
+      if (enterColumnIndex) {
+        console.log(enterColumnIndex);
+      }
     }
   }
 }

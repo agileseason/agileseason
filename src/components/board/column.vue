@@ -2,6 +2,8 @@
   <AppDrop
     class='column'
     @drop='moveIssueOrColumn'
+    @dragenter='dragenter'
+    :transferData="{ type: 'column', enterColumnIndex: columnIndex }"
   >
     <AppDrag
       :transferData="{ type: 'column', fromColumnIndex: columnIndex }"

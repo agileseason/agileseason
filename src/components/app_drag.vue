@@ -3,8 +3,8 @@
     v-bind='$attrs'
     :draggable='!isReadOnly'
     @dragstart.self='onDrag'
-    @dragover.prevent
     @dragenter.prevent
+    @dragover.prevent
   >
     <slot/>
   </div>
@@ -29,7 +29,7 @@ export default {
     isReadOnly: { type: Boolean, default: false }
   },
   methods: {
-    onDrag (e) {
+    onDrag(e) {
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.dropEffect = 'move';
       e.dataTransfer.setData('payload', JSON.stringify(this.transferData));
