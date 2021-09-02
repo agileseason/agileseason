@@ -1,6 +1,7 @@
 <template>
   <AppDrop
     class='column'
+    :class="{ 'droppable': isDroppable }"
     @drop='moveIssueOrColumn'
     @dragenter='dragenter'
     :transferData="{ type: 'column', enterColumnIndex: columnIndex }"
@@ -108,7 +109,7 @@ import AppDrag from '@/components/app_drag';
 import AppDrop from '@/components/app_drop';
 import movingIssuesAndColumns from '@/mixins/moving_issues_and_columns';
 
-import { call } from 'vuex-pathify';
+import { call, get } from 'vuex-pathify';
 
 export default {
   name: 'Column',
@@ -142,11 +143,15 @@ export default {
     isDeleting: false
   }),
   computed: {
+    dragenterColumnId: get('board/dragenterColumnId'),
     issuesCount() { return this.notArchivedIssues.length; },
     notArchivedIssues() { return this.issues.filter(issue => !issue.isArchived); },
     isAnySelectsOpen() { return this.isSettingsOpen; },
     deleteDialogTitle() { return `Delete ${ this.name }`; },
-    isIcons() { return this.isAutoAssign || this.isAutoClose; }
+    isIcons() { return this.isAutoAssign || this.isAutoClose; },
+    isDroppable() {
+      return this.dragenterColumnId == this.id;
+    }
   },
   methods: {
     ...call([
@@ -308,9 +313,8 @@ export default {
   vertical-align: top
   width: 270px
 
-  &.is-drag-enter
+  &.droppable
     background-color: rgba(197,202,233,0.4)
-    border-radius: 6px
 
   // TODO: Remove if unnecessary
   &.is-drag-start

@@ -10,6 +10,7 @@ export default {
   methods: {
     moveBoardColumn: call('board/moveColumn'),
     moveColumnIssue: call('board/moveIssue'),
+    dragenterColumn: call('board/dragenter'),
     moveIssueOrColumn(transferData) {
       if (transferData.type === 'column') {
         this.moveColumn(transferData)
@@ -32,8 +33,8 @@ export default {
       });
     },
     dragenter({ enterColumnIndex }) {
-      if (enterColumnIndex) {
-        console.log(enterColumnIndex);
+      if (enterColumnIndex != null) {
+        this.dragenterColumn({ columnIndex: enterColumnIndex });
       }
     }
   }

@@ -11,7 +11,8 @@ export default {
     repositories: [],
     isLoading: true,
     isLoaded: false,
-    currentIssue: {}
+    currentIssue: {},
+    dragenterColumnId: undefined
   },
 
   getters: {
@@ -58,7 +59,7 @@ export default {
       }
     },
 
-    async moveColumn({ getters, state }, { fromColumnIndex, toColumnIndex }) {
+    async moveColumn({ commit, getters, state }, { fromColumnIndex, toColumnIndex }) {
       if (fromColumnIndex === toColumnIndex) { return; }
 
       const columns = state.columns
@@ -69,6 +70,7 @@ export default {
         getters.token,
         { boardId: state.id, columns }
       );
+      commit('DRAGENTER_OVER');
       if (result?.errors?.length == 0) {
         console.log('success');
       } else {
@@ -76,7 +78,10 @@ export default {
       }
     },
 
-    async moveIssue({ getters, state, dispatch }, { fromColumnIndex, toColumnIndex, fromIssueIndex, toIssueIndex }) {
+    async moveIssue(
+      { commit, getters, state, dispatch },
+      { fromColumnIndex, toColumnIndex, fromIssueIndex, toIssueIndex }
+    ) {
       if (fromColumnIndex === undefined) { return; }
       if (toColumnIndex === undefined) { return; }
       if (fromIssueIndex === undefined) { return; }
@@ -90,6 +95,7 @@ export default {
       const issueToMove = fromIssues.splice(fromIssueIndex, 1)[0];
       toIssues.splice(toIssueIndex, 0, issueToMove);
       const toColumn = state.columns[toColumnIndex];
+      commit('DRAGENTER_OVER');
       if (toColumn.isAutoClose && !issueToMove.isClosed) {
         dispatch(
           'board/updateIssueState',
@@ -123,6 +129,12 @@ export default {
           issueIds: toIssues.map(v => v.id)
         }
       );
+    },
+
+    dragenter({ commit, state }, { columnIndex }) {
+      const column = state.columns[columnIndex];
+      if (column == null) { return; }
+      commit('DRAGENTER', column.id);
     },
 
     async fetchAssignableUsers({ state, getters }, { repositoryFullName }) {
@@ -344,6 +356,12 @@ export default {
     },
     UPDATE_BOARD(state, { name }) {
       state.name = name;
+    },
+    DRAGENTER_OVER(state) {
+      state.dragenterColumnId = undefined;
+    },
+    DRAGENTER(state, columnId) {
+      state.dragenterColumnId = columnId;
     }
   }
 };
