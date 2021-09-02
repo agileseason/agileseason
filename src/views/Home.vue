@@ -10,7 +10,9 @@
       class='signin'
       text='Sign in with GitHub'
     />
+  </div>
 
+  <div class='container'>
     <article>
       <h3>Features</h3>
 
@@ -40,6 +42,32 @@
       </div>
     </article>
   </div>
+  <div class='dark'>
+    <div class='container onething author'>
+      <div class='img'/>
+      <article class='large'>
+        One in the field is not a warrior, but a traveler
+      </article>
+    </div>
+  </div>
+  <footer>
+    <div class='container'>
+      <h2>Resources</h2>
+      <ul>
+        <li>
+          <a href='https://github.com/agileseason/agileseason'>
+            github.com/agileseason
+          </a>
+        </li>
+      </ul>
+      <h2>Support</h2>
+      <ul>
+        <li>
+          <a href='mailto:alex@agileseason.com'>alex@agileseason.com</a>
+        </li>
+      </ul>
+    </div>
+  </footer>
 </template>
 
 <script>
@@ -75,7 +103,8 @@ export default {
 <style scoped lang='sass'>
 .container
   max-width: 1000px
-  margin: 40px auto
+  margin: 0 auto
+  padding: 40px 0
 
 .signin
   min-width: 130px
@@ -92,4 +121,42 @@ h2
 h3,
 h4
   font-weight: 500
+
+.large
+  font-size: 28px
+
+.dark
+  background-color: #263238
+  color: #fff
+  position: relative
+  overflow: hidden
+
+.onething
+  padding: 120px 0
+
+.img
+  background-position: right
+  background-repeat: no-repeat
+  background: url('https://avatars.githubusercontent.com/u/2400100?v=4')
+  background-size: cover
+  height: 500px
+  width: 500px
+  position: absolute
+  right: -50px
+  top: -200px
+  border-radius: 0 0 0 300px
+  opacity: 0.2
+
+footer
+  background-color: #37474f
+  color: #cfd8dc
+  min-height: 200px
+
+  ul
+    list-style: none
+    margin: 0 0 28px 0
+    padding: 0
+
+  a
+    color: #cfd8dc
 </style>
