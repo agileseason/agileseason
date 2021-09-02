@@ -46,7 +46,7 @@
     <div class='container onething author'>
       <div class='img'/>
       <article class='large'>
-        One in the field is not a warrior, but a traveler
+        One in the field is not a warrior, but a traveler...
       </article>
     </div>
   </div>
