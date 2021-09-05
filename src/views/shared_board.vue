@@ -44,7 +44,9 @@ export default {
     boardName() { return this.board?.name; },
     boardOwner() { return this.board?.owner || {}; },
     widthStyles() {
-      return !this.isLoading ? { 'min-width': `${280 * (this.board?.columns?.length + 1)}px` } : {};
+      if (this.isLoading) { return {}; }
+      if (this.board == null) { return {}; }
+      return { 'min-width': `${280 * (this.board.columns.length + 1)}px` }
     },
   },
   async created() {
