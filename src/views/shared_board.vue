@@ -7,7 +7,7 @@
   <Loader v-if='isLoading' />
   <div v-if='isNotFound' class='not-found'>Page not found</div>
   <div v-if='board' class='board'>
-    <div class='columns'>
+    <div class='columns' :style='widthStyles'>
       <Column
         v-for='(column, $index) in board.columns'
         :key='column.id'
@@ -42,7 +42,10 @@ export default {
     token() { return this.$route.params.token; },
     isNotFound() { return !this.isLoading && this.board == null; },
     boardName() { return this.board?.name; },
-    boardOwner() { return this.board?.owner || {}; }
+    boardOwner() { return this.board?.owner || {}; },
+    widthStyles() {
+      return this.isLoaded ? { 'min-width': `${280 * (this.columns.length + 1)}px` } : {};
+    },
   },
   async created() {
     this.board = await api.fetchSharedBoard({ sharedToken: this.token });
