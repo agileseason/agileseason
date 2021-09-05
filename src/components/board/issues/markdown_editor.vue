@@ -125,6 +125,10 @@ export default {
   },
   mounted() {
     this.initTextAreaRows();
+    const DOMAIN_API = {
+      development: 'http://localhost:3000',
+      production: 'https://api.agileseason.com'
+    }[process.env.NODE_ENV];
 
     this.uppy = Uppy({
       id: this.uploadId,
@@ -147,7 +151,7 @@ export default {
     })
       .use(AwsS3, {
         getUploadParameters: (file) => (
-          fetch(`http://localhost:3000/s3/params?filename=${file.name}&extension=.${file.extension}&type=${file.type}`)
+          fetch(`${DOMAIN_API}/s3/params?filename=${file.name}&extension=.${file.extension}&type=${file.type}`)
             .then(response => response.json())
         )
       })

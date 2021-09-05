@@ -85,7 +85,11 @@ export default {
   computed: {
     isSignedIn: get('user/isSignedIn'),
     signInUrl() {
-      return `${process.env.VUE_APP_API_URL}/oauth`;
+      const DOMAIN_API = {
+        development: 'http://localhost:3000',
+        production: 'https://api.agileseason.com'
+      }[process.env.NODE_ENV];
+      return `${DOMAIN_API}/oauth`;
     }
   },
   methods: {

@@ -240,7 +240,11 @@ import TopMenu from '@/components/menu/top';
 import api from '@/api';
 import { get, call } from 'vuex-pathify';
 
-const DOMAIN = process.env.VUE_APP_URL
+const DOMAIN = {
+  development: 'http://localhost:8080',
+  production: 'https://agileseason.com'
+}[process.env.NODE_ENV];
+
 const APP_URL = {
   development: 'https://github.com/apps/agileseason-dev/installations/new',
   production: 'https://github.com/apps/agileseason/installations/new'
