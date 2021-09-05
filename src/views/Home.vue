@@ -41,15 +41,13 @@
         </div>
       </div>
     </article>
-    <article>
-      <iframe
-        src='https://agileseason.com/#/shared/board/4b4e403d6ea0a182f6994b8c67d2ec55'
-        width='100%'
-        height='800px'
-        style='border: none'
-      />
-    </article>
   </div>
+  <iframe
+    src='https://agileseason.com/#/shared/board/4b4e403d6ea0a182f6994b8c67d2ec55'
+    width='100%'
+    height='800px'
+    style='border: none'
+  />
   <!--div class='dark'>
     <div class='container onething author'>
       <div class='img'/>
