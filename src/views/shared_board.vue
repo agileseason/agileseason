@@ -7,7 +7,7 @@
   />
   <Loader v-if='isLoading' />
   <div v-if='isNotFound' class='not-found'>Page not found</div>
-  <div v-if='board' class='board'>
+  <div v-if='board' class='board' :class="{ 'full-screen': isFullScreen }">
     <div class='columns' :style='widthStyles'>
       <Column
         v-for='(column, $index) in board.columns'
@@ -64,6 +64,9 @@ export default {
 .board
   padding: 8px 8px 0px 8px
   overflow-x: scroll
+
+  &.full-screen
+    padding: 8px 0
 
 .not-found
   font-size: 16px
