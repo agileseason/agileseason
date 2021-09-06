@@ -92,7 +92,7 @@ export default {
   -webkit-tap-highlight-color: transparent
   border-radius: 4px
   box-sizing: border-box
-  color: #fff
+  color: #fff !important
   cursor: pointer
   display: inline-block
   font-size: 14px
