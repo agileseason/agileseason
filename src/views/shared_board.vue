@@ -46,7 +46,7 @@ export default {
     widthStyles() {
       if (this.isLoading) { return {}; }
       if (this.board == null) { return {}; }
-      return { 'min-width': `${280 * (this.board.columns.length + 1)}px` }
+      return { 'min-width': `${280 * (this.board.columns.length)}px` }
     },
   },
   async created() {
