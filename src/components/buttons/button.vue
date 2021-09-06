@@ -134,48 +134,48 @@ export default {
     &.disabled
       background-color: #9fa8da
       border-color: #9fa8da
-      color: #f5f5f5
+      color: #f5f5f5 !important
 
   &.outline
-    color: #3f51b5
+    color: #3f51b5 !important
     border: 1px solid #3f51b5
     background-color: inherit
 
     &.disabled
       border: 1px solid #bdbdbd
-      color: #9e9e9e
+      color: #9e9e9e !important
 
     &:hover:not(.disabled)
       background-color: #e8eaf6
 
     &:active
-      color: #283593
+      color: #283593 !important
       border-color: #283593
 
   &.outline-white
     background-color: inherit
     border: 1px solid #fff
-    color: #fff
+    color: #fff !important
 
     &.disabled
       background-color: inherit
       border: 1px solid #9e9e9e
-      color: #9e9e9e
+      color: #9e9e9e !important
 
     &:hover:not(.disabled)
       background-color: #3f51b5
       border-color: #e0e0e0
-      color: #fff
+      color: #fff !important
 
     &:active
-      color: #f5f5f5
       border-color: #f5f5f5
+      color: #f5f5f5 !important
 
   &.white
     padding: 0 12px
     background-color: #fff
     border: 1px solid #fff
-    color: #283593
+    color: #283593 !important
 
     &.normal
       height: 32px
@@ -206,25 +206,25 @@ export default {
       line-height: 30px
 
     &:hover
-      color: #e8eaf6
+      color: #e8eaf6 !important
 
     &:focus
       border: 1px solid #fff
 
   &.danger
-    color: #d50000
-    border: 1px solid #d50000
     background-color: inherit
+    border: 1px solid #d50000
+    color: #d50000 !important
     font-weight: 600
 
     &:hover
-      color: #b71c1c
-      border-color: #b71c1c
       background-color: #ffebee
+      border-color: #b71c1c
+      color: #b71c1c !important
 
     &:active
-      color: #ff5252
       border-color: #ff5252
+      color: #ff5252 !important
 
 .loader
   background-image: url('../../assets/button/white_loader.svg')
