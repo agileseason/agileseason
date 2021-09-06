@@ -117,17 +117,17 @@ export default {
   // }
 }
 
-// .container
-//   @media screen and (min-width: 1023px)
-//     max-width: 1200px
-//   @media screen and (max-width: 1023px)
-//     max-width: 1000px
 </script>
 
 <style scoped lang='sass'>
 .container
   margin: 0 auto
   padding: 40px 10px
+
+  @media screen and (min-width: 1023px)
+    max-width: 1200px
+  @media screen and (max-width: 1023px)
+    max-width: 1000px
 
 .signin
   min-width: 130px
