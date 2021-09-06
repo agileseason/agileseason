@@ -210,6 +210,8 @@ export default {
               isBody
               commentsCount
               color
+              totalSubtasks
+              doneSubtasks
             }
           }
         }
