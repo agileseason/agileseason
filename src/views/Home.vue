@@ -21,33 +21,41 @@
           <h4>Protect your secrets</h4>
           <p>
             We won't be able to read or change your code, since we won't
-            require any of these permissions from GitHub
+            require any of these permissions from GitHub.
           </p>
         </div>
         <div class='feature'>
           <h4>Many repositories in one view</h4>
-          <p>Connect any number of GitHub repositories to a single board</p>
+          <p>Connect any number of GitHub repositories to a single board.</p>
         </div>
         <div class='feature'>
           <h4>Connected to GitHub in real-time</h4>
           <p>
             Agile Season connects directly to your GitHub issues, so there's
-            no duplicate work and you're not jumping back and forth between tools
+            no duplicate work and you're not jumping back and forth between tools.
           </p>
         </div>
         <div class='feature'>
           <h4>Customizable workflow</h4>
-          <p>Add and remove columns to fit how your team works</p>
+          <p>Add and remove columns to fit how your team works.</p>
+        </div>
+        <div class='feature'>
+          <h4>Shared boards</h4>
+          <p>You can share your board (read-only) with your clients or your community.</p>
         </div>
       </div>
+      <p>
+        Our board &mdash;&nbsp;
+        <a href='https://agileseason.com/#/shared/board/4b4e403d6ea0a182f6994b8c67d2ec55'>https://agileseason.com/#/shared/board/4b4e403d6ea0a182f6994b8c67d2ec55</a>
+      </p>
+      <iframe
+        src='https://agileseason.com/#/shared/board/4b4e403d6ea0a182f6994b8c67d2ec55?fullScreen=true'
+        width='100%'
+        height='800px'
+        style='border: none'
+      />
     </article>
   </div>
-  <iframe
-    src='https://agileseason.com/#/shared/board/4b4e403d6ea0a182f6994b8c67d2ec55'
-    width='100%'
-    height='800px'
-    style='border: none'
-  />
   <!--div class='dark'>
     <div class='container onething author'>
       <div class='img'/>
@@ -112,9 +120,13 @@ export default {
 
 <style scoped lang='sass'>
 .container
-  max-width: 1000px
   margin: 0 auto
-  padding: 40px 0
+  padding: 40px 10px
+
+  @media screen and (min-width: 1023px)
+    max-width: 1200px
+  @media screen and (max-width: 1023px)
+    max-width: 1000px
 
 .signin
   min-width: 130px
@@ -131,6 +143,10 @@ h2
 h3,
 h4
   font-weight: 500
+
+.feature
+  h4
+    margin: 30px 0 10px
 
 .large
   font-size: 28px
@@ -169,4 +185,7 @@ footer
 
   a
     color: #cfd8dc
+
+a, a:visited
+  color: #2196f3
 </style>

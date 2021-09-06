@@ -1,5 +1,6 @@
 <template>
   <Menu
+    v-if='!isFullScreen'
     :title='boardName'
     :username='boardOwner.login'
     :avatarUrl='boardOwner.avatarUrl'
@@ -41,6 +42,7 @@ export default {
     // isSignedIn: get('user/isSignedIn'),
     token() { return this.$route.params.token; },
     isNotFound() { return !this.isLoading && this.board == null; },
+    isFullScreen() { return !!this.$route.query.fullScreen; },
     boardName() { return this.board?.name; },
     boardOwner() { return this.board?.owner || {}; },
     widthStyles() {
