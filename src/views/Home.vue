@@ -174,6 +174,10 @@ h4
   border-radius: 0 0 0 300px
   opacity: 0.2
 
+article
+  a, a:visited
+    color: #2196f3
+
 footer
   background-color: #37474f
   color: #cfd8dc
@@ -184,9 +188,7 @@ footer
     margin: 0 0 28px 0
     padding: 0
 
-  a
+  a, a:visited
     color: #cfd8dc
 
-a, a:visited
-  color: #2196f3
 </style>
