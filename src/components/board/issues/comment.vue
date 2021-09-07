@@ -38,6 +38,7 @@
           @click='cancel'
         />
         <Button
+          class='update'
           type='indigo'
           text='Update comment'
           :isLoading='isSubmitting'
@@ -225,4 +226,7 @@ export default {
 
 .button + .button
   margin-left: 16px
+
+button.update
+  min-width: 162px
 </style>

@@ -64,6 +64,7 @@
                 @click='cancelEditBody'
               />
               <Button
+                class='update'
                 type='indigo'
                 text='Update'
                 :isLoading='isSubmitting'
@@ -599,6 +600,9 @@ export default {
 .button-action,
 .button-comment
   min-width: 130px !important
+
+button.update
+  min-width: 100px
 
 .delimeter
   border-bottom: 1px solid #e8eaf6
