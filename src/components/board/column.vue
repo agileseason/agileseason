@@ -57,6 +57,7 @@
             <Button @click='closeRenameDialog' type='flat' text='Close' />
             <Button
               :is-loading='isSubmitting'
+              class='update'
               @click='submit'
               type='white'
               text='Update'
@@ -303,6 +304,9 @@ export default {
 
   button + button
     margin-left: 2px
+
+  button.update
+    min-width: 74px
 
 .column
   background-color: #e8eaf6
