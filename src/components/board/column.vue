@@ -20,7 +20,7 @@
         </span>
         <div v-if='!isReadOnly' class='actions'>
           <div class='issue-new' @click='issueNew' />
-          <div class='column-settings' @click='columnSettings' />
+          <div v-if='isBoardOwner' class='column-settings' @click='columnSettings' />
         </div>
         <Select v-if='isSettingsOpen' class='select-settings'>
           <div class='item' @click='openRenameDialog'>Edit</div>
@@ -145,6 +145,7 @@ export default {
   }),
   computed: {
     dragenterColumnId: get('board/dragenterColumnId'),
+    isBoardOwner: get('board/isOwner'),
     issuesCount() { return this.notArchivedIssues.length; },
     notArchivedIssues() { return this.issues.filter(issue => !issue.isArchived); },
     isAnySelectsOpen() { return this.isSettingsOpen; },
