@@ -103,7 +103,7 @@ export default {
   margin-bottom: 12px
   display: flex
   justify-content: space-between
-  align-items: center
+  align-items: flex-start
   padding-right: 10px
 
   a
