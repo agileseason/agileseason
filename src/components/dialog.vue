@@ -35,7 +35,7 @@ export default {
   position: absolute
   text-align: left
   width: 100%
-  z-index: 2
+  z-index: 3 // z-index: 2 on the issue progress - https://github.com/agileseason/agileseason/issues/19
 
   .title
     color: #fff
