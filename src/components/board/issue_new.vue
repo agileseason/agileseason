@@ -197,7 +197,13 @@ export default {
     }
   },
   async created() {
-    this.selectedRepositoryId = CookieStore.get(NAMESPACE, this.boardId, this.repositories[0].id);
+    const lastSelectedRepositoryId = CookieStore.get(NAMESPACE, this.boardId, this.repositories[0].id);
+    if (this.repositories.find(v => v.id === lastSelectedRepositoryId) == null) {
+      this.selectedRepositoryId = this.repositories[0].id;
+      CookieStore.set(NAMESPACE, this.boardId, this.selectedRepositoryId);
+    } else {
+      this.selectedRepositoryId = lastSelectedRepositoryId;
+    }
     this.selectedColumnId = this.columnId;
     this.selectedPosition = this.positions[0];
     await this.initAssignableUsers();
