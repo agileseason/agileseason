@@ -15,6 +15,7 @@
 
     <Button
       v-if='isValid'
+      class='accept'
       @click='accept'
       :is-loading='isSubmitting'
       text='Accept'
@@ -100,4 +101,7 @@ export default {
 
   h3
     font-weight: 500
+
+  .accept
+    min-width: 160px
 </style>
