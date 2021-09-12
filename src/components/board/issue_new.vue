@@ -133,6 +133,7 @@
 import Assignees from '@/components/board/issues/assignees'
 import Button from '@/components/buttons/button'
 import Colors from '@/components/board/issues/colors'
+import CookieStore from '@/utils/cookie_store';
 import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
 import MarkdownEditor from '@/components/board/issues/markdown_editor'
@@ -142,6 +143,7 @@ import { hexRgb } from '@/utils/wcag_contrast';
 import { get, call } from 'vuex-pathify';
 
 const delay = require('delay');
+const NAMESPACE = 'agileseason#issue#new';
 
 export default {
   name: 'IssueNew',
@@ -175,6 +177,7 @@ export default {
   computed: {
     username: get('user/username'),
     avatarUrl: get('user/avatarUrl'),
+    boardId: get('board/id'),
     repositories: get('board/repositories'),
     columns: get('board/columns'),
     positions() { return ['top', 'bottom']; },
@@ -194,7 +197,7 @@ export default {
     }
   },
   async created() {
-    this.selectedRepositoryId = this.repositories[0].id;
+    this.selectedRepositoryId = CookieStore.get(NAMESPACE, this.boardId, this.repositories[0].id);
     this.selectedColumnId = this.columnId;
     this.selectedPosition = this.positions[0];
     await this.initAssignableUsers();
@@ -210,6 +213,7 @@ export default {
       this.labels = [];
       this.$nextTick(() => this.$refs.title.focus());
       await this.initAssignableUsers();
+      CookieStore.set(NAMESPACE, this.boardId, this.selectedRepositoryId);
     }
   },
   methods: {
