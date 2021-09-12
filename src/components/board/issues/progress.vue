@@ -44,6 +44,8 @@ export default {
   .bar
     // background-color: rgba(121, 134, 203, 0.5)
     // background-color: rgba(0, 0, 0, 0.1)
+    // background-color: rgba(29, 233, 182, 0.8)
+    // background-color: rgba(105, 240, 174, 0.9)
     background-color: rgba(0, 200, 83, 0.8)
     position: absolute
     left: 0
