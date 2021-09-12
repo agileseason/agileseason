@@ -52,7 +52,7 @@
         src='https://agileseason.com/#/shared/board/4b4e403d6ea0a182f6994b8c67d2ec55?fullScreen=true'
         width='100%'
         height='800px'
-        style='border: none'
+        style='border: none; margin: 0 -6px;'
       />
     </article>
   </div>
