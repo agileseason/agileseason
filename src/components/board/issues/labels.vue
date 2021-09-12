@@ -15,7 +15,7 @@
       class='select-labels'
     >
       <Loader v-if='isLoading' is-inline />
-      <div v-else>
+      <div class='body-labels' v-else>
         <div
           v-for='label in githubLabels'
           class='github-label'
@@ -124,6 +124,10 @@ export default {
   top: 20px
   width: 220px
   z-index: 2
+
+.body-labels
+  overflow-y: scroll
+  max-height: calc(100vh - 230px)
 
 .github-label
   display: flex

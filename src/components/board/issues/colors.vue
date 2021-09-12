@@ -13,15 +13,17 @@
       title='Set color'
       class='select-colors'
     >
-      <div
-        v-for='(availableColor, $index) in availableColors'
-        :key='$index'
-        class='available-color'
-        @click='toggle(availableColor)'
-      >
-        <span class='check' :class="{ checked: isApplied(availableColor) }" />
-        <span class='color' :style='colorStyles(availableColor)' />
-        <span class='name'>{{ availableColor.name }}</span>
+      <div class='body-colors'>
+        <div
+          v-for='(availableColor, $index) in availableColors'
+          :key='$index'
+          class='available-color'
+          @click='toggle(availableColor)'
+        >
+          <span class='check' :class="{ checked: isApplied(availableColor) }" />
+          <span class='color' :style='colorStyles(availableColor)' />
+          <span class='name'>{{ availableColor.name }}</span>
+        </div>
       </div>
     </Select>
     <div v-if='isPlaceholderVisible' class='placeholder'>
@@ -133,6 +135,10 @@ export default {
   top: 0
   width: 100vw
   z-index: 1
+
+.body-colors
+  overflow-y: scroll
+  max-height: calc(100vh - 300px)
 
 label
   align-items: center

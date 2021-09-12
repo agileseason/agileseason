@@ -15,7 +15,7 @@
       class='select-assignees'
     >
       <Loader v-if='isLoading' is-inline />
-      <div v-else>
+      <div class='body-assignees' v-else>
         <div
           v-for='user in assignableUsers'
           class='assignable-user'
@@ -146,6 +146,10 @@ export default {
   top: 0
   width: 100vw
   z-index: 1
+
+.body-assignees
+  overflow-y: scroll
+  max-height: calc(100vh - 160px)
 
 label
   align-items: center
