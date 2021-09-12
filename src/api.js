@@ -892,7 +892,7 @@ export default {
   },
 
   log(query, data, vars) {
-    if (!process.env.NODE_ENV == 'development') { return; }
+    if (process.env.NODE_ENV != 'development') { return; }
 
     console.log(`%c${query}`, 'color:#4db6ac');
     if (data != null) {
