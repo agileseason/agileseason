@@ -66,7 +66,7 @@ export default {
   overflow-x: scroll
 
   &.full-screen
-    padding: 8px 0
+    padding: 8px 6px
 
 .not-found
   font-size: 16px
