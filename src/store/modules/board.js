@@ -338,15 +338,11 @@ export default {
       const column = state.columns
         .find(v => v.id === issue.columnId) || state.columns[0];
       const index = column.issues.findIndex(v => v.position > issue.position);
-      column.issues.splice(index, 0, issue);
-      // if (index === -1) {
-      //   column.issues.unshift(issue);
-      // } else {
-      //   column.issues.splice(index, 0, issue);
-      // }
-      console.log(index);
-      // column.issues.splice(index, 0, issue);
-      // column.issues.push(issue);
+      if (index === -1) {
+        column.issues.push(issue);
+      } else {
+        column.issues.splice(index, 0, issue);
+      }
     },
     UPDATE_BOARD_ISSUE(state, { issue, key, value }) {
       issue[key] = value;
