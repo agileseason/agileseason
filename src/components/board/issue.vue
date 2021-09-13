@@ -284,5 +284,5 @@ export default {
         width: 22px
 
   .progress-container
-    margin: 8px -10px -8px -10px
+    margin: 6px -10px -8px -10px
 </style>
