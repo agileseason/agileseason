@@ -127,7 +127,7 @@ export default {
 
 .body-labels
   overflow-y: scroll
-  max-height: calc(100vh - 230px)
+  max-height: calc(100vh - 320px)
 
 .github-label
   display: flex
