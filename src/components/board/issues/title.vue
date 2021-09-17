@@ -1,7 +1,7 @@
 <template>
   <div v-if='!isEdit' class='title'>
     <span>
-      {{ title }}&nbsp;
+      {{ title }}
       <a :href='url'>#{{ number }}</a>
     </span>
     <ButtonIcon v-if='isEditable' name='edit' @click='startEditTitle' />
