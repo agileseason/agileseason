@@ -166,6 +166,12 @@ label
   padding: 8px
   cursor: pointer
 
+  &:hover
+    background-color: rgba(197, 202, 233, 0.8) // #c5cae9
+
+  &:active
+    background-color: rgba(197, 202, 233, 0.6) // #c5cae9
+
   &:not(:last-child)
     border-bottom: 1px solid #c5cae9
 
