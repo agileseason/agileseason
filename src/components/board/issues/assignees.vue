@@ -157,7 +157,7 @@ label
   display: flex
   font-weight: 500
   justify-content: space-between
-  margin-bottom: 6px
+  padding: 6px 0
   user-select: none
 
   &.active:not(.is-readonly)

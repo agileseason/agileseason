@@ -426,5 +426,5 @@ label.label
 .delimeter
   border-bottom: 1px solid #e8eaf6
   padding-top: 12px
-  margin-bottom: 12px
+  margin-bottom: 6px
 </style>
