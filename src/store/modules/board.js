@@ -337,7 +337,7 @@ export default {
     ADD_ISSUE(state, issue) {
       const column = state.columns
         .find(v => v.id === issue.columnId) || state.columns[0];
-      const index = column.issues.findIndex(v => v.position > issue.position);
+      const index = column.issues.findIndex(v => v.position >= issue.position);
       if (index === -1) {
         column.issues.push(issue);
       } else {
