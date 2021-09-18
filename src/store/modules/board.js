@@ -96,7 +96,7 @@ export default {
       toIssues.splice(toIssueIndex, 0, issueToMove);
       const toColumn = state.columns[toColumnIndex];
       commit('DRAGENTER_OVER');
-      if (toColumn.isAutoClose && !issueToMove.isClosed) {
+      if (fromColumnIndex !== toColumnIndex && toColumn.isAutoClose && !issueToMove.isClosed) {
         dispatch(
           'board/updateIssueState',
           {
@@ -108,7 +108,7 @@ export default {
           }
         );
       }
-      if (toColumn.isAutoAssign && issueToMove.assignees.length === 0) {
+      if (fromColumnIndex !== toColumnIndex && toColumn.isAutoAssign && issueToMove.assignees.length === 0) {
         const login = getters.username;
         dispatch(
           'board/updateIssue',
