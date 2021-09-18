@@ -20,7 +20,7 @@ export default {
   background-color: #e8eaf6
   border-radius: 4px
   border: 1px solid #c5cae9
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1)
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2)
   box-sizing: border-box
 
 .title
