@@ -1,50 +1,51 @@
 <template>
-  <div class='container'>
-    <h1>Agile Season</h1>
-    <h2>Kanban board for GitHub issues</h2>
-    <Button v-if='isSignedIn' class='signin' to='/boards' text='Go to App' />
-    <Button v-else
-      :isLoading='isLoading'
-      :href='signInUrl'
-      @click='startSignIn'
-      class='signin'
-      text='Sign in with GitHub'
-    />
+  <div class='hero'>
+    <div class='container'>
+      <h1>Agile Season</h1>
+      <h2>Kanban board for GitHub issues</h2>
+      <Button v-if='isSignedIn' class='signin' to='/boards' text='Go to App' />
+      <Button v-else
+        :isLoading='isLoading'
+        :href='signInUrl'
+        @click='startSignIn'
+        class='signin'
+        text='Sign in with GitHub'
+      />
+      <div class='logo' />
+    </div>
   </div>
 
   <div class='container'>
     <article>
-      <h3>Features</h3>
-
       <div class='features'>
         <div class='feature'>
-          <h4>Protect your secrets</h4>
+          <h3>Protect your secrets</h3>
           <p>
             We won't be able to read or change your code, since we won't
             require any of these permissions from GitHub.
           </p>
         </div>
         <div class='feature'>
-          <h4>Many repositories in one view</h4>
+          <h3>Many repositories in one view</h3>
           <p>Connect any number of GitHub repositories to a single board.</p>
         </div>
         <div class='feature'>
-          <h4>Connected to GitHub in real-time</h4>
+          <h3>Connected to GitHub in real-time</h3>
           <p>
             Agile Season connects directly to your GitHub issues, so there's
             no duplicate work and you're not jumping back and forth between tools.
           </p>
         </div>
         <div class='feature'>
-          <h4>Customizable workflow</h4>
-          <p>Add and remove columns to fit how your team works.</p>
+          <h3>Customizable workflow</h3>
+          <p>Add and remove columns to fit how your team works. Use colors to highlight cards.</p>
         </div>
         <div class='feature'>
-          <h4>Shared boards</h4>
+          <h3>Shared boards</h3>
           <p>You can share your board (read-only) with your clients or your community.</p>
         </div>
       </div>
-      <p>
+      <p class='shared-board-example'>
         Our board &mdash;&nbsp;
         <a href='https://agileseason.com/#/shared/board/4b4e403d6ea0a182f6994b8c67d2ec55'>https://agileseason.com/#/shared/board/4b4e403d6ea0a182f6994b8c67d2ec55</a>
       </p>
@@ -120,6 +121,27 @@ export default {
 </script>
 
 <style scoped lang='sass'>
+.hero
+  background-color: #fff
+
+  .container
+    padding: 80px 10px
+    position: relative
+
+    .logo
+      background-image: url('../assets/logo.svg')
+      background-repeat: no-repeat
+      background-size: contain
+      height: 367px
+      position: absolute
+      width: 200px
+      right: 0
+      top: 20px
+
+  .signin
+    min-width: 130px
+    margin-top: 50px
+
 .container
   margin: 0 auto
   padding: 40px 10px
@@ -129,15 +151,12 @@ export default {
   @media screen and (max-width: 1023px)
     max-width: 1000px
 
-.signin
-  min-width: 130px
-  margin: 30px 0
-
 h1
-  font-size: 40px
+  font-size: 42px
   margin: 0 0 10px
 
 h2
+  font-size: 22px
   font-weight: 400
   margin: 0 0 10px
 
@@ -145,9 +164,16 @@ h3,
 h4
   font-weight: 500
 
+p
+  font-size: 16px
+
+  &.shared-board-example
+    overflow: hidden
+
 .feature
-  h4
-    margin: 30px 0 10px
+
+.feature:not(:last-child)
+  margin-bottom: 40px
 
 .large
   font-size: 28px
