@@ -98,6 +98,9 @@ export default {
     },
     close() {
       if (this.isExpanded) { this.isExpanded = false; }
+      if (this.$route.name === 'notes') {
+        this.$router.push({ name: 'board', id: this.boardId });
+      }
     },
     signout() {
       this.logout();
