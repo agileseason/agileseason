@@ -1,5 +1,6 @@
 <template>
   <AppDrop
+    class='issue-wrapper'
     @drop='moveIssueOrColumn'
     @dragenter='dragenter'
     :transferData="{ type: 'issue', enterColumnIndex: columnIndex }"
@@ -179,11 +180,13 @@ export default {
 </script>
 
 <style scoped lang='sass'>
+.issue-wrapper
+  padding-bottom: 8px
+
 .issue
   background-color: #fff
   border-radius: 4px
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12)
-  margin-bottom: 8px
   overflow: hidden
   padding: 8px
 

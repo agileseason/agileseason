@@ -5,6 +5,11 @@ export default {
     columnIndex: {
       type: Number,
       required: true
+    },
+    issueIndex: {
+      type: Number,
+      required: false,
+      default: undefined
     }
   },
   methods: {

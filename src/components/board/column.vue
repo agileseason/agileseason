@@ -1,7 +1,6 @@
 <template>
   <AppDrop
     class='column'
-    :class="{ 'droppable': isDroppable }"
     @drop='moveIssueOrColumn'
     @dragenter='dragenter'
     :transferData="{ type: 'column', enterColumnIndex: columnIndex }"
@@ -84,7 +83,10 @@
           </template>
         </Dialog>
       </div>
-      <div class='body'>
+      <div
+        class='body'
+        :class="{ 'droppable': isDroppable }"
+      >
         <Issue
           v-for='(issue, $index) in notArchivedIssues'
           :key='issue.id'
@@ -318,14 +320,6 @@ export default {
   vertical-align: top
   width: 270px
 
-  &.droppable
-    background-color: rgba(197,202,233,0.4)
-
-  // TODO: Remove if unnecessary
-  &.is-drag-start
-    // background-color: #e8eaf6
-    // border-radius: 6px
-
   .header
     margin-bottom: 8px
 
@@ -411,4 +405,7 @@ export default {
   .body
     height: calc(100vh - 80px)
     overflow-y: scroll
+
+    &.droppable
+      background-color: rgba(197,202,233,0.4)
 </style>
