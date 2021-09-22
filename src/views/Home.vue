@@ -171,9 +171,8 @@ p
     overflow: hidden
 
 .feature
-
-.feature:not(:last-child)
-  margin-bottom: 40px
+  &:not(:last-child)
+    margin-bottom: 40px
 
 .large
   font-size: 28px
