@@ -458,6 +458,9 @@ export default {
     },
     markdown(text) {
       return Markdown.render(text, this.repositoryFullName);
+    },
+    test(e) {
+      console.log(e);
     }
   }
 }

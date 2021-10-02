@@ -17,10 +17,23 @@ renderer.list = (body, ordered) => {
 }
 renderer.listitem = (text, task, checked) => {
   if (task) {
+    const innerText = text.match(/>(.+)/)[1];
+    // console.log(renderer.clickHandler);
     if (checked) {
-      return `<li class='checked'>${text}</li>`;
+      //<input checked type='checkbox' onchange='console.log("${innerText}");'>${innerText}
+      return `
+        <li style='list-style: none; margin-left: -2em;'>
+          <label>
+            <input checked type='checkbox' onchange="(${renderer.clickHandler})();">${innerText}
+          </label>
+        </li>`;
     } else {
-      return `<li>${text}</li>`;
+      return `
+        <li style='list-style: none; margin-left: -2em;'>
+          <label>
+            <input type='checkbox' onchange="(function () { console.log('yyyy'); })();">${innerText}
+          </label>
+        </li>`;
     }
   }
   return `<li>${text}</li>`;
@@ -28,6 +41,7 @@ renderer.listitem = (text, task, checked) => {
 
 export default {
   render(text, repositoryFullName) {
+    renderer.clickHandler = () => { console.log('xxxx') };
     renderer.text = (text) => {
       // @aaa => <a href=...>@aaa</a>
       if (/@\w+/.test(text)) {
