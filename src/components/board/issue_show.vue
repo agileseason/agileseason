@@ -289,6 +289,19 @@ export default {
         this.assignableUsers = [...fetchAssignableUsers].sort((a, b) => (a.login > b.login) ? 1 : -1);
       }
     }
+
+    const body = document.getElementById('body');
+    if (body.getAttribute('taskListener') !== 'true') {
+      document.addEventListener('taskClick', this.taskClickHandler);
+      body.setAttribute('taskListener', 'true');
+    }
+  },
+  beforeUnmount() {
+    const body = document.getElementById('body');
+    if (body.getAttribute('taskListener') === 'true') {
+      document.removeEventListener('taskClick', this.taskClickHandler);
+      body.setAttribute('taskListener', 'false');
+    }
   },
   methods: {
     ...call([
@@ -457,7 +470,32 @@ export default {
       this.$nextTick(() => this.$refs.newComment.$refs.textarea.focus());
     },
     markdown(text) {
-      return Markdown.render(text, this.repositoryFullName);
+      return Markdown.render(
+        text,
+        this.repositoryFullName,
+        // JavaScript only. Use only ', not ".
+        (text, isChecked) => {
+          const prefixOld = isChecked ? '- [x]' : '- [ ]';
+          const prefixNew = isChecked ? '- [ ]' : '- [x]';
+          const textOld = prefixOld + text;
+          const textNew = prefixNew + text;
+          const event = new CustomEvent('taskClick', { detail: {
+            textOld: textOld,
+            textNew: textNew
+          } });
+          document.dispatchEvent(event);
+        }
+      );
+    },
+    taskClickHandler({ detail }) {
+      const { textOld, textNew } = detail;
+      this.newBody = this.newBody.replace(textOld, textNew);
+      this.updateIssue({
+        id: this.id,
+        body: this.newBody,
+        columnId: this.fetchedIssue.columnId
+      });
+      this.update({ body: this.newBody });
     }
   }
 }

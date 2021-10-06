@@ -17,17 +17,39 @@ renderer.list = (body, ordered) => {
 }
 renderer.listitem = (text, task, checked) => {
   if (task) {
+    const innerText = text.match(/>(.+)/)[1];
     if (checked) {
-      return `<li class='checked'>${text}</li>`;
+      return `
+        <li style='list-style: none; margin-left: -2em;'>
+          <label>
+            <input
+              checked type='checkbox'
+              onchange="(${renderer.clickHandler})('${innerText}', true);"
+            >
+            ${innerText}
+          </label>
+        </li>`;
     } else {
-      return `<li>${text}</li>`;
+      return `
+        <li style='list-style: none; margin-left: -2em;'>
+          <label>
+            <input
+              type='checkbox'
+              onchange="(${renderer.clickHandler})('${innerText}', false);"
+            >
+            ${innerText}
+          </label>
+        </li>`;
     }
   }
   return `<li>${text}</li>`;
 }
 
 export default {
-  render(text, repositoryFullName) {
+  render(text, repositoryFullName, clickHandler) {
+    if (clickHandler) {
+      renderer.clickHandler = clickHandler;
+    }
     renderer.text = (text) => {
       // @aaa => <a href=...>@aaa</a>
       if (/@\w+/.test(text)) {
