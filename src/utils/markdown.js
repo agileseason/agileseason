@@ -24,7 +24,7 @@ renderer.listitem = (text, task, checked) => {
           <label>
             <input
               checked type='checkbox'
-              onchange="(${renderer.clickHandler})('${innerText}', true);"
+              onchange='(${renderer.clickHandler})("${innerText}", true);'
             >
             ${innerText}
           </label>
@@ -35,7 +35,7 @@ renderer.listitem = (text, task, checked) => {
           <label>
             <input
               type='checkbox'
-              onchange="(${renderer.clickHandler})('${innerText}', false);"
+              onchange='(${renderer.clickHandler})("${innerText}", false);'
             >
             ${innerText}
           </label>

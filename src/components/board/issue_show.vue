@@ -475,11 +475,11 @@ export default {
         this.repositoryFullName,
         // JavaScript only. Use only ', not ".
         (text, isChecked) => {
-          const prefixOld = isChecked ? '- [x]' : '- [ ]';
-          const prefixNew = isChecked ? '- [ ]' : '- [x]';
+          const prefixOld = isChecked ? "- [x]" : "- [ ]";
+          const prefixNew = isChecked ? "- [ ]" : "- [x]";
           const textOld = prefixOld + text;
           const textNew = prefixNew + text;
-          const event = new CustomEvent('taskClick', { detail: {
+          const event = new CustomEvent("taskClick", { detail: {
             textOld: textOld,
             textNew: textNew
           } });
