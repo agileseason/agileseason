@@ -457,10 +457,26 @@ export default {
       this.$nextTick(() => this.$refs.newComment.$refs.textarea.focus());
     },
     markdown(text) {
-      return Markdown.render(text, this.repositoryFullName);
-    },
-    test(e) {
-      console.log(e);
+      return Markdown.render(
+        text,
+        this.repositoryFullName,
+        (text, isChecked) => {
+          // JavaScript only
+          const prefixOld = isChecked ? '- [x]' : '- [ ]';
+          const prefixNew = isChecked ? '- [ ]' : '- [x]';
+          const textOld = prefixOld + text;
+          const textNew = prefixNew + text;
+          console.log(textOld);
+          console.log(textNew);
+          // this.newBody = this.newBody.replace(textOld, textNew);
+          // await this.updateIssue({
+          //   id: this.id,
+          //   body: this.newBody,
+          //   columnId: this.fetchedIssue.columnId
+          // });
+          // this.update({ body: this.newBody });
+        }
+      );
     }
   }
 }
