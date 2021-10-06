@@ -209,13 +209,13 @@ export default {
     display: inline-block
     margin-top: 4px
 
-    &:hover
-      color: #616161
-      // text-decoration: underline
-
     .number
       color: #616161
       font-weight: 500
+
+  a.url
+    &:hover
+      color: #616161
 
   .assigned-or-extra
     display: flex
