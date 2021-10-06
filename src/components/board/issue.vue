@@ -18,7 +18,11 @@
       @click='goToIssue'
     >
       <div class='title'>{{ title }}</div>
-      <a :href='url' class='url' @click.stop='click'>
+      <span v-if='isReadOnly' class='url'>
+        <span class='number'>#{{ number }}</span>
+        {{ repositoryName }}
+      </span>
+      <a v-else :href='url' class='url' @click.stop='click'>
         <span class='number'>#{{ number }}</span>
         {{ repositoryName }}
       </a>
@@ -200,7 +204,7 @@ export default {
     line-height: 18px
     word-break: break-word
 
-  a.url
+  .url
     color: #757575
     display: inline-block
     margin-top: 4px
