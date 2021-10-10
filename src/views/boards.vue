@@ -11,6 +11,13 @@
       <div class='name'>
         {{ board.name }}
       </div>
+      <div class='users'>
+        <Avatar
+          v-for='(user, $index) in board.users'
+          v-bind='user'
+          :key='$index'
+        />
+      </div>
     </div>
 
     <router-link class='board new' to='/boards/new'>New Board...</router-link>
@@ -18,12 +25,14 @@
 </template>
 
 <script>
+import Avatar from '@/components/avatar';
 import TopMenu from '@/components/menu/top.vue'
 import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'Boards',
   components: {
+    Avatar,
     TopMenu
   },
   data: () => ({}),
@@ -53,6 +62,7 @@ export default {
 
 <style scoped lang='sass'>
 .boards
+  display: flex
   padding: 14px
 
   .board
@@ -60,9 +70,11 @@ export default {
     border-radius: 4px
     box-sizing: border-box
     cursor: pointer
-    display: inline-block
+    display: flex
+    flex-direction: column
     font-size: 16px
     height: 100px
+    justify-content: space-between
     margin-right: 14px
     padding: 10px
     width: 200px
@@ -91,4 +103,9 @@ export default {
 
     .name
       font-weight: 500
+
+    .users
+      max-height: 48px
+      overflow: hidden
+      text-align: right
 </style>

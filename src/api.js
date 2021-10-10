@@ -19,7 +19,11 @@ export default {
           id
           username
           avatarUrl
-          boards { id name }
+          boards {
+            id
+            name
+            users { login avatarUrl }
+          }
         }
       }
     `;

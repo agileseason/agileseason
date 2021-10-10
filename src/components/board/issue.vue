@@ -63,12 +63,10 @@
         </div>
 
         <div class='assigned'>
-          <img
+          <Avatar
             v-for='(assignee, $index) in sortedAssignees'
+            v-bind='assignee'
             :key='$index'
-            class='assignee'
-            :src='assignee.avatarUrl'
-            :title='assignee.login'
           />
         </div>
       </div>
@@ -82,6 +80,7 @@
 <script>
 import AppDrag from '@/components/app_drag';
 import AppDrop from '@/components/app_drop';
+import Avatar from '@/components/avatar';
 import Label from '@/components/board/label';
 import Progress from '@/components/board/issues/progress';
 import FastButton from '@/components/board/issues/fast_button';
@@ -93,8 +92,9 @@ export default {
   components: {
     AppDrag,
     AppDrop,
-    Label,
+    Avatar,
     FastButton,
+    Label,
     Progress
   },
   props: {
@@ -281,14 +281,6 @@ export default {
     .assigned
       text-align: right
       width: 130px
-
-      .assignee
-        display: inline-block
-        vertical-align: bottom
-        border-radius: 11px
-        height: 22px
-        margin: 2px 0 0 4px
-        width: 22px
 
   .progress-container
     margin: 6px -10px -8px -10px
