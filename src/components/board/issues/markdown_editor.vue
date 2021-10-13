@@ -55,6 +55,7 @@ import Uppy from '@uppy/core';
 import AwsS3 from '@uppy/aws-s3';
 
 const MIN_ROWS = 8;
+const MAX_ROWS = 40;
 
 export default {
   components: {
@@ -214,14 +215,24 @@ export default {
       }
     },
     initTextAreaRows() {
-      const rows = this.$refs.textarea.value.split(/\r?\n/).length;
-      if (rows > this.rows || rows > MIN_ROWS) {
+      let rows = this.$refs.textarea.value.split(/\r?\n/).length;
+      if (this.$refs.textarea.scrollTop > 200) {
+        rows += 20;
+      }
+      if (rows > MAX_ROWS) {
+        this.rows = MAX_ROWS;
+      } else if (rows > this.rows || rows > MIN_ROWS) {
         this.rows = rows;
+      } else if (rows < MIN_ROWS) {
+        this.rows = MIN_ROWS;
       }
     },
     onInput(e) {
       this.$emit('update:modelValue', e.target.value);
       this.checkKey(e.target.value);
+      if (this.$refs.textarea.selectionStart == this.$refs.textarea.selectionEnd) {
+        this.$refs.textarea.scrollTop = this.$refs.textarea.scrollHeight;
+      }
     },
     onKeyDown(e) {
       if (this.key == null) {
@@ -390,11 +401,13 @@ textarea
 
   .attach-image
     position: absolute
-    bottom: 6px
-    left: 0
+    bottom: 5px
+    left: 2px
     height: 24px
-    width: 100%
+    width: calc(100% - 4px)
+    background-color: #fff
     border-top: 1px dashed #c5cae9
+    border-radius: 0 0 4px 4px
 
     input
       position: absolute
