@@ -3,7 +3,7 @@
     <TopMenu :breadCrumbs="[{ name: 'Boards', path: '/boards' }]" title='New' />
 
     <div class='steps'>
-      <div class='step step-1'>
+      <div class='step'>
         <div class='title'>1. Install Application</div>
         <div class='subtitle'>
           GitHub App
@@ -175,21 +175,18 @@ export default {
 
 <style scoped lang='sass'>
 .steps
-  text-align: center
+  display: flex
+  justify-content: center
 
 .step
   background-color: #fff
   border-radius: 6px
   box-sizing: border-box
-  display: inline-block
   margin: 45px 16px 0
-  min-height: 280px
+  min-height: 300px
   padding: 32px 16px 26px
-  vertical-align: top
+  text-align: center
   width: 320px
-
-  &.step-1
-    height: 280px
 
   &.disabled
     background-color: #c5cae9
@@ -225,11 +222,12 @@ export default {
     min-width: 150px
 
   .configure-block
+    margin-top: 116px
+
     p
       color: #616161
       font-size: 12px
       letter-spacing: 0.2px
-      margin: 92px 0 16px
 
     .button.configure
       min-width: 150px
@@ -266,7 +264,7 @@ export default {
       width: 8px
 
 .imported-repositories.selected-repositories
-  height: 98px
+  height: 118px
   margin-top: 0
 
 .imported-repositories
