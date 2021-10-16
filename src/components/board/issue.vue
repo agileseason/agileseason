@@ -7,7 +7,7 @@
   >
     <AppDrag
       class='issue'
-      :class="{ 'read-only': isReadOnly }"
+      :class="{ 'read-only': isReadOnly, 'selected': isSelected }"
       :style='colorStyles'
       :transferData="{
         type: 'issue',
@@ -85,7 +85,7 @@ import Label from '@/components/board/label';
 import Progress from '@/components/board/issues/progress';
 import FastButton from '@/components/board/issues/fast_button';
 import movingIssuesAndColumns from '@/mixins/moving_issues_and_columns';
-import { call } from 'vuex-pathify';
+import { get, call } from 'vuex-pathify';
 
 export default {
   name: 'Issue',
@@ -122,6 +122,9 @@ export default {
     isArchiveSubmitting: false
   }),
   computed: {
+    ...get([
+      'board/currentIssue'
+    ]),
     isLabels() { return this.labels.length > 0; },
     isActionVisible() {
       if (this.isReadOnly) { return false; }
@@ -141,6 +144,9 @@ export default {
     },
     sortedAssignees() {
       return [...this.assignees].sort((a, b) => (a.login > b.login) ? 1 : -1);
+    },
+    isSelected() {
+      return this.currentIssue?.id === this.id;
     }
   },
   methods: {
@@ -185,17 +191,20 @@ export default {
 
 <style scoped lang='sass'>
 .issue-wrapper
-  padding-bottom: 8px
+  padding-bottom: 7px // (+1px from issue boarder)
 
 .issue
   background-color: #fff
   border-radius: 4px
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12)
+  border: 1px solid #E8EAF6
   overflow: hidden
   padding: 8px
 
   &:not(.read-only)
     cursor: pointer
+
+  &.selected
+    border: 1px solid #7986CB
 
   .title
     color: #212121

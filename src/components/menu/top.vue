@@ -21,8 +21,7 @@
         <div class='item-group'>
           <router-link v-if='isFull' to='/boards'>Boards</router-link>
           <router-link v-else to='/boards/new'>New Board</router-link>
-          <!-- TODO: Replace route to billing path -->
-          <router-link to='/boards'>Billing</router-link>
+          <router-link to='/settings'>Settings</router-link>
         </div>
         <div class='item-group'>
           <button @click='signout'>Sign Out</button>

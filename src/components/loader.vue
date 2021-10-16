@@ -19,7 +19,7 @@ export default {
 
 <style scoped lang='sass'>
 .loader
-  margin-top: 80px
+  margin: 40px 0
   text-align: center
 
   &.inline

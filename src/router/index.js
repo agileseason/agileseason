@@ -12,6 +12,7 @@ import Issue from '../views/issue';
 import IssueNew from '../views/issue_new';
 import Notes from '../views/notes';
 import OAuth from '../views/oauth';
+import Settings from '../views/settings';
 import SharedBoard from '../views/shared_board';
 
 function requireAuth(to, from, next) {
@@ -74,6 +75,11 @@ const routes = [
     path: '/boards/new',
     name: 'board_new',
     component: BoardNew,
+    beforeEnter: requireAuth
+  }, {
+    path: '/settings',
+    name: 'settings',
+    component: Settings,
     beforeEnter: requireAuth
   }, {
     path: '/oauth/callback',

@@ -315,7 +315,7 @@ export default {
   background-color: #e8eaf6
   border-radius: 6px
   display: inline-block
-  margin-right: 8px
+  margin-right: 7px // (+1px from issue boarder)
   position: relative
   vertical-align: top
   width: 270px
