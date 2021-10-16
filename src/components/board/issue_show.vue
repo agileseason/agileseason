@@ -275,25 +275,13 @@ export default {
   },
   async created() {
     if (this.id) {
-      await this.fetch({ id: this.id });
-      this.newBody = this.fetchedIssue.body;
+      await this.fetchIssue();
 
-      this.fetchComments({ id: this.id });
-      // Возможно стоит перенести этот метод в
-      // modules/issue fetch в commit FINISH_LOADING.
-      this.updateBoardIssue({ ...this.fetchedIssue });
-      const fetchAssignableUsers = await this.fetchAssignableUsers({
-        repositoryFullName: this.repositoryFullName
-      });
-      if (fetchAssignableUsers) {
-        this.assignableUsers = [...fetchAssignableUsers].sort((a, b) => (a.login > b.login) ? 1 : -1);
+      const body = document.getElementById('body');
+      if (body.getAttribute('taskListener') !== 'true') {
+        document.addEventListener('taskClick', this.taskClickHandler);
+        body.setAttribute('taskListener', 'true');
       }
-    }
-
-    const body = document.getElementById('body');
-    if (body.getAttribute('taskListener') !== 'true') {
-      document.addEventListener('taskClick', this.taskClickHandler);
-      body.setAttribute('taskListener', 'true');
     }
   },
   beforeUnmount() {
@@ -301,6 +289,13 @@ export default {
     if (body.getAttribute('taskListener') === 'true') {
       document.removeEventListener('taskClick', this.taskClickHandler);
       body.setAttribute('taskListener', 'false');
+    }
+  },
+  watch: {
+    async id(newValue, oldValue) {
+      if (newValue === oldValue) { return; }
+      if (newValue == null) { return; }
+      await this.fetchIssue();
     }
   },
   methods: {
@@ -315,6 +310,21 @@ export default {
       'issue/createComment'
     ]),
     close() { this.$emit('close'); },
+    async fetchIssue() {
+      await this.fetch({ id: this.id });
+      this.newBody = this.fetchedIssue.body;
+
+      this.fetchComments({ id: this.id });
+      // Возможно стоит перенести этот метод в
+      // modules/issue fetch в commit FINISH_LOADING.
+      this.updateBoardIssue({ ...this.fetchedIssue });
+      const fetchAssignableUsers = await this.fetchAssignableUsers({
+        repositoryFullName: this.repositoryFullName
+      });
+      if (fetchAssignableUsers) {
+        this.assignableUsers = [...fetchAssignableUsers].sort((a, b) => (a.login > b.login) ? 1 : -1);
+      }
+    },
     async updateTitle(newTitle) {
       if (this.isSubmitting) { return; }
 

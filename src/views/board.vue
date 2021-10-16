@@ -16,11 +16,23 @@
     </div>
   </div>
 
+  <!-- variant I -->
   <div
     class='modal-overlay'
-    v-if='isLoaded'
+    v-if='isLoaded && false'
     v-show='isModalOpen'
     @click.self='backToBoard'
+  >
+    <router-view v-slot='{ Component }'>
+      <transition name='slide' :duration='200'>
+        <component :is='Component' />
+      </transition>
+    </router-view>
+  </div>
+  <!-- variant II -->
+  <div
+    v-if='isLoaded && true'
+    v-show='isModalOpen'
   >
     <router-view v-slot='{ Component }'>
       <transition name='slide' :duration='200'>

@@ -1,5 +1,5 @@
 <template>
-  <Modal>
+  <Modal class='right-side'>
     <IssueShow
       :issue='currentIssue || unsyncedIssue'
       @close='closeIssue'
