@@ -16,10 +16,10 @@
     </div>
   </div>
 
-  <!-- variant I -->
+  <!-- variant I (center) -->
   <div
     class='modal-overlay'
-    v-if='isLoaded && false'
+    v-if='isLoaded && !isModalRight'
     v-show='isModalOpen'
     @click.self='backToBoard'
   >
@@ -29,9 +29,9 @@
       </transition>
     </router-view>
   </div>
-  <!-- variant II -->
+  <!-- variant II (right) -->
   <div
-    v-if='isLoaded && true'
+    v-if='isLoaded && isModalRight'
     v-show='isModalOpen'
   >
     <router-view v-slot='{ Component }'>
@@ -65,6 +65,7 @@ export default {
   computed: {
     token: get('user/token'),
     boards: get('user/boards'),
+    issueModalStyle: get('user/issueModalStyle'),
     columns: get('board/columns'),
     isOwner: get('board/isOwner'),
     isLoaded: get('board/isLoaded'),
@@ -84,6 +85,10 @@ export default {
       return this.$route.name === 'issue' ||
         this.$route.name === 'issue_new' ||
         this.$route.name === 'notes';
+    },
+    isModalRight() {
+      console.log(this.issueModalStyle);
+      return this.issueModalStyle === 'right';
     }
   },
   async created() {

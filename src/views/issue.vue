@@ -1,5 +1,5 @@
 <template>
-  <Modal class='right-side'>
+  <Modal :class='modalClasses'>
     <IssueShow
       :issue='currentIssue || unsyncedIssue'
       @close='closeIssue'
@@ -20,11 +20,16 @@ export default {
   props: {},
   computed: {
     currentIssue: get('board/currentIssue'),
+    issueModalStyle: get('user/issueModalStyle'),
     issueId() { return parseInt(this.$route.params.issueId); },
     boardId() { return parseInt(this.$route.params.id); },
     unsyncedIssue() {
       return { id: this.issueId };
-    }
+    },
+    modalClasses() {
+      if (this.issueModalStyle !== 'right') { return null; }
+      return 'right-side';
+    },
   },
   methods: {
     closeIssue() {

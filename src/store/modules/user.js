@@ -19,7 +19,8 @@ export default {
 
   state: {
     ...DEFAULT_STATE,
-    rememberToken: CookieStore.get(NAMESPACE, 'rememberToken', null)
+    rememberToken: CookieStore.get(NAMESPACE, 'rememberToken', null),
+    issueModalStyle: CookieStore.get(NAMESPACE, 'issueModalStyle', 'center')
   },
 
   getters: {
@@ -54,15 +55,13 @@ export default {
     },
     logout({ commit }) {
       commit('LOGOUT');
-    }
-    // async updateProfile({ state }, { currency }) {
-    //   const { token } = state;
-    //   console.warn('store');
-    //   const user = await api.updateProfile(token, { currency });
-    //   if (user == null) { return false; }
+    },
+    updateIssueModelStyle({ state, commit }, { issueModalStyle }) {
+      if (issueModalStyle == null) { return; }
+      if (issueModalStyle == state.issueModalStyle) { return; }
 
-    //   return true;
-    // }
+      commit('UPDATE_ISSUE_MODAL_STYLE', issueModalStyle);
+    },
   },
 
   mutations: {
@@ -91,6 +90,10 @@ export default {
       const board = state.boards.find(v => v.id === id);
       if (board == null) { return; }
       board.name = name;
+    },
+    UPDATE_ISSUE_MODAL_STYLE(state, issueModalStyle) {
+      state.issueModalStyle = issueModalStyle;
+      saveCookies('issueModalStyle', state.issueModalStyle);
     }
   }
 };
