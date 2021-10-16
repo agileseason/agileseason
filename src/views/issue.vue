@@ -10,7 +10,7 @@
 <script>
 import IssueShow from '@/components/board/issue_show.vue';
 import Modal from '@/components/modal.vue'
-import { get } from 'vuex-pathify';
+import { call, get } from 'vuex-pathify';
 
 export default {
   components: {
@@ -32,7 +32,11 @@ export default {
     },
   },
   methods: {
+    ...call([
+      'board/setCurrentIssue'
+    ]),
     closeIssue() {
+      this.setCurrentIssue({ issue: {} });
       this.$router.push({ name: 'board', id: this.boardId });
     }
   }
