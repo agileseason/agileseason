@@ -294,7 +294,8 @@ export default {
   watch: {
     async id(newValue, oldValue) {
       if (newValue === oldValue) { return; }
-      if (newValue == null) { return; }
+      if (newValue == null || isNaN(newValue)) { return; }
+
       await this.fetchIssue();
     }
   },
