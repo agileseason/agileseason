@@ -45,7 +45,6 @@
 <script>
 import Column from '@/components/board/column.vue';
 import ColumnNew from '@/components/board/column_new.vue';
-import IssueNew from '@/components/board/issue_new.vue';
 import Loader from '@/components/loader';
 import TopMenu from '@/components/menu/top.vue';
 import { get, call } from 'vuex-pathify';
@@ -55,7 +54,6 @@ export default {
   components: {
     Column,
     ColumnNew,
-    IssueNew,
     Loader,
     TopMenu
   },
