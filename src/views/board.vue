@@ -87,7 +87,6 @@ export default {
         this.$route.name === 'notes';
     },
     isModalRight() {
-      console.log(this.issueModalStyle);
       return this.issueModalStyle === 'right';
     }
   },
@@ -99,6 +98,7 @@ export default {
     ...call([
       'user/fetchProfileLazy',
       'board/createColumn',
+      'board/setCurrentIssue',
       'board/fetch'
     ]),
     async createNewColumn(name) {
@@ -108,6 +108,7 @@ export default {
       this.isSubmittingNewColumn = false;
     },
     backToBoard() {
+      this.setCurrentIssue({ issue: {} });
       this.$router.push({ name: 'board', id: this.boardId });
     }
   }
