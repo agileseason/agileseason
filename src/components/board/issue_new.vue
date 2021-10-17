@@ -217,7 +217,9 @@ export default {
       if (newValue === oldValue) { return; }
       this.assignees = [];
       this.labels = [];
-      this.$nextTick(() => this.$refs.title.focus());
+      if (oldValue !== undefined) {
+        this.$nextTick(() => this.$refs.title.focus());
+      }
       await this.initAssignableUsers();
       CookieStore.set(NAMESPACE, this.boardId, this.selectedRepositoryId);
     }
@@ -298,15 +300,6 @@ export default {
   padding: 10px 14px
   position: relative
 
-  .readonly
-    background-color: #e0e0e0
-    border-radius: 4px
-    color: #424242
-    padding: 4px 16px
-    position: absolute
-    top: 10px
-    left: calc(50% - 50px)
-
   .icon
     background-image: url('../../assets/icons/issue/green_open.svg')
     background-position-y: center
@@ -372,7 +365,7 @@ input.title
   margin-left: 50px
 
 .right
-  margin: 16px 0
+  margin: 2px 0 16px 0
   vertical-align: top
 
 .actions

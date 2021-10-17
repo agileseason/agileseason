@@ -139,7 +139,7 @@
         </div>
       </div>
 
-      <div v-if='isLoaded' class='right'>
+      <div v-if='isLoaded'>
         <Assignees
           :assignees='assignees'
           :repositoryFullName='repositoryFullName'

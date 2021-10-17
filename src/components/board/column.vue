@@ -160,9 +160,11 @@ export default {
   methods: {
     ...call([
       'board/updateBoardColumn',
-      'board/removeBoardColumn'
+      'board/removeBoardColumn',
+      'board/setCurrentIssue',
     ]),
     issueNew() {
+      this.setCurrentIssue({ issue: {} });
       this.$router.push({
         name: 'issue_new',
         params: { columnId: this.id }

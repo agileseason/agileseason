@@ -45,7 +45,6 @@
 <script>
 import Column from '@/components/board/column.vue';
 import ColumnNew from '@/components/board/column_new.vue';
-import IssueNew from '@/components/board/issue_new.vue';
 import Loader from '@/components/loader';
 import TopMenu from '@/components/menu/top.vue';
 import { get, call } from 'vuex-pathify';
@@ -55,7 +54,6 @@ export default {
   components: {
     Column,
     ColumnNew,
-    IssueNew,
     Loader,
     TopMenu
   },
@@ -87,7 +85,6 @@ export default {
         this.$route.name === 'notes';
     },
     isModalRight() {
-      console.log(this.issueModalStyle);
       return this.issueModalStyle === 'right';
     }
   },
@@ -99,6 +96,7 @@ export default {
     ...call([
       'user/fetchProfileLazy',
       'board/createColumn',
+      'board/setCurrentIssue',
       'board/fetch'
     ]),
     async createNewColumn(name) {
@@ -108,6 +106,7 @@ export default {
       this.isSubmittingNewColumn = false;
     },
     backToBoard() {
+      this.setCurrentIssue({ issue: {} });
       this.$router.push({ name: 'board', id: this.boardId });
     }
   }
