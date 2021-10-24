@@ -199,6 +199,8 @@ export default {
   border: 1px solid #E8EAF6
   overflow: hidden
   padding: 8px
+  position: relative
+  z-index: 2
 
   &:not(.read-only)
     cursor: pointer

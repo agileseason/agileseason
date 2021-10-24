@@ -21,7 +21,15 @@ export default {
   position: fixed
   top: 0
   width: 100vw
-  z-index: 4
+  z-index: 3
+
+.modal-overlay-blank
+  height: 100vh
+  left: 0
+  position: fixed
+  top: 0
+  width: 100vw
+  z-index: 1 // z-index: 2 on board/issue
 
 .modal
   background-color: #fff
@@ -33,7 +41,7 @@ export default {
   position: absolute
   top: 36px
   width: 80%
-  z-index: 5
+  z-index: 4
 
   transform: translate(-50%, 2000px)
 

@@ -34,6 +34,10 @@
     v-if='isLoaded && isModalRight'
     v-show='isModalOpen'
   >
+    <div
+      class='modal-overlay-blank'
+      @click.self='backToBoard'
+    />
     <router-view v-slot='{ Component }'>
       <transition name='slide' :duration='200'>
         <component :is='Component' />
