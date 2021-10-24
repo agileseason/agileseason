@@ -18,12 +18,15 @@ renderer.list = (body, ordered) => {
 renderer.listitem = (text, task, checked) => {
   if (task) {
     const innerText = text.match(/>(.+)/)[1];
+    const normalizedText = innerText
+      .replaceAll('<code>', '`')
+      .replaceAll('</code>', '`');
     return `
-      <li style='list-style: none; margin-left: -2em;'>
+      <li class='task-item'>
         <label>
           <input
             type='checkbox' ${checked ? 'checked' : ''}
-            onchange='(${renderer.clickHandler})("${innerText}", ${checked});'
+            onchange='(${renderer.clickHandler})("${normalizedText}", ${checked});'
           >
           ${innerText}
         </label>

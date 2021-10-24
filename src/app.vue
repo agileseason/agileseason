@@ -93,6 +93,22 @@ a {
   padding-left: 2em;
 }
 
+.markdown-body li.task-item {
+  list-style: none;
+  margin-left: -2em;
+  cursor: pointer;
+}
+
+.markdown-body li.task-item label {
+  cursor: pointer;
+  display: block;
+}
+
+.markdown-body li.task-item label:hover {
+  background-color: #F5F5F5;
+  border-radius: 2px;
+}
+
 .markdown-body>:last-child {
   margin-bottom: 0 !important
 }
