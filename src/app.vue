@@ -84,15 +84,6 @@ a {
   padding-left: 2em;
 }
 
-.markdown-body ul.checkbox-list {
-  list-style: none;
-  padding-left: 0;
-}
-
-.markdown-body ul.checkbox-list > li > ul {
-  padding-left: 2em;
-}
-
 .markdown-body li.task-item {
   list-style: none;
   margin-left: -2em;
@@ -107,6 +98,10 @@ a {
 .markdown-body li.task-item label:hover {
   background-color: #F5F5F5;
   border-radius: 2px;
+}
+
+.markdown-body li.task-item label > ul {
+  margin-left: 20px;
 }
 
 .markdown-body>:last-child {

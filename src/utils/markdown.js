@@ -9,15 +9,22 @@ renderer.list = (body, ordered) => {
     return `<ol>${body}</ol>`;
   }
 
-  if (/type="checkbox">/.test(body)) {
-    return `<ul class='checkbox-list'>${body}</ul>`;
-  }
+  // if (/type="checkbox">/.test(body)) {
+  //   return `<ul class='checkbox-list'>${body}</ul>`;
+  // }
 
   return `<ul>${body}</ul>`;
 }
 renderer.listitem = (text, task, checked) => {
   if (task) {
-    const innerText = text.match(/>(.+)/)[1];
+    // console.log(text);
+    const isInternalCheckboxes = text.includes('<ul>');
+    const innerText = isInternalCheckboxes ?
+      text.match(/>(.+)</)[1] :
+      text.match(/>(.+)/)[1];
+    const postText = isInternalCheckboxes ?
+      text.replaceAll("\n", '').match(/(<ul>.+)/)[1] :
+      '';
     const normalizedText = innerText
       .replaceAll('<code>', '`')
       .replaceAll('</code>', '`');
@@ -28,7 +35,7 @@ renderer.listitem = (text, task, checked) => {
             type='checkbox' ${checked ? 'checked' : ''}
             onchange='(${renderer.clickHandler})("${normalizedText}", ${checked});'
           >
-          ${innerText}
+          ${innerText}${postText}
         </label>
       </li>`;
   }
