@@ -9,38 +9,35 @@ renderer.list = (body, ordered) => {
     return `<ol>${body}</ol>`;
   }
 
-  if (/type="checkbox">/.test(body)) {
-    return `<ul class='checkbox-list'>${body}</ul>`;
-  }
+  // if (/type="checkbox">/.test(body)) {
+  //   return `<ul class='checkbox-list'>${body}</ul>`;
+  // }
 
   return `<ul>${body}</ul>`;
 }
 renderer.listitem = (text, task, checked) => {
   if (task) {
-    const innerText = text.match(/>(.+)/)[1];
-    if (checked) {
-      return `
-        <li style='list-style: none; margin-left: -2em;'>
-          <label>
-            <input
-              checked type='checkbox'
-              onchange='(${renderer.clickHandler})("${innerText}", true);'
-            >
-            ${innerText}
-          </label>
-        </li>`;
-    } else {
-      return `
-        <li style='list-style: none; margin-left: -2em;'>
-          <label>
-            <input
-              type='checkbox'
-              onchange='(${renderer.clickHandler})("${innerText}", false);'
-            >
-            ${innerText}
-          </label>
-        </li>`;
-    }
+    // console.log(text);
+    const isInternalCheckboxes = text.includes('<ul>');
+    const innerText = isInternalCheckboxes ?
+      text.match(/>(.+)</)[1] :
+      text.match(/>(.+)/)[1];
+    const postText = isInternalCheckboxes ?
+      text.replaceAll("\n", '').match(/(<ul>.+)/)[1] :
+      '';
+    const normalizedText = innerText
+      .replaceAll('<code>', '`')
+      .replaceAll('</code>', '`');
+    return `
+      <li class='task-item'>
+        <label>
+          <input
+            type='checkbox' ${checked ? 'checked' : ''}
+            onchange='(${renderer.clickHandler})("${normalizedText}", ${checked});'
+          >
+          ${innerText}${postText}
+        </label>
+      </li>`;
   }
   return `<li>${text}</li>`;
 }

@@ -84,13 +84,24 @@ a {
   padding-left: 2em;
 }
 
-.markdown-body ul.checkbox-list {
+.markdown-body li.task-item {
   list-style: none;
-  padding-left: 0;
+  margin-left: -2em;
+  cursor: pointer;
 }
 
-.markdown-body ul.checkbox-list > li > ul {
-  padding-left: 2em;
+.markdown-body li.task-item label {
+  cursor: pointer;
+  display: block;
+}
+
+.markdown-body li.task-item label:hover {
+  background-color: #F5F5F5;
+  border-radius: 2px;
+}
+
+.markdown-body li.task-item label > ul {
+  margin-left: 20px;
 }
 
 .markdown-body>:last-child {
