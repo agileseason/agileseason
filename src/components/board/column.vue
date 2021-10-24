@@ -232,14 +232,14 @@ export default {
   position: fixed
   top: 0
   width: 100vw
-  z-index: 1
+  z-index: 3 // z-index: 2 on board/issue
 
 .select-settings
   overflow: hidden
   position: absolute
   right: 0
   top: 32px
-  z-index: 2
+  z-index: 4
 
   .item
     cursor: pointer
