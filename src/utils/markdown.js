@@ -18,29 +18,16 @@ renderer.list = (body, ordered) => {
 renderer.listitem = (text, task, checked) => {
   if (task) {
     const innerText = text.match(/>(.+)/)[1];
-    if (checked) {
-      return `
-        <li style='list-style: none; margin-left: -2em;'>
-          <label>
-            <input
-              checked type='checkbox'
-              onchange='(${renderer.clickHandler})("${innerText}", true);'
-            >
-            ${innerText}
-          </label>
-        </li>`;
-    } else {
-      return `
-        <li style='list-style: none; margin-left: -2em;'>
-          <label>
-            <input
-              type='checkbox'
-              onchange='(${renderer.clickHandler})("${innerText}", false);'
-            >
-            ${innerText}
-          </label>
-        </li>`;
-    }
+    return `
+      <li style='list-style: none; margin-left: -2em;'>
+        <label>
+          <input
+            type='checkbox' ${checked ? 'checked' : ''}
+            onchange='(${renderer.clickHandler})("${innerText}", ${checked});'
+          >
+          ${innerText}
+        </label>
+      </li>`;
   }
   return `<li>${text}</li>`;
 }
