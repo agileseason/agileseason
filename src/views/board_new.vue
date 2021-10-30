@@ -63,35 +63,36 @@
         <div class='title'>2. Select Repositories</div>
       </div>
 
-      <div v-if='isImportReady' class='step'>
+      <div class='step' :class="{ 'disabled': !isImportReady }">
         <div class='title'>3. Import Issues</div>
-        <Input
-          v-model.trim='boardName'
-          placeholder='Board Name'
-          class='board-name'
-        />
-        <div class='selected-repositories imported-repositories'>
-          <span
-            v-for='repo in selectedRepositories'
-            :key='repo.id'
-            :title='repo.fullName'
-            class='repository tag'
-            @click='removeSelectedRepository(repo.id)'
-          >
-            <span>{{ repo.name }}</span>
-            <span class='icon' />
-          </span>
+        <div v-show='isImportReady'>
+          <Input
+            ref='boardName'
+            v-model.trim='boardName'
+            placeholder='Board Name'
+            class='board-name'
+          />
+          <div class='selected-repositories imported-repositories'>
+            <div class='selected-repositories-header'>Selected Repositories:</div>
+            <span
+              v-for='repo in selectedRepositories'
+              :key='repo.id'
+              :title='repo.fullName'
+              class='repository tag'
+              @click='removeSelectedRepository(repo.id)'
+            >
+              <span>{{ repo.name }}</span>
+              <span class='icon' />
+            </span>
+          </div>
+          <Button
+            class='finish'
+            :isLoading='isSubmitting'
+            :isDisabled='isDisabledFinished'
+            text='Finish'
+            @click='finish'
+          />
         </div>
-        <Button
-          class='finish'
-          :isLoading='isSubmitting'
-          :isDisabled='isDisabledFinished'
-          text='Finish'
-          @click='finish'
-        />
-      </div>
-      <div v-else class='step disabled'>
-        <div class='title'>3. Import Issues</div>
       </div>
     </div>
   </div>
@@ -154,6 +155,7 @@ export default {
     done(data) {
       // { installationId, installationAccessTokenUrl, repositories }
       this.update(data);
+      this.$nextTick(() => this.$refs.boardName.focus());
     },
     async finish() {
       if (this.isSubmitting) { return; }
@@ -236,6 +238,13 @@ export default {
   margin-top: 12px
   text-align: left
 
+  .selected-repositories-header
+    color: #616161
+    font-size: 12px
+    letter-spacing: 0.2px
+    margin-bottom: 4px
+    text-align: left
+
   .tag
     background-color: #3f51b5
     border-radius: 14px
@@ -275,6 +284,6 @@ export default {
   margin-bottom: 6px
 
 .board-name
-  margin-bottom: 20px
+  margin: 6px 0 16px
   width: 100%
 </style>
