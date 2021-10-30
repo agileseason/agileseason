@@ -4,6 +4,7 @@
     type='text'
     :value='modelValue'
     @input='onInput'
+    ref='input'
   />
 </template>
 
@@ -19,6 +20,9 @@ export default {
   methods: {
     onInput(e) {
       this.$emit('update:modelValue', e.target.value);
+    },
+    focus() {
+      this.$refs.input.focus();
     }
   }
 }
