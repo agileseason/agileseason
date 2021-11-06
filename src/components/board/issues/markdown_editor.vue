@@ -386,6 +386,7 @@ textarea
     //font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace
     font-family: 'Roboto Mono',
     font-weight: 300
+    line-height: 1.5
 
   &::placeholder
     color: #9fa8da
