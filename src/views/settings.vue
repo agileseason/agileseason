@@ -9,7 +9,8 @@
     @select='selectTab'
   />
   <article v-if='active === "Appearance"' class='body'>
-    <h2 class='subtitle'>Issue modal position</h2>
+    <h2 class='subtitle'>Issue view preference</h2>
+    <p>Select the preferred position of the modal view</p>
     <div
       v-for='item in issueModalStyles'
       class='radio-item'
@@ -22,10 +23,27 @@
         :id='item'
       />
       <label :for='item'>
-        {{ item }}
+        {{ issueModalStyleLabels[item] }}
         <span class='note'>{{issueModalStyleNotes[item]}}</span>
       </label>
     </div>
+
+    <br>
+    <br>
+
+    <h2 class='subtitle'>Markdown editor font preference</h2>
+    <p>
+      Font preference for plain text editors that support Markdown
+      styling (e.g. pull request and issue descriptions, comments.)
+    </p>
+    <label class='checkbox'>
+      <input
+        v-model='isMonoSelected'
+        type='checkbox'
+        @change='updateIsMono'
+      />
+      Use a fixed-width (monospace) font when editing Markdown
+    </label>
   </article>
 </template>
 
@@ -51,15 +69,21 @@ export default {
       'center',
       'right',
     ],
+    issueModalStyleLabels: {
+      center: 'Center',
+      right: 'Right',
+    },
     issueModalStyleNotes: {
       center: 'Best for laptop (default)',
       right: 'Best for wide monitor',
     },
     selectedIssueModalStyle: undefined,
+    isMonoSelected: undefined
   }),
   computed: {
     isLoaded: get('user/isLoaded'),
     issueModalStyle: get('user/issueModalStyle'),
+    markdownEditorFont: get('user/markdownEditorFont'),
     token: get('user/token'),
     boards: get('user/boards')
   },
@@ -69,22 +93,29 @@ export default {
     }
   },
   async created() {
+    this.selectedIssueModalStyle = this.issueModalStyle;
+    this.isMonoSelected = this.markdownEditorFont === 'mono';
+
     const user = await this.fetchProfile();
     if (user == null) {
       this.$router.push({ name: 'home' });
     } else if (user.boards.length === 0) {
       this.$router.push({ name: 'board_new' });
     }
-    this.selectedIssueModalStyle = this.issueModalStyle;
   },
   methods: {
     ...call([
       'user/fetchProfile',
-      'user/updateIssueModelStyle'
+      'user/updateIssueModelStyle',
+      'user/updateMarkdownEditorFont'
     ]),
     selectTab(item) {
       this.active = item;
     },
+    updateIsMono(e) {
+      this.isMonoSelected = e.target.checked;
+      this.updateMarkdownEditorFont({ isMono: this.isMonoSelected });
+    }
   }
 }
 </script>
@@ -116,13 +147,23 @@ article
     cursor: pointer
 
   input
-    margin: 0 4px 0 0
+    margin: 0 6px 0 0
 
   label
     text-transform: capitalize
+    font-weight: 500
 
   .note
     color: #9E9E9E
     margin-left: 4px
     text-transform: none
+    font-weight: 400
+
+label.checkbox
+  display: flex
+  align-items: center
+  font-weight: 500
+
+  input
+    margin: 0 6px 0 0
 </style>

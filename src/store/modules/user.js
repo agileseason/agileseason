@@ -20,7 +20,8 @@ export default {
   state: {
     ...DEFAULT_STATE,
     rememberToken: CookieStore.get(NAMESPACE, 'rememberToken', null),
-    issueModalStyle: CookieStore.get(NAMESPACE, 'issueModalStyle', 'center')
+    issueModalStyle: CookieStore.get(NAMESPACE, 'issueModalStyle', 'center'),
+    markdownEditorFont: CookieStore.get(NAMESPACE, 'markdownEditorFont', 'default')
   },
 
   getters: {
@@ -62,6 +63,12 @@ export default {
 
       commit('UPDATE_ISSUE_MODAL_STYLE', issueModalStyle);
     },
+    updateMarkdownEditorFont({ commit }, { isMono }) {
+      console.log(isMono);
+      if (isMono == null) { return; }
+      const markdownEditorFont = isMono ? 'mono' : 'default';
+      commit('UPDATE_MARKDOWN_EDITOR_FONT', markdownEditorFont);
+    },
   },
 
   mutations: {
@@ -94,6 +101,10 @@ export default {
     UPDATE_ISSUE_MODAL_STYLE(state, issueModalStyle) {
       state.issueModalStyle = issueModalStyle;
       saveCookies('issueModalStyle', state.issueModalStyle);
+    },
+    UPDATE_MARKDOWN_EDITOR_FONT(state, markdownEditorFont) {
+      state.markdownEditorFont = markdownEditorFont;
+      saveCookies('markdownEditorFont', state.markdownEditorFont);
     }
   }
 };
