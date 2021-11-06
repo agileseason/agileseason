@@ -11,7 +11,8 @@ export default {
   name: 'App',
   created() {
     loadFonts([
-      'Roboto:300,400,500'
+      'Roboto:300,400,500',
+      'Roboto Mono:300',
     ]);
   }
 };

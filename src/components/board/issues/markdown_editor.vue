@@ -6,6 +6,7 @@
         :value='modelValue'
         :disabled='isUploading'
         :placeholder='placeholder'
+        :class='markdownEditorFont'
         ref='textarea'
         @input='onInput'
         @keydown='onKeyDown'
@@ -91,7 +92,8 @@ export default {
   }),
   computed: {
     ...get([
-      'board/mentionIssues'
+      'board/mentionIssues',
+      'user/markdownEditorFont'
     ]),
     filteredItems() {
       const items = this.key === '@' ? this.assignableUsers : this.mentionIssues;
@@ -379,6 +381,11 @@ textarea
   padding: 8px 8px 32px 8px
   resize: none
   width: 100%
+
+  &.mono
+    //font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace
+    font-family: 'Roboto Mono',
+    font-weight: 300
 
   &::placeholder
     color: #9fa8da
