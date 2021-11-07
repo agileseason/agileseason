@@ -17,6 +17,7 @@
       :is-read-only='isReadOnly'
       @click='goToIssue'
     >
+      <ButtonIcon class='edit' name='edit' @click.stop='onEdit' />
       <div class='title'>{{ title }}</div>
       <span v-if='isReadOnly' class='url'>
         <span class='number'>#{{ number }}</span>
@@ -82,6 +83,7 @@ import AppDrag from '@/components/app_drag';
 import AppDrop from '@/components/app_drop';
 import Avatar from '@/components/avatar';
 import Label from '@/components/board/label';
+import ButtonIcon from '@/components/buttons/icon';
 import Progress from '@/components/board/issues/progress';
 import FastButton from '@/components/board/issues/fast_button';
 import movingIssuesAndColumns from '@/mixins/moving_issues_and_columns';
@@ -93,6 +95,7 @@ export default {
     AppDrag,
     AppDrop,
     Avatar,
+    ButtonIcon,
     FastButton,
     Label,
     Progress
@@ -184,6 +187,9 @@ export default {
         isArchived: true
       });
       this.isArchiveSubmitting = false;
+    },
+    onEdit() {
+      console.log('edit');
     }
   }
 }
@@ -207,6 +213,25 @@ export default {
 
   &.selected
     border: 1px solid #7986CB
+
+  &:hover
+    .edit
+      display: block
+
+  .edit
+    display: none
+    background-color: #E8EAF6
+    border-radius: 2px
+    position: absolute
+    top: 2px
+    right: 2px
+    opacity: 0.6
+
+    &:hover
+      opacity: 1
+
+    &:active
+      opacity: 0.8
 
   .title
     color: #212121
