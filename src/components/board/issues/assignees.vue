@@ -135,7 +135,7 @@ export default {
 
 .select-assignees
   position: absolute
-  top: 20px
+  top: 28px
   width: 220px
   z-index: 2
 

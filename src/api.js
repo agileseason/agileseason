@@ -168,6 +168,7 @@ export default {
               position
               url
               repositoryName
+              repositoryFullName
               labels { name color }
               assignees { login avatarUrl }
               isClosed
