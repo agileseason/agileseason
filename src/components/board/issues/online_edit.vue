@@ -5,7 +5,7 @@
       <span class='gear' />
 
       <Select
-        v-if='isSelectOpen'
+        v-if='isAssigneesSelectOpen'
         title='Assign up to 10 people to this issue'
         class='select-assignees'
       >
@@ -24,9 +24,28 @@
         </div>
       </Select>
     </div>
-    <div class='button'>
+    <div class='button' @click='toggleLabels'>
       Labels
       <span class='gear' />
+      <Select
+        v-if='isLabelsSelectOpen'
+        title='Apply labels to this issue'
+        class='select-labels'
+      >
+        <Loader v-if='isLoading' is-inline />
+        <div class='body-labels' v-else>
+          <div
+            v-for='label in githubLabels'
+            class='github-label'
+            :key='label.id'
+            @click='toggle(label)'
+          >
+            <span class='check' :class="{ checked: isApplied(label) }" />
+            <span class='color' :style='colorStyles(label)' />
+            <span class='name'>{{ label.name }}</span>
+          </div>
+        </div>
+      </Select>
     </div>
     <div class='button'>
       Color
@@ -50,22 +69,29 @@ export default {
     columnId: { type: Number, required: true },
     repositoryFullName: { type: String, required: true },
     assignees: { type: Array, required: true },
+    labels: { type: Array, required: true },
   },
   data: () => ({
-    isSelectOpen: false,
-    isLoading: true,
+    isAssigneesSelectOpen: false,
+    isLabelsSelectOpen: false,
+    isLoading: false,
     isSubmitting: false,
-    assignableUsers: []
+    assignableUsers: [],
+    githubLabels: []
   }),
   computed: {},
   methods: {
     ...call([
       'board/fetchAssignableUsers',
+      'board/fetchLabels',
       'board/updateIssue'
     ]),
     async toggleAssignees() {
-      this.isSelectOpen = !this.isSelectOpen;
-      if (this.isSelectOpen && this.assignableUsers.length === 0) {
+      if (this.isLoading) { return; }
+
+      this.isLabelsSelectOpen = false;
+      this.isAssigneesSelectOpen = !this.isAssigneesSelectOpen;
+      if (this.isAssigneesSelectOpen && this.assignableUsers.length === 0) {
         this.isLoading = true;
         const fetchAssignableUsers = await this.fetchAssignableUsers({
           repositoryFullName: this.repositoryFullName
@@ -83,8 +109,8 @@ export default {
       this.isSubmitting = true;
 
       const assignedUser = { ...user, url: `https://github.com/${user.login}` };
+      const userIndex = this.assignees.findIndex(v => v.login === assignedUser.login);
       let assignees = [...this.assignees];
-      const userIndex = assignees.findIndex(v => v.login === assignedUser.login);
       if (userIndex === -1) {
         assignees.push(assignedUser);
       } else {
@@ -96,7 +122,27 @@ export default {
         columnId: this.columnId
       });
       this.isSubmitting = false;
-    }
+    },
+    async toggleLabels() {
+      if (this.isLoading) { return; }
+
+      this.isAssigneesSelectOpen = false;
+      this.isLabelsSelectOpen = !this.isLabelsSelectOpen;
+      if (this.isLabelsSelectOpen && this.githubLabels.length === 0) {
+        this.isLoading = true;
+        const fetchLabels = await this.fetchLabels({
+          repositoryFullName: this.repositoryFullName
+        });
+        this.githubLabels = [...fetchLabels];
+        this.isLoading = false;
+      }
+    },
+    isApplied({ name }) {
+      return this.labels.findIndex(v => v.name === name) >= 0;
+    },
+    colorStyles({ color }) {
+      return `background-color: #${color}`;
+    },
   }
 }
 </script>
@@ -136,55 +182,96 @@ export default {
       height: 12px
       width: 12px
 
-  .select-assignees
-    position: absolute
-    top: 34px
-    left: 0
-    width: 220px
-    z-index: 2
+.select-assignees,
+.select-labels
+  position: absolute
+  top: 34px
+  left: 0
+  width: 220px
+  z-index: 2
 
-  // TODO: Extract assignable-user select - /components/board/issues/assignees
-  //.assignee,
-  .assignable-user
-    display: flex
-    align-items: center
+.select-labels
+  top: 72px
 
-    .avatar
-      border-radius: 11px
-      height: 22px
-      margin-right: 4px
-      width: 22px
+// TODO: Extract assignable-user select - /components/board/issues/assignees
+.assignable-user
+  display: flex
+  align-items: center
 
-    .login
-      font-size: 14px
-      font-weight: 500
+  .avatar
+    border-radius: 11px
+    height: 22px
+    margin-right: 4px
+    width: 22px
 
-  //.assignee
-    &:not(:last-child)
-      margin-bottom: 4px
+  .login
+    font-size: 14px
+    font-weight: 500
 
-  .assignable-user
-    padding: 8px
-    cursor: pointer
+.assignable-user
+  padding: 8px
+  cursor: pointer
 
-    &:hover
-      background-color: rgba(197, 202, 233, 0.8) // #c5cae9
+  &:hover
+    background-color: rgba(197, 202, 233, 0.8) // #c5cae9
 
-    &:active
-      background-color: rgba(197, 202, 233, 0.6) // #c5cae9
+  &:active
+    background-color: rgba(197, 202, 233, 0.6) // #c5cae9
 
-    &:not(:last-child)
-      border-bottom: 1px solid #c5cae9
+  &:not(:last-child)
+    border-bottom: 1px solid #c5cae9
 
-    .check
-      background-image: url('../../../assets/icons/issue/check.svg')
-      background-position: center
-      background-repeat: no-repeat
-      height: 16px
-      margin-right: 8px
-      opacity: 0
-      width: 16px
+  .check
+    background-image: url('../../../assets/icons/issue/check.svg')
+    background-position: center
+    background-repeat: no-repeat
+    height: 16px
+    margin-right: 8px
+    opacity: 0
+    width: 16px
 
-      &.checked
-        opacity: 100
+    &.checked
+      opacity: 100
+
+// TODO: Extract body-labels select - /components/board/issues/labels
+.body-labels
+  overflow-y: scroll
+  max-height: calc(100vh - 320px)
+
+.github-label
+  display: flex
+  align-items: center
+  padding: 8px
+  cursor: pointer
+
+  &:hover
+    background-color: rgba(197, 202, 233, 0.8) // #c5cae9
+
+  &:active
+    background-color: rgba(197, 202, 233, 0.6) // #c5cae9
+
+  &:not(:last-child)
+    border-bottom: 1px solid #c5cae9
+
+  .check
+    background-image: url('../../../assets/icons/issue/check.svg')
+    background-position: center
+    background-repeat: no-repeat
+    height: 16px
+    margin-right: 8px
+    opacity: 0
+    width: 16px
+
+    &.checked
+      opacity: 100
+
+  .color
+    height: 14px
+    width: 14px
+    border-radius: 7px
+    margin-right: 8px
+
+  .name
+    font-size: 14px
+    font-weight: 500
 </style>

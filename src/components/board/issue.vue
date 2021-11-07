@@ -10,6 +10,7 @@
       :style="{ 'left': rectLeft, 'top': rectTop }"
       :issueId='id'
       :assignees='sortedAssignees'
+      :labels='labels'
       :repositoryFullName='repositoryFullName'
       :columnId='columnId'
     />
