@@ -47,10 +47,10 @@
         </div>
       </Select>
     </div>
-    <div class='button'>
+    <!--div class='button'>
       Color
       <span class='gear' />
-    </div>
+    </div-->
   </div>
 </template>
 
