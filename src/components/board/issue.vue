@@ -5,9 +5,12 @@
     @dragenter='dragenter'
     :transferData="{ type: 'issue', enterColumnIndex: columnIndex }"
   >
+    <OnlineEdit v-if='isOverlay' :style="{ 'left': rectLeft, 'top': rectTop }" />
     <div v-if='isOverlay' class='overlay' @click.self='onOverlay' />
+
     <AppDrag
       class='issue'
+      ref='issue'
       :class="{
         'read-only': isReadOnly,
         'selected': isSelected,
@@ -93,10 +96,11 @@
 import AppDrag from '@/components/app_drag';
 import AppDrop from '@/components/app_drop';
 import Avatar from '@/components/avatar';
-import Label from '@/components/board/label';
 import ButtonIcon from '@/components/buttons/icon';
-import Progress from '@/components/board/issues/progress';
 import FastButton from '@/components/board/issues/fast_button';
+import Label from '@/components/board/label';
+import OnlineEdit from '@/components/board/issues/online_edit';
+import Progress from '@/components/board/issues/progress';
 import movingIssuesAndColumns from '@/mixins/moving_issues_and_columns';
 import { get, call } from 'vuex-pathify';
 
@@ -107,6 +111,7 @@ export default {
     AppDrop,
     Avatar,
     ButtonIcon,
+    OnlineEdit,
     FastButton,
     Label,
     Progress
@@ -134,7 +139,9 @@ export default {
   data: () => ({
     isCloseSubmitting: false,
     isArchiveSubmitting: false,
-    isOverlay: false
+    isOverlay: false,
+    rectLeft: undefined,
+    rectTop: undefined
   }),
   computed: {
     ...get([
@@ -202,11 +209,10 @@ export default {
     },
     onEdit() {
       this.isOverlay = true;
-      console.log('edit');
+      this.rectTop = `${this.$refs.issue.$el.offsetTop}px`;
+      this.rectLeft = `${this.$refs.issue.$el.offsetWidth}px`;
     },
-    onOverlay() {
-      this.isOverlay = false;
-    }
+    onOverlay() { this.isOverlay = false; }
   }
 }
 </script>
@@ -216,7 +222,7 @@ export default {
   padding-bottom: 7px // (+1px from issue boarder)
 
 .issue
-  background-color: #fff
+  background-color: #FFF
   border-radius: 4px
   border: 1px solid #E8EAF6
   cursor: pointer
