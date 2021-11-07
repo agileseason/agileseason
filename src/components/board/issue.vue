@@ -5,9 +5,14 @@
     @dragenter='dragenter'
     :transferData="{ type: 'issue', enterColumnIndex: columnIndex }"
   >
+    <div v-if='isOverlay' class='overlay' @click.self='onOverlay' />
     <AppDrag
       class='issue'
-      :class="{ 'read-only': isReadOnly, 'selected': isSelected }"
+      :class="{
+        'read-only': isReadOnly,
+        'selected': isSelected,
+        'editing': isOverlay
+      }"
       :style='colorStyles'
       :transferData="{
         type: 'issue',
@@ -17,9 +22,15 @@
       :is-read-only='isReadOnly'
       @click='goToIssue'
     >
-      <ButtonIcon class='edit' name='edit' @click.stop='onEdit' />
+      <ButtonIcon
+        v-if='!isOverlay && !isReadOnly'
+        class='edit'
+        name='edit'
+        @click.stop='onEdit'
+      />
+
       <div class='title'>{{ title }}</div>
-      <span v-if='isReadOnly' class='url'>
+      <span v-if='isReadOnly || isOverlay' class='url'>
         <span class='number'>#{{ number }}</span>
         {{ repositoryName }}
       </span>
@@ -47,14 +58,14 @@
           <div v-if='isActionVisible' class='actions'>
             <span v-if='isClosed' class='closed'>Closed</span>
             <FastButton
-              v-if='!isClosed'
+              v-if='!isClosed && !isReadOnly'
               name='Close'
               icon='close'
               @click.stop='close'
               :is-submitting='isCloseSubmitting'
             />
             <FastButton
-              v-if='isClosed'
+              v-if='isClosed && !isReadOnly && !isOverlay'
               name='Archive'
               icon='archive'
               @click.stop='archive'
@@ -122,7 +133,8 @@ export default {
   mixins: [movingIssuesAndColumns],
   data: () => ({
     isCloseSubmitting: false,
-    isArchiveSubmitting: false
+    isArchiveSubmitting: false,
+    isOverlay: false
   }),
   computed: {
     ...get([
@@ -130,7 +142,6 @@ export default {
     ]),
     isLabels() { return this.labels.length > 0; },
     isActionVisible() {
-      if (this.isReadOnly) { return false; }
       return this.isClosed || this.isLastColumn;
     },
     isAssignedOrExtra() {
@@ -159,6 +170,7 @@ export default {
     ]),
     goToIssue() {
       if (this.isReadOnly) { return; }
+      if (this.isOverlay) { return; }
 
       this.setCurrentIssue({ issue: this });
       this.$router.push({
@@ -189,7 +201,11 @@ export default {
       this.isArchiveSubmitting = false;
     },
     onEdit() {
+      this.isOverlay = true;
       console.log('edit');
+    },
+    onOverlay() {
+      this.isOverlay = false;
     }
   }
 }
@@ -209,6 +225,7 @@ export default {
   z-index: 2
 
   &:not(.read-only)
+  &:not(.editing)
     cursor: pointer
 
   &.selected
@@ -218,10 +235,13 @@ export default {
     .edit
       display: block
 
+  &.editing
+    z-index: 4
+
   .edit
     display: none
     background-color: #E8EAF6
-    border-radius: 2px
+    border-radius: 3px
     position: absolute
     top: 2px
     right: 2px
@@ -320,4 +340,13 @@ export default {
 
   .progress-container
     margin: 6px -10px -8px -10px
+
+.overlay
+  background: rgba(0, 0, 0, 0.3)
+  height: 100vh
+  left: 0
+  position: fixed
+  top: 0
+  width: 100vw
+  z-index: 3
 </style>
