@@ -65,7 +65,6 @@ export default {
   data: () => ({
     isSelectOpen: false,
     isLoading: true,
-    isLoaded: false,
     githubLabels: []
   }),
   computed: {
@@ -78,7 +77,6 @@ export default {
       if (newValue === oldValue) { return; }
       this.githubLabels = [];
       this.isLoading = true;
-      this.isLoaded = false;
     }
   },
   methods: {
@@ -95,7 +93,7 @@ export default {
       if (this.isReadonly) { return; }
 
       this.isSelectOpen = !this.isSelectOpen;
-      if (this.isSelectOpen && !this.isLoaded) {
+      if (this.isSelectOpen && this.githubLabels.length === 0) {
         this.isLoading = true;
         const fetchLabels = await this.fetchLabels({
           repositoryFullName: this.repositoryFullName
@@ -121,7 +119,7 @@ export default {
 
 .select-labels
   position: absolute
-  top: 20px
+  top: 28px
   width: 220px
   z-index: 2
 

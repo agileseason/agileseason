@@ -121,7 +121,7 @@ export default {
 
 .select-colors
   position: absolute
-  top: 20px
+  top: 28px
   width: 220px
   z-index: 2
 
