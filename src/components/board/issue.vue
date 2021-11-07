@@ -219,14 +219,15 @@ export default {
   background-color: #fff
   border-radius: 4px
   border: 1px solid #E8EAF6
+  cursor: pointer
   overflow: hidden
   padding: 8px
   position: relative
   z-index: 2
 
-  &:not(.read-only)
-  &:not(.editing)
-    cursor: pointer
+  &.read-only,
+  &.editing
+    cursor: default
 
   &.selected
     border: 1px solid #7986CB
