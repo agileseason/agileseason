@@ -5,7 +5,14 @@
     @dragenter='dragenter'
     :transferData="{ type: 'issue', enterColumnIndex: columnIndex }"
   >
-    <OnlineEdit v-if='isOverlay' :style="{ 'left': rectLeft, 'top': rectTop }" />
+    <OnlineEdit
+      v-if='isOverlay'
+      :style="{ 'left': rectLeft, 'top': rectTop }"
+      :issueId='id'
+      :assignees='sortedAssignees'
+      :repositoryFullName='repositoryFullName'
+      :columnId='columnId'
+    />
     <div v-if='isOverlay' class='overlay' @click.self='onOverlay' />
 
     <AppDrag
@@ -123,6 +130,7 @@ export default {
     title: { type: String, required: true },
     url: { type: String, required: true },
     repositoryName: { type: String, required: true },
+    repositoryFullName: { type: String, required: true },
     labels: { type: Array, required: true },
     assignees: { type: Array, required: true },
     isClosed: { type: Boolean, required: true },
