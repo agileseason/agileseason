@@ -15,7 +15,7 @@
             v-for='user in assignableUsers'
             class='assignable-user'
             :key='user.login'
-            @click='assign(user)'
+            @click='toggleAssign(user)'
           >
             <span class='check' :class="{ checked: isAssigned(user) }" />
             <img class='avatar' :src='user.avatarUrl' />
@@ -38,7 +38,7 @@
             v-for='label in githubLabels'
             class='github-label'
             :key='label.id'
-            @click='toggle(label)'
+            @click='toggleLabel(label)'
           >
             <span class='check' :class="{ checked: isApplied(label) }" />
             <span class='color' :style='colorStyles(label)' />
@@ -103,7 +103,7 @@ export default {
     isAssigned({ login }) {
       return this.assignees.findIndex(v => v.login === login) >= 0;
     },
-    async assign(user) {
+    async toggleAssign(user) {
       if (this.isSubmitting) { return; }
       if (this.assignees.length > 10) { return; }
       this.isSubmitting = true;
@@ -118,8 +118,8 @@ export default {
       }
       await this.updateIssue({
         id: this.issueId,
-        assignees,
-        columnId: this.columnId
+        columnId: this.columnId,
+        assignees
       });
       this.isSubmitting = false;
     },
@@ -143,6 +143,24 @@ export default {
     colorStyles({ color }) {
       return `background-color: #${color}`;
     },
+    async toggleLabel(label) {
+      if (this.isSubmitting) { return; }
+
+      this.isSubmitting = true;
+      const labelIndex = this.labels.findIndex(v => v.name === label.name);
+      let labels = [...this.labels];
+      if (labelIndex === -1) {
+        labels.push(label);
+      } else {
+        labels.splice(labelIndex, 1);
+      }
+      await this.updateIssue({
+        id: this.issueId,
+        columnId: this.columnId,
+        labels
+      });
+      this.isSubmitting = false;
+    }
   }
 }
 </script>
