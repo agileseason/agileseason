@@ -111,6 +111,7 @@ import Label from '@/components/board/label';
 import OnlineEdit from '@/components/board/issues/online_edit';
 import Progress from '@/components/board/issues/progress';
 import movingIssuesAndColumns from '@/mixins/moving_issues_and_columns';
+import { issueColorStyles } from '@/utils/colors';
 import { get, call } from 'vuex-pathify';
 
 export default {
@@ -167,12 +168,7 @@ export default {
         this.assignees.length > 0 ||
         this.commentsCount > 0;
     },
-    colorStyles() {
-      if (this.color == null) { return; }
-      if (this.color == 'ffffff') { return; }
-
-      return `background-color: #${this.color}`;
-    },
+    colorStyles() { return issueColorStyles(this.color); },
     sortedAssignees() {
       return [...this.assignees].sort((a, b) => (a.login > b.login) ? 1 : -1);
     },
@@ -234,7 +230,6 @@ export default {
 .issue
   background-color: #FFF
   border-radius: 4px
-  border: 1px solid #E8EAF6
   cursor: pointer
   overflow: hidden
   padding: 8px

@@ -26,9 +26,17 @@ export const COLORS = [
 export const DEFAULT_COLOR = 'ffffff';
 
 export function colorStyles({ markerColor, border }) {
-  return `background-color: #${markerColor}; border-color: #${border}`;
+  return `background-color: #${markerColor}; border-color: #${border};`;
 }
 
 export function labelColorStyles({ color }) {
-  return `background-color: #${color}`;
+  return `background-color: #${color};`;
+}
+
+export function issueColorStyles(color) {
+  if (color == null || color === DEFAULT_COLOR) {
+    return `1px solid #E8EAF6;`;
+  }
+
+  return `background-color: #${color}; 1px solid #${color};`;
 }
