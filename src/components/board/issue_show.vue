@@ -185,11 +185,11 @@ import Markdown from '@/utils/markdown';
 import MarkdownEditor from '@/components/board/issues/markdown_editor'
 import Title from '@/components/board/issues/title';
 import readonlyByAssignableUsers from '@/mixins/readonly_by_assignable_users';
+import { DEFAULT_COLOR } from '@/utils/colors';
 import { hexRgb } from '@/utils/wcag_contrast';
 import { GlobalEvents } from 'vue-global-events';
 import { get, call } from 'vuex-pathify';
 
-const DEFAULT_COLOR = 'ffffff';
 
 export default {
   components: {
@@ -395,9 +395,7 @@ export default {
       this.isSubmitting = true;
       let newColor = null;
       if (this.color == null) {
-        if (color !== DEFAULT_COLOR) {
-          newColor = color;
-        }
+        if (color !== DEFAULT_COLOR) { newColor = color; }
       } else {
         if (this.color === color) {
           newColor = DEFAULT_COLOR;

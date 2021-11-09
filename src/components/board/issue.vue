@@ -6,15 +6,16 @@
     :transferData="{ type: 'issue', enterColumnIndex: columnIndex }"
   >
     <OnlineEdit
-      v-if='isOverlay'
+      v-if='isEditing'
       :style="{ 'left': rectLeft, 'top': rectTop }"
       :issueId='id'
       :assignees='sortedAssignees'
       :labels='labels'
       :repositoryFullName='repositoryFullName'
+      :color='color'
       :columnId='columnId'
     />
-    <div v-if='isOverlay' class='overlay' @click.self='onOverlay' />
+    <div v-if='isEditing' class='overlay' @click.self='onOverlay' />
 
     <AppDrag
       class='issue'
@@ -22,7 +23,7 @@
       :class="{
         'read-only': isReadOnly,
         'selected': isSelected,
-        'editing': isOverlay
+        'editing': isEditing
       }"
       :style='colorStyles'
       :transferData="{
@@ -34,14 +35,14 @@
       @click='goToIssue'
     >
       <ButtonIcon
-        v-if='!isOverlay && !isReadOnly'
+        v-if='!isEditing && !isReadOnly'
         class='edit'
         name='edit'
         @click.stop='onEdit'
       />
 
       <div class='title'>{{ title }}</div>
-      <span v-if='isReadOnly || isOverlay' class='url'>
+      <span v-if='isReadOnly || isEditing' class='url'>
         <span class='number'>#{{ number }}</span>
         {{ repositoryName }}
       </span>
@@ -76,7 +77,7 @@
               :is-submitting='isCloseSubmitting'
             />
             <FastButton
-              v-if='isClosed && !isReadOnly && !isOverlay'
+              v-if='isClosed && !isReadOnly && !isEditing'
               name='Archive'
               icon='archive'
               @click.stop='archive'
@@ -148,7 +149,7 @@ export default {
   data: () => ({
     isCloseSubmitting: false,
     isArchiveSubmitting: false,
-    isOverlay: false,
+    isEditing: false,
     rectLeft: undefined,
     rectTop: undefined
   }),
@@ -186,7 +187,7 @@ export default {
     ]),
     goToIssue() {
       if (this.isReadOnly) { return; }
-      if (this.isOverlay) { return; }
+      if (this.isEditing) { return; }
 
       this.setCurrentIssue({ issue: this });
       this.$router.push({
@@ -217,11 +218,11 @@ export default {
       this.isArchiveSubmitting = false;
     },
     onEdit() {
-      this.isOverlay = true;
+      this.isEditing = true;
       this.rectTop = `${this.$refs.issue.$el.offsetTop}px`;
       this.rectLeft = `${this.$refs.issue.$el.offsetWidth}px`;
     },
-    onOverlay() { this.isOverlay = false; }
+    onOverlay() { this.isEditing = false; }
   }
 }
 </script>

@@ -47,6 +47,7 @@ import ButtonIcon from '@/components/buttons/icon'
 import Label from '@/components/board/label'
 import Loader from '@/components/loader';
 import Select from '@/components/select';
+import { labelColorStyles } from '@/utils/colors';
 import { call } from 'vuex-pathify';
 
 export default {
@@ -86,9 +87,7 @@ export default {
     isApplied({ name }) {
       return this.labels.findIndex(v => v.name === name) >= 0;
     },
-    colorStyles({ color }) {
-      return `background-color: #${color}`;
-    },
+    colorStyles(label) { return labelColorStyles(label); },
     async toggleLabels() {
       if (this.isReadonly) { return; }
 

@@ -40,23 +40,42 @@
             :key='label.id'
             @click='toggleLabel(label)'
           >
-            <span class='check' :class="{ checked: isApplied(label) }" />
-            <span class='color' :style='colorStyles(label)' />
+            <span class='check' :class="{ checked: isLabelApplied(label) }" />
+            <span class='color' :style='labelColorStyles(label)' />
             <span class='name'>{{ label.name }}</span>
           </div>
         </div>
       </Select>
     </div>
-    <!--div class='button'>
+    <div class='button' @click='toggleColors'>
       Color
       <span class='gear' />
-    </div-->
+      <Select
+        v-if='isSelectOpen'
+        title='Set color'
+        class='select-colors'
+      >
+        <div class='body-colors'>
+          <div
+            v-for='(color, $index) in availableColors'
+            :key='$index'
+            class='available-color'
+            @click='toggleColor(color)'
+          >
+            <span class='check' :class="{ checked: isColorApplied(color) }" />
+            <span class='color' :style='colorStyles(color)' />
+            <span class='name'>{{ color.name }}</span>
+          </div>
+        </div>
+      </Select>
+    </div>
   </div>
 </template>
 
 <script>
 import Loader from '@/components/loader';
 import Select from '@/components/select';
+import { COLORS, DEFAULT_COLOR, colorStyles, labelColorStyles } from '@/utils/colors';
 import { call } from 'vuex-pathify';
 
 export default {
@@ -70,14 +89,17 @@ export default {
     repositoryFullName: { type: String, required: true },
     assignees: { type: Array, required: true },
     labels: { type: Array, required: true },
+    color: { type: String, required: false, default: null },
   },
   data: () => ({
     isAssigneesSelectOpen: false,
     isLabelsSelectOpen: false,
+    isSelectOpen: false,
     isLoading: false,
     isSubmitting: false,
     assignableUsers: [],
-    githubLabels: []
+    githubLabels: [],
+    availableColors: COLORS
   }),
   computed: {},
   methods: {
@@ -137,12 +159,10 @@ export default {
         this.isLoading = false;
       }
     },
-    isApplied({ name }) {
+    isLabelApplied({ name }) {
       return this.labels.findIndex(v => v.name === name) >= 0;
     },
-    colorStyles({ color }) {
-      return `background-color: #${color}`;
-    },
+    labelColorStyles(label) { return labelColorStyles(label); },
     async toggleLabel(label) {
       if (this.isSubmitting) { return; }
 
@@ -159,6 +179,36 @@ export default {
         columnId: this.columnId,
         labels
       });
+      this.isSubmitting = false;
+    },
+    colorStyles(color) { return colorStyles(color); },
+    toggleColors() {
+      this.isSelectOpen = !this.isSelectOpen;
+    },
+    isColorApplied({ color }) {
+      return color === this.color;
+    },
+    async toggleColor({ color }) {
+      if (this.isSubmitting) { return; }
+
+      this.isSubmitting = true;
+      let newColor = null;
+      if (this.color == null) {
+        if (color !== DEFAULT_COLOR) { newColor = color; }
+      } else {
+        if (this.color === color) {
+          newColor = DEFAULT_COLOR;
+        } else {
+          newColor = color;
+        }
+      }
+      if (newColor != null) {
+        await this.updateIssue({
+          id: this.issueId,
+          color: newColor,
+          columnId: this.columnId
+        });
+      }
       this.isSubmitting = false;
     }
   }
@@ -201,7 +251,8 @@ export default {
       width: 12px
 
 .select-assignees,
-.select-labels
+.select-labels,
+.select-colors
   position: absolute
   top: 34px
   left: 0
@@ -210,6 +261,8 @@ export default {
 
 .select-labels
   top: 72px
+.select-colors
+  top: 110px
 
 // TODO: Extract assignable-user select - /components/board/issues/assignees
 .assignable-user
@@ -288,6 +341,46 @@ export default {
     width: 14px
     border-radius: 7px
     margin-right: 8px
+
+  .name
+    font-size: 14px
+    font-weight: 500
+
+// TODO: Extract select-colors select - /components/board/issues/colors
+.available-color
+  display: flex
+  align-items: center
+  padding: 8px
+  cursor: pointer
+
+  &:hover
+    background-color: rgba(197, 202, 233, 0.8) // #c5cae9
+
+  &:active
+    background-color: rgba(197, 202, 233, 0.6) // #c5cae9
+
+  &:not(:last-child)
+    border-bottom: 1px solid #c5cae9
+
+  .check
+    background-image: url('../../../assets/icons/issue/check.svg')
+    background-position: center
+    background-repeat: no-repeat
+    height: 16px
+    margin-right: 8px
+    opacity: 0
+    width: 16px
+
+    &.checked
+      opacity: 100
+
+  .color
+    height: 14px
+    width: 14px
+    border-radius: 7px
+    margin-right: 8px
+    border: 1px solid
+    box-sizing: border-box
 
   .name
     font-size: 14px
