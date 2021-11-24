@@ -230,9 +230,10 @@ export default {
 .issue
   background-color: #FFF
   border-radius: 4px
+  border: 1px solid transparent
   cursor: pointer
   overflow: hidden
-  padding: 8px
+  padding: 6px
   position: relative
   z-index: 2
 
@@ -351,7 +352,7 @@ export default {
       width: 130px
 
   .progress-container
-    margin: 6px -10px -8px -10px
+    margin: 6px -6px -6px -6px
 
 .overlay
   background: rgba(0, 0, 0, 0.3)
