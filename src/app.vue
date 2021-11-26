@@ -55,6 +55,34 @@ a {
   padding: 0 1em;
 }
 
+.markdown-body code {
+  padding: 0.2em 0.4em;
+  font-size: 90%;
+  background-color: #e8eaf6;
+  border-radius: 6px
+}
+
+.markdown-body table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.markdown-body table th {
+  background-color: #e8eaf6;
+  color: #283593;
+  font-weight: 500;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #c5cae9;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: rgba(232, 234, 246, 0.5);
+}
+
 .markdown-body a {
   color: #2196f3;
 }
