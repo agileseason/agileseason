@@ -56,7 +56,7 @@ a {
 }
 
 .markdown-body code {
-  padding: 0.2em 0.4em;
+  padding: 0.16em 0.4em;
   font-size: 90%;
   background-color: #e8eaf6;
   border-radius: 6px
