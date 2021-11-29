@@ -533,6 +533,7 @@ export default {
             position
             url
             repositoryName
+            repositoryFullName
             isClosed
             isArchived
             createdAt
