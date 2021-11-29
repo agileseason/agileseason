@@ -350,6 +350,11 @@ export default {
     font-size: 14px
     font-weight: 500
 
+// NOTE: Duplicate board/issue/colors
+.body-colors
+  overflow-y: scroll
+  max-height: calc(100vh - 400px)
+
 // TODO: Extract select-colors select - /components/board/issues/colors
 .available-color
   display: flex

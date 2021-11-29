@@ -215,7 +215,9 @@ export default {
     },
     onEdit() {
       this.isEditing = true;
-      this.rectTop = `${this.$refs.issue.$el.offsetTop}px`;
+      const columnEl = window.document.getElementById(`column-body-${this.columnId}`);
+      const offsetScroll = columnEl.scrollTop;
+      this.rectTop = `${this.$refs.issue.$el.offsetTop - offsetScroll}px`;
       this.rectLeft = `${this.$refs.issue.$el.offsetWidth}px`;
     },
     onOverlay() { this.isEditing = false; }

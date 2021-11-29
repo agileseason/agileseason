@@ -85,6 +85,7 @@
       </div>
       <div
         class='body'
+        :id='columnBodyId'
         :class="{ 'droppable': isDroppable }"
       >
         <Issue
@@ -148,6 +149,7 @@ export default {
   computed: {
     dragenterColumnId: get('board/dragenterColumnId'),
     isBoardOwner: get('board/isOwner'),
+    columnBodyId() { return `column-body-${this.id}`; },
     issuesCount() { return this.notArchivedIssues.length; },
     notArchivedIssues() { return this.issues.filter(issue => !issue.isArchived); },
     isAnySelectsOpen() { return this.isSettingsOpen; },
