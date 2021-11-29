@@ -51,7 +51,7 @@
       Color
       <span class='gear' />
       <Select
-        v-if='isSelectOpen'
+        v-if='isColorSelectOpen'
         title='Set color'
         class='select-colors'
       >
@@ -94,7 +94,7 @@ export default {
   data: () => ({
     isAssigneesSelectOpen: false,
     isLabelsSelectOpen: false,
-    isSelectOpen: false,
+    isColorSelectOpen: false,
     isLoading: false,
     isSubmitting: false,
     assignableUsers: [],
@@ -112,6 +112,7 @@ export default {
       if (this.isLoading) { return; }
 
       this.isLabelsSelectOpen = false;
+      this.isColorSelectOpen = false;
       this.isAssigneesSelectOpen = !this.isAssigneesSelectOpen;
       if (this.isAssigneesSelectOpen && this.assignableUsers.length === 0) {
         this.isLoading = true;
@@ -149,6 +150,7 @@ export default {
       if (this.isLoading) { return; }
 
       this.isAssigneesSelectOpen = false;
+      this.isColorSelectOpen = false;
       this.isLabelsSelectOpen = !this.isLabelsSelectOpen;
       if (this.isLabelsSelectOpen && this.githubLabels.length === 0) {
         this.isLoading = true;
@@ -183,7 +185,9 @@ export default {
     },
     colorStyles(color) { return colorStyles(color); },
     toggleColors() {
-      this.isSelectOpen = !this.isSelectOpen;
+      this.isAssigneesSelectOpen = false;
+      this.isLabelsSelectOpen = false;
+      this.isColorSelectOpen = !this.isColorSelectOpen;
     },
     isColorApplied({ color }) {
       return color === this.color;
