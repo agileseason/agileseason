@@ -9,6 +9,9 @@
       v-if='isEditing'
       :style="{ 'left': rectLeft, 'top': rectTop }"
       :issueId='id'
+      :url='url'
+      :number='number'
+      :title='title'
       :assignees='sortedAssignees'
       :labels='labels'
       :repositoryFullName='repositoryFullName'

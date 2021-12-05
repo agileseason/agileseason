@@ -69,6 +69,20 @@
         </div>
       </Select>
     </div>
+    <div class='button' @click='onCopyLink'>
+      <div class='button-inner'>
+        <span class='copy' />
+        &nbsp;GitHub link
+      </div>
+      <span class='note'>copy</span>
+    </div>
+    <div class='button' @click='onCopyTitle'>
+      <div class='button-inner'>
+        <span class='copy' />
+        &nbsp;Title
+      </div>
+      <span class='note'>copy</span>
+    </div>
   </div>
 </template>
 
@@ -86,6 +100,9 @@ export default {
   props: {
     issueId: { type: Number, required: true },
     columnId: { type: Number, required: true },
+    url: { type: String, required: true },
+    number: { type: Number, required: true },
+    title: { type: String, required: true },
     repositoryFullName: { type: String, required: true },
     assignees: { type: Array, required: true },
     labels: { type: Array, required: true },
@@ -214,6 +231,12 @@ export default {
         });
       }
       this.isSubmitting = false;
+    },
+    onCopyLink() {
+      navigator.clipboard.writeText(this.url);
+    },
+    onCopyTitle() {
+      navigator.clipboard.writeText(`${this.title} #${this.number}`);
     }
   }
 }
@@ -244,15 +267,39 @@ export default {
     &:hover
       background-color: #E8EAF6
 
+      .note
+        display: inline
+
     &:active
       background-color: #fff
 
-    .gear
-      background-image: url('../../../assets/icons/issue/gear.svg')
+      .note
+        display: none
+
+    span.prefix
+      font-weight: 200
+
+    .gear,
+    .copy
       background-position: center
       background-repeat: no-repeat
       height: 12px
       width: 12px
+    .gear
+      background-image: url('../../../assets/icons/issue/gear.svg')
+    .copy
+      background-image: url('../../../assets/icons/issue/copy.svg')
+
+    .button-inner
+      align-items: center
+      display: flex
+      justify-content: flex-start
+
+    .note
+      opacity: 0.6
+      font-weight: 200
+      margin-left: 6px
+      display: none
 
 .select-assignees,
 .select-labels,
