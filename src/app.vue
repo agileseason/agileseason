@@ -62,7 +62,7 @@ a {
 }
 
 .markdown-body code {
-  padding: 0.2em 0.4em;
+  padding: 2px 6px;
   background-color: #e8eaf6;
   border-radius: 6px
 }
