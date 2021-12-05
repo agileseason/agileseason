@@ -55,11 +55,20 @@ a {
   padding: 0 1em;
 }
 
-.markdown-body code {
-  padding: 0.16em 0.4em;
-  font-size: 90%;
+.markdown-body pre {
+  padding: 8px 12px;
   background-color: #e8eaf6;
   border-radius: 6px
+}
+
+.markdown-body code {
+  padding: 0.2em 0.4em;
+  background-color: #e8eaf6;
+  border-radius: 6px
+}
+
+.markdown-body pre code {
+  padding: 0;
 }
 
 .markdown-body table {
