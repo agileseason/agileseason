@@ -69,17 +69,24 @@
         </div>
       </Select>
     </div>
-    <div class='button' @click='onCopyLink'>
-      <div class='button-inner'>
-        <span class='copy' />
-        &nbsp;GitHub link
-      </div>
-      <span class='note'>copy</span>
-    </div>
     <div class='button' @click='onCopyTitle'>
       <div class='button-inner'>
         <span class='copy' />
         &nbsp;Title
+      </div>
+      <span class='note'>copy</span>
+    </div>
+    <div class='button' @click='onCopyUrl'>
+      <div class='button-inner'>
+        <span class='copy' />
+        &nbsp;Card link
+      </div>
+      <span class='note'>copy</span>
+    </div>
+    <div class='button' @click='onCopyGithubUrl'>
+      <div class='button-inner'>
+        <span class='copy' />
+        &nbsp;GitHub link
       </div>
       <span class='note'>copy</span>
     </div>
@@ -232,11 +239,15 @@ export default {
       }
       this.isSubmitting = false;
     },
-    onCopyLink() {
-      navigator.clipboard.writeText(this.url);
-    },
     onCopyTitle() {
       navigator.clipboard.writeText(`${this.title} #${this.number}`);
+    },
+    onCopyUrl() {
+      const url = `${window.location.origin}/#${this.$route.fullPath}/issues/${this.issueId}/number/${this.number}`;
+      navigator.clipboard.writeText(url);
+    },
+    onCopyGithubUrl() {
+      navigator.clipboard.writeText(this.url);
     }
   }
 }
