@@ -24,6 +24,15 @@
         </div>
       </Select>
     </div>
+
+    <div v-if='isSelfAssignVisible' class='button' @click='onSelfAssign'>
+      <div class='button-inner'>
+        <span class='person' />
+        &nbsp;Assign your self
+      </div>
+      <!--span class='note'>{{ currentUserName }}</span-->
+    </div>
+
     <div class='button' @click='toggleLabels'>
       Labels
       <span class='gear' />
@@ -47,6 +56,7 @@
         </div>
       </Select>
     </div>
+
     <div class='button' @click='toggleColors'>
       Color
       <span class='gear' />
@@ -69,6 +79,7 @@
         </div>
       </Select>
     </div>
+
     <div class='button' @click='onCopyTitle'>
       <div class='button-inner'>
         <span class='copy' />
@@ -97,7 +108,7 @@
 import Loader from '@/components/loader';
 import Select from '@/components/select';
 import { COLORS, DEFAULT_COLOR, colorStyles, labelColorStyles } from '@/utils/colors';
-import { call } from 'vuex-pathify';
+import { get, call } from 'vuex-pathify';
 
 export default {
   components: {
@@ -121,11 +132,19 @@ export default {
     isColorSelectOpen: false,
     isLoading: false,
     isSubmitting: false,
+    isSubmittingSelfAssign: false,
     assignableUsers: [],
     githubLabels: [],
     availableColors: COLORS
   }),
-  computed: {},
+  computed: {
+    currentUserName: get('user/username'),
+    currentAvatarUrl: get('user/avatarUrl'),
+    isSelfAssignVisible() {
+      if (this.isSubmittingSelfAssign) { return false; }
+      return this.assignees.length === 0;
+    },
+  },
   methods: {
     ...call([
       'board/fetchAssignableUsers',
@@ -239,6 +258,14 @@ export default {
       }
       this.isSubmitting = false;
     },
+    async onSelfAssign() {
+      this.isSubmittingSelfAssign = true;
+      await this.toggleAssign({
+        login: this.currentUserName,
+        avatarUrl: this.currentAvatarUrl
+      });
+      this.isSubmittingSelfAssign = false;
+    },
     onCopyTitle() {
       navigator.clipboard.writeText(`${this.title} #${this.number}`);
     },
@@ -291,15 +318,19 @@ export default {
       font-weight: 200
 
     .gear,
-    .copy
+    .copy,
+    .person
       background-position: center
       background-repeat: no-repeat
+      background-size: contain
       height: 12px
       width: 12px
     .gear
       background-image: url('../../../assets/icons/issue/gear.svg')
     .copy
       background-image: url('../../../assets/icons/issue/copy.svg')
+    .person
+      background-image: url('../../../assets/icons/issue/person.svg')
 
     .button-inner
       align-items: center

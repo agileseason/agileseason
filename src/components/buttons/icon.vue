@@ -36,6 +36,7 @@ export default {
     background-image: url('../../assets/icons/issue/x_close.svg')
 
   &.gear
+    background-size: contain
     background-image: url('../../assets/icons/issue/gear.svg')
 
   &.dots
