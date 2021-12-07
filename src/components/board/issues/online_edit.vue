@@ -30,7 +30,7 @@
         <span class='person' />
         &nbsp;Assign your self
       </div>
-      <!--span class='note'>{{ currentUserName }}</span-->
+      <span class='note'>apply</span>
     </div>
 
     <div class='button' @click='toggleLabels'>
