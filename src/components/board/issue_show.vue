@@ -2,7 +2,7 @@
   <GlobalEvents
     v-if='isLoaded'
     :filter="(event, handler, eventName) => event.target.tagName !== 'INPUT'"
-    @keyup.esc='close'
+    @keydown.esc='close'
   />
   <div v-if='isNotFound' class='issue'>
     <div class='issue-header'>
@@ -310,7 +310,13 @@ export default {
       'issue/fetchComments',
       'issue/createComment'
     ]),
-    close() { this.$emit('close'); },
+    close() {
+      if (this.isEditBody) {
+        this.isEditBody = false;
+      } else {
+        this.$emit('close');
+      }
+    },
     async fetchIssue() {
       await this.fetch({ id: this.id });
       this.newBody = this.fetchedIssue.body;

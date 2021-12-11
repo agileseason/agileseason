@@ -10,7 +10,7 @@
     <input
       type='text'
       v-model='newTitle'
-      @keyup.enter='save'
+      @keydown.enter='save'
       @keyup.esc='cancel'
       ref='title'
     />
