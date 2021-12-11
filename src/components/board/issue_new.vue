@@ -1,7 +1,7 @@
 <template>
   <GlobalEvents
     :filter="(event, handler, eventName) => event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA'"
-    @keyup.esc='close'
+    @keydown.esc='close'
   />
   <div class='issue'>
     <div class='issue-header' :style='headerBackgroundColor'>
@@ -22,8 +22,8 @@
           placeholder='Title'
           :disabled='isReadonly'
           ref='title'
-          @keyup.enter='submit'
-          @keyup.esc='close'
+          @keydown.enter='submit'
+          @keydown.esc='close'
         />
 
         <MarkdownEditor
@@ -31,6 +31,7 @@
           :assignable-users='assignableUsers'
           :disabled='isReadonly'
           class='body'
+          @submit='submit'
         />
 
         <div class='actions'>
