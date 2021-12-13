@@ -28,7 +28,7 @@
     <div v-if='isSelfAssignVisible' class='button' @click='onSelfAssign'>
       <div class='button-inner'>
         <span class='person' />
-        &nbsp;Assign your self
+        &nbsp;Assign yourself
       </div>
       <span class='note'>apply</span>
     </div>

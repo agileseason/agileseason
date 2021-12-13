@@ -35,7 +35,7 @@
     >
       None
       <span v-if='!isReadonly'>
-        — <b @click='selfAssign'>assign your self</b>
+        — <b @click='selfAssign'>assign yourself</b>
       </span>
     </div>
     <div
