@@ -308,7 +308,7 @@ export default {
     width: 220px
 
     &.mini
-      width: 190px
+      width: 180px
 
     &:not(.last-child)
       margin-bottom: 6px
