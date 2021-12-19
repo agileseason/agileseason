@@ -258,7 +258,7 @@ export default {
 
   .edit
     display: none
-    background-color: #E8EAF6
+    background-color: rgba(48, 63, 159, 0.1)
     border-radius: 3px
     position: absolute
     top: 2px
