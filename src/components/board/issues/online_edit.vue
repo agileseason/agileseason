@@ -1,36 +1,38 @@
 <template>
   <div class='online-edit'>
-    <div class='button' @click='toggleAssignees'>
-      Assigness
-      <span class='gear' />
+    <div class='button-grid'>
+      <div class='button' @click='toggleAssignees'>
+        Assigness
+        <span class='gear' />
 
-      <Select
-        v-if='isAssigneesSelectOpen'
-        title='Assign up to 10 people to this issue'
-        class='select-assignees'
-      >
-        <Loader v-if='isLoading' is-inline />
-        <div class='body-assignees' v-else>
-          <div
-            v-for='user in assignableUsers'
-            class='assignable-user'
-            :key='user.login'
-            @click='toggleAssign(user)'
-          >
-            <span class='check' :class="{ checked: isAssigned(user) }" />
-            <img class='avatar' :src='user.avatarUrl' />
-            <span class='login'>{{ user.login }}</span>
+        <Select
+          v-if='isAssigneesSelectOpen'
+          title='Assign up to 10 people to this issue'
+          class='select-assignees'
+        >
+          <Loader v-if='isLoading' is-inline />
+          <div class='body-assignees' v-else>
+            <div
+              v-for='user in assignableUsers'
+              class='assignable-user'
+              :key='user.login'
+              @click='toggleAssign(user)'
+            >
+              <span class='check' :class="{ checked: isAssigned(user) }" />
+              <img class='avatar' :src='user.avatarUrl' />
+              <span class='login'>{{ user.login }}</span>
+            </div>
           </div>
-        </div>
-      </Select>
-    </div>
-
-    <div v-if='isSelfAssignVisible' class='button' @click='onSelfAssign'>
-      <div class='button-inner'>
-        <span class='person' />
-        &nbsp;Assign yourself
+        </Select>
       </div>
-      <span class='note'>apply</span>
+
+      <div v-if='isSelfAssignVisible' class='button mini' @click='onSelfAssign'>
+        <div class='button-inner'>
+          <span class='person' />
+          &nbsp;Assign yourself
+        </div>
+        <span class='note'>apply</span>
+      </div>
     </div>
 
     <div class='button' @click='toggleLabels'>
@@ -286,6 +288,12 @@ export default {
   z-index: 4
   margin-left: 6px
 
+  .button-grid
+    display: flex
+
+    .button + .button
+      margin-left: 6px
+
   .button
     align-items: center
     background-color: #fff
@@ -298,6 +306,9 @@ export default {
     justify-content: space-between
     padding: 0 8px
     width: 220px
+
+    &.mini
+      width: 190px
 
     &:not(.last-child)
       margin-bottom: 6px
@@ -347,7 +358,7 @@ export default {
 .select-labels,
 .select-colors
   position: absolute
-  top: 34px
+  top: 36px
   left: 0
   width: 220px
   z-index: 2
@@ -355,7 +366,7 @@ export default {
 .select-labels
   top: 72px
 .select-colors
-  top: 110px
+  top: 108px
 
 // TODO: Extract assignable-user select - /components/board/issues/assignees
 .assignable-user
