@@ -1,7 +1,7 @@
 <template>
-  <div class='online-edit'>
+  <div class='online-edit' @click='close'>
     <div class='button-grid'>
-      <div class='button' @click='toggleAssignees'>
+      <div class='button' @click.stop='toggleAssignees'>
         Assigness
         <span class='gear' />
 
@@ -26,7 +26,7 @@
         </Select>
       </div>
 
-      <div v-if='isSelfAssignVisible' class='button mini' @click='onSelfAssign'>
+      <div v-if='isSelfAssignVisible' class='button mini' @click.stop='onSelfAssign'>
         <div class='button-inner'>
           <span class='person' />
           &nbsp;Assign yourself
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div class='button' @click='toggleLabels'>
+    <div class='button' @click.stop='toggleLabels'>
       Labels
       <span class='gear' />
       <Select
@@ -59,7 +59,7 @@
       </Select>
     </div>
 
-    <div class='button' @click='toggleColors'>
+    <div class='button' @click.stop='toggleColors'>
       Color
       <span class='gear' />
       <Select
@@ -82,21 +82,21 @@
       </Select>
     </div>
 
-    <div class='button' @click='onCopyTitle'>
+    <div class='button' @click.stop='onCopyTitle'>
       <div class='button-inner'>
         <span class='copy' />
         &nbsp;Title
       </div>
       <span class='note'>copy</span>
     </div>
-    <div class='button' @click='onCopyUrl'>
+    <div class='button' @click.stop='onCopyUrl'>
       <div class='button-inner'>
         <span class='copy' />
         &nbsp;Card link
       </div>
       <span class='note'>copy</span>
     </div>
-    <div class='button' @click='onCopyGithubUrl'>
+    <div class='button' @click.stop='onCopyGithubUrl'>
       <div class='button-inner'>
         <span class='copy' />
         &nbsp;GitHub link
@@ -277,7 +277,8 @@ export default {
     },
     onCopyGithubUrl() {
       navigator.clipboard.writeText(this.url);
-    }
+    },
+    close() { this.$emit('close'); }
   }
 }
 </script>

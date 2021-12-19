@@ -17,6 +17,7 @@
       :repositoryFullName='repositoryFullName'
       :color='color'
       :columnId='columnId'
+      @close='onOverlay'
     />
     <div v-if='isEditing' class='overlay' @click.self='onOverlay' />
 
