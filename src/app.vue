@@ -56,15 +56,16 @@ a {
 }
 
 .markdown-body pre {
-  padding: 8px 12px;
   background-color: #e8eaf6;
-  border-radius: 6px
+  border-radius: 6px;
+  overflow-x: auto;
+  padding: 8px 12px;
 }
 
 .markdown-body code {
-  padding: 2px 6px;
   background-color: #e8eaf6;
-  border-radius: 6px
+  border-radius: 6px;
+  padding: 2px 6px;
 }
 
 .markdown-body pre code {
