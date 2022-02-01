@@ -100,7 +100,9 @@
       </div>
       <div v-if='pullRequests.length > 0' class='pull-requests'>
         <div v-for='pr in pullRequests' class='pull-request' :key='pr.id'>
-          #{{ pr.number }}
+          <a :href=pr.url @click.stop='click'>
+            {{pr.repositoryName}}#{{ pr.number }}
+          </a>
         </div>
       </div>
       <div v-if='totalSubtasks > 0' class='progress-container'>
@@ -366,10 +368,17 @@ export default {
   .pull-requests
     border-top: 1px solid #E8EAF6
     margin: 4px -6px 0 -6px
-    padding: 4px 6px 0 6px
+    padding: 6px 6px 0 6px
     color: #757575
     font-size: 12px
     font-weight: 500
+
+    .pull-request
+      a
+        color: #757575
+
+        &:hover
+          color: #616161
 
   .progress-container
     margin: 6px -6px -6px -6px
