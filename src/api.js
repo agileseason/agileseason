@@ -177,6 +177,7 @@ export default {
               color
               totalSubtasks
               doneSubtasks
+              pullRequests { id number }
             }
           }
           repositories {
