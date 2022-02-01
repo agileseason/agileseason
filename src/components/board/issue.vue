@@ -69,9 +69,6 @@
             <div v-if='commentsCount > 0' class='extra-item comments-count'>
               {{ commentsCount }}
             </div>
-            <div v-for='pr in pullRequests' class='extra-item pull-request' :key='pr.id'>
-              #{{ pr.number }}
-            </div>
           </div>
 
           <div v-if='isActionVisible' class='actions'>
@@ -99,6 +96,11 @@
             v-bind='assignee'
             :key='$index'
           />
+        </div>
+      </div>
+      <div v-if='pullRequests.length > 0' class='pull-requests'>
+        <div v-for='pr in pullRequests' class='pull-request' :key='pr.id'>
+          #{{ pr.number }}
         </div>
       </div>
       <div v-if='totalSubtasks > 0' class='progress-container'>
@@ -174,8 +176,7 @@ export default {
       return this.isBody ||
         this.isActionVisible ||
         this.assignees.length > 0 ||
-        this.commentsCount > 0 ||
-        this.pullRequests.length > 0;
+        this.commentsCount > 0;
     },
     colorStyles() { return issueColorStyles(this.color); },
     sortedAssignees() {
@@ -328,11 +329,6 @@ export default {
             padding: 0 3px 0 21px
             line-height: 18px
 
-          &.pull-request
-            color: #78909C
-            font-size: 12px
-            line-height: 18px
-
       .actions
         display: flex
         margin-top: 8px
@@ -366,6 +362,14 @@ export default {
     .assigned
       text-align: right
       width: 130px
+
+  .pull-requests
+    border-top: 1px solid #E8EAF6
+    margin: 4px -6px 0 -6px
+    padding: 4px 6px 0 6px
+    color: #757575
+    font-size: 12px
+    font-weight: 500
 
   .progress-container
     margin: 6px -6px -6px -6px
