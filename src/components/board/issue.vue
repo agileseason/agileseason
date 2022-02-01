@@ -98,6 +98,18 @@
           />
         </div>
       </div>
+      <div v-if='pullRequests.length > 0' class='pull-requests'>
+        <div
+          v-for='pr in pullRequests'
+          class='pull-request'
+          :class='pullRequestState(pr)'
+          :key='pr.id'
+        >
+          <a :href=pr.url @click.stop='click'>
+            {{pr.repositoryName}}#{{ pr.number }}
+          </a>
+        </div>
+      </div>
       <div v-if='totalSubtasks > 0' class='progress-container'>
         <Progress :total='totalSubtasks' :done='doneSubtasks' />
       </div>
@@ -143,6 +155,7 @@ export default {
     isClosed: { type: Boolean, required: true },
     isBody: { type: Boolean, required: true },
     commentsCount: { type: Number, required: true },
+    pullRequests: { type: Array, required: true },
     color: { type: String, required: false, default: null },
     columnId: { type: Number, required: true },
     totalSubtasks: { type: Number, required: true },
@@ -195,6 +208,11 @@ export default {
         params: { issueId: this.id, issueNumber: this.number }
       });
     },
+    pullRequestState({ isClosed, isMerged }) {
+      if (isClosed && isMerged) { return 'merged'; }
+      if (isClosed) { return 'closed'; }
+      return 'open';
+    },
     async close() {
       if (this.isCloseSubmitting) { return; }
 
@@ -236,8 +254,8 @@ export default {
 .issue
   background-color: #FFF
   border-radius: 4px
-  border: 1px solid transparent
   cursor: pointer
+  margin: 1px // for border when issue is selected
   overflow: hidden
   padding: 6px
   position: relative
@@ -248,7 +266,7 @@ export default {
     cursor: default
 
   &.selected
-    border: 1px solid #7986CB
+    outline: 1px solid #7986CB
 
   &:hover
     .edit
@@ -356,6 +374,32 @@ export default {
     .assigned
       text-align: right
       width: 130px
+
+  .pull-requests
+    border-top: 1px solid #E8EAF6
+    margin: 4px -6px 0 -6px
+    padding: 6px 6px 0 6px
+    color: #757575
+    font-size: 12px
+    font-weight: 500
+
+    .pull-request
+      background-position: left
+      background-repeat: no-repeat
+      padding-left: 18px
+
+      &.open
+        background-image: url('../../assets/icons/issue/pr_open.svg')
+      &.closed
+        background-image: url('../../assets/icons/issue/pr_closed.svg')
+      &.merged
+        background-image: url('../../assets/icons/issue/pr_merged.svg')
+
+      a
+        color: #757575
+
+        &:hover
+          color: #616161
 
   .progress-container
     margin: 6px -6px -6px -6px

@@ -319,13 +319,13 @@ export default {
   background-color: #e8eaf6
   border-radius: 6px
   display: inline-block
-  margin-right: 7px // (+1px from issue boarder)
+  margin-right: 7px // (+1px from issue border)
   position: relative
   vertical-align: top
   width: 270px
 
   .header
-    margin-bottom: 8px
+    margin-bottom: 7px // 8px - 1px for issue border
 
     &:not(.read-only)
       // cursor: grab
