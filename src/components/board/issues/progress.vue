@@ -54,8 +54,8 @@ export default {
     z-index: 1
 
   .label
-    // color: #1a237e
-    color: rgba(0, 0, 0, 0.8)
+    color: #1a237e
+    // color: rgba(0, 0, 0, 0.8)
     font-size: 10px
     z-index: 2
 </style>
