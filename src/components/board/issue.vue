@@ -236,8 +236,8 @@ export default {
 .issue
   background-color: #FFF
   border-radius: 4px
-  border: 1px solid transparent
   cursor: pointer
+  margin: 1px // for border when issue is selected
   overflow: hidden
   padding: 6px
   position: relative
@@ -248,7 +248,7 @@ export default {
     cursor: default
 
   &.selected
-    border: 1px solid #7986CB
+    outline: 1px solid #7986CB
 
   &:hover
     .edit
