@@ -99,7 +99,12 @@
         </div>
       </div>
       <div v-if='pullRequests.length > 0' class='pull-requests'>
-        <div v-for='pr in pullRequests' class='pull-request' :key='pr.id'>
+        <div
+          v-for='pr in pullRequests'
+          class='pull-request'
+          :class='pullRequestState(pr)'
+          :key='pr.id'
+        >
           <a :href=pr.url @click.stop='click'>
             {{pr.repositoryName}}#{{ pr.number }}
           </a>
@@ -202,6 +207,11 @@ export default {
         name: 'issue',
         params: { issueId: this.id, issueNumber: this.number }
       });
+    },
+    pullRequestState({ isClosed, isMerged }) {
+      if (isClosed && isMerged) { return 'merged'; }
+      if (isClosed) { return 'closed'; }
+      return 'open';
     },
     async close() {
       if (this.isCloseSubmitting) { return; }
@@ -374,6 +384,17 @@ export default {
     font-weight: 500
 
     .pull-request
+      background-position: left
+      background-repeat: no-repeat
+      padding-left: 18px
+
+      &.open
+        background-image: url('../../assets/icons/issue/pr_open.svg')
+      &.closed
+        background-image: url('../../assets/icons/issue/pr_closed.svg')
+      &.merged
+        background-image: url('../../assets/icons/issue/pr_merged.svg')
+
       a
         color: #757575
 
