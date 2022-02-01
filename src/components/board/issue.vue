@@ -381,7 +381,6 @@ export default {
     padding: 6px 6px 0 6px
     color: #757575
     font-size: 12px
-    font-weight: 500
 
     .pull-request
       background-position: left
@@ -400,6 +399,9 @@ export default {
 
         &:hover
           color: #616161
+
+    .pull-request + .pull-request
+      margin-top: 4px
 
   .progress-container
     margin: 6px -6px -6px -6px
