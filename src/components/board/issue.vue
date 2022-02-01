@@ -377,7 +377,7 @@ export default {
 
   .pull-requests
     border-top: 1px solid rgba(0, 0, 0, 0.1)
-    margin: 4px -6px 0 -6px
+    margin: 6px -6px 0 -6px
     padding: 6px 6px 0 6px
     color: #757575
     font-size: 12px
