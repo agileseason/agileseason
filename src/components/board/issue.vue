@@ -69,6 +69,9 @@
             <div v-if='commentsCount > 0' class='extra-item comments-count'>
               {{ commentsCount }}
             </div>
+            <div v-for='pr in pullRequests' class='extra-item pull-request' :key='pr.id'>
+              #{{ pr.number }}
+            </div>
           </div>
 
           <div v-if='isActionVisible' class='actions'>
@@ -143,6 +146,7 @@ export default {
     isClosed: { type: Boolean, required: true },
     isBody: { type: Boolean, required: true },
     commentsCount: { type: Number, required: true },
+    pullRequests: { type: Array, required: true },
     color: { type: String, required: false, default: null },
     columnId: { type: Number, required: true },
     totalSubtasks: { type: Number, required: true },
@@ -170,7 +174,8 @@ export default {
       return this.isBody ||
         this.isActionVisible ||
         this.assignees.length > 0 ||
-        this.commentsCount > 0;
+        this.commentsCount > 0 ||
+        this.pullRequests.length > 0;
     },
     colorStyles() { return issueColorStyles(this.color); },
     sortedAssignees() {
@@ -321,6 +326,11 @@ export default {
             font-size: 10px
             font-weight: 600
             padding: 0 3px 0 21px
+            line-height: 18px
+
+          &.pull-request
+            color: #78909C
+            font-size: 12px
             line-height: 18px
 
       .actions

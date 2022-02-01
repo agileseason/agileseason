@@ -177,7 +177,7 @@ export default {
               color
               totalSubtasks
               doneSubtasks
-              pullRequests { id number }
+              pullRequests { id number isClosed isMerged url }
             }
           }
           repositories {
