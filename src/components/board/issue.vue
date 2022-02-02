@@ -108,6 +108,7 @@
           <a :href=pr.url @click.stop='click'>
             {{pr.repositoryName}}#{{ pr.number }}
           </a>
+          <Avatar is-small v-if='pr.assignee' v-bind='pr.assignee' />
         </div>
       </div>
       <div v-if='totalSubtasks > 0' class='progress-container'>
@@ -383,12 +384,13 @@ export default {
 
     .pull-request
       align-items: center
+      justify-content: space-between
       background-position: left
       background-repeat: no-repeat
       box-sizing: border-box
       display: flex
       height: 28px
-      margin-left: 6px
+      margin: 0 6px
       padding-left: 18px
 
       &.open
