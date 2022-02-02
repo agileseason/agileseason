@@ -389,8 +389,7 @@ export default {
       background-repeat: no-repeat
       box-sizing: border-box
       display: flex
-      height: 28px
-      margin: 0 6px
+      margin: 6px
       padding-left: 18px
 
       &.open
