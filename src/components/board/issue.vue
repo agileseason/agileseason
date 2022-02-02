@@ -105,7 +105,10 @@
           :class='pullRequestState(pr)'
           :key='pr.id'
         >
-          <a :href=pr.url @click.stop='click'>
+          <span v-if='isReadOnly' class='url'>
+            {{pr.repositoryName}}#{{ pr.number }}
+          </span>
+          <a v-else :href=pr.url @click.stop='click' class='url'>
             {{pr.repositoryName}}#{{ pr.number }}
           </a>
           <div v-if='pr.assignees.length > 0' class='assignees'>
@@ -304,11 +307,11 @@ export default {
     font-weight: 500
     line-height: 18px
     word-break: break-word
+    margin-bottom: 4px
 
   .url
     color: #757575
     display: inline-block
-    margin-top: 4px
 
     .number
       color: #616161
@@ -406,7 +409,7 @@ export default {
       &.merged
         background-image: url('../../assets/icons/issue/pr_merged.svg')
 
-      a
+      .url
         color: #757575
 
         &:hover
