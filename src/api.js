@@ -221,6 +221,10 @@ export default {
               color
               totalSubtasks
               doneSubtasks
+              pullRequests {
+                id number isClosed isMerged url repositoryName
+                assignees { login avatarUrl }
+              }
             }
           }
         }
