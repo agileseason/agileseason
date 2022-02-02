@@ -412,6 +412,7 @@ export default {
       .url
         color: #757575
 
+      a.url // avoid hover in shared mode for span.url
         &:hover
           color: #616161
 
