@@ -377,14 +377,18 @@ export default {
 
   .pull-requests
     border-top: 1px solid rgba(0, 0, 0, 0.1)
-    margin: 6px -6px 0 -6px
-    padding: 6px 6px 0 6px
     color: #757575
     font-size: 12px
+    margin: 6px -6px 0 -6px
 
     .pull-request
+      align-items: center
       background-position: left
       background-repeat: no-repeat
+      box-sizing: border-box
+      display: flex
+      height: 28px
+      margin-left: 6px
       padding-left: 18px
 
       &.open
@@ -403,8 +407,11 @@ export default {
     .pull-request + .pull-request
       margin-top: 4px
 
+  .assigned-or-extra + .progress-container
+    margin-top: 6px
+
   .progress-container
-    margin: 6px -6px -6px -6px
+    margin: 0 -6px -6px -6px
 
 .overlay
   background: rgba(0, 0, 0, 0.3)
