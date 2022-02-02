@@ -108,7 +108,14 @@
           <a :href=pr.url @click.stop='click'>
             {{pr.repositoryName}}#{{ pr.number }}
           </a>
-          <Avatar is-small v-if='pr.assignee' v-bind='pr.assignee' />
+          <div v-if='pr.assignees.length > 0' class='assignees'>
+            <Avatar
+              v-for='(assignee, $index) in pr.assignees'
+              v-bind='assignee'
+              :key='$index'
+              is-small
+            />
+          </div>
         </div>
       </div>
       <div v-if='totalSubtasks > 0' class='progress-container'>
@@ -404,6 +411,12 @@ export default {
 
         &:hover
           color: #616161
+
+      .assignees
+        display: flex
+
+        .assignee
+          margin-left: 2px
 
     .pull-request + .pull-request
       margin-top: 4px

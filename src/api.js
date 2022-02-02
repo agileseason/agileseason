@@ -179,7 +179,7 @@ export default {
               doneSubtasks
               pullRequests {
                 id number isClosed isMerged url repositoryName
-                assignee { login avatarUrl }
+                assignees { login avatarUrl }
               }
             }
           }
