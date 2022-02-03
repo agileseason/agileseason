@@ -425,7 +425,8 @@ export default {
     .pull-request + .pull-request
       margin-top: 4px
 
-  .assigned-or-extra + .progress-container
+  .assigned-or-extra + .progress-container,
+  .pull-requests + .progress-container
     margin-top: 6px
 
   .progress-container
