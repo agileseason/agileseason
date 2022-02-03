@@ -399,7 +399,7 @@ export default {
       background-repeat: no-repeat
       box-sizing: border-box
       display: flex
-      margin: 6px
+      margin: 6px 6px 0 6px
       padding-left: 18px
 
       &.open
