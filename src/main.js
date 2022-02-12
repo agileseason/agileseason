@@ -3,6 +3,10 @@ import { createApp } from 'vue';
 import router from './router';
 import store from './store';
 
+// import Vue from 'vue';
+// import VueApexCharts from 'vue-apexcharts';
+// Vue.component('apexchart', VueApexCharts);
+
 const app = createApp(App);
 
 import { Integrations } from '@sentry/tracing';

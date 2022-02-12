@@ -44,6 +44,20 @@
       </transition>
     </router-view>
   </div>
+
+  <!-- charts -->
+  <div
+    class='modal-overlay'
+    v-if='isLoaded'
+    v-show='isChartOpen'
+    @click.self='backToBoard'
+  >
+    <router-view v-slot='{ Component }'>
+      <transition name='slide' :duration='200'>
+        <component :is='Component' />
+      </transition>
+    </router-view>
+  </div>
 </template>
 
 <script>
@@ -90,6 +104,9 @@ export default {
     },
     isModalRight() {
       return this.issueModalStyle === 'right';
+    },
+    isChartOpen() {
+      return this.$route.name === 'issues_age_chart';
     }
   },
   async created() {

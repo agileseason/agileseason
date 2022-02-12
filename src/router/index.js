@@ -10,6 +10,7 @@ import Home from '../views/home';
 import Invite from '../views/invite';
 import Issue from '../views/issue';
 import IssueNew from '../views/issue_new';
+import IssuesAgeChart from '../views/charts/issues_age';
 import Notes from '../views/notes';
 import OAuth from '../views/oauth';
 import Settings from '../views/settings';
@@ -58,6 +59,11 @@ const routes = [
         path: 'notes',
         name: 'notes',
         component: Notes
+      }, {
+        path: 'charts/age',
+        name: 'issues_age_chart',
+        // TODO: component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+        component: IssuesAgeChart
       }
     ],
     beforeEnter: requireAuth
