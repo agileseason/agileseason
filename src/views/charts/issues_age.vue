@@ -77,7 +77,7 @@ export default {
           categories: this.chartCategories,
         },
         yaxis: {
-          title: { text: 'Days' }
+          title: { text: 'Days in progress' }
         },
         fill: {
           opacity: 1
@@ -91,11 +91,11 @@ export default {
       return this.issues.map(v => v.ageDays);
     },
     chartCategories() {
-      return this.issues.map(v => `${v.number}`);
+      return this.issues.map(v => `#${v.number}`);
     },
     issues() {
       return this.columns.flat()
-        .map(v => v.issues)
+        .map(v => v.issues.filter(i => i.isClosed === false))
         .flat()
         .sort((a, b) => (a.ageDays <= b.ageDays) ? 1 : -1)
     }
