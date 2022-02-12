@@ -7,7 +7,7 @@
     <div class='body'>
       <VueApexCharts
         type='bar'
-        height='500'
+        height='600'
         :options='chartOptions'
         :series='series'
       />
