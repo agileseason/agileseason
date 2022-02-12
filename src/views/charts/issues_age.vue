@@ -11,9 +11,14 @@
         :options='chartOptions'
         :series='series'
       />
-      <!--div class='issues'>
-        <h2>Issues</h2>
-      </div-->
+      <div class='issues' style='color: #888'>
+        <h2>TODO</h2>
+        <ul>
+          <li>Legend</li>
+          <li>List of issues</li>
+          <li>Event click by chart bars</li>
+        </ul>
+      </div>
     </div>
   </Modal>
 </template>
@@ -52,7 +57,15 @@ export default {
           type: 'bar',
           height: 350,
           toolbar: { show: false },
-          animations: { speed: 400 }
+          animations: { speed: 400 },
+          // TODO: Why it doesnt work?
+          events: {
+            click: function(event, chartContext, config) {
+              console.log(config.config.series[config.seriesIndex])
+              console.log(config.config.series[config.seriesIndex].name)
+              console.log(config.config.series[config.seriesIndex].data[config.dataPointIndex])
+            }
+          }
         },
         dataLabels: { enabled: false },
         plotOptions: {
