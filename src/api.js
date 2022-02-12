@@ -7,6 +7,7 @@ const DOMAIN_API = {
 
 const ENDPOINT = DOMAIN_API + '/graphql';
 
+// id, number are important here, check if need update/remove these fields.
 const ISSUE_UPDATABLE_FRAGMENT = `
   id
   number
