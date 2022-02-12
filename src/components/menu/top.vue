@@ -45,8 +45,9 @@
       </div>
     </div>
     <div class='right'>
+      <router-link v-if='isBoardReady' class='icon charts' :to='boardIssuesAgeChartUrl' />
+      <router-link v-if='isBoardReady' class='icon notes' :to='boardNotesUrl' />
       <router-link v-if='isShowSettings' class='icon settings' :to='boardSettingsUrl' />
-      <router-link v-if='isShowNotes' class='icon notes' :to='boardNotesUrl' />
     </div>
   </div>
 </template>
@@ -80,11 +81,12 @@ export default {
     boardId() { return parseInt(this.$route.params.id) || 0; },
     boardSettingsUrl() { return `/boards/${this.boardId}/settings`; },
     boardNotesUrl() { return `/boards/${this.boardId}/notes`; },
-    isShowSettings() {
-      return this.boardId > 0 && this.isBoardLoaded && this.isBoardOwner;
-    },
-    isShowNotes() {
+    boardIssuesAgeChartUrl() { return `/boards/${this.boardId}/charts/age`; },
+    isBoardReady() {
       return this.boardId > 0 && this.isBoardLoaded;
+    },
+    isShowSettings() {
+      return this.isBoardReady && this.isBoardOwner;
     }
   },
   async created() {
@@ -276,4 +278,7 @@ export default {
 
     &.notes
       background-image: url('../../assets/icons/menu/note.svg')
+
+    &.charts
+      background-image: url('../../assets/icons/menu/graph.svg')
 </style>

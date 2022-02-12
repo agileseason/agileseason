@@ -7,6 +7,39 @@ const DOMAIN_API = {
 
 const ENDPOINT = DOMAIN_API + '/graphql';
 
+// id, number are important here, check if need update/remove these fields.
+const ISSUE_UPDATABLE_FRAGMENT = `
+  id
+  number
+  title
+  body
+  labels { name color }
+  assignees { login url avatarUrl }
+  color
+  isBody
+  isClosed
+  isArchived
+  totalSubtasks
+  doneSubtasks
+`;
+const ISSUE_FRAGMENT = `
+  ${ISSUE_UPDATABLE_FRAGMENT}
+  position
+  url
+  repositoryName
+  repositoryFullName
+  createdAt
+  createdAgo
+  author { login url avatarUrl }
+  columnId
+  commentsCount
+  ageDays
+  pullRequests {
+    id number isClosed isMerged url repositoryName
+    assignees { login avatarUrl }
+  }
+`;
+
 export default {
   // ---------------------------------
   // User
@@ -162,25 +195,7 @@ export default {
           columns {
             id name position isAutoAssign isAutoClose
             issues {
-              id
-              number
-              title
-              position
-              url
-              repositoryName
-              repositoryFullName
-              labels { name color }
-              assignees { login avatarUrl }
-              isClosed
-              isBody
-              commentsCount
-              color
-              totalSubtasks
-              doneSubtasks
-              pullRequests {
-                id number isClosed isMerged url repositoryName
-                assignees { login avatarUrl }
-              }
+              ${ISSUE_FRAGMENT}
             }
           }
           repositories {
@@ -207,24 +222,7 @@ export default {
           columns {
             id name position
             issues {
-              id
-              number
-              title
-              position
-              url
-              repositoryName
-              labels { name color }
-              assignees { login avatarUrl }
-              isClosed
-              isBody
-              commentsCount
-              color
-              totalSubtasks
-              doneSubtasks
-              pullRequests {
-                id number isClosed isMerged url repositoryName
-                assignees { login avatarUrl }
-              }
+              ${ISSUE_FRAGMENT}
             }
           }
         }
@@ -458,25 +456,7 @@ export default {
       mutation($boardId:Int!, $id:Int!) {
         action:syncIssue(input: { boardId: $boardId, id: $id }) {
           issue {
-            id
-            number
-            title
-            body
-            position
-            url
-            repositoryName
-            repositoryFullName
-            columnId
-            isClosed
-            isArchived
-            createdAt
-            createdAgo
-            labels { name color }
-            author { login url avatarUrl }
-            assignees { login url avatarUrl }
-            color
-            totalSubtasks
-            doneSubtasks
+            ${ISSUE_FRAGMENT}
           }
           errors
         }
@@ -534,31 +514,7 @@ export default {
           color: $color
         }) {
           issue {
-            id
-            number
-            title
-            body
-            position
-            url
-            repositoryName
-            repositoryFullName
-            isClosed
-            isArchived
-            createdAt
-            createdAgo
-            labels { name color }
-            assignees { login url avatarUrl }
-            author { login url avatarUrl }
-            columnId
-            isBody
-            commentsCount
-            color
-            totalSubtasks
-            doneSubtasks
-            pullRequests {
-              id number isClosed isMerged url repositoryName
-              assignees { login avatarUrl }
-            }
+            ${ISSUE_FRAGMENT}
           }
           errors
         }
@@ -586,16 +542,7 @@ export default {
           color: $color
         }) {
           issue {
-            id
-            number
-            title
-            labels { name color }
-            assignees { login url avatarUrl }
-            color
-            isClosed
-            isArchived
-            totalSubtasks
-            doneSubtasks
+            ${ISSUE_UPDATABLE_FRAGMENT}
           }
           errors
         }
@@ -620,14 +567,7 @@ export default {
           isArchived: $isArchived
         }) {
           issue {
-            id
-            number
-            title
-            labels { name color }
-            assignees { login url avatarUrl }
-            color
-            isClosed
-            isArchived
+            ${ISSUE_UPDATABLE_FRAGMENT}
           }
           errors
         }

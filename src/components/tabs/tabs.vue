@@ -32,7 +32,7 @@ export default {
 
 <style scoped lang='sass'>
 .tabs
-  margin-top: 30px
+  padding-top: 16px
 
   .tab
     color: #3F51B5

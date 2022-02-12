@@ -10,7 +10,6 @@ import Home from '../views/home';
 import Invite from '../views/invite';
 import Issue from '../views/issue';
 import IssueNew from '../views/issue_new';
-import Notes from '../views/notes';
 import OAuth from '../views/oauth';
 import Settings from '../views/settings';
 import SharedBoard from '../views/shared_board';
@@ -57,7 +56,11 @@ const routes = [
       }, {
         path: 'notes',
         name: 'notes',
-        component: Notes
+        component: () => import('../views/notes.vue')
+      }, {
+        path: 'charts/age',
+        name: 'issues_age_chart',
+        component: () => import('../views/charts/issues_age.vue')
       }
     ],
     beforeEnter: requireAuth
@@ -86,14 +89,6 @@ const routes = [
     name: 'oauth',
     component: OAuth
   }
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
 ];
 
 const router = createRouter({
