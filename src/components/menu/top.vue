@@ -45,7 +45,7 @@
       </div>
     </div>
     <div class='right'>
-      <router-link v-if='isBoardReady' class='icon notes' :to='boardIssuesAgeChartUrl' />
+      <router-link v-if='isBoardReady' class='icon charts' :to='boardIssuesAgeChartUrl' />
       <router-link v-if='isBoardReady' class='icon notes' :to='boardNotesUrl' />
       <router-link v-if='isShowSettings' class='icon settings' :to='boardSettingsUrl' />
     </div>
@@ -278,4 +278,7 @@ export default {
 
     &.notes
       background-image: url('../../assets/icons/menu/note.svg')
+
+    &.charts
+      background-image: url('../../assets/icons/menu/graph.svg')
 </style>
