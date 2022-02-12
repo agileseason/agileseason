@@ -33,6 +33,7 @@ const ISSUE_FRAGMENT = `
   author { login url avatarUrl }
   columnId
   commentsCount
+  ageDays
   pullRequests {
     id number isClosed isMerged url repositoryName
     assignees { login avatarUrl }
