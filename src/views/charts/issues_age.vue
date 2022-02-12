@@ -116,5 +116,6 @@ export default {
     padding: 10px 14px
 
   .tabs
-    background-color: #e8eaf6
+    // background-color: #e8eaf6
+    // border-bottom: 1px solid #c5cae9
 </style>
