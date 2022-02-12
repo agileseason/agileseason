@@ -73,18 +73,10 @@ export default {
             else { return '#b71c1c'; }
           }
         ],
-        xaxis: {
-          categories: this.chartCategories,
-        },
-        yaxis: {
-          title: { text: 'Days in progress' }
-        },
-        fill: {
-          opacity: 1
-        },
-        tooltip: {
-          y: { formatter: (val) => (`${val} days`) }
-        }
+        xaxis: { categories: this.chartCategories, },
+        yaxis: { title: { text: 'Days in progress' } },
+        fill: { opacity: 1 },
+        tooltip: { y: { formatter: (val) => (`${val} days`) } }
       };
     },
     chartData() {
