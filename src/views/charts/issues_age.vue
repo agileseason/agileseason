@@ -1,28 +1,44 @@
 <template>
   <Modal class='modal-chart'>
-    <VueApexCharts
-      type='bar'
-      height='500'
-      :options='chartOptions'
-      :series='series'
+    <Tabs
+      :items='tabs'
+      :active='activeTab'
     />
+    <div class='body'>
+      <VueApexCharts
+        type='bar'
+        height='500'
+        :options='chartOptions'
+        :series='series'
+      />
+      <!--div class='issues'>
+        <h2>Issues</h2>
+      </div-->
+    </div>
   </Modal>
 </template>
 
 <script>
 import Modal from '@/components/modal.vue';
+import Tabs from '@/components/tabs/tabs';
 
 import VueApexCharts from 'vue3-apexcharts';
 
 export default {
   components: {
-    VueApexCharts,
-    Modal
+    Modal,
+    Tabs,
+    VueApexCharts
   },
   data: () => ({
+    tabs: [
+      'Age of issues'
+    ],
+    activeTab: 'Age of issues',
+
     series: [{
       name: 'Age',
-      data: [200, 199, 150, 90, 50, 40, 30, 26, 20, 5, 4, 1, 1]
+      data: [200, 199, 150, 90, 50, 40, 30, 26, 20, 15, 10, 4, 1]
     // }, {
     //   name: 'Revenue',
     //   data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
@@ -37,6 +53,7 @@ export default {
         toolbar: { show: false },
         animations: { speed: 400 }
       },
+      dataLabels: { enabled: false },
       plotOptions: {
         bar: {
           horizontal: false,
@@ -44,9 +61,17 @@ export default {
           endingShape: 'rounded'
         },
       },
-      dataLabels: {
-        enabled: false
-      },
+      colors: [
+        ({ value }) => {
+          const base = 7;
+          if (value < base) { return '#64dd17'; }
+          else if (value < base * 2) { return '#00c853'; }
+          else if (value < base * 3) { return '#ffd600'; }
+          else if (value < base * 4) { return '#ff6d00'; }
+          else if (value < base * 5) { return '#dd2c00'; }
+          else { return '#b71c1c'; }
+        }
+      ],
       stroke: {
         show: true,
         width: 2,
@@ -81,4 +106,10 @@ export default {
 <style scoped lang='sass'>
 .modal-chart
   max-width: 80%
+
+  .body
+    padding: 10px 14px
+
+  .tabs
+    background-color: #e8eaf6
 </style>
