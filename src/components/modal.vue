@@ -67,5 +67,5 @@ export default {
 
 .slide-enter-active,
 .slide-leave-active
-  transition: transform 200ms
+  transition: transform 140ms
 </style>

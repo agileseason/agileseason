@@ -10,13 +10,13 @@
         height='600'
         :options='chartOptions'
         :series='series'
+        @click='clickByBar'
       />
       <div class='issues' style='color: #888'>
         <h2>TODO</h2>
         <ul>
           <li>Legend</li>
           <li>List of issues</li>
-          <li>Event click by chart bars</li>
         </ul>
       </div>
     </div>
@@ -40,7 +40,8 @@ export default {
     tabs: [
       'Age of issues'
     ],
-    activeTab: 'Age of issues'
+    activeTab: 'Age of issues',
+    isVisible: true,
   }),
   computed: {
     columns: get('board/columns'),
@@ -57,15 +58,7 @@ export default {
           type: 'bar',
           height: 350,
           toolbar: { show: false },
-          animations: { speed: 400 },
-          // TODO: Why it doesnt work?
-          events: {
-            click: function(event, chartContext, config) {
-              console.log(config.config.series[config.seriesIndex])
-              console.log(config.config.series[config.seriesIndex].name)
-              console.log(config.config.series[config.seriesIndex].data[config.dataPointIndex])
-            }
-          }
+          animations: { speed: 400 }
         },
         dataLabels: { enabled: false },
         plotOptions: {
@@ -78,18 +71,20 @@ export default {
         colors: [
           ({ value }) => {
             const base = 7;
-            if (value < base) { return '#64dd17'; }
-            else if (value < base * 2) { return '#00c853'; }
-            else if (value < base * 3) { return '#ffd600'; }
-            else if (value < base * 4) { return '#ff6d00'; }
-            else if (value < base * 5) { return '#dd2c00'; }
+            if (value < base * 2) { return '#64dd17'; }
+            else if (value < base * 4) { return '#00c853'; }
+            else if (value < base * 8) { return '#ffd600'; }
+            else if (value < base * 16) { return '#ff6d00'; }
+            else if (value < base * 32) { return '#dd2c00'; }
             else { return '#b71c1c'; }
           }
         ],
         xaxis: { categories: this.chartCategories, },
         yaxis: { title: { text: 'Days in progress' } },
         fill: { opacity: 1 },
-        tooltip: { y: { formatter: (val) => (`${val} days`) } }
+        tooltip: {
+          y: { formatter: (val) => (`${val} days`) }
+        }
       };
     },
     chartData() {
@@ -104,13 +99,31 @@ export default {
         .flat()
         .sort((a, b) => (a.ageDays <= b.ageDays) ? 1 : -1)
     }
+  },
+  methods: {
+    clickByBar(event, chartContext, config) {
+      const index = config.dataPointIndex;
+      if (index < 0) { return; }
+
+      const issue = this.issues[index];
+      if (issue == null) { return; }
+
+      this.isVisible = false;
+      this.$nextTick(() => {
+        this.$router.push({
+          name: 'issue',
+          params: { issueId: issue.id, issueNumber: issue.number }
+        });
+      });
+    }
   }
 }
 </script>
 
 <style scoped lang='sass'>
 .modal-chart
-  max-width: 80%
+  max-width: 90%
+  width: 90%
 
   .body
     padding: 10px 14px
