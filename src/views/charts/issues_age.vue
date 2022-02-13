@@ -75,7 +75,7 @@ export default {
             else if (value < base * 4) { return '#00c853'; }
             else if (value < base * 8) { return '#ffd600'; }
             else if (value < base * 16) { return '#ff6d00'; }
-            else if (value < base * 32) { return '#dd2c00'; }
+            else if (value < base * 32) { return '#ff3d00'; }
             else { return '#b71c1c'; }
           }
         ],
