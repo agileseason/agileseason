@@ -238,7 +238,37 @@ export default {
     },
     onKeyDown(e) {
       if (this.key == null) {
-        if (e.metaKey && e.key === 'Enter') { this.$emit('submit'); }
+        if (e.key === 'Enter') {
+          if (e.metaKey) this.$emit('submit');
+          else {
+            const rows = this.modelValue.split("\n");
+            if (rows.length === 0) return;
+
+            const lastRow = rows.at(-1);
+            if (lastRow == null) return;
+
+            // Добавляем символы (1., -, - [ ]) только если курсор на последней строке.
+            // Пока лучшего не придумал.
+            const index = this.$refs.textarea.selectionStart;
+            if (this.modelValue[index] !== undefined) { return; }
+
+            if (/^\d+\. /.test(lastRow)) {
+              e.preventDefault();
+              e.stopPropagation();
+              this.$emit('update:modelValue', this.modelValue + "\n1. ");
+
+            } else if (/^- \[\s|x\] /.test(lastRow)) {
+              e.preventDefault();
+              e.stopPropagation();
+              this.$emit('update:modelValue', this.modelValue + "\n- [ ] ");
+
+            } else if (/^- /.test(lastRow)) {
+              e.preventDefault();
+              e.stopPropagation();
+              this.$emit('update:modelValue', this.modelValue + "\n- ");
+            }
+          }
+        }
         return;
       }
 
