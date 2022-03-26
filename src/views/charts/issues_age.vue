@@ -15,11 +15,20 @@
       <div class='issues'>
         <div class='row header'>
           <div>Issue</div>
-          <div>Age (days)</div>
+          <div class='column-right'>Assignee</div>
+          <div class='column-right'>Column</div>
+          <div class='column-right'>Age (days)</div>
         </div>
         <div v-for='issue in issues' class='row issue' :key='issue.id' @click='clickByRow(issue)'>
           <div>
-            <div class='title'>{{ issue.title }}</div>
+            <div class='issue-main-content'>
+              <div class='title'>{{ issue.title }}</div>
+              <Label
+                v-for='(label, $index) in issue.labels'
+                :label='label'
+                :key='$index'
+              />
+            </div>
             <div class='url'>
               <span class='number'>
                 #{{ issue.number }}
@@ -31,7 +40,15 @@
               {{ issue.author.login }}
             </div>
           </div>
-          <div>{{ issue.ageDays }}</div>
+          <div class='column-right'>
+            <Avatar
+              v-for='(assignee, $index) in issue.assignees'
+              v-bind='assignee'
+              :key='$index'
+            />
+          </div>
+          <div class='column-right'>{{ columnName(issue) }}</div>
+          <div class='column-right age'>{{ issue.ageDays }}</div>
         </div>
       </div>
     </div>
@@ -39,6 +56,8 @@
 </template>
 
 <script>
+import Avatar from '@/components/avatar';
+import Label from '@/components/board/label';
 import Modal from '@/components/modal.vue';
 import Tabs from '@/components/tabs/tabs';
 
@@ -52,6 +71,8 @@ const MONTHS = [
 
 export default {
   components: {
+    Avatar,
+    Label,
     Modal,
     Tabs,
     VueApexCharts
@@ -71,6 +92,12 @@ export default {
         name: 'Age',
         data: this.chartData
       }];
+    },
+    columnsMap() {
+      return this.columns.reduce((h, column) => {
+        h[column.id] = column;
+        return h;
+      }, {});
     },
     chartOptions() {
       return {
@@ -147,6 +174,11 @@ export default {
     openedOnFormat({ createdAt }) {
       const date = new Date(createdAt);
       return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+    },
+    columnName({ columnId }) {
+      const column = this.columnsMap[columnId];
+      if (column == null) return '';
+      return column.name;
     }
   }
 }
@@ -169,8 +201,7 @@ export default {
 .issues
   .row
     display: grid
-    grid-template-columns: auto auto
-    justify-content: space-between
+    grid-template-columns: 9fr 1fr 1fr 1fr
     grid-gap: 10px
     padding: 8px 0
     align-items: top
@@ -187,13 +218,22 @@ export default {
       &:hover
         background-color: rgba(232, 234, 246, 0.6)
 
+    .column-right
+      text-align: right
+
+  .issue-main-content
+    display: flex
+    margin-bottom: 4px
+
+  .label
+    margin: 0 0 0 8px
+
   .title
     color: #212121
     font-size: 15px
     font-weight: 500
     line-height: 18px
     word-break: break-word
-    margin-bottom: 2px
 
   .url
     color: #757575
@@ -203,4 +243,7 @@ export default {
     .number
       color: #616161
       font-weight: 400
+
+  .age
+    font-weight: 500
 </style>
