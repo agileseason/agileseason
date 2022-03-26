@@ -12,12 +12,27 @@
         :series='series'
         @click='clickByBar'
       />
-      <div class='issues' style='color: #888'>
-        <h2>TODO</h2>
-        <ul>
-          <li>Legend</li>
-          <li>List of issues</li>
-        </ul>
+      <div class='issues'>
+        <div class='row header'>
+          <div>Issue</div>
+          <div>Age (days)</div>
+        </div>
+        <div v-for='issue in issues' class='row issue' :key='issue.id' @click='clickByRow(issue)'>
+          <div>
+            <div class='title'>{{ issue.title }}</div>
+            <div class='url'>
+              <span class='number'>
+                #{{ issue.number }}
+                {{ issue.repositoryName }}
+              </span>
+              opened on
+              {{ openedOnFormat(issue) }}
+              by
+              {{ issue.author.login }}
+            </div>
+          </div>
+          <div>{{ issue.ageDays }}</div>
+        </div>
       </div>
     </div>
   </Modal>
@@ -29,6 +44,11 @@ import Tabs from '@/components/tabs/tabs';
 
 import VueApexCharts from 'vue3-apexcharts';
 import { get } from 'vuex-pathify';
+
+const MONTHS = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+];
 
 export default {
   components: {
@@ -115,6 +135,18 @@ export default {
           params: { issueId: issue.id, issueNumber: issue.number }
         });
       });
+    },
+    clickByRow({ id, number }) {
+      this.$nextTick(() => {
+        this.$router.push({
+          name: 'issue',
+          params: { issueId: id, issueNumber: number }
+        });
+      });
+    },
+    openedOnFormat({ createdAt }) {
+      const date = new Date(createdAt);
+      return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
     }
   }
 }
@@ -126,9 +158,49 @@ export default {
   width: 90%
 
   .body
+    max-height: calc(100vh - 106px)
+    overflow-y: scroll
     padding: 10px 14px
 
   .tabs
     // background-color: #e8eaf6
     // border-bottom: 1px solid #c5cae9
+
+.issues
+  .row
+    display: grid
+    grid-template-columns: auto auto
+    justify-content: space-between
+    grid-gap: 10px
+    padding: 8px 0
+    align-items: top
+    border-bottom: 1px solid #e8eaf6
+
+    &.header
+      font-weight: 300
+      letter-spacing: 1px
+      text-transform: uppercase
+
+    &.issue
+      cursor: pointer
+
+      &:hover
+        background-color: rgba(232, 234, 246, 0.6)
+
+  .title
+    color: #212121
+    font-size: 15px
+    font-weight: 500
+    line-height: 18px
+    word-break: break-word
+    margin-bottom: 2px
+
+  .url
+    color: #757575
+    font-weight: 300
+    font-size: 12px
+
+    .number
+      color: #616161
+      font-weight: 400
 </style>
