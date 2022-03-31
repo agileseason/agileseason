@@ -220,6 +220,7 @@ export default {
     isStateSubmitting: false,
     isArchiveSubmitting: false,
     isCommentSubmitting: false,
+    isTaskChecking: false,
     assignableUsers: []
   }),
   computed: {
@@ -276,27 +277,20 @@ export default {
   async created() {
     if (this.id) {
       await this.fetchIssue();
-
-      const body = document.getElementById('body');
-      if (body.getAttribute('taskListener') !== 'true') {
-        document.addEventListener('taskClick', this.taskClickHandler);
-        body.setAttribute('taskListener', 'true');
-      }
+      this.addTaskEventListener();
     }
   },
   beforeUnmount() {
-    const body = document.getElementById('body');
-    if (body.getAttribute('taskListener') === 'true') {
-      document.removeEventListener('taskClick', this.taskClickHandler);
-      body.setAttribute('taskListener', 'false');
-    }
+    this.removeTaskEventListener();
   },
   watch: {
     async id(newValue, oldValue) {
       if (newValue === oldValue) { return; }
       if (newValue == null || isNaN(newValue)) { return; }
 
+      this.removeTaskEventListener();
       await this.fetchIssue();
+      this.addTaskEventListener();
     }
   },
   methods: {
@@ -310,10 +304,25 @@ export default {
       'issue/fetchComments',
       'issue/createComment'
     ]),
+    addTaskEventListener() {
+      const body = document.getElementById('body');
+      if (body.getAttribute('taskListener') !== 'true') {
+        document.addEventListener('taskClick', this.taskClickHandler);
+        body.setAttribute('taskListener', 'true');
+      }
+    },
+    removeTaskEventListener() {
+      const body = document.getElementById('body');
+      if (body.getAttribute('taskListener') === 'true') {
+        document.removeEventListener('taskClick', this.taskClickHandler);
+        body.setAttribute('taskListener', 'false');
+      }
+    },
     close() {
       if (this.isEditBody) {
         this.isEditBody = false;
       } else {
+        this.removeTaskEventListener();
         this.$emit('close');
       }
     },
@@ -352,12 +361,12 @@ export default {
       if (this.isSubmitting) { return; }
 
       this.isSubmitting = true;
+      this.update({ body: this.newBody });
       await this.updateIssue({
         id: this.id,
         body: this.newBody,
         columnId: this.fetchedIssue.columnId
       });
-      this.update({ body: this.newBody });
       this.isSubmitting = false;
       this.isEditBody = false;
     },
@@ -503,14 +512,30 @@ export default {
       );
     },
     taskClickHandler({ detail }) {
-      const { textOld, textNew } = detail;
-      this.newBody = this.newBody.replace(textOld, textNew);
-      this.updateIssue({
-        id: this.id,
-        body: this.newBody,
-        columnId: this.fetchedIssue.columnId
+      if (this.isTaskChecking) { return; }
+
+      this.$nextTick(async () => {
+        // this.removeTaskEventListener();
+        // this.addTaskEventListener();
+
+        this.isTaskChecking = true;
+        const { textOld, textNew } = detail;
+        // console.log('taskClickHandler');
+        // console.log('================');
+        // console.log('ID', this.id);
+        // console.log('Old Body', this.newBody);
+        this.newBody = this.newBody.replace(textOld, textNew);
+        // console.log('New Body', this.newBody);
+        // console.log('ColumnId', this.fetchedIssue.columnId);
+        // console.log('----------------');
+        this.update({ body: this.newBody });
+        await this.updateIssue({
+          id: this.id,
+          body: this.newBody,
+          columnId: this.fetchedIssue.columnId
+        });
+        this.isTaskChecking = false;
       });
-      this.update({ body: this.newBody });
     }
   }
 }

@@ -45,6 +45,10 @@ renderer.listitem = (text, task, checked) => {
 export default {
   render(text, repositoryFullName, clickHandler) {
     if (clickHandler) {
+      // console.log('render markdown');
+      // console.log('---------------');
+      // console.log(text);
+      // console.log('---------------');
       renderer.clickHandler = clickHandler;
     }
     renderer.text = (text) => {
