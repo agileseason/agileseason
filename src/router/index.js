@@ -56,11 +56,15 @@ const routes = [
       }, {
         path: 'notes',
         name: 'notes',
-        component: () => import('../views/notes.vue')
+        components: {
+          center: () => import('../views/notes.vue')
+        }
       }, {
         path: 'charts/age',
         name: 'issues_age_chart',
-        component: () => import('../views/charts/issues_age.vue')
+        components: {
+          center: () => import('../views/charts/issues_age.vue')
+        }
       }
     ],
     beforeEnter: requireAuth

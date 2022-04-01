@@ -45,13 +45,13 @@
             <div v-if='isBodyEmpty' class='text empty'>No description provided</div>
             <div v-else
               class='text markdown-body'
-              v-html='markdown(fetchedIssue.body)'
+              v-html='markdown(tmpBody)'
             />
           </div>
           <MarkdownEditor
             ref='body'
             v-if='isEditBody'
-            v-model='newBody'
+            v-model='tmpBody'
             class='issue-body-editor'
             :assignable-users='assignableUsers'
             :disabled='isSubmitting'
@@ -215,6 +215,7 @@ export default {
     newTitle: undefined,
     newComment: '',
     newBody: '',
+    tmpBody: '',
     isEditBody: false,
     isSubmitting: false,
     isStateSubmitting: false,
@@ -246,7 +247,7 @@ export default {
     isArchived() {
       return this.isLoaded ? this.fetchedIssue.isArchived : false;
     },
-    isBodyEmpty() { return this.fetchedIssue?.body == null || this.fetchedIssue?.body?.length == 0; },
+    isBodyEmpty() { return this.newBody == null || this.newBody.length == 0; },
     state() {
       if (this.isClosed == null) { return null; }
       return this.isClosed ? 'closed' : 'open';
@@ -267,6 +268,25 @@ export default {
 
       return `background-color: rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.6)`;
     },
+    markdownBody() {
+      const text = this.newBody;
+      return Markdown.render(
+        text,
+        this.repositoryFullName,
+        // JavaScript only. Use only ', not ".
+        (text, isChecked) => {
+          const prefixOld = isChecked ? "- [x]" : "- [ ]";
+          const prefixNew = isChecked ? "- [ ]" : "- [x]";
+          const textOld = prefixOld + text;
+          const textNew = prefixNew + text;
+          const event = new CustomEvent("taskClick", { detail: {
+            textOld: textOld,
+            textNew: textNew
+          } });
+          document.dispatchEvent(event);
+        }
+      );
+    },
 
     // debugStoreColumns: get('board/columns'),
     // debugStoreCurrentIssue: get('board/currentIssue'),
@@ -285,9 +305,12 @@ export default {
   },
   watch: {
     async id(newValue, oldValue) {
+      if (oldValue == null) { return; }
       if (newValue === oldValue) { return; }
       if (newValue == null || isNaN(newValue)) { return; }
 
+      console.log('watch', newValue, oldValue);
+      console.log('--------------------');
       this.removeTaskEventListener();
       await this.fetchIssue();
       this.addTaskEventListener();
@@ -328,7 +351,7 @@ export default {
     },
     async fetchIssue() {
       await this.fetch({ id: this.id });
-      this.newBody = this.fetchedIssue.body;
+      this.newBody = this.tmpBody = this.fetchedIssue.body;
 
       this.fetchComments({ id: this.id });
       // Возможно стоит перенести этот метод в
@@ -361,7 +384,9 @@ export default {
       if (this.isSubmitting) { return; }
 
       this.isSubmitting = true;
-      this.update({ body: this.newBody });
+      // this.update({ body: this.newBody });
+      this.newBody = this.tmpBody;
+      console.log('updateBody', this.newBody);
       await this.updateIssue({
         id: this.id,
         body: this.newBody,
@@ -487,7 +512,7 @@ export default {
     },
     cancelEditBody() {
       this.isEditBody = false;
-      this.newBody = this.fetchedIssue.body;
+      this.tmpBody = this.newBody;
     },
     replyComment(body) {
       this.newComment = `${body}\n\n`;
@@ -511,31 +536,31 @@ export default {
         }
       );
     },
-    taskClickHandler({ detail }) {
+    async taskClickHandler({ detail }) {
       if (this.isTaskChecking) { return; }
 
-      this.$nextTick(async () => {
-        // this.removeTaskEventListener();
-        // this.addTaskEventListener();
+      // this.removeTaskEventListener();
+      // this.addTaskEventListener();
 
-        this.isTaskChecking = true;
-        const { textOld, textNew } = detail;
-        // console.log('taskClickHandler');
-        // console.log('================');
-        // console.log('ID', this.id);
-        // console.log('Old Body', this.newBody);
-        this.newBody = this.newBody.replace(textOld, textNew);
-        // console.log('New Body', this.newBody);
-        // console.log('ColumnId', this.fetchedIssue.columnId);
-        // console.log('----------------');
-        this.update({ body: this.newBody });
-        await this.updateIssue({
-          id: this.id,
-          body: this.newBody,
-          columnId: this.fetchedIssue.columnId
-        });
-        this.isTaskChecking = false;
+      this.isTaskChecking = true;
+      const { textOld, textNew } = detail;
+      this.newBody = this.newBody.replace(textOld, textNew);
+      this.tmpBody = this.newBody;
+      console.log('taskClickHandler', this.newBody);
+      console.log('taskClickHandler', this.markdownBody);
+      // console.log('================');
+      // console.log('ID', this.id);
+      // console.log('Old Body', this.newBody);
+      // console.log('New Body', this.newBody);
+      // console.log('ColumnId', this.fetchedIssue.columnId);
+      // console.log('----------------');
+      // this.update({ body: this.newBody });
+      await this.updateIssue({
+        id: this.id,
+        body: this.newBody,
+        columnId: this.fetchedIssue.columnId
       });
+      this.isTaskChecking = false;
     }
   }
 }
