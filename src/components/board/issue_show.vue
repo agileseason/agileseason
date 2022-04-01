@@ -45,13 +45,13 @@
             <div v-if='isBodyEmpty' class='text empty'>No description provided</div>
             <div v-else
               class='text markdown-body'
-              v-html='markdown(fetchedIssue.body)'
+              v-html='markdown(tmpBody)'
             />
           </div>
           <MarkdownEditor
             ref='body'
             v-if='isEditBody'
-            v-model='newBody'
+            v-model='tmpBody'
             class='issue-body-editor'
             :assignable-users='assignableUsers'
             :disabled='isSubmitting'
@@ -215,6 +215,7 @@ export default {
     newTitle: undefined,
     newComment: '',
     newBody: '',
+    tmpBody: '',
     isEditBody: false,
     isSubmitting: false,
     isStateSubmitting: false,
@@ -246,7 +247,7 @@ export default {
     isArchived() {
       return this.isLoaded ? this.fetchedIssue.isArchived : false;
     },
-    isBodyEmpty() { return this.fetchedIssue?.body == null || this.fetchedIssue?.body?.length == 0; },
+    isBodyEmpty() { return this.newBody == null || this.newBody.length == 0; },
     state() {
       if (this.isClosed == null) { return null; }
       return this.isClosed ? 'closed' : 'open';
@@ -328,7 +329,7 @@ export default {
     },
     async fetchIssue() {
       await this.fetch({ id: this.id });
-      this.newBody = this.fetchedIssue.body;
+      this.newBody = this.tmpBody = this.fetchedIssue.body;
 
       this.fetchComments({ id: this.id });
       // Возможно стоит перенести этот метод в
@@ -361,7 +362,9 @@ export default {
       if (this.isSubmitting) { return; }
 
       this.isSubmitting = true;
-      this.update({ body: this.newBody });
+      // Unnecessary here. Remove after 01.07.2022 if checkboxes will fixed.
+      // this.update({ body: this.newBody });
+      this.newBody = this.tmpBody;
       await this.updateIssue({
         id: this.id,
         body: this.newBody,
@@ -487,7 +490,7 @@ export default {
     },
     cancelEditBody() {
       this.isEditBody = false;
-      this.newBody = this.fetchedIssue.body;
+      this.tmpBody = this.newBody;
     },
     replyComment(body) {
       this.newComment = `${body}\n\n`;
@@ -511,31 +514,21 @@ export default {
         }
       );
     },
-    taskClickHandler({ detail }) {
+    async taskClickHandler({ detail }) {
       if (this.isTaskChecking) { return; }
 
-      this.$nextTick(async () => {
-        // this.removeTaskEventListener();
-        // this.addTaskEventListener();
-
-        this.isTaskChecking = true;
-        const { textOld, textNew } = detail;
-        // console.log('taskClickHandler');
-        // console.log('================');
-        // console.log('ID', this.id);
-        // console.log('Old Body', this.newBody);
-        this.newBody = this.newBody.replace(textOld, textNew);
-        // console.log('New Body', this.newBody);
-        // console.log('ColumnId', this.fetchedIssue.columnId);
-        // console.log('----------------');
-        this.update({ body: this.newBody });
-        await this.updateIssue({
-          id: this.id,
-          body: this.newBody,
-          columnId: this.fetchedIssue.columnId
-        });
-        this.isTaskChecking = false;
+      this.isTaskChecking = true;
+      const { textOld, textNew } = detail;
+      this.newBody = this.newBody.replace(textOld, textNew);
+      this.tmpBody = this.newBody;
+      // Unnecessary here. Remove after 01.07.2022 if checkboxes will fixed.
+      // this.update({ body: this.newBody });
+      await this.updateIssue({
+        id: this.id,
+        body: this.newBody,
+        columnId: this.fetchedIssue.columnId
       });
+      this.isTaskChecking = false;
     }
   }
 }

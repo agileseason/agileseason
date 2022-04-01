@@ -131,7 +131,7 @@ a {
 
 .markdown-body li.task-item label {
   cursor: pointer;
-  display: block;
+  display: flex;
 }
 
 .markdown-body li.task-item label:hover {
@@ -139,8 +139,13 @@ a {
   border-radius: 2px;
 }
 
-.markdown-body li.task-item label > ul {
-  margin-left: 20px;
+.markdown-body li.task-item label > input {
+  margin-right: 6px;
+}
+
+.markdown-body li.task-item > ul {
+  margin-left: 16px;
+  width: 100%;
 }
 
 .markdown-body>:last-child {
