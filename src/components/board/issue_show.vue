@@ -268,25 +268,6 @@ export default {
 
       return `background-color: rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.6)`;
     },
-    markdownBody() {
-      const text = this.newBody;
-      return Markdown.render(
-        text,
-        this.repositoryFullName,
-        // JavaScript only. Use only ', not ".
-        (text, isChecked) => {
-          const prefixOld = isChecked ? "- [x]" : "- [ ]";
-          const prefixNew = isChecked ? "- [ ]" : "- [x]";
-          const textOld = prefixOld + text;
-          const textNew = prefixNew + text;
-          const event = new CustomEvent("taskClick", { detail: {
-            textOld: textOld,
-            textNew: textNew
-          } });
-          document.dispatchEvent(event);
-        }
-      );
-    },
 
     // debugStoreColumns: get('board/columns'),
     // debugStoreCurrentIssue: get('board/currentIssue'),
@@ -305,12 +286,9 @@ export default {
   },
   watch: {
     async id(newValue, oldValue) {
-      if (oldValue == null) { return; }
       if (newValue === oldValue) { return; }
       if (newValue == null || isNaN(newValue)) { return; }
 
-      console.log('watch', newValue, oldValue);
-      console.log('--------------------');
       this.removeTaskEventListener();
       await this.fetchIssue();
       this.addTaskEventListener();
@@ -386,7 +364,6 @@ export default {
       this.isSubmitting = true;
       // this.update({ body: this.newBody });
       this.newBody = this.tmpBody;
-      console.log('updateBody', this.newBody);
       await this.updateIssue({
         id: this.id,
         body: this.newBody,
@@ -539,16 +516,11 @@ export default {
     async taskClickHandler({ detail }) {
       if (this.isTaskChecking) { return; }
 
-      // this.removeTaskEventListener();
-      // this.addTaskEventListener();
-
       this.isTaskChecking = true;
       const { textOld, textNew } = detail;
       this.newBody = this.newBody.replace(textOld, textNew);
       this.tmpBody = this.newBody;
-      console.log('taskClickHandler', this.newBody);
-      console.log('taskClickHandler', this.markdownBody);
-      // console.log('================');
+      console.log('======= taskClickHandler =======');
       // console.log('ID', this.id);
       // console.log('Old Body', this.newBody);
       // console.log('New Body', this.newBody);
