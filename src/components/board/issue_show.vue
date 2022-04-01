@@ -362,6 +362,7 @@ export default {
       if (this.isSubmitting) { return; }
 
       this.isSubmitting = true;
+      // Unnecessary here. Remove after 01.07.2022 if checkboxes will fixed.
       // this.update({ body: this.newBody });
       this.newBody = this.tmpBody;
       await this.updateIssue({
@@ -520,12 +521,7 @@ export default {
       const { textOld, textNew } = detail;
       this.newBody = this.newBody.replace(textOld, textNew);
       this.tmpBody = this.newBody;
-      console.log('======= taskClickHandler =======');
-      // console.log('ID', this.id);
-      // console.log('Old Body', this.newBody);
-      // console.log('New Body', this.newBody);
-      // console.log('ColumnId', this.fetchedIssue.columnId);
-      // console.log('----------------');
+      // Unnecessary here. Remove after 01.07.2022 if checkboxes will fixed.
       // this.update({ body: this.newBody });
       await this.updateIssue({
         id: this.id,
