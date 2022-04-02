@@ -44,19 +44,6 @@
       </transition>
     </router-view>
   </div>
-
-  <div
-    class='modal-overlay'
-    v-if='isLoaded'
-    v-show='isChartOpen || isNotesOpen'
-    @click.self='backToBoard'
-  >
-    <router-view v-slot='{ Component }' name='center'>
-      <transition name='slide' :duration='200'>
-        <component :is='Component' />
-      </transition>
-    </router-view>
-  </div>
 </template>
 
 <script>
@@ -100,11 +87,7 @@ export default {
       return this.$route.name === 'issue' ||
         this.$route.name === 'issue_new';
     },
-    isModalRight() {
-      return this.issueModalStyle === 'right';
-    },
-    isNotesOpen() { return this.$route.name === 'notes'; },
-    isChartOpen() { return this.$route.name === 'issues_age_chart'; }
+    isModalRight() { return this.issueModalStyle === 'right'; }
   },
   async created() {
     await this.fetchProfileLazy();
