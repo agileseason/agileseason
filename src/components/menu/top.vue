@@ -2,6 +2,7 @@
   <GlobalEvents
     @keyup.esc='close'
     @keypress.prevent.ctrl.k='commandWindow'
+    @keypress.prevent.ctrl.b='goToBoards'
   />
 
   <div class='menu'>
@@ -104,7 +105,9 @@ export default {
     },
     isShowSettings() { return this.isBoardReady && this.isBoardOwner; },
     isNotesOpen() { return this.$route.name === 'notes'; },
-    isSearchOpen() { return this.$route.name === 'search'; },
+    isSearchOpen() {
+      return this.$route.name === 'search' || this.$route.name === 'search_board';
+    },
     isChartOpen() { return this.$route.name === 'issues_age_chart'; }
   },
   async created() {
@@ -119,15 +122,25 @@ export default {
     toggle() { this.isExpanded = !this.isExpanded; },
     close() {
       if (this.isExpanded) { this.isExpanded = false; }
-      if (this.$route.name === 'notes') { this.backToBoard(); }
-      if (this.$route.name === 'search') { this.backToBoard(); }
+      if (this.isNotesOpen || this.isSearchOpen) { this.backToBoard(); }
     },
     commandWindow() {
-      this.$router.push({ name: 'search' });
+      if (this.boardId) {
+        this.$router.push({ name: 'search_board' });
+      } else {
+        this.$router.push({ name: 'search' });
+      }
     },
     backToBoard() {
-      this.setCurrentIssue({ issue: {} });
-      this.$router.push({ name: 'board', id: this.boardId });
+      if (this.boardId) {
+        this.setCurrentIssue({ issue: {} });
+        this.$router.push({ name: 'board', id: this.boardId });
+      } else {
+        this.goToBoards();
+      }
+    },
+    goToBoards() {
+      this.$router.push({ name: 'boards' });
     },
     signout() {
       this.logout();
