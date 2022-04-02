@@ -54,6 +54,12 @@ const routes = [
         name: 'issue_new',
         component: IssueNew
       }, {
+        path: 'search',
+        name: 'search',
+        components: {
+          center: () => import('../views/search.vue')
+        }
+      }, {
         path: 'notes',
         name: 'notes',
         components: {

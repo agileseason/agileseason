@@ -1,5 +1,8 @@
 <template>
-  <GlobalEvents @keyup.esc='close' />
+  <GlobalEvents
+    @keyup.esc='close'
+    @keypress.prevent.ctrl.k='commandWindow'
+  />
 
   <div class='menu'>
     <div
@@ -55,7 +58,7 @@
   <div
     class='modal-overlay'
     v-if='isLoaded'
-    v-show='isChartOpen || isNotesOpen'
+    v-show='isChartOpen || isNotesOpen || isSearchOpen'
     @click.self='backToBoard'
   >
     <router-view v-slot='{ Component }' name='center'>
@@ -101,6 +104,7 @@ export default {
     },
     isShowSettings() { return this.isBoardReady && this.isBoardOwner; },
     isNotesOpen() { return this.$route.name === 'notes'; },
+    isSearchOpen() { return this.$route.name === 'search'; },
     isChartOpen() { return this.$route.name === 'issues_age_chart'; }
   },
   async created() {
@@ -116,6 +120,10 @@ export default {
     close() {
       if (this.isExpanded) { this.isExpanded = false; }
       if (this.$route.name === 'notes') { this.backToBoard(); }
+      if (this.$route.name === 'search') { this.backToBoard(); }
+    },
+    commandWindow() {
+      this.$router.push({ name: 'search' });
     },
     backToBoard() {
       this.setCurrentIssue({ issue: {} });
