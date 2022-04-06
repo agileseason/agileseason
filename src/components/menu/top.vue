@@ -1,5 +1,10 @@
 <template>
-  <GlobalEvents @keyup.esc='close' />
+  <GlobalEvents
+    @keyup.esc='close'
+    @keypress.prevent.ctrl.k='commandWindow'
+    @keypress.prevent.ctrl.b='goToBoards'
+  />
+
   <div class='menu'>
     <div
       class='left-button'
@@ -50,6 +55,19 @@
       <router-link v-if='isShowSettings' class='icon settings' :to='boardSettingsUrl' />
     </div>
   </div>
+
+  <div
+    class='modal-overlay'
+    v-if='isLoaded'
+    v-show='isChartOpen || isNotesOpen || isSearchOpen'
+    @click.self='backToBoard'
+  >
+    <router-view v-slot='{ Component }' name='center'>
+      <transition name='slide' :duration='200'>
+        <component :is='Component' />
+      </transition>
+    </router-view>
+  </div>
 </template>
 
 <script>
@@ -85,9 +103,12 @@ export default {
     isBoardReady() {
       return this.boardId > 0 && this.isBoardLoaded;
     },
-    isShowSettings() {
-      return this.isBoardReady && this.isBoardOwner;
-    }
+    isShowSettings() { return this.isBoardReady && this.isBoardOwner; },
+    isNotesOpen() { return this.$route.name === 'notes'; },
+    isSearchOpen() {
+      return this.$route.name === 'search' || this.$route.name === 'search_board';
+    },
+    isChartOpen() { return this.$route.name === 'issues_age_chart'; }
   },
   async created() {
     await this.fetchProfileLazy();
@@ -95,16 +116,31 @@ export default {
   methods: {
     ...call([
       'user/fetchProfileLazy',
-      'user/logout'
+      'user/logout',
+      'board/setCurrentIssue'
     ]),
-    toggle() {
-      this.isExpanded = !this.isExpanded;
-    },
+    toggle() { this.isExpanded = !this.isExpanded; },
     close() {
       if (this.isExpanded) { this.isExpanded = false; }
-      if (this.$route.name === 'notes') {
-        this.$router.push({ name: 'board', id: this.boardId });
+      if (this.isNotesOpen || this.isSearchOpen) { this.backToBoard(); }
+    },
+    commandWindow() {
+      if (this.boardId) {
+        this.$router.push({ name: 'search_board' });
+      } else {
+        this.$router.push({ name: 'search' });
       }
+    },
+    backToBoard() {
+      if (this.boardId) {
+        this.setCurrentIssue({ issue: {} });
+        this.$router.push({ name: 'board', id: this.boardId });
+      } else {
+        this.goToBoards();
+      }
+    },
+    goToBoards() {
+      this.$router.push({ name: 'boards' });
     },
     signout() {
       this.logout();

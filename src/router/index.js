@@ -39,9 +39,18 @@ const routes = [
     path: '/boards',
     name: 'boards',
     component: Boards,
-    beforeEnter: requireAuth
+    beforeEnter: requireAuth,
+    children: [
+      {
+        path: 'search',
+        name: 'search',
+        components: {
+          center: () => import('../views/search.vue')
+        }
+      }
+    ]
   }, {
-    path: '/boards/:id',
+    path: '/boards/:id(\\d+)',
     name: 'board',
     component: Board,
     children: [
@@ -53,6 +62,12 @@ const routes = [
         path: 'columns/:columnId/issues/new',
         name: 'issue_new',
         component: IssueNew
+      }, {
+        path: 'search',
+        name: 'search_board',
+        components: {
+          center: () => import('../views/search.vue')
+        }
       }, {
         path: 'notes',
         name: 'notes',
