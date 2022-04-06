@@ -11,6 +11,7 @@
       class='board'
       :class="{ 'selected': $index === selectedIndex }"
       @click='goto(board)'
+      @mouseenter='hover($index)'
     >
       <div class='name'>
         {{ board.name }}
@@ -53,6 +54,9 @@ export default {
       if (board == null) { return; }
       this.goto(board);
     },
+    hover(index) {
+      this.selectedIndex = index;
+    },
     up() {
       if (
         this.selectedIndex === undefined ||
@@ -94,8 +98,8 @@ export default {
     display: flex
     justify-content: space-between
 
-    &.selected,
-    &:hover
+    //&:hover
+    &.selected
       background-color: #e8eaf6
 
     &:not(:last-child)
