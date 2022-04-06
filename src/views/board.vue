@@ -93,6 +93,13 @@ export default {
     await this.fetchProfileLazy();
     await this.fetch({ id: this.boardId });
   },
+  watch: {
+    boardId(newValue, oldValue) {
+      if (newValue === oldValue) { return; }
+      if (newValue == null || isNaN(newValue)) { return; }
+      this.fetch({ id: this.boardId });
+    }
+  },
   methods: {
     ...call([
       'user/fetchProfileLazy',
