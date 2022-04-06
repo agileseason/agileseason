@@ -1,8 +1,9 @@
 <template>
   <GlobalEvents
+    :filter="(event, handler, eventName) => event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA'"
     @keyup.esc='close'
-    @keypress.prevent.ctrl.k='commandWindow'
-    @keypress.prevent.ctrl.b='goToBoards'
+    @keypress.prevent.ctrl.k.exact='commandWindow'
+    @keypress.prevent.ctrl.b.exact='goToBoards'
   />
 
   <div class='menu'>
