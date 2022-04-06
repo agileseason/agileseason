@@ -12,7 +12,12 @@
       :class="{ 'selected': $index === selectedIndex }"
       @click='goto(board)'
     >
-      {{ board.name }}
+      <div class='name'>
+        {{ board.name }}
+      </div>
+      <!--div v-if='$index === selectedIndex' class='hint'>
+        Enter
+      </div-->
     </div>
   </Modal>
 </template>
@@ -84,10 +89,10 @@ export default {
   box-sizing: border-box
 
   .board
-    color: #212121
     cursor: pointer
-    font-weight: 500
     padding: 14px 20px
+    display: flex
+    justify-content: space-between
 
     &.selected,
     &:hover
@@ -95,4 +100,12 @@ export default {
 
     &:not(:last-child)
       border-bottom: 1px solid #c5cae9
+
+    .name
+      font-weight: 500
+      color: #212121
+
+    .hint
+      color: #9fa8da
+      font-weight: 200
 </style>
