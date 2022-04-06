@@ -125,6 +125,7 @@ export default {
       if (this.isNotesOpen || this.isSearchOpen) { this.backToBoard(); }
     },
     commandWindow() {
+      if (this.boards.length === 0) { return; }
       if (this.boardId) {
         this.$router.push({ name: 'search_board' });
       } else {
