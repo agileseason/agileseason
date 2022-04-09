@@ -64,8 +64,8 @@ a {
 
 .markdown-body code {
   background-color: #e8eaf6;
-  border-radius: 6px;
-  padding: 2px 6px;
+  border-radius: 4px;
+  padding: 1px 4px;
 }
 
 .markdown-body pre code {
@@ -132,6 +132,7 @@ a {
 .markdown-body li.task-item label {
   cursor: pointer;
   display: flex;
+  margin-bottom: 2px;
 }
 
 .markdown-body li.task-item label:hover {
@@ -141,6 +142,10 @@ a {
 
 .markdown-body li.task-item label > input {
   margin-right: 6px;
+}
+.markdown-body li.task-item label > code {
+  margin: 0 4px;
+  padding: 0 4px;
 }
 
 .markdown-body li.task-item > ul {
