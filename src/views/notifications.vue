@@ -10,8 +10,23 @@
 
     <Loader v-if='isLoading' color='white' />
     <div v-else class='notifications'>
-      <div v-for='item in items' :key='item.id' class='notification'>
-        {{item.id}} {{item.action}}
+      <div v-if='isEmpty' class='empty'>
+        There are no notifications for this board yet.
+      </div>
+
+      <div
+        v-for='item in items'
+        :key='item.id'
+        class='notification'
+        @click='click(item)'
+      >
+        <div class='issue' v-if='item.issue'>
+          <div class='title'>{{ item.issue.title }}</div>
+        </div>
+        <div class='description'>
+          <span v-if='item.sender' class='login'>{{ item.sender.login }}</span>
+          {{ description(item) }}
+        </div>
       </div>
     </div>
 
@@ -48,6 +63,31 @@ export default {
     ]),
     close() {
       this.$router.push({ name: 'board', id: this.boardId });
+    },
+    click({ issue }) {
+      if (issue == null) { return; }
+
+      this.$router.push({
+        name: 'issue',
+        params: { issueId: issue.id, issueNumber: issue.number }
+      });
+    },
+    description({ sender, issue, action, createdAgo }) {
+      if (sender == null) {
+        if (issue) {
+          return `Issue was ${this.actionText(action)} ${createdAgo}`;
+        }
+      } else {
+        if (issue) {
+          // return `${this.actionText(action)} #${issue.number} ${createdAgo}`;
+          return `${this.actionText(action)} the issue ${createdAgo}`;
+        }
+      }
+    },
+    actionText(action) {
+      if (action === 'issue_archived') { return 'archived'; }
+      if (action === 'issue_unarchived') { return 'unarchived'; }
+      return '';
     }
   }
 }
@@ -100,6 +140,35 @@ export default {
     color: #fff
     text-align: center
     margin-top: 40%
+
+  .notification
+    background-color: #fff
+    border-radius: 3px
+    margin-bottom: 8px
+    padding: 8px
+    cursor: pointer
+
+    &:hover
+      background-color: #e8eaf6
+
+    &:active
+      background-color: #c5cae9
+
+    .issue
+      .title
+        color: #212121
+        font-size: 15px
+        font-weight: 500
+        line-height: 18px
+        word-break: break-word
+
+    .description
+      color: #303f9f
+      font-size: 12px
+      margin-top: 4px
+
+      .login
+        font-weight: 500
 
 .right-side
   background-color: #283593

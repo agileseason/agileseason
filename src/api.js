@@ -752,7 +752,8 @@ export default {
             action
             createdAt
             createdAgo
-            sender { login url avatarUrl }
+            issue { id number title }
+            sender { login }
           }
         }
       }
