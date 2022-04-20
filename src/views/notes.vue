@@ -163,7 +163,7 @@ export default {
   font-size: 16px
   font-weight: 500
   height: 36px
-  margin: 0px 8px
+  margin: 0px 8px 0 6px
   display: flex
   align-items: center
   justify-content: space-between
