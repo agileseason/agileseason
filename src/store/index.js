@@ -8,6 +8,7 @@ import boardSync from './modules/board_sync';
 import installations from './modules/installations';
 import issue from './modules/issue';
 import notes from './modules/notes';
+import notifications from './modules/notifications';
 import repositories from './modules/repositories';
 import user from './modules/user';
 
@@ -27,6 +28,7 @@ export default createStore({
     installations,
     issue,
     notes,
+    notifications,
     repositories,
     user
   }

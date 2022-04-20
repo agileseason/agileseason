@@ -18,14 +18,12 @@ export default {
   },
 
   actions: {
-    // TODO: Remove boardId from args
     async fetch({ commit, getters }, { boardId }) {
       commit('START_LOADING');
       const items = await api.fetchNotes(getters.token, { boardId });
       commit('FINISH_LOADING', items || []);
       return items;
     },
-    // TODO: Remove boardId from args
     async createNote({ commit, getters }, { boardId, body, isPrivate }) {
       const result = await api.createNote(
         getters.token,

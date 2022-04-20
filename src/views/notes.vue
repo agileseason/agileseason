@@ -66,7 +66,10 @@
           </template>
         </MarkdownEditor>
       </div>
-      <div v-if='isEmpty' class='empty'>There are no notes for this board. Be the first! :)</div>
+
+      <div v-if='isEmpty' class='empty'>
+        There are no notes for this board. Be the first! :)
+      </div>
 
       <Note
         v-for='item in items'
