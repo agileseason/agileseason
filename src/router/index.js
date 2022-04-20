@@ -69,6 +69,12 @@ const routes = [
           center: () => import('../views/search.vue')
         }
       }, {
+        path: 'notifications',
+        name: 'notifications',
+        components: {
+          center: () => import('../views/notifications.vue')
+        }
+      }, {
         path: 'notes',
         name: 'notes',
         components: {

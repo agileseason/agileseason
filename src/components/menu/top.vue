@@ -51,6 +51,7 @@
       </div>
     </div>
     <div class='right'>
+      <router-link v-if='isBoardReady' class='icon notifications' :to='boardNotificationsUrl' />
       <router-link v-if='isBoardReady' class='icon charts' :to='boardIssuesAgeChartUrl' />
       <router-link v-if='isBoardReady' class='icon notes' :to='boardNotesUrl' />
       <router-link v-if='isShowSettings' class='icon settings' :to='boardSettingsUrl' />
@@ -60,7 +61,7 @@
   <div
     class='modal-overlay'
     v-if='isLoaded'
-    v-show='isChartOpen || isNotesOpen || isSearchOpen'
+    v-show='isNotificationsOpen || isChartOpen || isNotesOpen || isSearchOpen'
     @click.self='backToBoard'
   >
     <router-view v-slot='{ Component }' name='center'>
@@ -98,13 +99,15 @@ export default {
     isBoardOwner: get('board/isOwner'),
     isFull() { return this.boards.length > 0; },
     boardId() { return parseInt(this.$route.params.id) || 0; },
-    boardSettingsUrl() { return `/boards/${this.boardId}/settings`; },
-    boardNotesUrl() { return `/boards/${this.boardId}/notes`; },
+    boardNotificationsUrl() { return `/boards/${this.boardId}/notifications`; },
     boardIssuesAgeChartUrl() { return `/boards/${this.boardId}/charts/age`; },
+    boardNotesUrl() { return `/boards/${this.boardId}/notes`; },
+    boardSettingsUrl() { return `/boards/${this.boardId}/settings`; },
     isBoardReady() {
       return this.boardId > 0 && this.isBoardLoaded;
     },
     isShowSettings() { return this.isBoardReady && this.isBoardOwner; },
+    isNotificationsOpen() { return this.$route.name === 'notifications'; },
     isNotesOpen() { return this.$route.name === 'notes'; },
     isSearchOpen() {
       return this.$route.name === 'search' || this.$route.name === 'search_board';
@@ -311,12 +314,15 @@ export default {
     &:active
       background-color: #303f9f
 
+    &.notifications
+      background-image: url('../../assets/icons/menu/bell.svg')
+
+    &.charts
+      background-image: url('../../assets/icons/menu/graph.svg')
+
     &.settings
       background-image: url('../../assets/icons/menu/gear.svg')
 
     &.notes
       background-image: url('../../assets/icons/menu/note.svg')
-
-    &.charts
-      background-image: url('../../assets/icons/menu/graph.svg')
 </style>
