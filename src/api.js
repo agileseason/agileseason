@@ -743,6 +743,26 @@ export default {
     return data?.action;
   },
 
+  async fetchNotifications(token, { boardId }) {
+    const query = `
+      query($id:Int!) {
+        board(id: $id) {
+          items:notifications {
+            id
+            action
+            createdAt
+            createdAgo
+            sender { login url avatarUrl }
+          }
+        }
+      }
+    `;
+    const data = await this.client(token).request(query, { id: boardId });
+    this.log('notifications', data);
+
+    return data?.board?.items;
+  },
+
   async fetchNotes(token, { boardId }) {
     const query = `
       query($id:Int!) {

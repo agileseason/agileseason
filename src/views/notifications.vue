@@ -10,7 +10,9 @@
 
     <Loader v-if='isLoading' color='white' />
     <div v-else class='notifications'>
-      TODO
+      <div v-for='item in items' :key='item.id' class='notification'>
+        {{item.id}} {{item.action}}
+      </div>
     </div>
 
   </Modal>
@@ -30,11 +32,11 @@ export default {
   props: {},
   data: () => ({}),
   computed: {
-    isLoading: get('notes/isLoading'),
-    items: get('notes/items'),
+    isLoading: get('notifications/isLoading'),
+    items: get('notifications/items'),
     boardId() { return parseInt(this.$route.params.id); },
     isEmpty() {
-      return !this.isLoading && this.items.length === 0 && !this.isNew;
+      return !this.isLoading && this.items.length === 0;
     }
   },
   async mounted() {
@@ -42,8 +44,7 @@ export default {
   },
   methods: {
     ...call([
-      'notes/fetch',
-      'notes/createNote'
+      'notifications/fetch'
     ]),
     close() {
       this.$router.push({ name: 'board', id: this.boardId });
