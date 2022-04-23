@@ -752,7 +752,12 @@ export default {
             action
             createdAt
             createdAgo
-            issue { id number title }
+            issue {
+              id
+              number
+              title
+              labels { name color }
+            }
             sender { login }
           }
         }

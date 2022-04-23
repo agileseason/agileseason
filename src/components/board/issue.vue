@@ -148,9 +148,9 @@ export default {
     AppDrop,
     Avatar,
     ButtonIcon,
-    OnlineEdit,
     FastButton,
     Label,
+    OnlineEdit,
     Progress
   },
   props: {

@@ -22,6 +22,13 @@
       >
         <div class='issue' v-if='item.issue'>
           <div class='title'>{{ item.issue.title }}</div>
+          <div v-if='item.issue.labels' class='labels'>
+            <Label
+              v-for='(label, $index) in item.issue.labels'
+              :label='label'
+              :key='$index'
+            />
+          </div>
         </div>
         <div class='description'>
           <span v-if='item.sender' class='login'>{{ item.sender.login }}</span>
@@ -34,6 +41,7 @@
 </template>
 
 <script>
+import Label from '@/components/board/label';
 import Loader from '@/components/loader';
 import Modal from '@/components/modal';
 
@@ -41,6 +49,7 @@ import { get, call } from 'vuex-pathify';
 
 export default {
   components: {
+    Label,
     Loader,
     Modal
   },
@@ -162,6 +171,9 @@ export default {
         font-weight: 500
         line-height: 18px
         word-break: break-word
+
+      .label
+        margin: 3px 6px 3px 0
 
     .description
       color: #303f9f
