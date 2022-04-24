@@ -95,6 +95,8 @@ export default {
     },
     actionText(action) {
       if (action === 'issue_opened') { return 'opened'; }
+      if (action === 'issue_closed') { return 'closed'; }
+      if (action === 'issue_reopened') { return 'reopened'; }
       if (action === 'issue_archived') { return 'archived'; }
       if (action === 'issue_unarchived') { return 'unarchived'; }
       return '';
