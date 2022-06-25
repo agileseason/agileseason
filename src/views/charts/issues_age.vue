@@ -1,9 +1,11 @@
 <template>
+  <GlobalEvents @keydown.esc='backToBoard' />
   <Modal class='modal-chart'>
     <Tabs
       :items='tabs'
       :active='activeTab'
     />
+    <div class='close' @click='backToBoard' />
     <div class='body'>
       <VueApexCharts
         type='bar'
@@ -62,6 +64,7 @@ import Modal from '@/components/modal.vue';
 import Tabs from '@/components/tabs/tabs';
 
 import VueApexCharts from 'vue3-apexcharts';
+import { GlobalEvents } from 'vue-global-events';
 import { get } from 'vuex-pathify';
 
 const MONTHS = [
@@ -72,6 +75,7 @@ const MONTHS = [
 export default {
   components: {
     Avatar,
+    GlobalEvents,
     Label,
     Modal,
     Tabs,
@@ -179,6 +183,16 @@ export default {
       const column = this.columnsMap[columnId];
       if (column == null) return '';
       return column.name;
+    },
+    backToBoard() {
+      if (this.boardId) {
+        this.$router.push({ name: 'board', id: this.boardId });
+      } else {
+        this.goToBoards();
+      }
+    },
+    goToBoards() {
+      this.$router.push({ name: 'boards' });
     }
   }
 }
@@ -188,15 +202,30 @@ export default {
 .modal-chart
   max-width: 90%
   width: 90%
+  position: relative
 
   .body
     max-height: calc(100vh - 106px)
     overflow-y: scroll
     padding: 10px 14px
 
-  .tabs
-    // background-color: #e8eaf6
-    // border-bottom: 1px solid #c5cae9
+  .close
+    background-image: url('../../assets/icons/issue/x_close.svg')
+    background-position: center
+    background-repeat: no-repeat
+    cursor: pointer
+    height: 10px
+    padding: 6px
+    position: absolute
+    right: 12px
+    top: 12px
+    width: 10px
+
+    &:hover
+      opacity: 0.7
+
+    &:active
+      opacity: 0.9
 
 .issues
   .row
