@@ -155,7 +155,6 @@ export default {
   },
   props: {
     id: { type: Number, required: true },
-    issueIndex: { type: Number, required: true },
     number: { type: Number, required: true },
     title: { type: String, required: true },
     url: { type: String, required: true },
@@ -172,7 +171,11 @@ export default {
     totalSubtasks: { type: Number, required: true },
     doneSubtasks: { type: Number, required: true },
     isLastColumn: { type: Boolean, default: false },
-    isReadOnly: { type: Boolean, default: false }
+    isReadOnly: { type: Boolean, default: false },
+
+    // Drag & Drop
+    issueIndex: { type: Number, required: true },
+    columnIndex: { type: Number, required: true }
   },
   mixins: [movingIssuesAndColumns],
   data: () => ({

@@ -255,6 +255,18 @@ export default {
       const column = state.columns.find(v => v.id === issue.columnId);
       if (column == null) { return; }
 
+      // Testing hotfix for drag & drop - проблема в том, что просто фильтравать
+      // на доске архивированные issue нельзя, т.к. не успевает обновиться
+      // индексация issue и после этого issueIndex берется не тот, поэтому
+      // удаляют issue полностью из списка. Если поможет, что нужно удалить
+      // фильтрацию архивных issue (см. notArchivedIssues в column.vue).
+      // А так же починить #22 т.к. теперь это еще более актуально.
+      if (issue.isArchived) {
+        const index = column.issues.findIndex(v => v.id === issue.id);
+        column.issues.splice(index, 1);
+        return;
+      }
+
       const boardIssue = column.issues.find(v => v.id === issue.id);
       if (boardIssue == null) { return; }
 
