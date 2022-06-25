@@ -19,6 +19,8 @@
 // 6. drop
 // 7. dragend
 
+import * as Sentry from '@sentry/browser';
+
 export default {
   props: {
     transferData: {
@@ -28,8 +30,14 @@ export default {
   },
   methods: {
     onDrop(e) {
-      const transferData = JSON.parse(e.dataTransfer.getData('payload'));
-      this.$emit('drop', transferData);
+      const payload = e.dataTransfer.getData('payload');
+      try {
+        const transferData = JSON.parse(payload);
+        this.$emit('drop', transferData);
+      } catch (e) {
+        Sentry.setContext('transferData', { payload });
+        Sentry.captureException(e);
+      }
     },
     onDragenter() {
       this.$emit('dragenter', this.transferData);
