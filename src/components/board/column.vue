@@ -322,7 +322,7 @@ export default {
   margin-right: 7px // (+1px from issue border)
   position: relative
   vertical-align: top
-  width: 270px
+  width: 280px
 
   .header
     margin-bottom: 7px // 8px - 1px for issue border
@@ -331,6 +331,10 @@ export default {
       // cursor: grab
       // cursor: grabbing
       cursor: pointer
+
+    &.read-only
+      .name
+        width: 220px
 
     .issues-count
       background-color: #C5CAE9
@@ -352,6 +356,19 @@ export default {
       font-weight: 500
       line-height: 24px
       vertical-align: bottom
+      width: 174px
+      white-space: nowrap
+      overflow: hidden
+      position: relative
+
+      &:before
+        box-shadow: inset -26px 0 16px -20px #e8eaf6
+        position: absolute
+        right: 0
+        content: ''
+        top: 0
+        height: 24px
+        width: 20px
 
     .icons
       .icon

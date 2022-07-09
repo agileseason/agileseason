@@ -68,7 +68,7 @@ export default {
   display: inline-block
   position: relative
   vertical-align: top
-  width: 270px
+  width: 280px
 
   input.name
     background-color: #7986cb
