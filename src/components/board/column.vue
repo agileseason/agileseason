@@ -11,11 +11,15 @@
     >
       <div v-if='isAnySelectsOpen' class='select-overlay' @click.self='hideAllSelects' />
       <div class='header' :class="{ 'read-only': isReadOnly }">
-        <span class='issues-count'>{{ issuesCount }}</span>
-        <span class='name'>{{ name }}</span>
-        <span v-if='isIcons' class='icons'>
-          <span v-if='isAutoAssign' class='icon is-auto-assign' title='Auto-assign youself' />
-          <span v-if='isAutoClose' class='icon is-auto-close' title='Auto-close issue' />
+      <span class='issues-count'>{{ issuesCount }}</span>
+        <span class='name-wrapper'>
+          <span class='name'>
+            {{ name }}
+          </span>
+          <span v-if='isIcons' class='icons'>
+            <span v-if='isAutoAssign' class='icon is-auto-assign' title='Auto-assign youself' />
+            <span v-if='isAutoClose' class='icon is-auto-close' title='Auto-close issue' />
+          </span>
         </span>
         <div v-if='!isReadOnly' class='actions'>
           <div class='issue-new' @click='issueNew' />
@@ -154,10 +158,11 @@ export default {
     notArchivedIssues() { return this.issues.filter(issue => !issue.isArchived); },
     isAnySelectsOpen() { return this.isSettingsOpen; },
     deleteDialogTitle() { return `Delete ${ this.name }`; },
-    isIcons() { return this.isAutoAssign || this.isAutoClose; },
-    isDroppable() {
-      return this.dragenterColumnId == this.id;
-    }
+    isIcons() {
+      if (this.isReadOnly) return false;
+      return this.isAutoAssign || this.isAutoClose;
+    },
+    isDroppable() { return this.dragenterColumnId == this.id; }
   },
   methods: {
     ...call([
@@ -326,14 +331,17 @@ export default {
 
   .header
     margin-bottom: 7px // 8px - 1px for issue border
+    display: flex
+    align-items: center
+    //width: 280px
 
     &:not(.read-only)
       // cursor: grab
       // cursor: grabbing
       cursor: pointer
 
-    &.read-only
-      .name
+    //&.read-only
+      .name-wrapper
         width: 220px
 
     .issues-count
@@ -349,47 +357,55 @@ export default {
       min-width: 24px
       padding: 0 8px
       text-align: center
+      flex-shrink: 0
 
-    .name
-      color: #283593
-      display: inline-block
-      font-weight: 500
-      line-height: 24px
-      vertical-align: bottom
-      width: 174px
-      white-space: nowrap
-      overflow: hidden
-      position: relative
+    .name-wrapper
+      display: flex
+      align-items: center
+      flex-grow: 1
+      min-width: 100px // magic styles
 
-      &:before
-        box-shadow: inset -26px 0 16px -20px #e8eaf6
-        position: absolute
-        right: 0
-        content: ''
-        top: 0
-        height: 24px
-        width: 20px
-
-    .icons
-      .icon
-        background-position: center
-        background-repeat: no-repeat
+      .name
+        color: #283593
         display: inline-block
-        height: 16px
-        margin-left: 6px
+        font-weight: 500
+        line-height: 24px
         vertical-align: bottom
-        width: 16px
+        white-space: nowrap
+        overflow: hidden
+        position: relative
 
-        &.is-auto-assign
-          margin-bottom: 3px
-          background-image: url('../../assets/icons/column/person.svg')
+        //&:before
+          box-shadow: inset -26px 0 16px -20px #e8eaf6
+          position: absolute
+          right: 0
+          content: ''
+          top: 0
+          height: 24px
+          width: 20px
 
-        &.is-auto-close
-          background-image: url('../../assets/icons/column/closed.svg')
-          margin-bottom: 4px
+      .icons
+        flex-shrink: 0
+
+        .icon
+          background-position: center
+          background-repeat: no-repeat
+          display: inline-block
+          height: 16px
+          margin-left: 6px
+          vertical-align: bottom
+          width: 16px
+
+          &.is-auto-assign
+            background-image: url('../../assets/icons/column/person.svg')
+
+          &.is-auto-close
+            background-image: url('../../assets/icons/column/closed.svg')
+            margin-bottom: 1px
 
     .actions
-      float: right
+      flex-shrink: 0
+      display: flex
 
       .issue-new,
       .column-settings
