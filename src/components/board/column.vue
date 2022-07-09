@@ -355,7 +355,7 @@ export default {
       line-height: 24px
       margin-right: 8px
       min-width: 24px
-      padding: 0 8px
+      padding: 0 6px
       text-align: center
       flex-shrink: 0
 
