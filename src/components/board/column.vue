@@ -375,15 +375,6 @@ export default {
         overflow: hidden
         position: relative
 
-        //&:before
-          box-shadow: inset -26px 0 16px -20px #e8eaf6
-          position: absolute
-          right: 0
-          content: ''
-          top: 0
-          height: 24px
-          width: 20px
-
       .icons
         flex-shrink: 0
 
