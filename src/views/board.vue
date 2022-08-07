@@ -81,7 +81,7 @@ export default {
       return this.boards.find(v => v.id === this.boardId)?.name || 'Board';
     },
     widthStyles() {
-      return this.isLoaded ? { 'min-width': `${280 * (this.columns.length + 1)}px` } : {};
+      return this.isLoaded ? { 'min-width': `${287 * (this.columns.length + 1)}px` } : {};
     },
     isModalOpen() {
       return this.$route.name === 'issue' ||
