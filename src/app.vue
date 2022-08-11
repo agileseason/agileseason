@@ -132,6 +132,7 @@ a {
 .markdown-body li.task-item label {
   cursor: pointer;
   display: flex;
+  flex-wrap: wrap;
   margin-bottom: 2px;
 }
 
