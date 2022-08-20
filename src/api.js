@@ -192,6 +192,7 @@ export default {
           id
           name
           isOwner
+          cacheKey
           columns {
             id name position isAutoAssign isAutoClose
             issues {
@@ -210,6 +211,20 @@ export default {
     this.log('board', data);
 
     return data?.board;
+  },
+
+  async fetchBoardCacheKey(token, { id }) {
+    const query = `
+      query($id:Int!) {
+        board(id: $id) {
+          cacheKey
+        }
+      }
+    `;
+    const data = await this.client(token).request(query, { id });
+    this.log('boardCacheKey', data);
+
+    return data?.board?.cacheKey;
   },
 
   async fetchSharedBoard({ sharedToken }) {

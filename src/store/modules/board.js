@@ -7,6 +7,7 @@ export default {
     id: undefined,
     name: undefined,
     isOwner: undefined,
+    cacheKey: undefined,
     columns: [],
     repositories: [],
     isLoading: true,
@@ -45,6 +46,23 @@ export default {
       } else {
         commit('FINISH_LOADING', board);
       }
+    },
+
+    async silentFetch({ commit, getters }, { id }) {
+      const board = await api.fetchBoard(
+        getters.token,
+        { id }
+      );
+      if (board != null) {
+        commit('FINISH_LOADING', board);
+      }
+    },
+
+    async fetchBoardCacheKey({ getters }, { id }) {
+      return await api.fetchBoardCacheKey(
+        getters.token,
+        { id }
+      );
     },
 
     async createColumn({ commit, state, getters }, { name }) {
@@ -330,10 +348,11 @@ export default {
       state.isLoaded = false;
     },
     FINISH_LOADING(state, board) {
-      const { id, name, columns, repositories, isOwner } = board;
+      const { id, name, columns, repositories, isOwner, cacheKey } = board;
       state.id = id;
       state.name = name;
       state.isOwner = isOwner;
+      state.cacheKey = cacheKey;
       state.columns = columns;
       state.repositories = repositories;
       state.isLoading = false;

@@ -62,6 +62,7 @@ export default {
     TopMenu
   },
   data: () => ({
+    refreshDelaySec: 30,
     refreshInterval: null,
     isSubmittingNewColumn: false
   }),
@@ -70,6 +71,7 @@ export default {
     boards: get('user/boards'),
     issueModalStyle: get('user/issueModalStyle'),
     columns: get('board/columns'),
+    cacheKey: get('board/cacheKey'),
     isOwner: get('board/isOwner'),
     isLoaded: get('board/isLoaded'),
     isLoading: get('board/isLoading'),
@@ -108,7 +110,9 @@ export default {
       'user/fetchProfileLazy',
       'board/createColumn',
       'board/setCurrentIssue',
-      'board/fetch'
+      'board/fetch',
+      'board/silentFetch',
+      'board/fetchBoardCacheKey'
     ]),
     async createNewColumn(name) {
       if (this.isSubmittingNewColumn) { return; }
@@ -121,9 +125,12 @@ export default {
       this.$router.push({ name: 'board', id: this.boardId });
     },
     refreshBoard() {
-      this.refreshInterval = setInterval(() => {
-        console.log('refresh', this.boardId);
-      }, 5000);
+      this.refreshInterval = setInterval(async () => {
+        const key = await this.fetchBoardCacheKey({ id: this.boardId });
+        if (key !== this.cacheKey) {
+          this.silentFetch({ id: this.boardId });
+        }
+      }, this.refreshDelaySec * 1000);
     }
   },
   mounted() {
