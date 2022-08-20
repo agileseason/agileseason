@@ -62,6 +62,7 @@ export default {
     TopMenu
   },
   data: () => ({
+    refreshInterval: null,
     isSubmittingNewColumn: false
   }),
   computed: {
@@ -97,7 +98,9 @@ export default {
     boardId(newValue, oldValue) {
       if (newValue === oldValue) { return; }
       if (newValue == null || isNaN(newValue)) { return; }
+      if (this.refreshInterval) { clearInterval(this.refreshInterval); }
       this.fetch({ id: this.boardId });
+      this.refreshBoard();
     }
   },
   methods: {
@@ -116,8 +119,19 @@ export default {
     backToBoard() {
       this.setCurrentIssue({ issue: {} });
       this.$router.push({ name: 'board', id: this.boardId });
+    },
+    refreshBoard() {
+      this.refreshInterval = setInterval(() => {
+        console.log('refresh', this.boardId);
+      }, 5000);
     }
-  }
+  },
+  mounted() {
+    this.refreshBoard();
+  },
+  beforeUnmount() {
+    if (this.refreshInterval) { clearInterval(this.refreshInterval); }
+  },
 }
 </script>
 
