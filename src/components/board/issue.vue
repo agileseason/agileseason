@@ -317,12 +317,12 @@ export default {
     display: inline-block
 
     .number
-      color: #616161
+      color: #455a64
       font-weight: 500
 
   a.url
     &:hover
-      color: #616161
+      color: #455a64
 
   .assigned-or-extra
     display: flex
@@ -417,7 +417,7 @@ export default {
 
       a.url // avoid hover in shared mode for span.url
         &:hover
-          color: #616161
+          color: #455a64
 
       .assignees
         display: flex
