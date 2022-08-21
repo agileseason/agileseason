@@ -300,6 +300,7 @@ export default {
       'board/updateIssue',
       'board/updateIssueState',
       'board/updateBoardIssue',
+      'board/silentFetch',
       'issue/fetch',
       'issue/update',
       'issue/fetchComments',
@@ -486,6 +487,8 @@ export default {
         columnId: this.fetchedIssue.columnId,
         isArchived: false
       });
+      const boardId = parseInt(this.$route.params.id);
+      if (boardId) { this.silentFetch({ id: boardId }); }
       this.isArchiveSubmitting = false;
     },
     cancelEditBody() {
