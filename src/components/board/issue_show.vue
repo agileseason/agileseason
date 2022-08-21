@@ -487,7 +487,7 @@ export default {
         columnId: this.fetchedIssue.columnId,
         isArchived: false
       });
-      const boardId = parseInt(this.$route.params.id) || 0;0
+      const boardId = parseInt(this.$route.params.id) || 0;
       this.silentFetch({ id: boardId });
       this.isArchiveSubmitting = false;
     },
