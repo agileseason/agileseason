@@ -221,7 +221,6 @@ export default {
     isStateSubmitting: false,
     isArchiveSubmitting: false,
     isCommentSubmitting: false,
-    isTaskChecking: false,
     assignableUsers: []
   }),
   computed: {
@@ -518,20 +517,14 @@ export default {
       );
     },
     async taskClickHandler({ detail }) {
-      if (this.isTaskChecking) { return; }
-
-      this.isTaskChecking = true;
       const { textOld, textNew } = detail;
       this.newBody = this.newBody.replace(textOld, textNew);
       this.tmpBody = this.newBody;
-      // Unnecessary here. Remove after 01.07.2022 if checkboxes will fixed.
-      // this.update({ body: this.newBody });
       await this.updateIssue({
         id: this.id,
         body: this.newBody,
         columnId: this.fetchedIssue.columnId
       });
-      this.isTaskChecking = false;
     }
   }
 }
