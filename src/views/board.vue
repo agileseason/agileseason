@@ -62,7 +62,7 @@ export default {
     TopMenu
   },
   data: () => ({
-    refreshDelaySec: 30,
+    refreshDelaySec: 45,
     refreshInterval: null,
     isSubmittingNewColumn: false
   }),
