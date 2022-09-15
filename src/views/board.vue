@@ -76,6 +76,7 @@ export default {
     isLoaded: get('board/isLoaded'),
     isLoading: get('board/isLoading'),
     isNotFound: get('board/isNotFound'),
+    loadedAt: get('board/loadedAt'),
     sortedColumns() {
       return [...this.columns].sort((a, b) => (a.position - b.position));
     },
@@ -126,6 +127,13 @@ export default {
     },
     refreshBoard() {
       this.refreshInterval = setInterval(async () => {
+        if (this.isNotFound) return;
+        if (this.loadedAt == null) return;
+
+        const now = new Date();
+        const planLoadedAt = now.setSeconds(now.getSeconds() - this.refreshDelaySec + 1);
+        if (this.loadedAt > planLoadedAt) return;
+
         const key = await this.fetchBoardCacheKey({ id: this.boardId });
         if (key !== this.cacheKey) {
           this.silentFetch({ id: this.boardId });

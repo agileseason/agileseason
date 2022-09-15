@@ -13,7 +13,8 @@ export default {
     isLoading: true,
     isLoaded: false,
     currentIssue: {},
-    dragenterColumnId: undefined
+    dragenterColumnId: undefined,
+    loadedAt: undefined,
   },
 
   getters: {
@@ -139,6 +140,7 @@ export default {
           }
         );
       }
+      commit('TOUCH_LOADED_AT');
       await api.moveIssues(
         getters.token,
         {
@@ -357,6 +359,7 @@ export default {
       state.repositories = repositories;
       state.isLoading = false;
       state.isLoaded = true;
+      state.loadedAt = new Date();
     },
     NOT_FOUND(state) {
       state.isLoading = false;
@@ -389,6 +392,9 @@ export default {
     },
     DRAGENTER(state, columnId) {
       state.dragenterColumnId = columnId;
-    }
+    },
+    TOUCH_LOADED_AT(state) {
+      state.loadedAt = new Date();
+    },
   }
 };
