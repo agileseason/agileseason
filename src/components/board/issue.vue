@@ -317,7 +317,7 @@ export default {
     display: inline-block
 
     .number
-      color: rgb(0, 0, 0, 0.60)
+      color: rgb(38, 50, 56, 0.8)
       font-weight: 500
 
   a.url
