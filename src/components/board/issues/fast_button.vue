@@ -22,9 +22,9 @@ export default {
 .button
   align-items: center
   border-radius: 4px
-  border: 1px solid #7986cb
+  border: 1px solid rgba(26, 35, 126, 0.6)
   box-sizing: border-box
-  color: #5C6BC0
+  color: rgb(26, 35, 126, 0.7)
   display: flex
   font-size: 11px
   height: 22px
@@ -32,12 +32,12 @@ export default {
   padding: 4px
 
   &:hover
-    background-color: #e8eaf6
-    border: 1px solid #5c6bc0
+    background-color: rgb(26, 35, 126, 0.1)
+    border: 1px solid rgb(26, 35, 126, 0.7)
     color: #3f51b5
 
   &:active
-    border: 1px solid #9fa8da
+    border: 1px solid rgb(26, 35, 126, 0.3)
 
 .button + .button
   margin-left: 4px
