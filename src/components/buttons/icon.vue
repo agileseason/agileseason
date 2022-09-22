@@ -27,7 +27,7 @@ export default {
     opacity: 0.7
 
   &:active
-    opacity: 0.9
+    opacity: 1.0
 
   &.edit
     background-image: url('../../assets/icons/issue/edit.svg')
