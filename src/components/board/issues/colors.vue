@@ -32,7 +32,7 @@
   </div>
   <div v-if='isSelectOpen' class='select-overlay' @click.self='toggleColors' />
   <Label
-    v-if='color'
+    v-if='isColor'
     :label='selectedColorName'
     class='selected-color'
   />
@@ -42,7 +42,7 @@
 import ButtonIcon from '@/components/buttons/icon'
 import Label from '@/components/board/label'
 import Select from '@/components/select';
-import { COLORS, colorStyles } from '@/utils/colors';
+import { COLORS, DEFAULT_COLOR, colorStyles } from '@/utils/colors';
 
 export default {
   components: {
@@ -60,8 +60,11 @@ export default {
     availableColors: COLORS
   }),
   computed: {
+    isColor() {
+      return this.color != null && this.color !== DEFAULT_COLOR;
+    },
     isPlaceholderVisible() {
-      return this.color == null;
+      return this.color == null || this.color === DEFAULT_COLOR;
     },
     selectedColorName() {
       const selectedAvailableColor = this.availableColors.find(v => v.color === this.color);
