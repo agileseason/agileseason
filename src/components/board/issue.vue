@@ -313,16 +313,16 @@ export default {
     margin-bottom: 4px
 
   .url
-    color: #757575
+    color: rgb(0, 0, 0, 0.55)
     display: inline-block
 
     .number
-      color: #455a64
+      color: rgb(38, 50, 56, 0.8)
       font-weight: 500
 
   a.url
     &:hover
-      color: #455a64
+      color: rgb(0, 0, 0, 0.70)
 
   .assigned-or-extra
     display: flex
@@ -349,7 +349,7 @@ export default {
           &.comments-count
             background-image: url('../../assets/icons/issue/grey_comment.svg')
             background-position: 4px 3px
-            color: #455a64
+            color: rgb(0, 0, 0, 0.60)
             font-size: 10px
             font-weight: 600
             padding: 0 3px 0 21px
@@ -391,7 +391,6 @@ export default {
 
   .pull-requests
     border-top: 1px solid rgba(0, 0, 0, 0.1)
-    color: #757575
     font-size: 12px
     margin: 6px -6px 0 -6px
 
@@ -413,11 +412,11 @@ export default {
         background-image: url('../../assets/icons/issue/pr_merged.svg')
 
       .url
-        color: #757575
+        color: rgb(0, 0, 0, 0.55)
 
       a.url // avoid hover in shared mode for span.url
         &:hover
-          color: #455a64
+          color: rgb(0, 0, 0, 0.70)
 
       .assignees
         display: flex
