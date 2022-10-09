@@ -168,7 +168,7 @@ export default {
         const url = `https://agileseason3.s3.eu-central-1.amazonaws.com/${fileName}`;
         const imgTag = `![img](${url})`;
         const value = this.$refs.textarea.value;
-        this.$emit('update:modelValue', `${value}\n${imgTag}`);
+        this.$emit('update:modelValue', `${value}${imgTag}`);
         this.isUploading = false;
       })
       .on('upload-error', (file, error) => {
