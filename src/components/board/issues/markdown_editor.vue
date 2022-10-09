@@ -170,8 +170,7 @@ export default {
         const value = this.$refs.textarea.value;
         this.$emit('update:modelValue', `${value}${imgTag}`);
         this.isUploading = false;
-        // Фокус почему-то не работает.
-        // this.$refs.textarea.focus();
+        this.$nextTick(() => this.$refs.textarea.focus());
       })
       .on('upload-error', (file, error) => {
         alert(error.message);
