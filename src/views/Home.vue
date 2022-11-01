@@ -131,12 +131,18 @@ export default {
     .logo
       background-image: url('../assets/logo.svg')
       background-repeat: no-repeat
-      background-size: contain
+      background-size: cover
       height: 367px
       position: absolute
       width: 200px
       right: 0
       top: 20px
+
+      @media screen and (max-width: 511px)
+        background-size: contain
+        height: 300px
+        top: 80px
+        width: 164px
 
   .signin
     min-width: 130px
