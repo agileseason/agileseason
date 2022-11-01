@@ -49,6 +49,10 @@ a
   font-weight: 500
   line-height: 36px
 
+.title
+  @media screen and (max-width: 511px)
+    display: none
+
 a:hover
   text-decoration: underline
 
@@ -60,12 +64,18 @@ a:hover
   .brand
     font-weight: 500
 
+  @media screen and (max-width: 511px)
+    font-size: 12px
+
 .author
   align-items: center
   color: #fff
   display: flex
   font-weight: 300
   line-height: 36px
+
+  @media screen and (max-width: 511px)
+    font-size: 12px
 
   .avatar
     vertical-align: bottom
