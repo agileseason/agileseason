@@ -131,9 +131,10 @@ a {
 }
 
 .markdown-body li.task-item label {
+  align-items: flex-start;
   cursor: pointer;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   margin-bottom: 2px;
 }
 

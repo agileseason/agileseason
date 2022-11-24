@@ -35,7 +35,9 @@ renderer.listitem = (text, task, checked) => {
             type='checkbox' ${checked ? 'checked' : ''}
             onchange='(${renderer.clickHandler})("${normalizedText}", ${checked});'
           >
-          ${innerText}
+          <span class='task-body'>
+            ${innerText}
+          </span>
         </label>
         ${postText}
       </li>`;
