@@ -169,14 +169,6 @@ label
     &.checked
       opacity: 100
 
-  .color
-    height: 14px
-    width: 14px
-    border-radius: 7px
-    margin-right: 8px
-    border: 1px solid
-    box-sizing: border-box
-
   .name
     font-size: 14px
     font-weight: 500

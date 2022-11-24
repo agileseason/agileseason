@@ -81,6 +81,27 @@
         </div>
       </Select>
     </div>
+    <div class='button' @click.stop='toggleColumns'>
+      Column
+      <span class='gear' />
+      <Select
+        v-if='isColumnSelectOpen'
+        title='Change column'
+        class='select-columns'
+      >
+        <div class='body-columns'>
+          <div
+            v-for='(column, $index) in sortedColumns'
+            :key='$index'
+            class='list-item'
+            @click='toggleColumn(column)'
+          >
+            <span class='check' :class="{ checked: isColumnApplied(column) }" />
+            <span class='name'>{{ column.name }}</span>
+          </div>
+        </div>
+      </Select>
+    </div>
 
     <div class='button' @click.stop='onCopyTitle'>
       <div class='button-inner'>
@@ -132,6 +153,7 @@ export default {
     isAssigneesSelectOpen: false,
     isLabelsSelectOpen: false,
     isColorSelectOpen: false,
+    isColumnSelectOpen: false,
     isLoading: false,
     isSubmitting: false,
     isSubmittingSelfAssign: false,
@@ -142,9 +164,13 @@ export default {
   computed: {
     currentUserName: get('user/username'),
     currentAvatarUrl: get('user/avatarUrl'),
+    columns: get('board/columns'),
     isSelfAssignVisible() {
       if (this.isSubmittingSelfAssign) { return false; }
       return this.assignees.length === 0;
+    },
+    sortedColumns() {
+      return [...this.columns].sort((a, b) => (a.position - b.position));
     },
   },
   methods: {
@@ -158,6 +184,7 @@ export default {
 
       this.isLabelsSelectOpen = false;
       this.isColorSelectOpen = false;
+      this.isColumnSelectOpen = false;
       this.isAssigneesSelectOpen = !this.isAssigneesSelectOpen;
       if (this.isAssigneesSelectOpen && this.assignableUsers.length === 0) {
         this.isLoading = true;
@@ -196,6 +223,7 @@ export default {
 
       this.isAssigneesSelectOpen = false;
       this.isColorSelectOpen = false;
+      this.isColumnSelectOpen = false;
       this.isLabelsSelectOpen = !this.isLabelsSelectOpen;
       if (this.isLabelsSelectOpen && this.githubLabels.length === 0) {
         this.isLoading = true;
@@ -232,6 +260,7 @@ export default {
     toggleColors() {
       this.isAssigneesSelectOpen = false;
       this.isLabelsSelectOpen = false;
+      this.isColumnSelectOpen = false;
       this.isColorSelectOpen = !this.isColorSelectOpen;
     },
     isColorApplied({ color }) {
@@ -259,6 +288,18 @@ export default {
         });
       }
       this.isSubmitting = false;
+    },
+    toggleColumns() {
+      this.isAssigneesSelectOpen = false;
+      this.isLabelsSelectOpen = false;
+      this.isColorSelectOpen = false;
+      this.isColumnSelectOpen = !this.isColumnSelectOpen;
+    },
+    isColumnApplied({ id }) {
+      return this.columnId === id;
+    },
+    async toggleColumn(column) {
+      console.log(column);
     },
     async onSelfAssign() {
       this.isSubmittingSelfAssign = true;
@@ -357,7 +398,8 @@ export default {
 
 .select-assignees,
 .select-labels,
-.select-colors
+.select-colors,
+.select-columns
   position: absolute
   top: 36px
   left: 0
@@ -368,6 +410,8 @@ export default {
   top: 72px
 .select-colors
   top: 108px
+.select-columns
+  top: 144px
 
 // TODO: Extract assignable-user select - /components/board/issues/assignees
 .assignable-user
@@ -383,6 +427,7 @@ export default {
   .login
     font-size: 14px
     font-weight: 500
+    color: #212121
 
 .assignable-user
   padding: 8px
@@ -450,9 +495,14 @@ export default {
   .name
     font-size: 14px
     font-weight: 500
+    color: #212121
 
 // NOTE: Duplicate board/issue/colors
 .body-colors
+  overflow-y: scroll
+  max-height: calc(100vh - 400px)
+
+.body-columns
   overflow-y: scroll
   max-height: calc(100vh - 400px)
 
@@ -495,4 +545,37 @@ export default {
   .name
     font-size: 14px
     font-weight: 500
+    color: #212121
+
+.list-item
+  display: flex
+  align-items: center
+  padding: 8px
+  cursor: pointer
+
+  &:hover
+    background-color: rgba(197, 202, 233, 0.8) // #c5cae9
+
+  &:active
+    background-color: rgba(197, 202, 233, 0.6) // #c5cae9
+
+  &:not(:last-child)
+    border-bottom: 1px solid #c5cae9
+
+  .check
+    background-image: url('../../../assets/icons/issue/check.svg')
+    background-position: center
+    background-repeat: no-repeat
+    height: 16px
+    margin-right: 8px
+    opacity: 0
+    width: 16px
+
+    &.checked
+      opacity: 100
+
+  .name
+    font-size: 14px
+    font-weight: 500
+    color: #212121
 </style>
