@@ -31,6 +31,8 @@ export default {
   methods: {
     onDrop(e) {
       const payload = e.dataTransfer.getData('payload');
+      if (payload == null || payload === '') return;
+
       try {
         const transferData = JSON.parse(payload);
         this.$emit('drop', transferData);
