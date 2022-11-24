@@ -161,6 +161,12 @@
           :is-readonly='isReadonly'
           @toggle='toggleColor'
         />
+
+        <div class='delimeter' />
+        <Columns
+          :columnId='fetchedIssue.columnId'
+          :is-readonly='isReadonly'
+        />
       </div>
     </IssueBody>
 
@@ -177,6 +183,7 @@ import Assignees from '@/components/board/issues/assignees'
 import Button from '@/components/buttons/button'
 import ButtonIcon from '@/components/buttons/icon'
 import Colors from '@/components/board/issues/colors'
+import Columns from '@/components/board/issues/columns'
 import Comment from '@/components/board/issues/comment'
 import IssueBody from '@/components/board/issues/body_content'
 import Labels from '@/components/board/issues/labels'
@@ -197,6 +204,7 @@ export default {
     Button,
     ButtonIcon,
     Colors,
+    Columns,
     Comment,
     GlobalEvents,
     IssueBody,
