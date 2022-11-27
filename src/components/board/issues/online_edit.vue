@@ -8,13 +8,13 @@
         <Select
           v-if='isAssigneesSelectOpen'
           title='Assign up to 10 people to this issue'
-          class='select-assignees'
+          class='select assignees'
         >
           <Loader v-if='isLoading' is-inline />
-          <div class='body-assignees' v-else>
+          <div class='list-body' v-else>
             <div
               v-for='user in assignableUsers'
-              class='assignable-user'
+              class='list-item'
               :key='user.login'
               @click='toggleAssign(user)'
             >
@@ -41,13 +41,13 @@
       <Select
         v-if='isLabelsSelectOpen'
         title='Apply labels to this issue'
-        class='select-labels'
+        class='select labels'
       >
         <Loader v-if='isLoading' is-inline />
-        <div class='body-labels' v-else>
+        <div class='list-body labels' v-else>
           <div
             v-for='label in githubLabels'
-            class='github-label'
+            class='list-item'
             :key='label.id'
             @click='toggleLabel(label)'
           >
@@ -65,17 +65,17 @@
       <Select
         v-if='isColorSelectOpen'
         title='Set color'
-        class='select-colors'
+        class='select colors'
       >
-        <div class='body-colors'>
+        <div class='list-body colors'>
           <div
             v-for='(color, $index) in availableColors'
             :key='$index'
-            class='available-color'
+            class='list-item'
             @click='toggleColor(color)'
           >
             <span class='check' :class="{ checked: isColorApplied(color) }" />
-            <span class='color' :style='colorStyles(color)' />
+            <span class='color color-border' :style='colorStyles(color)' />
             <span class='name'>{{ color.name }}</span>
           </div>
         </div>
@@ -87,9 +87,9 @@
       <Select
         v-if='isColumnSelectOpen'
         title='Change column'
-        class='select-columns'
+        class='select columns'
       >
-        <div class='body-columns'>
+        <div class='list-body columns'>
           <div
             v-for='(column, $index) in sortedColumns'
             :key='$index'
@@ -418,156 +418,29 @@ export default {
       margin-left: 6px
       display: none
 
-.select-assignees,
-.select-labels,
-.select-colors,
-.select-columns
+.select
   position: absolute
-  top: 36px
   left: 0
   width: 220px
   z-index: 2
 
-.select-labels
-  top: 72px
-.select-colors
-  top: 108px
-.select-columns
-  top: 144px
+  &.assignees
+    top: 36px
+  &.labels
+    top: 72px
+  &.colors
+    top: 108px
+  &.columns
+    top: 144px
 
-// TODO: Extract assignable-user select - /components/board/issues/assignees
-.assignable-user
-  display: flex
-  align-items: center
-
-  .avatar
-    border-radius: 11px
-    height: 22px
-    margin-right: 4px
-    width: 22px
-
-  .login
-    font-size: 14px
-    font-weight: 500
-    color: #212121
-
-.assignable-user
-  padding: 8px
-  cursor: pointer
-
-  &:hover
-    background-color: rgba(197, 202, 233, 0.8) // #c5cae9
-
-  &:active
-    background-color: rgba(197, 202, 233, 0.6) // #c5cae9
-
-  &:not(:last-child)
-    border-bottom: 1px solid #c5cae9
-
-  .check
-    background-image: url('../../../assets/icons/issue/check.svg')
-    background-position: center
-    background-repeat: no-repeat
-    height: 16px
-    margin-right: 8px
-    opacity: 0
-    width: 16px
-
-    &.checked
-      opacity: 100
-
-// TODO: Extract body-labels select - /components/board/issues/labels
-.body-labels
+.list-body
   overflow-y: scroll
-  max-height: calc(100vh - 320px)
 
-.github-label
-  display: flex
-  align-items: center
-  padding: 8px
-  cursor: pointer
-
-  &:hover
-    background-color: rgba(197, 202, 233, 0.8) // #c5cae9
-
-  &:active
-    background-color: rgba(197, 202, 233, 0.6) // #c5cae9
-
-  &:not(:last-child)
-    border-bottom: 1px solid #c5cae9
-
-  .check
-    background-image: url('../../../assets/icons/issue/check.svg')
-    background-position: center
-    background-repeat: no-repeat
-    height: 16px
-    margin-right: 8px
-    opacity: 0
-    width: 16px
-
-    &.checked
-      opacity: 100
-
-  .color
-    height: 14px
-    width: 14px
-    border-radius: 7px
-    margin-right: 8px
-
-  .name
-    font-size: 14px
-    font-weight: 500
-    color: #212121
-
-// NOTE: Duplicate board/issue/colors
-.body-colors
-  overflow-y: scroll
-  max-height: calc(100vh - 400px)
-
-.body-columns
-  overflow-y: scroll
-  max-height: calc(100vh - 400px)
-
-// TODO: Extract select-colors select - /components/board/issues/colors
-.available-color
-  display: flex
-  align-items: center
-  padding: 8px
-  cursor: pointer
-
-  &:hover
-    background-color: rgba(197, 202, 233, 0.8) // #c5cae9
-
-  &:active
-    background-color: rgba(197, 202, 233, 0.6) // #c5cae9
-
-  &:not(:last-child)
-    border-bottom: 1px solid #c5cae9
-
-  .check
-    background-image: url('../../../assets/icons/issue/check.svg')
-    background-position: center
-    background-repeat: no-repeat
-    height: 16px
-    margin-right: 8px
-    opacity: 0
-    width: 16px
-
-    &.checked
-      opacity: 100
-
-  .color
-    height: 14px
-    width: 14px
-    border-radius: 7px
-    margin-right: 8px
-    border: 1px solid
-    box-sizing: border-box
-
-  .name
-    font-size: 14px
-    font-weight: 500
-    color: #212121
+  &.labels
+    max-height: calc(100vh - 320px)
+  &.colors,
+  &.columns
+    max-height: calc(100vh - 400px)
 
 .list-item
   display: flex
@@ -596,7 +469,24 @@ export default {
     &.checked
       opacity: 100
 
-  .name
+  .avatar
+    border-radius: 11px
+    height: 22px
+    margin-right: 4px
+    width: 22px
+
+  .color
+    height: 14px
+    width: 14px
+    border-radius: 7px
+    margin-right: 8px
+
+  .color-border
+    border: 1px solid
+    box-sizing: border-box
+
+  .name,
+  .login
     font-size: 14px
     font-weight: 500
     color: #212121
