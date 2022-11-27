@@ -69,7 +69,9 @@ export default {
   watch: {
   },
   methods: {
-    moveColumnIssue: call('board/moveIssue'),
+    ...call([
+      'board/moveIssue'
+    ]),
     toggleSelect() {
       if (this.isReadonly) { return; }
       this.isSelectOpen = !this.isSelectOpen;
@@ -87,7 +89,7 @@ export default {
       if (fromColumnIndex < 0) return;
       if (toColumnIndex < 0) return;
       if (fromIssueIndex < 0) return;
-      this.moveColumnIssue({
+      this.moveIssue({
         fromColumnIndex,
         toColumnIndex,
         fromIssueIndex,

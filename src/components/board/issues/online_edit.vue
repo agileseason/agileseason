@@ -177,7 +177,8 @@ export default {
     ...call([
       'board/fetchAssignableUsers',
       'board/fetchLabels',
-      'board/updateIssue'
+      'board/updateIssue',
+      'board/moveIssue'
     ]),
     async toggleAssignees() {
       if (this.isLoading) { return; }
@@ -299,7 +300,28 @@ export default {
       return this.columnId === id;
     },
     async toggleColumn(column) {
-      console.log(column);
+      if (column == null) return;
+      if (column.id === this.columnId) return;
+
+      const fromColumnIndex = this.columns.findIndex(v => v.id === this.columnId);
+      const toColumnIndex = this.columns.findIndex(v => v.id === column.id);
+      if (fromColumnIndex < 0) return;
+      if (toColumnIndex < 0) return;
+      const fromColumn = this.columns[fromColumnIndex];
+      if (fromColumn == null) return;
+      const fromIssueIndex = fromColumn.issues.findIndex(v => v.id === this.issueId);
+      if (fromIssueIndex < 0) return;
+
+      this.isSubmitting = true;
+      await this.moveIssue({
+        fromColumnIndex,
+        toColumnIndex,
+        fromIssueIndex,
+        toIssueIndex: 0 // To TOP
+      });
+
+      this.isSubmitting = false;
+      this.toggleColumns();
     },
     async onSelfAssign() {
       this.isSubmittingSelfAssign = true;
