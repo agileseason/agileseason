@@ -8,13 +8,13 @@
         <Select
           v-if='isAssigneesSelectOpen'
           title='Assign up to 10 people to this issue'
-          class='select-assignees'
+          class='select assignees'
         >
           <Loader v-if='isLoading' is-inline />
-          <div class='body-assignees' v-else>
+          <div class='list-body' v-else>
             <div
               v-for='user in assignableUsers'
-              class='assignable-user'
+              class='list-item'
               :key='user.login'
               @click='toggleAssign(user)'
             >
@@ -41,13 +41,13 @@
       <Select
         v-if='isLabelsSelectOpen'
         title='Apply labels to this issue'
-        class='select-labels'
+        class='select labels'
       >
         <Loader v-if='isLoading' is-inline />
-        <div class='body-labels' v-else>
+        <div class='list-body labels' v-else>
           <div
             v-for='label in githubLabels'
-            class='github-label'
+            class='list-item'
             :key='label.id'
             @click='toggleLabel(label)'
           >
@@ -65,18 +65,39 @@
       <Select
         v-if='isColorSelectOpen'
         title='Set color'
-        class='select-colors'
+        class='select colors'
       >
-        <div class='body-colors'>
+        <div class='list-body colors'>
           <div
             v-for='(color, $index) in availableColors'
             :key='$index'
-            class='available-color'
+            class='list-item'
             @click='toggleColor(color)'
           >
             <span class='check' :class="{ checked: isColorApplied(color) }" />
-            <span class='color' :style='colorStyles(color)' />
+            <span class='color color-border' :style='colorStyles(color)' />
             <span class='name'>{{ color.name }}</span>
+          </div>
+        </div>
+      </Select>
+    </div>
+    <div class='button' @click.stop='toggleColumns'>
+      Column
+      <span class='gear' />
+      <Select
+        v-if='isColumnSelectOpen'
+        title='Change column'
+        class='select columns'
+      >
+        <div class='list-body columns'>
+          <div
+            v-for='(column, $index) in sortedColumns'
+            :key='$index'
+            class='list-item'
+            @click='toggleColumn(column)'
+          >
+            <span class='check' :class="{ checked: isColumnApplied(column) }" />
+            <span class='name'>{{ column.name }}</span>
           </div>
         </div>
       </Select>
@@ -132,6 +153,7 @@ export default {
     isAssigneesSelectOpen: false,
     isLabelsSelectOpen: false,
     isColorSelectOpen: false,
+    isColumnSelectOpen: false,
     isLoading: false,
     isSubmitting: false,
     isSubmittingSelfAssign: false,
@@ -142,22 +164,28 @@ export default {
   computed: {
     currentUserName: get('user/username'),
     currentAvatarUrl: get('user/avatarUrl'),
+    columns: get('board/columns'),
     isSelfAssignVisible() {
       if (this.isSubmittingSelfAssign) { return false; }
       return this.assignees.length === 0;
+    },
+    sortedColumns() {
+      return [...this.columns].sort((a, b) => (a.position - b.position));
     },
   },
   methods: {
     ...call([
       'board/fetchAssignableUsers',
       'board/fetchLabels',
-      'board/updateIssue'
+      'board/updateIssue',
+      'board/moveIssue'
     ]),
     async toggleAssignees() {
       if (this.isLoading) { return; }
 
       this.isLabelsSelectOpen = false;
       this.isColorSelectOpen = false;
+      this.isColumnSelectOpen = false;
       this.isAssigneesSelectOpen = !this.isAssigneesSelectOpen;
       if (this.isAssigneesSelectOpen && this.assignableUsers.length === 0) {
         this.isLoading = true;
@@ -196,6 +224,7 @@ export default {
 
       this.isAssigneesSelectOpen = false;
       this.isColorSelectOpen = false;
+      this.isColumnSelectOpen = false;
       this.isLabelsSelectOpen = !this.isLabelsSelectOpen;
       if (this.isLabelsSelectOpen && this.githubLabels.length === 0) {
         this.isLoading = true;
@@ -232,6 +261,7 @@ export default {
     toggleColors() {
       this.isAssigneesSelectOpen = false;
       this.isLabelsSelectOpen = false;
+      this.isColumnSelectOpen = false;
       this.isColorSelectOpen = !this.isColorSelectOpen;
     },
     isColorApplied({ color }) {
@@ -259,6 +289,39 @@ export default {
         });
       }
       this.isSubmitting = false;
+    },
+    toggleColumns() {
+      this.isAssigneesSelectOpen = false;
+      this.isLabelsSelectOpen = false;
+      this.isColorSelectOpen = false;
+      this.isColumnSelectOpen = !this.isColumnSelectOpen;
+    },
+    isColumnApplied({ id }) {
+      return this.columnId === id;
+    },
+    async toggleColumn(column) {
+      if (column == null) return;
+      if (column.id === this.columnId) return;
+
+      const fromColumnIndex = this.columns.findIndex(v => v.id === this.columnId);
+      const toColumnIndex = this.columns.findIndex(v => v.id === column.id);
+      if (fromColumnIndex < 0) return;
+      if (toColumnIndex < 0) return;
+      const fromColumn = this.columns[fromColumnIndex];
+      if (fromColumn == null) return;
+      const fromIssueIndex = fromColumn.issues.findIndex(v => v.id === this.issueId);
+      if (fromIssueIndex < 0) return;
+
+      this.isSubmitting = true;
+      await this.moveIssue({
+        fromColumnIndex,
+        toColumnIndex,
+        fromIssueIndex,
+        toIssueIndex: 0 // To TOP
+      });
+
+      this.isSubmitting = false;
+      this.toggleColumns();
     },
     async onSelfAssign() {
       this.isSubmittingSelfAssign = true;
@@ -355,24 +418,56 @@ export default {
       margin-left: 6px
       display: none
 
-.select-assignees,
-.select-labels,
-.select-colors
+.select
   position: absolute
-  top: 36px
   left: 0
   width: 220px
   z-index: 2
 
-.select-labels
-  top: 72px
-.select-colors
-  top: 108px
+  &.assignees
+    top: 36px
+  &.labels
+    top: 72px
+  &.colors
+    top: 108px
+  &.columns
+    top: 144px
 
-// TODO: Extract assignable-user select - /components/board/issues/assignees
-.assignable-user
+.list-body
+  overflow-y: scroll
+
+  &.labels
+    max-height: calc(100vh - 320px)
+  &.colors,
+  &.columns
+    max-height: calc(100vh - 400px)
+
+.list-item
   display: flex
   align-items: center
+  padding: 8px
+  cursor: pointer
+
+  &:hover
+    background-color: rgba(197, 202, 233, 0.8) // #c5cae9
+
+  &:active
+    background-color: rgba(197, 202, 233, 0.6) // #c5cae9
+
+  &:not(:last-child)
+    border-bottom: 1px solid #c5cae9
+
+  .check
+    background-image: url('../../../assets/icons/issue/check.svg')
+    background-position: center
+    background-repeat: no-repeat
+    height: 16px
+    margin-right: 8px
+    opacity: 0
+    width: 16px
+
+    &.checked
+      opacity: 100
 
   .avatar
     border-radius: 11px
@@ -380,119 +475,19 @@ export default {
     margin-right: 4px
     width: 22px
 
-  .login
-    font-size: 14px
-    font-weight: 500
-
-.assignable-user
-  padding: 8px
-  cursor: pointer
-
-  &:hover
-    background-color: rgba(197, 202, 233, 0.8) // #c5cae9
-
-  &:active
-    background-color: rgba(197, 202, 233, 0.6) // #c5cae9
-
-  &:not(:last-child)
-    border-bottom: 1px solid #c5cae9
-
-  .check
-    background-image: url('../../../assets/icons/issue/check.svg')
-    background-position: center
-    background-repeat: no-repeat
-    height: 16px
-    margin-right: 8px
-    opacity: 0
-    width: 16px
-
-    &.checked
-      opacity: 100
-
-// TODO: Extract body-labels select - /components/board/issues/labels
-.body-labels
-  overflow-y: scroll
-  max-height: calc(100vh - 320px)
-
-.github-label
-  display: flex
-  align-items: center
-  padding: 8px
-  cursor: pointer
-
-  &:hover
-    background-color: rgba(197, 202, 233, 0.8) // #c5cae9
-
-  &:active
-    background-color: rgba(197, 202, 233, 0.6) // #c5cae9
-
-  &:not(:last-child)
-    border-bottom: 1px solid #c5cae9
-
-  .check
-    background-image: url('../../../assets/icons/issue/check.svg')
-    background-position: center
-    background-repeat: no-repeat
-    height: 16px
-    margin-right: 8px
-    opacity: 0
-    width: 16px
-
-    &.checked
-      opacity: 100
-
   .color
     height: 14px
     width: 14px
     border-radius: 7px
     margin-right: 8px
 
-  .name
-    font-size: 14px
-    font-weight: 500
-
-// NOTE: Duplicate board/issue/colors
-.body-colors
-  overflow-y: scroll
-  max-height: calc(100vh - 400px)
-
-// TODO: Extract select-colors select - /components/board/issues/colors
-.available-color
-  display: flex
-  align-items: center
-  padding: 8px
-  cursor: pointer
-
-  &:hover
-    background-color: rgba(197, 202, 233, 0.8) // #c5cae9
-
-  &:active
-    background-color: rgba(197, 202, 233, 0.6) // #c5cae9
-
-  &:not(:last-child)
-    border-bottom: 1px solid #c5cae9
-
-  .check
-    background-image: url('../../../assets/icons/issue/check.svg')
-    background-position: center
-    background-repeat: no-repeat
-    height: 16px
-    margin-right: 8px
-    opacity: 0
-    width: 16px
-
-    &.checked
-      opacity: 100
-
-  .color
-    height: 14px
-    width: 14px
-    border-radius: 7px
-    margin-right: 8px
+  .color-border
     border: 1px solid
     box-sizing: border-box
 
-  .name
+  .name,
+  .login
     font-size: 14px
     font-weight: 500
+    color: #212121
 </style>

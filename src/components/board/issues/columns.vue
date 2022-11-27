@@ -69,7 +69,9 @@ export default {
   watch: {
   },
   methods: {
-    moveColumnIssue: call('board/moveIssue'),
+    ...call([
+      'board/moveIssue'
+    ]),
     toggleSelect() {
       if (this.isReadonly) { return; }
       this.isSelectOpen = !this.isSelectOpen;
@@ -87,7 +89,7 @@ export default {
       if (fromColumnIndex < 0) return;
       if (toColumnIndex < 0) return;
       if (fromIssueIndex < 0) return;
-      this.moveColumnIssue({
+      this.moveIssue({
         fromColumnIndex,
         toColumnIndex,
         fromIssueIndex,
@@ -168,14 +170,6 @@ label
 
     &.checked
       opacity: 100
-
-  .color
-    height: 14px
-    width: 14px
-    border-radius: 7px
-    margin-right: 8px
-    border: 1px solid
-    box-sizing: border-box
 
   .name
     font-size: 14px
