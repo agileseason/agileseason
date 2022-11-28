@@ -346,7 +346,7 @@ export default {
 }
 </script>
 
-<style lang='sass'>
+<style scoped lang='sass'>
 .online-edit
   position: absolute
   z-index: 4
