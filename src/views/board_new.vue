@@ -69,7 +69,7 @@
           <Input
             ref='boardName'
             v-model.trim='boardName'
-            placeholder='Board Name'
+            placeholder='Set the board name'
             class='board-name'
           />
           <div class='selected-repositories imported-repositories'>
