@@ -1,5 +1,6 @@
 // https://marked.js.org/using_advanced#options
 const marked = require('marked');
+const decode = require('unescape');
 
 const renderer = new marked.Renderer();
 
@@ -25,9 +26,9 @@ renderer.listitem = (text, task, checked) => {
     const postText = isInternalCheckboxes ?
       text.replaceAll("\n", '').match(/(<ul>.+)/)[1] :
       '';
-    const normalizedText = innerText
-      .replaceAll('<code>', '`')
-      .replaceAll('</code>', '`');
+    const normalizedText = window.btoa(
+      decode(innerText.replaceAll('<code>', '`').replaceAll('</code>', '`'))
+    );
     return `
       <li class='task-item'>
         <label>

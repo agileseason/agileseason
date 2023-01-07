@@ -511,9 +511,10 @@ export default {
         text,
         this.repositoryFullName,
         // JavaScript only. Use only ', not ".
-        (text, isChecked) => {
+        (textBase64, isChecked) => {
           const prefixOld = isChecked ? "- [x]" : "- [ ]";
           const prefixNew = isChecked ? "- [ ]" : "- [x]";
+          const text = window.atob(textBase64);
           const textOld = prefixOld + text;
           const textNew = prefixNew + text;
           const event = new CustomEvent("taskClick", { detail: {
