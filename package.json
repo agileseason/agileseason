@@ -24,6 +24,7 @@
     "sass": "^1.26.10",
     "sass-loader": "^10.0.2",
     "textarea-caret": "^3.1.0",
+    "unescape": "^1.0.1",
     "vue": "^3.0.6",
     "vue-global-events": "^2.1.0",
     "vue-router": "^4.0.0-0",
