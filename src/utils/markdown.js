@@ -32,12 +32,14 @@ renderer.listitem = (text, task, checked) => {
         decode(innerText.replaceAll('<code>', '`').replaceAll('</code>', '`'))
       ))
     );
+    const isDisabled = text.includes('<a ');
     return `
       <li class='task-item'>
         <label>
           <input
             type='checkbox' ${checked ? 'checked' : ''}
             onchange='(${renderer.clickHandler})("${normalizedText}", ${checked});'
+            ${isDisabled ? 'disabled' : ''}
           >
           <span class='task-body'>
             ${innerText}
