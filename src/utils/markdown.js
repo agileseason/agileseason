@@ -26,8 +26,11 @@ renderer.listitem = (text, task, checked) => {
     const postText = isInternalCheckboxes ?
       text.replaceAll("\n", '').match(/(<ul>.+)/)[1] :
       '';
+    // See issue_show.vue
     const normalizedText = window.btoa(
-      decode(innerText.replaceAll('<code>', '`').replaceAll('</code>', '`'))
+      unescape(encodeURIComponent(
+        decode(innerText.replaceAll('<code>', '`').replaceAll('</code>', '`'))
+      ))
     );
     return `
       <li class='task-item'>
