@@ -32,7 +32,8 @@ renderer.listitem = (text, task, checked) => {
         decode(innerText.replaceAll('<code>', '`').replaceAll('</code>', '`'))
       ))
     );
-    const isDisabled = text.includes('<a ');
+    // NOTE: Disable checkbox with a|img tags for now - not working yet.
+    const isDisabled = text.includes('<a href') || text.includes('<img src');
     return `
       <li class='task-item'>
         <label>
