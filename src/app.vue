@@ -95,7 +95,6 @@ a {
 
 .markdown-body a {
   color: #2196f3;
-  margin: 0 3px;
 }
 .markdown-body a:hover {
   text-decoration: underline
