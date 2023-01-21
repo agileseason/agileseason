@@ -176,9 +176,13 @@ export default {
         // console.log(`https://agileseason3.s3.eu-central-1.amazonaws.com/${result.meta.key}`);
         const fileName = result.meta.key;
         const url = `https://agileseason3.s3.eu-central-1.amazonaws.com/${fileName}`;
-        const imgTag = `![img](${url})`;
-        const value = this.$refs.textarea.value;
-        this.$emit('update:modelValue', `${value}${imgTag}`);
+        const value = `![img](${url})\n`;
+        const index = this.$refs.textarea.selectionStart;
+        this.$emit(
+          'update:modelValue',
+          this.replaceText(this.$refs.textarea.value, '', value, index)
+        );
+        this.setCaretPosition(index + value.length - 1);
         this.isUploading = false;
         this.$nextTick(() => this.$refs.textarea.focus());
       })
