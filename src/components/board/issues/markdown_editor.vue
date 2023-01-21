@@ -1,8 +1,9 @@
 <template>
   <div class='editor'>
-    <div class='textarea-container'>
+    <div class='textarea-container' :class='computedContainerClasses'>
       <textarea
         v-bind='$attrs'
+        :style='computedStyles'
         :value='modelValue'
         :disabled='isUploading'
         :placeholder='placeholder'
@@ -10,9 +11,9 @@
         ref='textarea'
         @input='onInput'
         @keydown='onKeyDown'
-        @blur='closePopup'
+        @blur='removeContainerFocus'
+        @focus='addContainerFocus'
         @paste='onPaste'
-        :rows='rows'
       />
       <Loader v-if='isUploading' class='loader' />
       <div class='attach-image'>
@@ -55,8 +56,8 @@ import getCaretPosition from 'textarea-caret'
 import Uppy from '@uppy/core';
 import AwsS3 from '@uppy/aws-s3';
 
-const MIN_ROWS = 8;
-const MAX_ROWS = 40;
+const MIN_HEIGHT = 200;
+const MAX_HEIGHT = 600;
 
 export default {
   components: {
@@ -87,7 +88,8 @@ export default {
     selectedIndex: 0,
     isModalOpen: false,
     isUploading: false,
-    rows: MIN_ROWS,
+    isTextareaFocused: false,
+    height: `${MIN_HEIGHT}px`,
     uppy: undefined
   }),
   computed: {
@@ -95,6 +97,14 @@ export default {
       'board/mentionIssues',
       'user/markdownEditorFont'
     ]),
+    computedStyles() {
+      return ({
+        height: `${this.height}`
+      });
+    },
+    computedContainerClasses() {
+      return this.isTextareaFocused ? 'focused' : null;
+    },
     filteredItems() {
       const items = this.key === '@' ? this.assignableUsers : this.mentionIssues;
       if (!this.searchText) { return items; }
@@ -127,7 +137,7 @@ export default {
     uploadId() { return `upload_id_${Math.random().toString(36).substr(2)}`; }
   },
   mounted() {
-    this.initTextAreaRows();
+    this.resizeTextarea();
     const DOMAIN_API = {
       development: 'http://localhost:3000',
       production: 'https://api.agileseason.com'
@@ -180,7 +190,7 @@ export default {
   watch: {
     displayedItems() { this.selectedIndex = 0; },
     modelValue() {
-      this.initTextAreaRows();
+      this.$nextTick(this.resizeTextarea);
     }
   },
   methods: {
@@ -217,25 +227,21 @@ export default {
         this.isUploading = false;
       }
     },
-    initTextAreaRows() {
-      let rows = this.$refs.textarea.value.split(/\r?\n/).length;
-      if (this.$refs.textarea.scrollTop > 200) {
-        rows += 20;
-      }
-      if (rows > MAX_ROWS) {
-        this.rows = MAX_ROWS;
-      } else if (rows > this.rows || rows > MIN_ROWS) {
-        this.rows = rows;
-      } else if (rows < MIN_ROWS) {
-        this.rows = MIN_ROWS;
-      }
+    resizeTextarea() {
+      this.$nextTick(() => {
+        let contentHeight = this.$refs.textarea.scrollHeight;
+        if (contentHeight < MIN_HEIGHT) {
+          contentHeight = MIN_HEIGHT;
+        }
+        if (contentHeight > MAX_HEIGHT) {
+          contentHeight = MAX_HEIGHT;
+        }
+        this.height = `${contentHeight}px`;
+      });
     },
     onInput(e) {
       this.$emit('update:modelValue', e.target.value);
       this.checkKey(e.target.value);
-      if (this.$refs.textarea.selectionStart == this.$refs.textarea.selectionEnd) {
-        this.$refs.textarea.scrollTop = this.$refs.textarea.scrollHeight;
-      }
     },
     onKeyDown(e) {
       if (this.key == null) {
@@ -353,6 +359,13 @@ export default {
       this.key = null;
       this.isModalOpen = false;
     },
+    removeContainerFocus() {
+      this.isTextareaFocused = false;
+      this.closePopup();
+    },
+    addContainerFocus() {
+      this.isTextareaFocused = true;
+    },
     updateCaretPosition () {
       if (this.key) {
         this.caretPosition = getCaretPosition(this.$refs.textarea, this.keyIndex);
@@ -403,13 +416,13 @@ export default {
 
 textarea
   border-radius: 3px
-  border: 1px solid #c5cae9
+  // border: 1px solid #c5cae9
+  border: none
   box-sizing: border-box
   font-size: 14px
   font-weight: 300
-  line-height: 18px
-  min-height: 180px
-  padding: 8px 8px 32px 8px
+  line-height: 20px
+  padding: 8px
   resize: none
   width: 100%
 
@@ -427,11 +440,20 @@ textarea
   &::-ms-input-placeholder
     color: #9fa8da
 
+  &:focus
+    outline: none
+
   &:focus + .attach-image
     border-top: 1px dashed #005FCC
 
 .textarea-container
   position: relative
+  border-radius: 4px
+  border: 1px solid #c5cae9
+
+  &.focused
+    border: 1px #005FCC solid
+    box-shadow: 0 0 0 1px #005FCC
 
   .loader
     position: absolute
@@ -439,11 +461,8 @@ textarea
     left: calc(50% - 20px)
 
   .attach-image
-    position: absolute
-    bottom: 5px
-    left: 2px
+    margin-top: -3px
     height: 24px
-    width: calc(100% - 4px)
     background-color: #fff
     border-top: 1px dashed #c5cae9
     border-radius: 0 0 4px 4px

@@ -605,6 +605,7 @@ export default {
   .left
     max-height: 88vh
     overflow-y: scroll
+    padding-right: 1px // For .textarea-container.focused box-shadow
 
   .issue-body-editor
     padding-left: 50px
