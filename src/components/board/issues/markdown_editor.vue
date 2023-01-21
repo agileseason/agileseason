@@ -384,11 +384,11 @@ export default {
       this.closePopup();
     },
 
-    replaceText (text, searchText, newText, index) {
+    replaceText(text, searchText, newText, index) {
       return `${text.slice(0, index)}${newText}${text.slice(index + searchText.length + 1, text.length)}`;
     },
 
-    setCaretPosition (index) {
+    setCaretPosition(index) {
       this.$nextTick(() => this.$refs.textarea.selectionEnd = index)
     }
   }
