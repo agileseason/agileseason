@@ -114,6 +114,7 @@ a {
 }
 
 .markdown-body img {
+  max-height: 800px;
   max-width: 100%;
 }
 
