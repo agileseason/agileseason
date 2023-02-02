@@ -1,5 +1,5 @@
 // https://marked.js.org/using_advanced#options
-const marked = require('marked');
+import { marked } from 'marked';
 const decode = require('unescape');
 
 const renderer = new marked.Renderer();
@@ -16,13 +16,14 @@ renderer.list = (body, ordered) => {
 
   return `<ul>${body}</ul>`;
 }
+
 renderer.listitem = (text, task, checked) => {
   if (task) {
-    // console.log(text);
+    text = text.replace('<p>', '').replace('</p>', '').trim();
     const isInternalCheckboxes = text.includes('<ul>');
     const innerText = isInternalCheckboxes ?
       text.match(/>(.+)</)[1] :
-      text.match(/>(.+)/)[1];
+      text.match(/>(.+)/s)[1].trim();
     const postText = isInternalCheckboxes ?
       text.replaceAll("\n", '').match(/(<ul>.+)/)[1] :
       '';
