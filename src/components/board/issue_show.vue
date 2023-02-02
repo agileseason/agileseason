@@ -510,11 +510,11 @@ export default {
       return Markdown.render(
         text,
         this.repositoryFullName,
-        // JavaScript only. Use only ', not ".
+        /* JavaScript only. Use only ', not ". */
         (textBase64, isChecked) => {
-          const prefixOld = isChecked ? "- [x]" : "- [ ]";
-          const prefixNew = isChecked ? "- [ ]" : "- [x]";
-          // See markdown js.
+          const prefixOld = isChecked ? "- [x] " : "- [ ] ";
+          const prefixNew = isChecked ? "- [ ] " : "- [x] ";
+          /* See markdown js. */
           const text = decodeURIComponent(escape(window.atob(textBase64)));
           const textOld = prefixOld + text;
           const textNew = prefixNew + text;

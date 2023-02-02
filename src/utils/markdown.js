@@ -16,13 +16,14 @@ renderer.list = (body, ordered) => {
 
   return `<ul>${body}</ul>`;
 }
+
 renderer.listitem = (text, task, checked) => {
   if (task) {
-    // console.log(text);
+    text = text.replace('<p>', '').replace('</p>', '').trim();
     const isInternalCheckboxes = text.includes('<ul>');
     const innerText = isInternalCheckboxes ?
       text.match(/>(.+)</)[1] :
-      text.match(/>(.+)/)[1];
+      text.match(/>(.+)/s)[1].trim();
     const postText = isInternalCheckboxes ?
       text.replaceAll("\n", '').match(/(<ul>.+)/)[1] :
       '';
