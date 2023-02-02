@@ -1,5 +1,5 @@
 // https://marked.js.org/using_advanced#options
-const marked = require('marked');
+import { marked } from 'marked';
 const decode = require('unescape');
 
 const renderer = new marked.Renderer();

@@ -19,7 +19,7 @@
     "graphql": "^15.3.0",
     "graphql-request": "^3.0.0",
     "lodash": "^4.17.21",
-    "marked": "^2.0.3",
+    "marked": "^4.1.12",
     "relative-luminance": "^2.0.1",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.2",
