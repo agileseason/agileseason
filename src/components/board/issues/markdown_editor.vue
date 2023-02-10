@@ -138,6 +138,7 @@ export default {
   },
   mounted() {
     this.resizeTextarea();
+    this.setCaretPosition(0);
     const DOMAIN_API = {
       development: 'http://localhost:3000',
       production: 'https://api.agileseason.com'
