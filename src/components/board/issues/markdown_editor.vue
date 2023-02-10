@@ -138,7 +138,11 @@ export default {
   },
   mounted() {
     this.resizeTextarea();
-    this.setCaretPosition(0);
+    this.$nextTick(() => {
+      this.setCaretPosition(0);
+      this.$refs.textarea.scrollTop = 0;
+      this.$refs.textarea.scrollLeft = 0;
+    });
     const DOMAIN_API = {
       development: 'http://localhost:3000',
       production: 'https://api.agileseason.com'
