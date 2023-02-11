@@ -105,7 +105,14 @@ export default {
       if (toColumnIndex === undefined) { return; }
       if (fromIssueIndex === undefined) { return; }
       if (toIssueIndex === undefined) {
+        // При перености тикета так, что позиция не определена. Например, когда
+        // тикет "просается" в заголовок колонки, не задевая ни одного тикета.
+        // Однозначно, куда был перемещен тикет по данным параметрам
+        // не представляется возмоным. Есть только 2а варианта:
+        // 1) Пример ниже для перемещения в самый низ.
         toIssueIndex = state.columns[toColumnIndex].issues.length + 1;
+        // 2) Пример ниже для перемещения в самый верх.
+        // toIssueIndex = 0;
       }
 
       const fromIssues = state.columns[fromColumnIndex].issues;
