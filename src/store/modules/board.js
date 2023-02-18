@@ -99,7 +99,7 @@ export default {
 
     async moveIssue(
       { commit, getters, state, dispatch },
-      { fromColumnIndex, toColumnIndex, fromIssueIndex, toIssueIndex }
+      { fromColumnIndex, toColumnIndex, fromIssueIndex, toIssueIndex, isColumnTop }
     ) {
       if (fromColumnIndex === undefined) { return; }
       if (toColumnIndex === undefined) { return; }
@@ -110,9 +110,14 @@ export default {
         // Однозначно, куда был перемещен тикет по данным параметрам
         // не представляется возмоным. Есть только 2а варианта:
         // 1) Пример ниже для перемещения в самый низ.
-        toIssueIndex = state.columns[toColumnIndex].issues.length + 1;
+        // toIssueIndex = state.columns[toColumnIndex].issues.length + 1;
         // 2) Пример ниже для перемещения в самый верх.
         // toIssueIndex = 0;
+        if (isColumnTop) {
+          toIssueIndex = 0;
+        } else {
+          toIssueIndex = state.columns[toColumnIndex].issues.length + 1;
+        }
       }
 
       const fromIssues = state.columns[fromColumnIndex].issues;

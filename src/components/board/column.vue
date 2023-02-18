@@ -6,6 +6,7 @@
     :transferData="{ type: 'column', enterColumnIndex: columnIndex }"
   >
     <AppDrag
+      class='column-drag'
       :transferData="{ type: 'column', fromColumnIndex: columnIndex }"
       :is-read-only='isReadOnly'
     >
@@ -431,6 +432,7 @@ export default {
           background-image: url('../../assets/icons/dots-hover.svg')
 
   .body
+    border-radius: 4px
     height: calc(100vh - 80px)
     overflow-y: scroll
 
