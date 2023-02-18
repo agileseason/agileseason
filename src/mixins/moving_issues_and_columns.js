@@ -23,12 +23,13 @@ export default {
         this.moveIssue(transferData)
       }
     },
-    moveIssue({ fromColumnIndex, fromIssueIndex }) {
+    moveIssue({ fromColumnIndex, fromIssueIndex, isColumnTop }) {
       this.moveColumnIssue({
         fromColumnIndex,
         toColumnIndex: this.columnIndex,
         fromIssueIndex: fromIssueIndex,
-        toIssueIndex: this.issueIndex
+        toIssueIndex: this.issueIndex,
+        isColumnTop
       });
     },
     moveColumn({ fromColumnIndex }) {

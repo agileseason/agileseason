@@ -21,6 +21,16 @@
 
 import * as Sentry from '@sentry/browser';
 
+const COLUMN_TOP_CLASSES = {
+  'column-drag': true,
+  'header': true,
+  'issues-count': true,
+  'name-wrapper': true,
+  'name': true,
+  'issue-new': true,
+  'column-settings': true
+};
+
 export default {
   props: {
     transferData: {
@@ -35,7 +45,10 @@ export default {
 
       try {
         const transferData = JSON.parse(payload);
-        this.$emit('drop', transferData);
+        this.$emit( 'drop', {
+          ...transferData,
+          isColumnTop: !!COLUMN_TOP_CLASSES[e.toElement.className]
+        });
       } catch (e) {
         Sentry.setContext('transferData', { payload });
         Sentry.captureException(e);
