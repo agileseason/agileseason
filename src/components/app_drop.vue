@@ -27,6 +27,9 @@ const COLUMN_TOP_CLASSES = {
   'issues-count': true,
   'name-wrapper': true,
   'name': true,
+  'icons': true,
+  'icon is-auto-assign': true,
+  'icon is-auto-close': true,
   'issue-new': true,
   'column-settings': true
 };
