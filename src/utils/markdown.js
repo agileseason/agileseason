@@ -17,13 +17,22 @@ renderer.list = (body, ordered) => {
   return `<ul>${body}</ul>`;
 }
 
+const extractInnerTaskText = (text, isInternalCheckboxes) => {
+  const matches = isInternalCheckboxes ?
+    text.match(/>(.+)</) :
+    text.match(/>(.+)/s);
+  if (matches == null) return '';
+
+  return isInternalCheckboxes ?
+    matches[1] :
+    matches[1].trim();
+}
+
 renderer.listitem = (text, task, checked) => {
   if (task) {
     text = text.replace('<p>', '').replace('</p>', '').trim();
     const isInternalCheckboxes = text.includes('<ul>');
-    const innerText = isInternalCheckboxes ?
-      text.match(/>(.+)</)[1] :
-      text.match(/>(.+)/s)[1].trim();
+    const innerText = extractInnerTaskText(text, isInternalCheckboxes);
     const postText = isInternalCheckboxes ?
       text.replaceAll("\n", '').match(/(<ul>.+)/)[1] :
       '';
