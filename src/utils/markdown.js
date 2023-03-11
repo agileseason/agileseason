@@ -17,13 +17,22 @@ renderer.list = (body, ordered) => {
   return `<ul>${body}</ul>`;
 }
 
+const extractInnerTaskText = (text, isInternalCheckboxes) => {
+  const matches = isInternalCheckboxes ?
+    text.match(/>(.+)</) :
+    text.match(/>(.+)/s);
+  if (matches == null) return '';
+
+  return isInternalCheckboxes ?
+    matches[1] :
+    matches[1].trim();
+}
+
 renderer.listitem = (text, task, checked) => {
   if (task) {
     text = text.replace('<p>', '').replace('</p>', '').trim();
     const isInternalCheckboxes = text.includes('<ul>');
-    const innerText = isInternalCheckboxes ?
-      text.match(/>(.+)</)[1] :
-      text.match(/>(.+)/s)[1].trim();
+    const innerText = extractInnerTaskText(text, isInternalCheckboxes);
     const postText = isInternalCheckboxes ?
       text.replaceAll("\n", '').match(/(<ul>.+)/)[1] :
       '';
@@ -64,13 +73,13 @@ export default {
     }
     renderer.text = (text) => {
       // @aaa => <a href=...>@aaa</a>
-      if (/@\w+/.test(text)) {
+      if (/(^|\s)@\w+/.test(text)) {
         text = text.replace(
           /@(\w+)/g,
           `<a href='https://github.com/$1' class='username'>@$1</a>`
         );
       }
-      if (repositoryFullName && /#\d+/.test(text)) {
+      if (repositoryFullName && /(^|\s)#\d+/.test(text)) {
         // #nnn => <a href=...>nnn</a>
         text = text.replace(
           /#(\d+)/g,
