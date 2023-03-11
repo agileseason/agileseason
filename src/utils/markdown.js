@@ -64,13 +64,13 @@ export default {
     }
     renderer.text = (text) => {
       // @aaa => <a href=...>@aaa</a>
-      if (/@\w+/.test(text)) {
+      if (/(^|\s)@\w+/.test(text)) {
         text = text.replace(
           /@(\w+)/g,
           `<a href='https://github.com/$1' class='username'>@$1</a>`
         );
       }
-      if (repositoryFullName && /#\d+/.test(text)) {
+      if (repositoryFullName && /(^|\s)#\d+/.test(text)) {
         // #nnn => <a href=...>nnn</a>
         text = text.replace(
           /#(\d+)/g,
