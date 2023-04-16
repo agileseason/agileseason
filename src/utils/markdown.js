@@ -36,10 +36,15 @@ renderer.listitem = (text, task, checked) => {
     const postText = isInternalCheckboxes ?
       text.replaceAll("\n", '').match(/(<ul>.+)/)[1] :
       '';
-    // See issue_show.vue
+    // See issue_show.vue "window.atob"
     const normalizedText = window.btoa(
       unescape(encodeURIComponent(
-        decode(innerText.replaceAll('<code>', '`').replaceAll('</code>', '`'))
+        decode(
+          innerText
+          .replaceAll('<code>', '`')
+          .replaceAll('</code>', '`')
+          .replaceAll('<br>', "\n")
+        )
       ))
     );
     // NOTE: Disable checkbox with a|img tags for now - not working yet.
