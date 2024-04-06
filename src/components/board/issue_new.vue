@@ -232,7 +232,12 @@ export default {
       'issue/fetch',
       'issue/fetchComments'
     ]),
-    close() { this.$emit('close'); },
+    close() {
+      if (this.title !== '' || this.body !== '') {
+        if (!confirm('Are you sure?')) return;
+      }
+      this.$emit('close');
+    },
     async submit() {
       if (this.isSubmitting) { return; }
 
