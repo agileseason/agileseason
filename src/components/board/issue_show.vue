@@ -197,6 +197,8 @@ import { hexRgb } from '@/utils/wcag_contrast';
 import { GlobalEvents } from 'vue-global-events';
 import { get, call } from 'vuex-pathify';
 
+const INIT_COMMENT = '';
+const LOST_DATA_ALERT = 'If you leave before saving, your changes will be lost. Are you sure?';
 
 export default {
   components: {
@@ -221,7 +223,7 @@ export default {
   mixins: [readonlyByAssignableUsers],
   data: () => ({
     newTitle: undefined,
-    newComment: '',
+    newComment: INIT_COMMENT,
     newBody: '',
     tmpBody: '',
     isEditBody: false,
@@ -329,8 +331,15 @@ export default {
     },
     close() {
       if (this.isEditBody) {
+        if (this.newBody !== this.tmpBody) {
+          if (!confirm(LOST_DATA_ALERT)) return;
+          this.tmpBody = this.newBody;
+        }
         this.isEditBody = false;
       } else {
+        if (this.newComment !== INIT_COMMENT) {
+          if (!confirm(LOST_DATA_ALERT)) return;
+        }
         this.removeTaskEventListener();
         this.$emit('close');
       }
@@ -444,12 +453,12 @@ export default {
       this.$nextTick(() => this.$refs.body.$refs.textarea.focus());
     },
     async submitNewComment() {
-      if (this.newComment === '') { return; }
+      if (this.newComment === INIT_COMMENT) { return; }
       if (this.isCommentSubmitting) { return; }
 
       this.isCommentSubmitting = true;
       await this.createComment({ body: this.newComment });
-      this.newComment = '';
+      this.newComment = INIT_COMMENT;
       this.isCommentSubmitting = false;
     },
     async closeIssue() {

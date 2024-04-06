@@ -145,6 +145,9 @@ import { get, call } from 'vuex-pathify';
 
 const delay = require('delay');
 const NAMESPACE = 'agileseason#issue#new';
+const INIT_TITLE = '';
+const INIT_BODY = '';
+const LOST_DATA_ALERT = 'If you leave before saving, your changes will be lost. Are you sure?';
 
 export default {
   name: 'IssueNew',
@@ -163,8 +166,8 @@ export default {
   emits: ['close'],
   mixins: [readonlyByAssignableUsers],
   data: () => ({
-    title: '',
-    body: '',
+    title: INIT_TITLE,
+    body: INIT_BODY,
     assignees: [],
     labels: [],
     selectedColor: undefined,
@@ -233,8 +236,8 @@ export default {
       'issue/fetchComments'
     ]),
     close() {
-      if (this.title !== '' || this.body !== '') {
-        if (!confirm('Are you sure?')) return;
+      if (this.title !== INIT_TITLE || this.body !== INIT_BODY) {
+        if (!confirm(LOST_DATA_ALERT)) return;
       }
       this.$emit('close');
     },
@@ -255,8 +258,8 @@ export default {
       // console.log(issue);
       this.isSubmitting = false;
       if (issue) {
-        this.title = '';
-        this.body = '';
+        this.title = INIT_TITLE;
+        this.body = INIT_BODY;
         this.close();
       }
     },
