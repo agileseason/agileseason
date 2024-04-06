@@ -11,7 +11,7 @@
       type='text'
       v-model='newTitle'
       @keydown.enter='save'
-      @keyup.esc='cancel'
+      @keyup.esc='cancelByEsc'
       ref='title'
     />
     <Button
@@ -32,6 +32,8 @@
 <script>
 import Button from '@/components/buttons/button.vue'
 import ButtonIcon from '@/components/buttons/icon.vue'
+
+const LOST_DATA_ALERT = 'If you leave before saving, your changes will be lost. Are you sure?';
 
 export default {
   components: {
@@ -67,6 +69,10 @@ export default {
     cancel() {
       this.newTitle = this.title;
       this.isEdit = false;
+    },
+    cancelByEsc() {
+      if (this.newTitle !== this.title && !confirm(LOST_DATA_ALERT)) return;
+      this.cancel();
     }
   }
 }
