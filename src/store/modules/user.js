@@ -7,7 +7,8 @@ const DEFAULT_STATE = {
   username: undefined,
   avatarUrl: undefined,
   boards: [],
-  isLoading: true
+  isLoading: true,
+  markdownEditorFont: 'mono'
 };
 
 function saveCookies(key, value) {
@@ -21,7 +22,6 @@ export default {
     ...DEFAULT_STATE,
     rememberToken: CookieStore.get(NAMESPACE, 'rememberToken', null),
     issueModalStyle: CookieStore.get(NAMESPACE, 'issueModalStyle', 'center'),
-    markdownEditorFont: CookieStore.get(NAMESPACE, 'markdownEditorFont', 'default')
   },
 
   getters: {
@@ -63,10 +63,17 @@ export default {
 
       commit('UPDATE_ISSUE_MODAL_STYLE', issueModalStyle);
     },
-    updateMarkdownEditorFont({ commit }, { isMono }) {
-      console.log(isMono);
+    async updateMarkdownEditorFont({ getters, commit }, { isMono }) {
       if (isMono == null) { return; }
       const markdownEditorFont = isMono ? 'mono' : 'default';
+      const result = await api.updateUserProperties(
+        getters.token,
+        { isMonoMarkdownFont: isMono }
+      );
+      if (result.errors.length !== 0) {
+        console.log(result.errors);
+      }
+
       commit('UPDATE_MARKDOWN_EDITOR_FONT', markdownEditorFont);
     },
   },
@@ -92,6 +99,9 @@ export default {
       state.username = user.username;
       state.avatarUrl = user.avatarUrl;
       state.boards = user.boards;
+      state.markdownEditorFont = !user.properties.isMonoMarkdownFont ?
+        'mono' :
+        'default'
     },
     UPDATE_BOARD(state, { id, name }) {
       const board = state.boards.find(v => v.id === id);
@@ -104,7 +114,6 @@ export default {
     },
     UPDATE_MARKDOWN_EDITOR_FONT(state, markdownEditorFont) {
       state.markdownEditorFont = markdownEditorFont;
-      saveCookies('markdownEditorFont', state.markdownEditorFont);
     }
   }
 };
