@@ -99,7 +99,7 @@ export default {
       state.username = user.username;
       state.avatarUrl = user.avatarUrl;
       state.boards = user.boards;
-      state.markdownEditorFont = !user.properties.isMonoMarkdownFont ?
+      state.markdownEditorFont = user.properties.isMonoMarkdownFont ?
         'mono' :
         'default'
     },
