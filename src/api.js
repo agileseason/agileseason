@@ -57,6 +57,9 @@ export default {
             name
             users { login avatarUrl }
           }
+          properties {
+            isMonoMarkdownFont
+          }
         }
       }
     `;
@@ -64,6 +67,21 @@ export default {
     this.log('user', data);
 
     return data?.user;
+  },
+
+  async updateUserProperties(token, { isMonoMarkdownFont }) {
+    const query = `
+      mutation($isMonoMarkdownFont:Boolean!) {
+        action:updateUserProperties(input: { isMonoMarkdownFont: $isMonoMarkdownFont }) {
+          errors
+        }
+      }
+    `;
+    const vars = { isMonoMarkdownFont };
+    const data = await this.client(token).request(query, vars);
+    this.log('updateUserProperties', data);
+
+    return data?.action;
   },
 
   // ---------------------------------
