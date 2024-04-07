@@ -93,10 +93,10 @@ export default {
     }
   },
   async created() {
+    const user = await this.fetchProfile();
     this.selectedIssueModalStyle = this.issueModalStyle;
     this.isMonoSelected = this.markdownEditorFont === 'mono';
 
-    const user = await this.fetchProfile();
     if (user == null) {
       this.$router.push({ name: 'home' });
     } else if (user.boards.length === 0) {
