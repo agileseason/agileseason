@@ -643,7 +643,7 @@ export default {
 
   async updateComment(token, { boardId, repositoryFullName, id, body }) {
     const query = `
-      mutation($boardId:Int!, $repositoryFullName:String!, $id:Int!, $body:String!) {
+      mutation($boardId:Int!, $repositoryFullName:String!, $id:BigInt!, $body:String!) {
         action:updateComment(input: {
           boardId: $boardId,
           repositoryFullName: $repositoryFullName,
@@ -663,7 +663,7 @@ export default {
 
   async destroyComment(token, { boardId, repositoryFullName, issueId, id }) {
     const query = `
-      mutation($boardId:Int!, $repositoryFullName:String!, $issueId:Int!, $id:Int!) {
+      mutation($boardId:Int!, $repositoryFullName:String!, $issueId:Int!, $id:BigInt!) {
         action:destroyComment(input: {
           boardId: $boardId,
           repositoryFullName: $repositoryFullName,
