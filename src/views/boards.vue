@@ -5,22 +5,26 @@
     <div
       v-for='board in boards'
       :key='board.id'
-      class='board'
+      class='board-wrapper'
       @click='goto(board)'
     >
-      <div class='name'>
-        {{ board.name }}
-      </div>
-      <div class='users'>
-        <Avatar
-          v-for='(user, $index) in board.users'
-          v-bind='user'
-          :key='$index'
-        />
+      <div class='board'>
+        <div class='name'>
+          {{ board.name }}
+        </div>
+        <div class='users'>
+          <Avatar
+            v-for='(user, $index) in board.users'
+            v-bind='user'
+            :key='$index'
+          />
+        </div>
       </div>
     </div>
 
-    <router-link class='board new' to='/boards/new'>New Board...</router-link>
+    <div class='board-wrapper'>
+      <router-link class='board new' to='/boards/new'>New Board...</router-link>
+    </div>
   </div>
 </template>
 
@@ -62,22 +66,34 @@ export default {
 
 <style scoped lang='sass'>
 .boards
-  display: flex
   padding: 14px
+
+  @media screen and (max-width: 660px)
+    display: grid
+    gap: 14px
+
+  .board-wrapper
+    display: inline-block
+    width: 260px
+    margin-right: 14px
+    margin-bottom: 14px
+
+    @media screen and (max-width: 660px)
+      margin: 0
+      width: 100%
 
   .board
     background-color: #FFFFFF
+    display: flex
     border-radius: 4px
     box-sizing: border-box
     cursor: pointer
-    display: flex
     flex-direction: column
     font-size: 16px
     height: 100px
     justify-content: space-between
-    margin-right: 14px
     padding: 10px
-    width: 200px
+    vertical-align: top
 
     &.new
       background-color: transparent
@@ -103,9 +119,11 @@ export default {
 
     .name
       font-weight: 500
+      overflow: hidden
 
     .users
       max-height: 48px
+      min-height: 24px
       overflow: hidden
       text-align: right
 </style>
