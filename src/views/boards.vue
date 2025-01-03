@@ -68,26 +68,26 @@ export default {
 .boards
   padding: 14px
 
-  @media screen and (max-width: 660px)
+  @media screen and (max-width: 600px)
     display: grid
     gap: 14px
 
   .board-wrapper
     display: inline-block
-    width: 260px
-    margin-right: 14px
     margin-bottom: 14px
+    margin-right: 14px
+    width: 260px
 
-    @media screen and (max-width: 660px)
+    @media screen and (max-width: 600px)
       margin: 0
       width: 100%
 
   .board
     background-color: #FFFFFF
-    display: flex
     border-radius: 4px
     box-sizing: border-box
     cursor: pointer
+    display: flex
     flex-direction: column
     font-size: 16px
     height: 100px
