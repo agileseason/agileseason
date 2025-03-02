@@ -217,7 +217,6 @@ export default {
 
       const params = { issueId: this.id, issueNumber: this.number };
       this.setCurrentIssue({ issue: this });
-      // TODO: add configuration to shared board section
       if (this.isReadOnly) {
         this.$router.push({ name: 'shared_issue', params });
       } else {

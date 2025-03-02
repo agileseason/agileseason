@@ -255,9 +255,7 @@ export default {
     isClosed() {
       return this.isLoaded ? this.fetchedIssue.isClosed : this.issue.isClosed;
     },
-    isArchived() {
-      return this.isLoaded ? this.fetchedIssue.isArchived : false;
-    },
+    isArchived() { return this.isLoaded ? this.fetchedIssue.isArchived : false; },
     isBodyEmpty() { return this.newBody == null || this.newBody.length == 0; },
     state() {
       if (this.isClosed == null) { return null; }
@@ -377,6 +375,7 @@ export default {
         sharedToken: this.$route.params.token,
         id: this.id
       });
+      this.newBody = this.tmpBody = this.fetchedIssue.body;
     },
     async updateTitle(newTitle) {
       if (this.isSubmitting) { return; }
@@ -535,6 +534,10 @@ export default {
       this.$nextTick(() => this.$refs.newComment.$refs.textarea.focus());
     },
     markdown(text) {
+      if (this.isShared) {
+        return Markdown.render(text, this.repositoryFullName);
+      }
+
       return Markdown.render(
         text,
         this.repositoryFullName,

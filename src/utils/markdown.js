@@ -48,7 +48,9 @@ renderer.listitem = (text, task, checked) => {
       ))
     );
     // NOTE: Disable checkbox with a|img tags for now - not working yet.
-    const isDisabled = text.includes('<a href') || text.includes('<img src');
+    const isDisabled = renderer.clickHandler === undefined ||
+      text.includes('<a href') ||
+      text.includes('<img src');
     return `
       <li class='task-item'>
         <label>
