@@ -51,6 +51,7 @@ import Column from '@/components/board/column.vue';
 import ColumnNew from '@/components/board/column_new.vue';
 import Loader from '@/components/loader';
 import TopMenu from '@/components/menu/top.vue';
+import { columnWidthStyles } from '@/utils/board_helper';
 import { get, call } from 'vuex-pathify';
 
 export default {
@@ -85,7 +86,8 @@ export default {
       return this.boards.find(v => v.id === this.boardId)?.name || 'Board';
     },
     widthStyles() {
-      return this.isLoaded ? { 'min-width': `${287 * (this.columns.length + 1)}px` } : {};
+      if (this.isLoading) { return {}; }
+      return columnWidthStyles(this.columns.length + 1);
     },
     isModalOpen() {
       return this.$route.name === 'issue' ||

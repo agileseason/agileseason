@@ -25,6 +25,7 @@ import Column from '@/components/board/column.vue';
 import Loader from '@/components/loader';
 import Menu from '@/components/menu/top_shared';
 import api from '@/api';
+import { columnWidthStyles } from '@/utils/board_helper';
 
 export default {
   components: {
@@ -37,9 +38,6 @@ export default {
     board: undefined
   }),
   computed: {
-    // token: get('user/token'),
-    // username: get('user/username'),
-    // isSignedIn: get('user/isSignedIn'),
     token() { return this.$route.params.token; },
     isNotFound() { return !this.isLoading && this.board == null; },
     isFullScreen() { return !!this.$route.query.fullScreen; },
@@ -48,7 +46,7 @@ export default {
     widthStyles() {
       if (this.isLoading) { return {}; }
       if (this.board == null) { return {}; }
-      return { 'min-width': `${287 * (this.board.columns.length)}px` }
+      return columnWidthStyles(this.board.columns.length);
     },
   },
   async created() {
