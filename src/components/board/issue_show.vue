@@ -217,6 +217,7 @@ export default {
   },
   props: {
     // See setCurrentIssue and currentIssue.
+    isShared: { type: Boolean, default: false },
     issue: { type: Object, required: false },
   },
   emits: ['close'],
@@ -286,7 +287,13 @@ export default {
   },
   async created() {
     if (this.id) {
-      await this.fetchIssue();
+      if (this.isShared) {
+        console.log('fetchSharedIssue');
+        await this.fetchSharedIssue();
+      } else {
+        console.log('fetchIssue');
+        await this.fetchIssue();
+      }
       this.addTaskEventListener();
     }
   },
@@ -299,7 +306,11 @@ export default {
       if (newValue == null || isNaN(newValue)) { return; }
 
       this.removeTaskEventListener();
-      await this.fetchIssue();
+      if (this.isShared) {
+        await this.fetchSharedIssue();
+      } else {
+        await this.fetchIssue();
+      }
       this.addTaskEventListener();
     }
   },
@@ -311,6 +322,7 @@ export default {
       'board/updateBoardIssue',
       'board/silentFetch',
       'issue/fetch',
+      'issue/fetchShared',
       'issue/update',
       'issue/fetchComments',
       'issue/createComment'
@@ -358,6 +370,13 @@ export default {
       if (fetchAssignableUsers) {
         this.assignableUsers = [...fetchAssignableUsers].sort((a, b) => (a.login > b.login) ? 1 : -1);
       }
+    },
+    async fetchSharedIssue() {
+      this.assignableUsers = undefined;
+      await this.fetchShared({
+        sharedToken: this.$route.params.token,
+        id: this.id
+      });
     },
     async updateTitle(newTitle) {
       if (this.isSubmitting) { return; }

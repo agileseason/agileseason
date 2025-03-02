@@ -1,21 +1,21 @@
 <template>
   <Modal :class='modalClasses'>
-    <div>TODO</div>
-    <!--IssueShow
+    <IssueShow
       :issue='currentIssue || unsyncedIssue'
+      is-shared
       @close='closeIssue'
-    /-->
+    />
   </Modal>
 </template>
 
 <script>
-// import IssueShow from '@/components/board/issue_show.vue';
+import IssueShow from '@/components/board/issue_show.vue';
 import Modal from '@/components/modal.vue'
 import { call, get } from 'vuex-pathify';
 
 export default {
   components: {
-    // IssueShow,
+    IssueShow,
     Modal
   },
   props: {},

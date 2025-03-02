@@ -39,6 +39,7 @@ import Column from '@/components/board/column.vue';
 import Loader from '@/components/loader';
 import Menu from '@/components/menu/top_shared';
 import api from '@/api';
+import { call } from 'vuex-pathify';
 import { columnWidthStyles } from '@/utils/board_helper';
 
 export default {
@@ -62,13 +63,20 @@ export default {
       if (this.board == null) { return {}; }
       return columnWidthStyles(this.board.columns.length);
     },
-    isModalOpen() { return this.$route.name === 'sharedIssue'; },
+    isModalOpen() { return this.$route.name === 'shared_issue'; },
   },
   async created() {
     this.board = await api.fetchSharedBoard({ sharedToken: this.token });
     this.isLoading = false;
   },
   methods: {
+    ...call([
+      'board/setCurrentIssue',
+    ]),
+    backToBoard() {
+      this.setCurrentIssue({ issue: {} });
+      this.$router.push({ name: 'shared_board', token: this.token });
+    },
   }
 }
 </script>

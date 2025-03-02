@@ -39,7 +39,7 @@ const routes = [
     children: [
       {
         path: 'issues/:issueId/number/:issueNumber',
-        name: 'sharedIssue',
+        name: 'shared_issue',
         component: SharedIssue
       }
     ]
