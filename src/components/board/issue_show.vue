@@ -217,9 +217,8 @@ export default {
     Title
   },
   props: {
-    // See setCurrentIssue and currentIssue.
     isShared: { type: Boolean, default: false },
-    issue: { type: Object, required: false },
+    issue: { type: Object, required: false }, // See setCurrentIssue and currentIssue.
   },
   emits: ['close'],
   mixins: [readonlyByAssignableUsers],
