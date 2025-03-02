@@ -215,18 +215,13 @@ export default {
     goToIssue() {
       if (this.isEditing) { return; }
 
+      const params = { issueId: this.id, issueNumber: this.number };
       // TODO: add configuration to shared board section
       if (this.isReadOnly) {
-        this.$router.push({
-          name: 'sharedIssue',
-          params: { issueId: this.id, issueNumber: this.number }
-        });
+        this.$router.push({ name: 'sharedIssue', params });
       } else {
         this.setCurrentIssue({ issue: this });
-        this.$router.push({
-          name: 'issue',
-          params: { issueId: this.id, issueNumber: this.number }
-        });
+        this.$router.push({ name: 'issue', params });
       }
     },
     pullRequestState({ isClosed, isMerged }) {
