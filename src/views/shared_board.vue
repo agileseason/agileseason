@@ -17,6 +17,20 @@
         is-read-only
       />
     </div>
+
+    <!-- variant I (center) -->
+    <div
+      class='modal-overlay'
+      v-if='true'
+      v-show='isModalOpen'
+      @click.self='backToBoard'
+    >
+      <router-view v-slot='{ Component }'>
+        <transition name='slide' :duration='200'>
+          <component :is='Component' />
+        </transition>
+      </router-view>
+    </div>
   </div>
 </template>
 
@@ -48,6 +62,7 @@ export default {
       if (this.board == null) { return {}; }
       return columnWidthStyles(this.board.columns.length);
     },
+    isModalOpen() { return this.$route.name === 'sharedIssue'; },
   },
   async created() {
     this.board = await api.fetchSharedBoard({ sharedToken: this.token });

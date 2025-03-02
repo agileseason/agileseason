@@ -13,6 +13,7 @@ import IssueNew from '../views/issue_new';
 import OAuth from '../views/oauth';
 import Settings from '../views/settings';
 import SharedBoard from '../views/shared_board';
+import SharedIssue from '../views/shared_issue';
 
 function requireAuth(to, from, next) {
   if (!store.getters['user/isSignedIn']) {
@@ -34,7 +35,14 @@ const routes = [
   }, {
     path: '/shared/board/:token',
     name: 'shared_board',
-    component: SharedBoard
+    component: SharedBoard,
+    children: [
+      {
+        path: 'issues/:issueId/number/:issueNumber',
+        name: 'sharedIssue',
+        component: SharedIssue
+      }
+    ]
   }, {
     path: '/boards',
     name: 'boards',
