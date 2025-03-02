@@ -285,13 +285,7 @@ export default {
   },
   async created() {
     if (this.id) {
-      if (this.isShared) {
-        console.log('fetchSharedIssue');
-        await this.fetchSharedIssue();
-      } else {
-        console.log('fetchIssue');
-        await this.fetchIssue();
-      }
+      await this.fetchIssue();
       this.addTaskEventListener();
     }
   },
@@ -304,11 +298,7 @@ export default {
       if (newValue == null || isNaN(newValue)) { return; }
 
       this.removeTaskEventListener();
-      if (this.isShared) {
-        await this.fetchSharedIssue();
-      } else {
-        await this.fetchIssue();
-      }
+      await this.fetchIssue();
       this.addTaskEventListener();
     }
   },
@@ -326,6 +316,8 @@ export default {
       'issue/createComment'
     ]),
     addTaskEventListener() {
+      if (this.isShared) { return; }
+
       const body = document.getElementById('body');
       if (body.getAttribute('taskListener') !== 'true') {
         document.addEventListener('taskClick', this.taskClickHandler);
@@ -333,6 +325,8 @@ export default {
       }
     },
     removeTaskEventListener() {
+      if (this.isShared) { return; }
+
       const body = document.getElementById('body');
       if (body.getAttribute('taskListener') === 'true') {
         document.removeEventListener('taskClick', this.taskClickHandler);
@@ -355,6 +349,8 @@ export default {
       }
     },
     async fetchIssue() {
+      if (this.isShared) { return await this.fetchSharedIssue(); }
+
       await this.fetch({ id: this.id });
       this.newBody = this.tmpBody = this.fetchedIssue.body;
 
