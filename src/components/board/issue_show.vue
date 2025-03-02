@@ -166,6 +166,7 @@
         <Columns
           :columnId='fetchedIssue.columnId'
           :is-readonly='isReadonly'
+          :is-shared='isShared'
         />
       </div>
     </IssueBody>
@@ -372,7 +373,6 @@ export default {
       }
     },
     async fetchSharedIssue() {
-      this.assignableUsers = undefined;
       await this.fetchShared({
         sharedToken: this.$route.params.token,
         id: this.id

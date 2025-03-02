@@ -4,11 +4,11 @@ export default {
   computed: {
     username: get('user/username'),
     isReadonly() {
+      if (this.isShared) { return true; }
       if (this.assignableUsers == null) { return true; }
       if (this.assignableUsers.length === 0) { return false; }
 
       const currentUser = this.assignableUsers.find(v => v.login === this.username);
-      console.log('----->', currentUser);
       if (currentUser == null) { return true; }
       return false;
     }
