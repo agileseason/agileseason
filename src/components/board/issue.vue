@@ -276,7 +276,6 @@ export default {
   position: relative
   z-index: 2
 
-  &.read-only,
   &.editing
     cursor: default
 
