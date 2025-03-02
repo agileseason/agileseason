@@ -4,6 +4,7 @@ export default {
   computed: {
     username: get('user/username'),
     isReadonly() {
+      if (this.isShared) { return true; }
       if (this.assignableUsers == null) { return true; }
       if (this.assignableUsers.length === 0) { return false; }
 

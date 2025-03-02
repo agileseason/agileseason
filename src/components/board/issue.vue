@@ -213,14 +213,15 @@ export default {
       'board/updateIssueState'
     ]),
     goToIssue() {
-      if (this.isReadOnly) { return; }
       if (this.isEditing) { return; }
 
+      const params = { issueId: this.id, issueNumber: this.number };
       this.setCurrentIssue({ issue: this });
-      this.$router.push({
-        name: 'issue',
-        params: { issueId: this.id, issueNumber: this.number }
-      });
+      if (this.isReadOnly) {
+        this.$router.push({ name: 'shared_issue', params });
+      } else {
+        this.$router.push({ name: 'issue', params });
+      }
     },
     pullRequestState({ isClosed, isMerged }) {
       if (isClosed && isMerged) { return 'merged'; }

@@ -50,6 +50,16 @@ export default {
         commit('FINISH_LOADING');
       }
     },
+    async fetchShared({ commit }, { sharedToken, id }) {
+      commit('START_LOADING');
+      const issue = await api.fetchSharedIssue({ sharedToken, id });
+      if (issue == null) {
+        commit('NOT_FOUND');
+      } else {
+        commit('UPDATE', issue);
+        commit('FINISH_LOADING');
+      }
+    },
     async fetchComments({ commit, getters }, { id }) {
       commit('START_COMMENTS_LOADING');
       const comments = await api.fetchIssueComments(

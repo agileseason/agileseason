@@ -166,6 +166,7 @@
         <Columns
           :columnId='fetchedIssue.columnId'
           :is-readonly='isReadonly'
+          :is-shared='isShared'
         />
       </div>
     </IssueBody>
@@ -216,8 +217,8 @@ export default {
     Title
   },
   props: {
-    // See setCurrentIssue and currentIssue.
-    issue: { type: Object, required: false },
+    isShared: { type: Boolean, default: false },
+    issue: { type: Object, required: false }, // See setCurrentIssue and currentIssue.
   },
   emits: ['close'],
   mixins: [readonlyByAssignableUsers],
@@ -253,9 +254,7 @@ export default {
     isClosed() {
       return this.isLoaded ? this.fetchedIssue.isClosed : this.issue.isClosed;
     },
-    isArchived() {
-      return this.isLoaded ? this.fetchedIssue.isArchived : false;
-    },
+    isArchived() { return this.isLoaded ? this.fetchedIssue.isArchived : false; },
     isBodyEmpty() { return this.newBody == null || this.newBody.length == 0; },
     state() {
       if (this.isClosed == null) { return null; }
@@ -311,11 +310,14 @@ export default {
       'board/updateBoardIssue',
       'board/silentFetch',
       'issue/fetch',
+      'issue/fetchShared',
       'issue/update',
       'issue/fetchComments',
       'issue/createComment'
     ]),
     addTaskEventListener() {
+      if (this.isShared) { return; }
+
       const body = document.getElementById('body');
       if (body.getAttribute('taskListener') !== 'true') {
         document.addEventListener('taskClick', this.taskClickHandler);
@@ -323,6 +325,8 @@ export default {
       }
     },
     removeTaskEventListener() {
+      if (this.isShared) { return; }
+
       const body = document.getElementById('body');
       if (body.getAttribute('taskListener') === 'true') {
         document.removeEventListener('taskClick', this.taskClickHandler);
@@ -345,6 +349,8 @@ export default {
       }
     },
     async fetchIssue() {
+      if (this.isShared) { return await this.fetchSharedIssue(); }
+
       await this.fetch({ id: this.id });
       this.newBody = this.tmpBody = this.fetchedIssue.body;
 
@@ -358,6 +364,13 @@ export default {
       if (fetchAssignableUsers) {
         this.assignableUsers = [...fetchAssignableUsers].sort((a, b) => (a.login > b.login) ? 1 : -1);
       }
+    },
+    async fetchSharedIssue() {
+      await this.fetchShared({
+        sharedToken: this.$route.params.token,
+        id: this.id
+      });
+      this.newBody = this.tmpBody = this.fetchedIssue.body;
     },
     async updateTitle(newTitle) {
       if (this.isSubmitting) { return; }
@@ -516,6 +529,10 @@ export default {
       this.$nextTick(() => this.$refs.newComment.$refs.textarea.focus());
     },
     markdown(text) {
+      if (this.isShared) {
+        return Markdown.render(text, this.repositoryFullName);
+      }
+
       return Markdown.render(
         text,
         this.repositoryFullName,

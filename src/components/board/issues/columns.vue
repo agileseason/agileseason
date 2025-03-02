@@ -1,5 +1,5 @@
 <template>
-  <div class='select-container'>
+  <div class='select-container' v-if='!isShared'>
     <label
       class='active'
       :class="{ 'is-readonly': isReadonly }"
@@ -43,7 +43,8 @@ export default {
   },
   props: {
     columnId: { type: Number, required: false, default: null },
-    isReadonly: { type: Boolean, default: false }
+    isReadonly: { type: Boolean, default: false },
+    isShared: { type: Boolean, default: false },
   },
   emits: ['toggle'],
   data: () => ({

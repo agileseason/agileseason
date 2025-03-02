@@ -502,6 +502,21 @@ export default {
     return data?.action;
   },
 
+  async fetchSharedIssue({ sharedToken, id }) {
+    const query = `
+      query($sharedToken:String!, $id:Int!) {
+        action:issueShared(sharedToken: $sharedToken, id: $id) {
+          ${ISSUE_FRAGMENT}
+        }
+      }
+    `;
+    const vars = { sharedToken, id };
+    const data = await this.client().request(query, vars);
+    this.log('fetchSharedIssue', data, vars);
+
+    return data?.action;
+  },
+
   async fetchIssueComments(token, { boardId, id }) {
     const query = `
       query($boardId:Int!, $id:Int!) {
