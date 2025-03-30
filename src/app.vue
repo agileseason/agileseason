@@ -39,7 +39,7 @@ a {
 
 .markdown-body {
   font-size: 14px;
-  line-height: 18px;
+  line-height: 1.5;
 }
 
 .markdown-body h1,
@@ -116,6 +116,10 @@ a {
 .markdown-body img {
   max-height: 800px;
   max-width: 100%;
+}
+
+.markdown-body table {
+  margin-bottom: 16px;
 }
 
 .markdown-body ul,
